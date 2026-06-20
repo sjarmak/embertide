@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { JSX } from 'react';
 import type { CombatBoss } from '../types/combat';
 import { DESPERATION_HP_PCT } from '../core/balance';
-import { illustrationForBaseId } from './CardArt';
+import { bossPortraitForBaseId } from './CardArt';
 import { nameForBaseId } from './CardTemplate';
 import { Sword } from '../icons';
 import './CombatBossStage.css';
@@ -134,7 +134,7 @@ export default function CombatBossStage({
   const hpPct = boss.hpMax > 0 ? Math.max(0, Math.min(100, (boss.hp / boss.hpMax) * 100)) : 0;
   const readout = formatHpReadout(boss.hp, boss.hpMax);
   const showTelegraph = activeActor === 'boss';
-  const portrait = illustrationForBaseId(boss.sourceCardId, BOSS_PORTRAIT_LOGICAL_SIZE);
+  const portrait = bossPortraitForBaseId(boss.sourceCardId, BOSS_PORTRAIT_LOGICAL_SIZE);
 
   // embertide-d5wm — Slay-the-Spire-style intent indicator anchored
   // above the boss portrait. Renders the upcoming boss-turn damage
@@ -215,15 +215,13 @@ export default function CombatBossStage({
             )}
           </div>
         )}
-        {portrait ? (
-          <div
-            data-testid="combat-boss-portrait"
-            className="combat-boss-stage-portrait"
-            aria-hidden="true"
-          >
-            {portrait}
-          </div>
-        ) : null}
+        <div
+          data-testid="combat-boss-portrait"
+          className="combat-boss-stage-portrait"
+          aria-hidden="true"
+        >
+          {portrait}
+        </div>
       </div>
       <div className="combat-boss-stage-info">
         <div className="combat-boss-stage-header">

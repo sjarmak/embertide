@@ -353,6 +353,11 @@ const SPEC_BY_BASE_ID: Record<string, IllustrationSpec> = {
   // src/data/cards/colosseum.ts; combat spec lives in
   // src/data/colosseum/tier5.ts.
   'trinity-aurogax': cathedralMonsterAurogaxJson as IllustrationSpec,
+  // Colosseum Tier-1 Duel boss — documented bone-knight reskin
+  // (see src/data/cards/colosseum.ts + tier1.ts). Without this mapping
+  // `illustrationForBaseId('bonereaver')` returned null and the combat
+  // boss stage rendered a blank portrait.
+  bonereaver: cathedralMonsterBoneKnightJson as IllustrationSpec,
 };
 
 /**
@@ -461,6 +466,25 @@ export function illustrationForBaseId(baseId: string, size: number): ReactElemen
   const spec = SPEC_BY_BASE_ID[baseId];
   if (!spec) return null;
   return renderIllustration(spec, { size, fit: 'meet' });
+}
+
+/**
+ * Boss-portrait resolver that always returns a renderable element.
+ *
+ * The combat boss stage is keyed only by `sourceCardId`, and several
+ * colosseum bosses (`cinderwyrm`, `voltwyrm`, `the-fettered`, …) ship
+ * before their bespoke raster does. Those baseIds aren't in
+ * `SPEC_BY_BASE_ID`, so {@link illustrationForBaseId} returns null and
+ * the stage rendered a blank portrait (player report: "Bonereaver but no
+ * art"). This falls back to the generic mini-boss stained-glass portrait
+ * — and finally the vector boss icon — so a boss never renders empty.
+ */
+export function bossPortraitForBaseId(baseId: string, size: number): ReactElement {
+  return (
+    illustrationForBaseId(baseId, size) ??
+    illustrationFor('mini-boss', size) ??
+    iconFor('final-boss', size)
+  );
 }
 
 function iconFor(role: CardRole, size: number): ReactElement {

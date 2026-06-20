@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import {
+  bossPortraitForBaseId,
   illustrationFor,
   illustrationForBaseId,
   illustrationForCard,
@@ -9,6 +10,11 @@ import {
 } from './CardArt';
 import { ALWAYS_AVAILABLE, KID_CARDS, VENDORS } from '../data/cards';
 import { KID_CHAMPIONS } from '../data/champions';
+import { TIER_1_ROSTER } from '../data/colosseum/tier1';
+import { TIER_2_ROSTER } from '../data/colosseum/tier2';
+import { TIER_3_ROSTER } from '../data/colosseum/tier3';
+import { TIER_4_ROSTER } from '../data/colosseum/tier4';
+import { TIER_5_ROSTER } from '../data/colosseum/tier5';
 
 describe('illustrationFor', () => {
   it('returns a rendered SVG for the hero role', () => {
@@ -204,7 +210,7 @@ describe('illustrationForBaseId — colosseum-tier boss portraits', () => {
    * When TierId widens to include 3/4 (embertide-3z4v) and tier-4 art
    * is regenerated (embertide-mvvw), extend this list.
    */
-  it.each(['craghorn', 'chimera', 'trinity-aurogax'] as const)(
+  it.each(['craghorn', 'chimera', 'trinity-aurogax', 'bonereaver'] as const)(
     "resolves to a non-null portrait for shipped colosseum boss '%s'",
     (baseId) => {
       expect(
@@ -213,4 +219,37 @@ describe('illustrationForBaseId — colosseum-tier boss portraits', () => {
       ).not.toBeNull();
     },
   );
+});
+
+describe('bossPortraitForBaseId — never renders a blank boss stage', () => {
+  /**
+   * CombatBossStage keys the portrait off `boss.sourceCardId` alone, and
+   * many colosseum bosses ship before their bespoke raster does (player
+   * report: "Colosseum says Bonereaver but no art for that monster"). The
+   * fallback chain (baseId spec → generic mini-boss portrait → boss icon)
+   * must ALWAYS return a renderable element so a fight never opens with an
+   * empty portrait socket — even for an entirely unknown id.
+   */
+  const COLOSSEUM_SOURCE_IDS = [
+    ...TIER_1_ROSTER,
+    ...TIER_2_ROSTER,
+    ...TIER_3_ROSTER,
+    ...TIER_4_ROSTER,
+    ...TIER_5_ROSTER,
+  ].map((boss) => boss.sourceCardId);
+
+  it.each([...new Set(COLOSSEUM_SOURCE_IDS)])(
+    "returns a renderable portrait for colosseum boss sourceCardId '%s'",
+    (sourceCardId) => {
+      const node = bossPortraitForBaseId(sourceCardId, 256);
+      const { container } = render(node);
+      expect(container.querySelector('svg')).not.toBeNull();
+    },
+  );
+
+  it('falls back to a generic portrait for a completely unknown id', () => {
+    const node = bossPortraitForBaseId('not-a-real-boss-id', 256);
+    const { container } = render(node);
+    expect(container.querySelector('svg')).not.toBeNull();
+  });
 });

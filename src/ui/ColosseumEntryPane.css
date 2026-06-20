@@ -66,6 +66,9 @@
   text-align: center;
   padding: 2px 0;
   border-bottom: 1px solid var(--hc-lead-gold-700);
+
+  /* Header stays put; only the tier list scrolls when space is tight. */
+  flex-shrink: 0;
 }
 
 .colosseum-entry-pane-tiers {
@@ -77,12 +80,15 @@
   gap: 4px;
 
   /*
-   * Defensive cap (embertide-vrqs): the pane now renders only
-   * unlocked tiers, but at full unlock (5 rows of rosters) the list
-   * could still grow tall enough to push the End Turn button below
-   * the fold on short viewports. Capping the roster list and letting
-   * it scroll internally keeps the rail — and End Turn — bounded.
+   * Defensive cap (embertide-vrqs): the pane renders only unlocked
+   * tiers, but at full unlock (5 roster rows) the list could still grow
+   * tall enough to push End Turn below the fold. The 38vh cap bounds it
+   * on tall viewports; `flex: 0 1 auto; min-height: 0` lets it shrink
+   * AND scroll within the rail-bounded pane on short viewports so Rules
+   * + End Turn stay visible (see .board-side-crystal-rail in app.css).
    */
+  flex: 0 1 auto;
+  min-height: 0;
   max-height: 38vh;
   overflow-y: auto;
 }

@@ -182,8 +182,10 @@ describe('CombatBossStage', () => {
   });
 
   // embertide-797 — bespoke stained-glass boss portrait alongside
-  // the name + HP bar. Portrait is driven by CardArt's SPEC_BY_BASE_ID;
-  // unregistered ids render nothing instead of a placeholder frame.
+  // the name + HP bar. Portrait is driven by CardArt's SPEC_BY_BASE_ID,
+  // with a generic-portrait fallback for ids that ship before their
+  // bespoke raster (bossPortraitForBaseId) so the stage never renders an
+  // empty socket.
   it('renders a boss portrait for a registered sourceCardId (craghorn)', () => {
     render(<CombatBossStage boss={makeBoss({ sourceCardId: 'craghorn' })} activeActor="players" />);
     const portrait = screen.getByTestId('combat-boss-portrait');
@@ -195,14 +197,20 @@ describe('CombatBossStage', () => {
     expect(portrait.childElementCount).toBeGreaterThan(0);
   });
 
-  it('renders nothing in place of the portrait for an unregistered sourceCardId', () => {
+  it('renders a generic fallback portrait for an unregistered sourceCardId', () => {
+    // Regression: several colosseum bosses ship before their bespoke
+    // raster (player report: "Colosseum says Bonereaver but no art").
+    // bossPortraitForBaseId falls back to a generic mini-boss portrait so
+    // the stage always shows a boss, never an empty socket.
     render(
       <CombatBossStage
         boss={makeBoss({ sourceCardId: 'not-a-real-boss-id' })}
         activeActor="players"
       />,
     );
-    expect(screen.queryByTestId('combat-boss-portrait')).toBeNull();
+    const portrait = screen.getByTestId('combat-boss-portrait');
+    expect(portrait).toBeInTheDocument();
+    expect(portrait.childElementCount).toBeGreaterThan(0);
     // Stage still renders the rest of its content cleanly.
     expect(screen.getByTestId('combat-boss-stage')).toBeInTheDocument();
     expect(screen.getByTestId('combat-boss-hp-bar')).toBeInTheDocument();

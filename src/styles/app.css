@@ -1189,6 +1189,13 @@ body {
      inside this fixed rail width. */
   width: 192px;
   flex: 0 0 192px;
+
+  /* Fill the grid row height and allow inner shrink so the crystal rail
+     can bound itself to the visible area instead of overflowing the
+     `overflow: hidden` board grid (which clipped Rules + End Turn once
+     the colosseum entry pane unlocked). */
+  align-self: stretch;
+  min-height: 0;
 }
 
 /*
@@ -1207,6 +1214,30 @@ body {
   align-items: stretch;
   min-width: 0;
   width: 100%;
+
+  /* Bound the rail to the grid height. Without this the rail grew with
+     its content and the board grid's `overflow: hidden` clipped whatever
+     fell past the bottom — once the colosseum entry pane unlocked, that
+     was the Rules button and the End Turn button (player report). */
+  min-height: 0;
+  max-height: 100%;
+}
+
+/*
+ * When the rail would overflow, only the colosseum entry pane yields
+ * space — it scrolls its tier list internally (see ColosseumEntryPane.css)
+ * — while the boss altar, crystal/Embertide pane, Rules button and End
+ * Turn button stay pinned and on-screen. This is what keeps Rules + End
+ * Turn visible once several colosseum tiers have unlocked.
+ */
+.board-side-crystal-rail > * {
+  flex-shrink: 0;
+}
+
+.board-side-crystal-rail > .colosseum-entry-pane {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
 /*
@@ -2189,6 +2220,26 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
 .hand-card-tile .card-template-passive {
   line-height: 1;
   letter-spacing: var(--hc-tracking-normal);
+}
+
+/* Combat-hand cards are tap-to-play — the printed effect IS the action, so
+   it must stay readable even when the arena compresses cards on short
+   (landscape-phone / short-laptop) viewports. The base rule floors the art
+   at 44% and caps the rules box at 60% with overflow:hidden, which on a
+   compressed combat card squeezed the text down to an empty parchment plate
+   (player report: "cards in the fight have text cut off at the bottom").
+   Here the rules box takes its natural content height and the art yields
+   instead, so the effect text is never clipped. Two-class specificity ties
+   the .hand-card-tile rules above and is placed after them to keep the
+   ascending-specificity order stylelint requires. */
+.combat-hand-card-tile .card-template-art {
+  flex: 1 1 auto;
+  min-height: 28px;
+}
+
+.combat-hand-card-tile .card-template-rules-box {
+  flex: 0 0 auto;
+  max-height: none;
 }
 
 /* ------------------------------------------------------------------------- */
