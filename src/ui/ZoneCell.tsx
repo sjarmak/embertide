@@ -21,6 +21,13 @@ const IMG_STYLE: CSSProperties = {
   width: '100%',
   height: '100%',
   objectFit: 'cover',
+  // 2026-06-20: the zone rasters carry a baked-in tan/brown MATTE BORDER
+  // (~5% on every edge). object-fit:cover crops the wide sides but leaves
+  // that matte visible as solid brown bands across the top and bottom of
+  // the board (and a pale band on light zones like Dune Sanctum, read as
+  // "white"). Zoom past the matte so the stained glass reaches the board
+  // edges — the root has overflow:hidden, so the overscan is clipped.
+  transform: 'scale(1.12)',
   display: 'block',
   opacity: 1,
 };

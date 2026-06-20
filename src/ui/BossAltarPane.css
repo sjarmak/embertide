@@ -185,6 +185,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* 2026-06-20: zoom past the zone raster's baked-in tan matte border so it
+     doesn't ring the boss tile (it read as a brown/white frame). The
+     backdrop wrapper above clips the overscan (overflow: hidden). Mirrors
+     the ZoneCell IMG_STYLE scale-crop. */
+  transform: scale(1.12);
   display: block;
 }
 
