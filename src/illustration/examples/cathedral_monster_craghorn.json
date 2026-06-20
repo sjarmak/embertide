@@ -1,5 +1,5 @@
 {
-  "id": "cathedral_monster_craghorn_001",
+  "id": "cathedral_monster_craghorn_002",
   "theme": "cathedral",
   "archetype": "monster",
   "subtype": "one-eyed-ogre",
@@ -16,5 +16,5 @@
     "Sylvanwood wild-boss (u-6a) — eye-centered radial composition signals the shard-level threat",
     "Palette role elevated to `boss` while archetype stays `monster` (matches silver-chimera precedent)"
   ],
-  "rasterImageUrl": "/illustrations/cathedral_monster_craghorn_001.webp"
+  "rasterImageUrl": "/illustrations/cathedral_monster_craghorn_002.webp"
 }
