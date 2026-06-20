@@ -151,7 +151,7 @@ describe('BossAltarPane ornamentSrc (u-10a, REQ-33 §D2)', () => {
       <BossAltarPane
         header="WILD BOSS"
         variant="wild"
-        ornamentSrc="/illustrations/cathedral_altar_frame_wild_001.webp"
+        ornamentSrc="/illustrations/cathedral_altar_frame_wild_002.webp"
         onClick={() => undefined}
       >
         x
@@ -159,7 +159,7 @@ describe('BossAltarPane ornamentSrc (u-10a, REQ-33 §D2)', () => {
     );
     const img = screen.getByTestId('boss-altar-pane-ornament') as HTMLImageElement;
     expect(img.tagName).toBe('IMG');
-    expect(img.getAttribute('src')).toBe('/illustrations/cathedral_altar_frame_wild_001.webp');
+    expect(img.getAttribute('src')).toBe('/illustrations/cathedral_altar_frame_wild_002.webp');
     expect(img.getAttribute('aria-hidden')).toBe('true');
   });
 
@@ -189,7 +189,7 @@ describe('BossAltarPane ornamentSrc (u-10a, REQ-33 §D2)', () => {
         header="WILD BOSS"
         variant="wild"
         disabled
-        ornamentSrc="/illustrations/cathedral_altar_frame_wild_001.webp"
+        ornamentSrc="/illustrations/cathedral_altar_frame_wild_002.webp"
       >
         x
       </BossAltarPane>,
@@ -208,7 +208,7 @@ describe('BossAltarPane ornamentSrc (u-10a, REQ-33 §D2)', () => {
       </BossAltarPane>,
     );
     const img = screen.getByTestId('boss-altar-pane-ornament');
-    expect(img.getAttribute('src')).toBe('/illustrations/cathedral_altar_frame_wild_001.webp');
+    expect(img.getAttribute('src')).toBe('/illustrations/cathedral_altar_frame_wild_002.webp');
   });
 
   it('auto-resolves the region ornament from variant="region" when ornamentSrc is omitted', () => {

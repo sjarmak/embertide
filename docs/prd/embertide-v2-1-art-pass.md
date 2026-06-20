@@ -48,7 +48,7 @@ Two shared ornament rasters layered on top of the stained-glass CSS pane:
 
 | Variant | Filename | Design |
 |---------|----------|--------|
-| Wild | `public/illustrations/cathedral_altar_frame_wild_001.webp` | Carved stone arch with Embertide-of-Courage motif at apex, ivy creeping along the sides, two unlit torch sconces at the base (embers glow via CSS animation on the pane, not the raster) |
+| Wild | `public/illustrations/cathedral_altar_frame_wild_002.webp` | Carved stone arch with Embertide-of-Courage motif at apex, ivy creeping along the sides, two unlit torch sconces at the base (embers glow via CSS animation on the pane, not the raster) |
 | Region | `public/illustrations/cathedral_altar_frame_region_001.webp` | Similar arch but heavier — darker stone, obsidian flourishes, Embertide-of-Power motif at apex, two LIT torches at base (ember animation stronger via CSS) |
 
 **Resolution**: 1024×1536 (portrait, aspect 2:3) — matches the altar pane's approximate aspect. PNG with transparent background OR webp with alpha channel. The ornament is an OVERLAY, not a background — the existing stained-glass CSS shows through the ornament's openings.
@@ -56,7 +56,7 @@ Two shared ornament rasters layered on top of the stained-glass CSS pane:
 **Wiring**: extend `BossAltarPane` (src/ui/BossAltarPane.tsx) with an optional `ornamentSrc` prop. When provided, render an `<img>` absolutely-positioned over the pane's existing stained-glass div, z-index above the CSS pane but below the child content (boss portrait, name, HP). Falls back to pane-without-ornament when `ornamentSrc` is undefined or the image fails to load.
 
 Map variants to ornament src:
-- `variant="wild"` → `cathedral_altar_frame_wild_001.webp`
+- `variant="wild"` → `cathedral_altar_frame_wild_002.webp`
 - `variant="region"` → `cathedral_altar_frame_region_001.webp`
 - `variant="destiny"` → resolved in D3 below (bespoke)
 
@@ -141,7 +141,7 @@ Committed under `public/illustrations/`:
 - [ ] cathedral_combat_bg_sylvani_001.webp (≤200KB)
 - [ ] cathedral_combat_bg_emberpeak_001.webp (≤200KB)
 - [ ] cathedral_combat_bg_gilded_cage_001.webp (≤200KB)
-- [ ] cathedral_altar_frame_wild_001.webp (≤80KB, alpha)
+- [ ] cathedral_altar_frame_wild_002.webp (≤80KB, alpha)
 - [ ] cathedral_altar_frame_region_001.webp (≤80KB, alpha)
 - [ ] cathedral_altar_destiny_vurmox_001.webp (≤250KB, alpha)
 

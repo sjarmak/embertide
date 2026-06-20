@@ -4,7 +4,7 @@
 - **Card:** N/A — altar-frame overlay (shared, wild variant)
 - **Model:** fal-ai/nano-banana-pro
 - **Params:** `aspect_ratio=3:4`, `output_format=png`, `resolution=1K`, `num_images=1`
-- **Raster:** `public/illustrations/cathedral_altar_frame_wild_001.webp`
+- **Raster:** `public/illustrations/cathedral_altar_frame_wild_002.webp`
 - **Spec:** `src/illustration/examples/cathedral_altar_frame_wild.json`
 
 ## Prompt

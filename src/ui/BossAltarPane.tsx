@@ -56,7 +56,7 @@ export type BossAltarVariant = 'wild' | 'region' | 'destiny';
  * rule: `ornamentSrc ?? map[variant]` — explicit callers still win.
  */
 const ORNAMENT_SRC_BY_VARIANT: Readonly<Record<BossAltarVariant, string | undefined>> = {
-  wild: '/illustrations/cathedral_altar_frame_wild_001.webp',
+  wild: '/illustrations/cathedral_altar_frame_wild_002.webp',
   region: '/illustrations/cathedral_altar_frame_region_001.webp',
   destiny: '/illustrations/cathedral_altar_destiny_vurmox_001.webp',
 };
