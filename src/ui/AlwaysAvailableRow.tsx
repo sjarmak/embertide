@@ -5,6 +5,7 @@ import type { Card } from '../types/card';
 import { cardArtForCard } from './CardArt';
 import { cardDisplayName } from './CardTemplate';
 import type { ZoomedCardContext } from './Field';
+import { Magnifier } from '../icons';
 
 const TOUCH_TARGET_STYLE = {
   minWidth: 44,
@@ -93,19 +94,13 @@ export default function AlwaysAvailableRow({
   compact = false,
   onZoomCard,
 }: AlwaysAvailableRowProps): JSX.Element {
-  // round2: expanded top-row tiles are now NAME + IMAGE only; the click
-  // opens the shared zoom modal for the full rules. Route through the
-  // modal only in expanded mode (the collapsed chip strip keeps direct
-  // dispatch). When no zoom handler is wired, fall back to direct
-  // dispatch so non-board hosts + unit tests keep working.
-  const useZoom = !compact && typeof onZoomCard === 'function';
-  const tileClass = compact
-    ? 'always-available-chip'
-    : 'card-tile field-card-tile tap-target always-available-tile';
-  const vendorClass = compact
-    ? 'always-available-chip vendor-chip'
-    : 'card-tile field-card-tile tap-target always-available-tile vendor-tile';
-
+  // 2026-06-20 player ruling: a direct tap on a top-row tile performs the
+  // buy / fight / trade IMMEDIATELY — it no longer opens the detail modal
+  // first (the round2 tap-to-expand read as a speed bump). Full rules stay
+  // one tap away via the corner magnifier button, which opens the shared
+  // CardDetailModal (onZoomCard). Unaffordable tiles disable the action
+  // button (native gate) while the magnifier stays live so the player can
+  // still read the card. Compact chips keep their own direct dispatch.
   return (
     <div
       className="always-available-row"
@@ -117,96 +112,157 @@ export default function AlwaysAvailableRow({
         const greenCost = card.cost.green ?? 0;
         const redCost = card.cost.red ?? 0;
         const disabled = isMonster ? red < redCost : green < greenCost;
-
+        const cost = isMonster ? `${redCost}r` : `${greenCost}g`;
         const performAction = (): void => {
-          if (isMonster) {
-            onFight(card.id);
-          } else {
-            onBuy(card.id);
-          }
+          if (isMonster) onFight(card.id);
+          else onBuy(card.id);
         };
 
-        const handleClick = useZoom
-          ? () =>
-              onZoomCard?.({
-                card,
-                actionLabel: isMonster ? 'Fight' : 'Buy',
-                action: performAction,
-                disabled,
-              })
-          : performAction;
+        if (compact) {
+          return (
+            <button
+              key={card.id}
+              type="button"
+              className="always-available-chip"
+              data-testid={`always-available-${card.id}`}
+              data-role={card.role}
+              data-touch-target="true"
+              data-affordable={disabled ? 'false' : 'true'}
+              style={TOUCH_TARGET_STYLE}
+              disabled={disabled}
+              onClick={performAction}
+            >
+              <ChipFace label={chipLabel(card.id)} cost={cost} />
+            </button>
+          );
+        }
 
         return (
-          <button
+          <ExpandedTile
             key={card.id}
-            type="button"
-            className={tileClass}
-            data-testid={`always-available-${card.id}`}
-            data-role={card.role}
-            data-touch-target="true"
-            data-affordable={disabled ? 'false' : 'true'}
-            style={TOUCH_TARGET_STYLE}
-            // In zoom mode the tile is always clickable so the player can
-            // OPEN the card to read its rules even when they can't yet
-            // afford it; the affordability gate lives on the modal's action
-            // button (`disabled` passed into the zoom ctx). Direct-dispatch
-            // fallback keeps the native disabled gate.
-            disabled={useZoom ? false : disabled}
-            aria-haspopup={useZoom ? 'dialog' : undefined}
-            onClick={handleClick}
-          >
-            {compact ? (
-              <ChipFace
-                label={chipLabel(card.id)}
-                cost={isMonster ? `${redCost}r` : `${greenCost}g`}
-              />
-            ) : (
-              <ExpandedFace card={card} cost={isMonster ? `${redCost}r` : `${greenCost}g`} />
-            )}
-          </button>
+            card={card}
+            cost={cost}
+            cardRole={card.role}
+            disabled={disabled}
+            performAction={performAction}
+            actionLabel={isMonster ? 'Fight' : 'Buy'}
+            onZoomCard={onZoomCard}
+          />
         );
       })}
       {VENDORS.map((card) => {
         const greenCost = card.cost.green ?? 0;
         const isKeyVendor = card.id === KEY_VENDOR_ID;
         const disabled = green < greenCost || (isKeyVendor && usedKeyVendorThisTurn);
+        const cost = `${greenCost}g`;
         const performAction = (): void => {
-          if (isKeyVendor) {
-            onTrade(card.id);
-          }
+          if (isKeyVendor) onTrade(card.id);
         };
-        const handleClick = useZoom
-          ? () =>
-              onZoomCard?.({
-                card,
-                actionLabel: 'Trade',
-                action: performAction,
-                disabled,
-              })
-          : performAction;
+
+        if (compact) {
+          return (
+            <button
+              key={card.id}
+              type="button"
+              className="always-available-chip vendor-chip"
+              data-testid={`always-available-${card.id}`}
+              data-role="vendor"
+              data-touch-target="true"
+              data-affordable={disabled ? 'false' : 'true'}
+              style={TOUCH_TARGET_STYLE}
+              disabled={disabled}
+              onClick={performAction}
+            >
+              <ChipFace label={chipLabel(card.id)} cost={cost} />
+            </button>
+          );
+        }
+
         return (
-          <button
+          <ExpandedTile
             key={card.id}
-            type="button"
-            className={vendorClass}
-            data-testid={`always-available-${card.id}`}
-            data-role="vendor"
-            data-touch-target="true"
-            data-affordable={disabled ? 'false' : 'true'}
-            style={TOUCH_TARGET_STYLE}
-            disabled={useZoom ? false : disabled}
-            aria-haspopup={useZoom ? 'dialog' : undefined}
-            onClick={handleClick}
-          >
-            {compact ? (
-              <ChipFace label={chipLabel(card.id)} cost={`${greenCost}g`} />
-            ) : (
-              <ExpandedFace card={card} cost={`${greenCost}g`} />
-            )}
-          </button>
+            card={card}
+            cost={cost}
+            cardRole="vendor"
+            disabled={disabled}
+            performAction={performAction}
+            actionLabel="Trade"
+            onZoomCard={onZoomCard}
+            vendor
+          />
         );
       })}
     </div>
+  );
+}
+
+/**
+ * Expanded top-row tile: a direct-action button (buy / fight / trade on tap)
+ * paired with a small corner magnifier that opens the full-rules detail
+ * modal. The magnifier is the "expand to view" affordance after the primary
+ * tap was reclaimed for the action (2026-06-20 player ruling). Rendered as a
+ * positioned wrapper so the magnifier sits in the tile's top-right corner
+ * without nesting a button inside the action button (invalid HTML). The
+ * action button keeps the `always-available-<id>` testid + native disabled
+ * gate, so the affordability tests and the playtest harness selectors are
+ * unchanged.
+ */
+function ExpandedTile({
+  card,
+  cost,
+  cardRole,
+  disabled,
+  performAction,
+  actionLabel,
+  onZoomCard,
+  vendor = false,
+}: {
+  readonly card: Card;
+  readonly cost: string;
+  readonly cardRole: string;
+  readonly disabled: boolean;
+  readonly performAction: () => void;
+  readonly actionLabel: string;
+  readonly onZoomCard?: (ctx: ZoomedCardContext) => void;
+  readonly vendor?: boolean;
+}): JSX.Element {
+  const name = cardDisplayName(card);
+  const buttonClass = vendor
+    ? 'card-tile field-card-tile tap-target always-available-tile vendor-tile'
+    : 'card-tile field-card-tile tap-target always-available-tile';
+  return (
+    <span className="board-tile-wrap">
+      <button
+        type="button"
+        className={buttonClass}
+        data-testid={`always-available-${card.id}`}
+        data-role={cardRole}
+        data-touch-target="true"
+        data-affordable={disabled ? 'false' : 'true'}
+        style={TOUCH_TARGET_STYLE}
+        disabled={disabled}
+        aria-label={`${actionLabel} ${name}`}
+        onClick={performAction}
+      >
+        <ExpandedFace card={card} cost={cost} />
+      </button>
+      {onZoomCard ? (
+        <button
+          type="button"
+          className="board-tile-zoom"
+          data-testid={`always-available-${card.id}-zoom`}
+          data-touch-target="true"
+          style={TOUCH_TARGET_STYLE}
+          aria-haspopup="dialog"
+          aria-label={`View ${name} details`}
+          onClick={() => onZoomCard({ card, actionLabel, action: performAction, disabled })}
+        >
+          <span className="board-tile-zoom-badge">
+            <Magnifier size={16} title="View details" />
+          </span>
+        </button>
+      ) : null}
+    </span>
   );
 }
 
@@ -228,7 +284,11 @@ function ExpandedFace({ card, cost }: { readonly card: Card; readonly cost: stri
   return (
     <span className="always-available-face" aria-hidden="false">
       <span className="always-available-face-art" data-testid="always-available-face-art">
-        {cardArtForCard(card, EXPANDED_FACE_ART_SIZE)}
+        {/* `slice` (cover) so the square raster fills the portrait art panel
+            edge-to-edge — `meet` letterboxed it with parchment bands top +
+            bottom (player report). Portrait subjects are centered, so the
+            minimal left/right crop slice introduces is unnoticeable. */}
+        {cardArtForCard(card, EXPANDED_FACE_ART_SIZE, 'slice')}
         <span className="always-available-face-cost">{cost}</span>
       </span>
       <span className="always-available-face-name">{name}</span>

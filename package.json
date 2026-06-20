@@ -8,6 +8,7 @@
     "dev": "vite",
     "prebuild": "node scripts/check-deploy.mjs",
     "build": "vite build",
+    "build:web": "EMBERTIDE_BASE=/games/embertide/ npm run build",
     "preview": "vite preview",
     "test": "vitest",
     "test:ci": "vitest run",

@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
 import Field from './Field';
 import type { Card } from '../types/card';
 import { KID_CARDS } from '../data/cards';
@@ -304,5 +304,59 @@ describe('Field affordance: monster keys cost (embertide-sij3)', () => {
     );
     const tile = screen.getByTestId(`field-card-${noKeyMonster.id}`);
     expect(tile).not.toBeDisabled();
+  });
+});
+
+// 2026-06-20 player ruling: a direct tap on a market tile BUYS / FIGHTS
+// immediately (no detail-modal speed bump). The full-rules modal moves onto
+// a corner magnifier button (`field-card-<id>-zoom`) that the parent wires
+// via onZoomCard.
+describe('Field direct tap + corner magnifier', () => {
+  const sage = (): Card => {
+    const c = KID_CARDS.find((k) => k.id === 'sage-keeper');
+    if (!c) throw new Error('sage-keeper missing from KID_CARDS');
+    return c;
+  };
+
+  it('buys directly on a tap (no modal) when affordable', () => {
+    const onBuy = vi.fn();
+    const onZoomCard = vi.fn();
+    render(
+      <Field
+        cards={[sage()]}
+        onFight={() => {}}
+        onBuy={onBuy}
+        onOpenChest={() => {}}
+        onZoomCard={onZoomCard}
+      />,
+    );
+    fireEvent.click(screen.getByTestId(`field-card-${sage().id}`));
+    expect(onBuy).toHaveBeenCalledWith(sage().id);
+    expect(onZoomCard).not.toHaveBeenCalled();
+  });
+
+  it('opens the detail modal from the corner magnifier', () => {
+    const onBuy = vi.fn();
+    const onZoomCard = vi.fn();
+    render(
+      <Field
+        cards={[sage()]}
+        onFight={() => {}}
+        onBuy={onBuy}
+        onOpenChest={() => {}}
+        onZoomCard={onZoomCard}
+      />,
+    );
+    fireEvent.click(screen.getByTestId(`field-card-${sage().id}-zoom`));
+    expect(onBuy).not.toHaveBeenCalled();
+    expect(onZoomCard).toHaveBeenCalledTimes(1);
+    const ctx = onZoomCard.mock.calls[0][0];
+    expect(ctx.card.id).toBe(sage().id);
+    expect(ctx.actionLabel).toBe('Buy');
+  });
+
+  it('renders no magnifier when onZoomCard is not wired', () => {
+    render(<Field cards={[sage()]} onFight={() => {}} onBuy={() => {}} onOpenChest={() => {}} />);
+    expect(screen.queryByTestId(`field-card-${sage().id}-zoom`)).toBeNull();
   });
 });

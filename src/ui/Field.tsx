@@ -4,6 +4,7 @@ import type { ChestVariant } from '../rules/chestPool';
 import { isMonsterDropEffect } from '../types/effectSpec';
 import CardTemplate, { cardDisplayName } from './CardTemplate';
 import { effectFor } from './effectText';
+import { Magnifier } from '../icons';
 
 const TOUCH_TARGET_STYLE = {
   minWidth: 44,
@@ -127,10 +128,12 @@ function FieldCardImpl({
   const effect = effectFor(card);
   const disabled = !canAfford(card, isMonster, green, red, keys);
 
-  // On touch devices the parent passes `onZoomCard` to route taps
-  // through the CardDetailModal so the player can read full card
-  // text on a tiny art-only tile before committing to the action.
-  const onClick = onZoomCard
+  // 2026-06-20 player ruling: a direct tap BUYS / FIGHTS / OPENS immediately
+  // (the round2 tap-to-open-modal read as a speed bump). The full-rules
+  // CardDetailModal moves onto the corner magnifier button below (when the
+  // parent wires `onZoomCard`), so a young reader can still read the card
+  // without the primary action being gated behind a modal step.
+  const openZoom = onZoomCard
     ? () =>
         onZoomCard({
           card,
@@ -138,7 +141,7 @@ function FieldCardImpl({
           action: performAction,
           disabled,
         })
-    : performAction;
+    : null;
 
   // r94e drop-variety: surface a hidden, test-targetable summary of the
   // monster's loot bundle when it ships the new gems / cardDraw / keys
@@ -158,29 +161,47 @@ function FieldCardImpl({
   const accessibleName = effect.text ? `${cardName}, ${effect.text}` : cardName;
 
   return (
-    <button
-      type="button"
-      className="card-tile field-card-tile tap-target"
-      data-testid={`field-card-${card.id}`}
-      data-role={card.role}
-      data-touch-target="true"
-      style={TOUCH_TARGET_STYLE}
-      disabled={disabled}
-      aria-label={accessibleName}
-      onClick={onClick}
-    >
-      <CardTemplate card={card} effect={effect} />
-      {effect.text ? (
-        <span hidden data-testid={`field-effect-text-${card.id}`}>
-          {effect.text}
-        </span>
+    <span className="board-tile-wrap">
+      <button
+        type="button"
+        className="card-tile field-card-tile tap-target"
+        data-testid={`field-card-${card.id}`}
+        data-role={card.role}
+        data-touch-target="true"
+        style={TOUCH_TARGET_STYLE}
+        disabled={disabled}
+        aria-label={accessibleName}
+        onClick={performAction}
+      >
+        <CardTemplate card={card} effect={effect} />
+        {effect.text ? (
+          <span hidden data-testid={`field-effect-text-${card.id}`}>
+            {effect.text}
+          </span>
+        ) : null}
+        {dropTokens.length > 0 ? (
+          <span hidden data-testid="monster-drop-bar" data-card-id={card.id}>
+            {dropTokens.join(',')}
+          </span>
+        ) : null}
+      </button>
+      {openZoom ? (
+        <button
+          type="button"
+          className="board-tile-zoom"
+          data-testid={`field-card-${card.id}-zoom`}
+          data-touch-target="true"
+          style={TOUCH_TARGET_STYLE}
+          aria-haspopup="dialog"
+          aria-label={`View ${cardName} details`}
+          onClick={openZoom}
+        >
+          <span className="board-tile-zoom-badge">
+            <Magnifier size={16} title="View details" />
+          </span>
+        </button>
       ) : null}
-      {dropTokens.length > 0 ? (
-        <span hidden data-testid="monster-drop-bar" data-card-id={card.id}>
-          {dropTokens.join(',')}
-        </span>
-      ) : null}
-    </button>
+    </span>
   );
 }
 

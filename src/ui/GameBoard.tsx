@@ -326,10 +326,7 @@ export default function GameBoard(): JSX.Element {
                   </>
                 ) : null}
                 {state.currentZone === 'maren' ? (
-                  <span
-                    data-testid="tide-gauge-chip"
-                    title="Tide rises while you stay in Tidehold"
-                  >
+                  <span data-testid="tide-gauge-chip" title="Tide rises while you stay in Tidehold">
                     🌊 Tide {state.tideGauge}/4
                   </span>
                 ) : null}
@@ -372,7 +369,12 @@ export default function GameBoard(): JSX.Element {
               green={active?.green ?? 0}
               red={active?.red ?? 0}
               keys={active?.keys ?? 0}
-              onZoomCard={onZoomCard}
+              // 2026-06-20: market tiles now act on direct tap; the detail
+              // modal moved onto the per-tile corner magnifier. Wire the
+              // zoom handler UNCONDITIONALLY (not just on touch, like the
+              // always-available row above) so the magnifier — and full
+              // rules — are available on desktop and touch alike.
+              onZoomCard={setZoomedCardCtx}
             />
           </div>
 

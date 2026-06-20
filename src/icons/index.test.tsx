@@ -10,10 +10,13 @@ interface IconProps {
 }
 
 describe('icons vocabulary', () => {
-  it('exports at most 13 icons (Kid Mode cap)', () => {
+  it('exports at most 14 icons (Kid Mode cap)', () => {
     // Original Kid Mode budget was 10. REQ-13 Phase 2d (gm0.4) added the
-    // three Embertide-shard icons (cap raised to 13).
-    expect(Object.keys(Icons).length).toBeLessThanOrEqual(13);
+    // three Embertide-shard icons (cap raised to 13). 2026-06-20 added
+    // Magnifier — a UI CHROME affordance ("view details"), not a game-
+    // vocabulary jewel icon, so it does not add symbolic learning load for
+    // a 6yo; cap raised to 14.
+    expect(Object.keys(Icons).length).toBeLessThanOrEqual(14);
   });
 
   it('exports the expected icon names', () => {
@@ -32,6 +35,9 @@ describe('icons vocabulary', () => {
       'WisdomShard',
       'CourageShard',
       'PowerShard',
+      // 2026-06-20 — "view card details" corner affordance (chrome, not
+      // game vocabulary). See the cap note above.
+      'Magnifier',
     ].sort();
     expect(Object.keys(Icons).sort()).toEqual(expected);
   });

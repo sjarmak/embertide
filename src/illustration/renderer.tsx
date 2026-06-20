@@ -206,7 +206,7 @@ export function renderIllustration(
             y={0}
             width={24}
             height={24}
-            preserveAspectRatio="xMidYMid meet"
+            preserveAspectRatio={preserveAspectRatio}
           />
         </g>
       ) : null}

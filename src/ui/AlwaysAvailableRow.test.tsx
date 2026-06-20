@@ -196,8 +196,13 @@ describe('AlwaysAvailableRow', () => {
     expect(mystic.querySelector('[data-testid="card-template-effect"]')).toBeNull();
   });
 
-  describe('click-to-expand (onZoomCard wired)', () => {
-    it('opens the zoom modal instead of dispatching directly, and stays clickable when unaffordable', () => {
+  // 2026-06-20 player ruling: a DIRECT tap buys / fights / trades
+  // immediately — it no longer opens the detail modal. The full-rules modal
+  // moves onto a small corner magnifier button (`*-zoom`). The action button
+  // disables when unaffordable; the magnifier stays live so the player can
+  // still read the card.
+  describe('direct tap + corner magnifier (onZoomCard wired)', () => {
+    it('buys directly on a tap and disables the action button when unaffordable', () => {
       const onBuy = vi.fn();
       const onZoomCard = vi.fn();
       render(
@@ -212,13 +217,50 @@ describe('AlwaysAvailableRow', () => {
         />,
       );
       const mystic = screen.getByTestId('always-available-mystic') as HTMLButtonElement;
-      // Clickable even though the player cannot afford it (the affordability
-      // gate moves to the modal's action button) so the player can read the
-      // rules before they can pay.
-      expect(mystic.disabled).toBe(false);
+      // Unaffordable → the action button is natively disabled (the player
+      // can't buy what they can't pay for); reading the rules moves to the
+      // magnifier below.
+      expect(mystic.disabled).toBe(true);
       expect(mystic.getAttribute('data-affordable')).toBe('false');
-      fireEvent.click(mystic);
-      // The tap opens the modal; it does NOT buy directly.
+    });
+
+    it('buys directly (no modal) when the tile is tapped and affordable', () => {
+      const onBuy = vi.fn();
+      const onZoomCard = vi.fn();
+      render(
+        <AlwaysAvailableRow
+          green={10}
+          red={10}
+          onBuy={onBuy}
+          onFight={() => {}}
+          onTrade={() => {}}
+          usedKeyVendorThisTurn={false}
+          onZoomCard={onZoomCard}
+        />,
+      );
+      fireEvent.click(screen.getByTestId('always-available-mystic'));
+      expect(onBuy).toHaveBeenCalledWith('mystic');
+      expect(onZoomCard).not.toHaveBeenCalled();
+    });
+
+    it('opens the detail modal from the corner magnifier, even when unaffordable', () => {
+      const onBuy = vi.fn();
+      const onZoomCard = vi.fn();
+      render(
+        <AlwaysAvailableRow
+          green={0}
+          red={0}
+          onBuy={onBuy}
+          onFight={() => {}}
+          onTrade={() => {}}
+          usedKeyVendorThisTurn={false}
+          onZoomCard={onZoomCard}
+        />,
+      );
+      const zoom = screen.getByTestId('always-available-mystic-zoom') as HTMLButtonElement;
+      // The magnifier is never gated by affordability.
+      expect(zoom.disabled).toBe(false);
+      fireEvent.click(zoom);
       expect(onBuy).not.toHaveBeenCalled();
       expect(onZoomCard).toHaveBeenCalledTimes(1);
       const ctx = onZoomCard.mock.calls[0][0];
@@ -230,7 +272,7 @@ describe('AlwaysAvailableRow', () => {
       expect(onBuy).toHaveBeenCalledWith('mystic');
     });
 
-    it('routes the monster tile to a Fight action via the zoom ctx', () => {
+    it('taps the monster tile straight into a Fight (no modal)', () => {
       const onFight = vi.fn();
       const onZoomCard = vi.fn();
       render(
@@ -245,6 +287,25 @@ describe('AlwaysAvailableRow', () => {
         />,
       );
       fireEvent.click(screen.getByTestId('always-available-wild-wolf'));
+      expect(onFight).toHaveBeenCalledWith('wild-wolf');
+      expect(onZoomCard).not.toHaveBeenCalled();
+    });
+
+    it('routes the monster magnifier to a Fight action via the zoom ctx', () => {
+      const onFight = vi.fn();
+      const onZoomCard = vi.fn();
+      render(
+        <AlwaysAvailableRow
+          green={10}
+          red={10}
+          onBuy={() => {}}
+          onFight={onFight}
+          onTrade={() => {}}
+          usedKeyVendorThisTurn={false}
+          onZoomCard={onZoomCard}
+        />,
+      );
+      fireEvent.click(screen.getByTestId('always-available-wild-wolf-zoom'));
       const ctx = onZoomCard.mock.calls[0][0];
       expect(ctx.actionLabel).toBe('Fight');
       ctx.action();

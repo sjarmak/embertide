@@ -13,12 +13,24 @@ const allowedHosts = (process.env.VITE_ALLOWED_HOSTS ?? '')
   .map((h) => h.trim())
   .filter(Boolean);
 
+// Public base path for the built app. Defaults to '/' (root host, e.g. the
+// local dev server). Set EMBERTIDE_BASE to deploy under a sub-path — e.g.
+// `EMBERTIDE_BASE=/games/embertide/ npm run build` so every asset URL, the
+// PWA service-worker scope, and the manifest start_url resolve correctly
+// when the app is served at https://sjarmak.ai/games/embertide/. The value
+// MUST have a leading and trailing slash for sub-path builds.
+const deployBase = process.env.EMBERTIDE_BASE ?? '/';
+
 export default defineConfig({
+  base: deployBase,
   plugins: [
     tokensPlugin(),
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      // scope + start_url track the deploy base so the installed PWA and its
+      // service worker stay confined to (and launch into) the sub-path.
+      scope: deployBase,
       manifest: {
         name: 'Realm Ascension',
         short_name: 'Realm',
@@ -26,7 +38,7 @@ export default defineConfig({
         theme_color: '#1a1a1a',
         background_color: '#1a1a1a',
         display: 'standalone',
-        start_url: '/',
+        start_url: deployBase,
       },
     }),
   ],

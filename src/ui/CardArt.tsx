@@ -239,7 +239,7 @@ const SPEC_BY_BASE_ID: Record<string, IllustrationSpec> = {
   'cagewright-vurmox': cathedralMonsterCagewrightVurmoxJson as IllustrationSpec,
   // u-6a Sylvanwood roster.
   'thorn-scrub': cathedralMonsterThornScrubJson as IllustrationSpec,
-  'snapvine': cathedralMonsterSnapvineJson as IllustrationSpec,
+  snapvine: cathedralMonsterSnapvineJson as IllustrationSpec,
   jellet: cathedralMonsterJelletJson as IllustrationSpec,
   scrabling: cathedralMonsterScrablingJson as IllustrationSpec,
   craghorn: cathedralMonsterCraghornJson as IllustrationSpec,
@@ -249,12 +249,12 @@ const SPEC_BY_BASE_ID: Record<string, IllustrationSpec> = {
   ashjaw: cathedralMonsterAshjawJson as IllustrationSpec,
   skittermite: cathedralMonsterSkittermiteJson as IllustrationSpec,
   'red-squidlet': cathedralMonsterRedSquidletJson as IllustrationSpec,
-  'boulderkin': cathedralMonsterBoulderkinJson as IllustrationSpec,
+  boulderkin: cathedralMonsterBoulderkinJson as IllustrationSpec,
   'ashen-tyrant': cathedralMonsterAshenTyrantJson as IllustrationSpec,
   // u-6c Gilded Cage regulars.
   wardeye: cathedralMonsterWardeyeJson as IllustrationSpec,
   emberskull: cathedralMonsterEmberskullJson as IllustrationSpec,
-  'gulpmaw': cathedralMonsterGulpmawJson as IllustrationSpec,
+  gulpmaw: cathedralMonsterGulpmawJson as IllustrationSpec,
   hexrobe: cathedralMonsterHexrobeJson as IllustrationSpec,
   'bone-knight': cathedralMonsterBoneKnightJson as IllustrationSpec,
   // fix-aurelia (2026-04-22): freed-princess card face — her light arrow.
@@ -330,15 +330,15 @@ const SPEC_BY_BASE_ID: Record<string, IllustrationSpec> = {
   reefblade: cathedralMonsterReefbladeJson as IllustrationSpec,
   'frost-jellet': cathedralMonsterFrostJelletJson as IllustrationSpec,
   fangfish: cathedralMonsterFangfishJson as IllustrationSpec,
-  'maelstrom': cathedralMonsterMaelstromJson as IllustrationSpec,
+  maelstrom: cathedralMonsterMaelstromJson as IllustrationSpec,
   tidewraith: cathedralMonsterTidewraithJson as IllustrationSpec,
   //   Hollow Shrine
   willowisp: cathedralMonsterWillowispJson as IllustrationSpec,
   graspling: cathedralMonsterGrasplingJson as IllustrationSpec,
   bonelet: cathedralMonsterBoneletJson as IllustrationSpec,
-  'duskwing': cathedralMonsterDuskwingJson as IllustrationSpec,
+  duskwing: cathedralMonsterDuskwingJson as IllustrationSpec,
   'hollow-effigy': cathedralMonsterHollowEffigyJson as IllustrationSpec,
-  'knell': cathedralMonsterKnellJson as IllustrationSpec,
+  knell: cathedralMonsterKnellJson as IllustrationSpec,
   //   Dune Sanctum
   duneweed: cathedralMonsterDuneweedJson as IllustrationSpec,
   sandwyrm: cathedralMonsterSandwyrmJson as IllustrationSpec,
@@ -387,11 +387,21 @@ export function illustrationFor(role: CardRole, size: number): ReactElement | nu
 /**
  * Returns the rendered illustration SVG for a specific card, preferring a
  * per-card baseId override (e.g. mystic) over the role-default.
+ *
+ * `fit` defaults to the spec-derived fit (`meet` — letterbox, see
+ * {@link cardFaceFit}). Callers whose art panel is non-square and who want
+ * the art to fill the frame edge-to-edge pass `'slice'` (cover) — e.g. the
+ * always-available top-row hero faces, whose portrait panel otherwise
+ * letterboxed the square raster with parchment bands top + bottom.
  */
-export function illustrationForCard(card: Card, size: number): ReactElement | null {
+export function illustrationForCard(
+  card: Card,
+  size: number,
+  fit?: 'meet' | 'slice',
+): ReactElement | null {
   const spec = SPEC_BY_BASE_ID[baseIdOf(card)] ?? SPEC_BY_ROLE[card.role];
   if (!spec) return null;
-  return renderIllustration(spec, { size, fit: cardFaceFit(spec) });
+  return renderIllustration(spec, { size, fit: fit ?? cardFaceFit(spec) });
 }
 
 /**
@@ -405,9 +415,15 @@ export function cardArtFor(role: CardRole, size: number): ReactElement {
   return iconFor(role, size);
 }
 
-/** Card-aware variant: prefers per-card baseId override before role fallback. */
-export function cardArtForCard(card: Card, size: number): ReactElement {
-  const illustration = illustrationForCard(card, size);
+/**
+ * Card-aware variant: prefers per-card baseId override before role fallback.
+ *
+ * `fit` is forwarded to {@link illustrationForCard} — pass `'slice'` for a
+ * non-square panel that should fill edge-to-edge. The icon fallback is
+ * fit-agnostic (it draws to the requested square `size`).
+ */
+export function cardArtForCard(card: Card, size: number, fit?: 'meet' | 'slice'): ReactElement {
+  const illustration = illustrationForCard(card, size, fit);
   if (illustration) return illustration;
   return iconFor(card.role, size);
 }

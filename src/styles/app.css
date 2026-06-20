@@ -2008,8 +2008,8 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
      when the rules box wraps to multiple lines, so text never "overtakes"
      the art (the player-reported regression). The rules box is capped
      opposite this (max-height 42%) so the two never fight for space. */
-  flex: 1 1 58%;
-  min-height: 52%;
+  flex: 1 1 52%;
+  min-height: 44%;
   display: block;
   background: transparent;
   padding: 0;
@@ -2037,10 +2037,13 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
 
 /* v2.1 REQ-21 / gm0.6: small chest icon overlay on monster cards stamped
    with `hasAttachedChest`. Positioned top-right (opposite the cost gems)
-   so it never collides with the cost overlay or the rules-text box. */
+   so it never collides with the cost overlay or the rules-text box.
+   2026-06-20: pushed down to 36px so it stacks BELOW the new corner
+   magnifier (`.board-tile-zoom`, top:4 / 28px tall) on market monster
+   tiles instead of being hidden behind it. */
 .card-template-monster-chest-overlay {
   position: absolute;
-  top: 4px;
+  top: 36px;
   right: 4px;
   z-index: 2;
   display: flex;
@@ -2073,7 +2076,7 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
   border-top: 1px solid var(--hc-lead-gold-700, #8b6a2a);
   text-align: center;
   min-height: 30px;
-  max-height: 48%;
+  max-height: 60%;
   overflow: hidden;
 }
 
@@ -2620,7 +2623,10 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
 
   /* EmbertideStrip: cap width 132 → 96. Aspect-ratio is preserved
      (SVG viewBox 128×118), so the strip's height also shrinks ~30px. */
-  .board-side-crystal-rail .crystal-embertide-pane > .embertide-hud > [data-testid='embertide-strip'] {
+  .board-side-crystal-rail
+    .crystal-embertide-pane
+    > .embertide-hud
+    > [data-testid='embertide-strip'] {
     max-width: 96px !important;
   }
 
@@ -5601,4 +5607,75 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
     width: 14px;
     height: 14px;
   }
+}
+
+/* Board tile + corner magnifier (2026-06-20 player ruling: direct tap
+   buys/kills; the full-rules detail modal moves onto a small corner
+   button). The wrapper is a shrink-to-fit positioning context so the
+   magnifier can sit in the tile's top-right corner without nesting a
+   button inside the action button (invalid HTML). `inline-flex` keeps the
+   wrapper sized exactly to the tile so the row's flex + gap layout is
+   unchanged. Shared by the always-available row and the center market
+   field. */
+.board-tile-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+/* The button is a 44px touch target (Kid Mode tap-target invariant — see
+   GameBoard.test) anchored to the tile's top-right corner, but the VISIBLE
+   chrome is the smaller centered `.board-tile-zoom-badge` so it doesn't
+   swallow the card art. Transparent hit area + small visible badge is the
+   standard "big target, small glyph" accessibility pattern. */
+.board-tile-zoom {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.board-tile-zoom-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--hc-lead-gold-500);
+  border-radius: 6px;
+  background: var(--hc-lead-iron-900-alpha-75);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+.board-tile-zoom:hover .board-tile-zoom-badge {
+  background: var(--hc-lead-iron-700);
+}
+
+.board-tile-zoom:focus-visible .board-tile-zoom-badge {
+  outline: 2px solid var(--hc-lead-gold-500);
+  outline-offset: 1px;
+}
+
+/* Center market row (Field) text-fit (2026-06-20, player report). The
+   center row is the largest, most-read card; long effect copy (e.g.
+   "Curved Throwing Blade" — Market + On-Equip + Combat lines) clipped at
+   the bottom of the rules plate. Drop the SECONDARY effect / combat /
+   passive lines one token below the 12px chrome floor (10px) so four-plus
+   wrapped lines fit without truncation. The card NAME stays at the 12px
+   readability anchor — only the mechanic copy shrinks. Scoped to `.field`
+   so the hand / in-play / modal faces keep the 12px floor (cf. the sapr
+   hand-card decision that fixed space via layout, not font shrink).
+   Placed at EOF (highest-specificity selectors last) so the cascade order
+   stays ascending. */
+.field .field-card-tile .card-template-effect,
+.field .field-card-tile .card-template-combat,
+.field .field-card-tile .card-template-passive {
+  font-size: var(--hc-text-px-10);
+  line-height: 1.15;
 }

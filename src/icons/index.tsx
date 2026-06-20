@@ -604,3 +604,43 @@ export function PowerShard({ size = DEFAULT_SIZE, title, tint }: IconProps) {
     </svg>
   );
 }
+
+/**
+ * Magnifier — "view full card details" affordance. Used as the small corner
+ * button on board tiles (always-available row + market field) that opens the
+ * CardDetailModal, after the primary tap was reserved for the buy/fight/trade
+ * action (2026-06-20 player ruling: "clicking directly should buy/kill;
+ * rethink the expand-to-view"). Stroked lead-gold lens over a faint pearl
+ * glass so it reads as cathedral chrome, not a jewel icon.
+ */
+export function Magnifier({ size = DEFAULT_SIZE, title, tint }: IconProps) {
+  const lead = tint ?? GOLD_700;
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label={title ?? 'view details'}
+      data-hc-placeholder="true"
+    >
+      {title ? <title>{title}</title> : null}
+      {/* Glass lens fill */}
+      <circle cx="10" cy="10" r="6" fill={PEARL_GLOW} opacity={0.55} />
+      {/* Leading: lens ring + handle */}
+      <g
+        fill="none"
+        stroke={lead}
+        strokeWidth={STROKE_STD}
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      >
+        <circle cx="10" cy="10" r="6" />
+        <line x1="14.5" y1="14.5" x2="20" y2="20" />
+      </g>
+      {/* Highlight: upper-left light-catch on the glass */}
+      <path d="M7 7.5 L9.5 6.5 L7.5 10 Z" fill={PEARL_GLOW} opacity={HIGHLIGHT_OPACITY} />
+    </svg>
+  );
+}
