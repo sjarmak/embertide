@@ -30,11 +30,14 @@
 import { expect, test } from '@playwright/test';
 import { bootApp, dismissTutorials } from './harness';
 
-// The two acceptance phones, both held in landscape (width > height,
-// height <= 500 → the dedicated phone media block applies).
+// The two acceptance phones in landscape, at their REAL in-browser usable
+// height: iOS Safari's landscape toolbar eats ~50px, so the content area
+// is ~343 (iPhone 15) / ~380 (Pro Max), not the full 393/430. Budgeting
+// for the full height left no room and the board scrolled on-device
+// (embertide-23b). These heights are the conservative real-Safari bar.
 const VIEWPORTS = [
-  { name: 'iphone-15', w: 852, h: 393 },
-  { name: 'iphone-15-pro-max', w: 932, h: 430 },
+  { name: 'iphone-15', w: 852, h: 340 },
+  { name: 'iphone-15-pro-max', w: 932, h: 375 },
 ] as const;
 
 // Board states that stress the layout differently. `hp-downed` shows

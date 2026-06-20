@@ -4663,6 +4663,39 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
   box-shadow: 0 0 0 2px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
 }
 
+/* embertide-23b (2026-06-20): card-detail modal in landscape phone. The
+   card is a fixed 240px wide → ~340px tall, which plus the 44px action
+   row blew past the short landscape viewport and pushed BUY/CLOSE off
+   the bottom. Shrink the card and tighten the panel so the actions stay
+   on-screen; the panel scrolls as a last resort rather than clipping the
+   buttons. Width-driven height keeps the card aspect intact. */
+@media (orientation: landscape) and (height <= 500px) {
+  .card-detail-backdrop {
+    padding: 8px;
+    align-items: center;
+  }
+
+  .card-detail-panel {
+    gap: 8px;
+    max-height: 96vh;
+
+    /* If even the shrunk card + actions exceed the viewport, scroll the
+       card rather than clip the action row (actions are flex-shrink:0). */
+    overflow-y: auto;
+  }
+
+  .card-detail-card {
+    /* Cap by viewport height: card aspect ~1.4, reserve ~64px for the
+       action row + gaps, so card-height = min(240-derived, fits). */
+    width: min(150px, calc((96vh - 64px) / 1.42));
+    flex: 0 0 auto;
+  }
+
+  .card-detail-actions {
+    flex: 0 0 auto;
+  }
+}
+
 /* ------------------------------------------------------------------------- */
 
 /* embertide-vj6s (2026-05-26): full-pile viewer overlay. Reuses the   */
@@ -5193,10 +5226,27 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
     max-width: 72px;
   }
 
+  /* embertide-23b (2026-06-20): the old `transform: scale(0.55)` +
+     `margin: -8px 0 -28px` hack visually shrank the crystal but its
+     bounding box (and the freed-princess raster, which renders past the
+     120px art surface) bled DOWN past the negative margin and overlapped
+     the End Turn button on a real phone. Replace with direct, contained
+     sizing: shrink the art surface itself and clip overflow on the cell
+     so nothing can spill onto End Turn. */
   .crystal-embertide-pane > .princess-crystal-cell {
-    transform: scale(0.55);
-    transform-origin: center top;
-    margin: -8px 0 -28px;
+    gap: 1px;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .crystal-embertide-pane > .princess-crystal-cell .princess-crystal-art-surface {
+    width: 36px;
+    height: 36px;
+    overflow: hidden;
+  }
+
+  .crystal-embertide-pane > .princess-crystal-cell .princess-crystal-raster {
+    object-fit: contain;
   }
 
   .board-side .boss-altar-pane {
@@ -5223,7 +5273,20 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
      within the landscape budget too. The slots stay valid tap targets;
      the full boss card is one tap away on the board. */
   .board-side .boss-altar-pane-body {
-    padding: 3px 6px 0;
+    padding: 2px 6px 0;
+    gap: 1px;
+  }
+
+  /* Tighten the engaged-state stamp (art + name + HP) and the header band
+     so each boss pane drops toward ~80px; the two stacked panes are the
+     rail's tall pole at real Safari landscape heights (embertide-23b). */
+  .board-side .boss-altar-pane-header {
+    padding: 1px 6px;
+  }
+
+  .board-side .boss-altar-pane-name,
+  .board-side .boss-altar-pane-hp {
+    line-height: 1;
   }
 
   .board-side .boss-altar-pane-dormant,
@@ -5240,13 +5303,13 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
      don't apply to phones, so it's overridden here rather than guarded
      wholesale. */
   .board-side-crystal-rail .boss-altar-pane-art {
-    width: 48px !important;
-    height: 48px !important;
+    width: 40px !important;
+    height: 40px !important;
   }
 
   .board-side .boss-altar-pane-locked-raster {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
   }
 
   /* Hide the secondary rail affordances on phone landscape — the Rules
@@ -5379,10 +5442,10 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
      cap the tile grew to its desktop height and the market band stayed
      ~144px. */
   .market-row .field-card-tile {
-    width: 70px !important;
-    height: 90px !important;
-    min-height: 90px !important;
-    max-height: 90px !important;
+    width: 68px !important;
+    height: 74px !important;
+    min-height: 74px !important;
+    max-height: 74px !important;
   }
 
   /* Hand band — slimmer cards above the HUD. */
@@ -5395,36 +5458,36 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
   .hand-card-tile,
   .always-available-row .field-card-tile,
   .chest-row .field-card-tile {
-    width: 56px !important;
-    height: 60px !important;
-    min-height: 60px !important;
-    max-height: 60px !important;
+    width: 52px !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
   }
 
   .hand-card-tile .card-template,
   .always-available-row .field-card-tile .card-template,
   .chest-row .field-card-tile .card-template {
-    height: 60px !important;
-    min-height: 60px !important;
-    max-height: 60px !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
   }
 
   /* Market card-template cap — kept after the hand/always/chest
      card-template rule above so the higher-specificity market selector
      follows the lower one (stylelint no-descending-specificity). */
   .market-row .field-card-tile .card-template {
-    height: 90px !important;
-    min-height: 90px !important;
-    max-height: 90px !important;
+    height: 74px !important;
+    min-height: 74px !important;
+    max-height: 74px !important;
   }
 
   .play-zones {
     gap: 4px;
-    max-height: 36px;
+    max-height: 26px;
   }
 
   .play-zones > .in-play {
-    max-height: 36px;
+    max-height: 26px;
     min-height: 0;
   }
 
@@ -5477,20 +5540,20 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
   }
 
   .trays-row .card-pile-empty .card-pile-empty-frame {
-    height: 64px;
+    height: 44px;
   }
 
   .trays-row .card-pile-tile {
-    width: 48px !important;
-    height: 64px !important;
-    min-height: 64px !important;
-    max-height: 64px !important;
+    width: 40px !important;
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
   }
 
   .trays-row .card-pile-tile .card-template {
-    height: 64px !important;
-    min-height: 64px !important;
-    max-height: 64px !important;
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
   }
 
   /* ------------------------------------------------------------------- */
@@ -5505,6 +5568,18 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
        under the home indicator on iOS Safari landscape. */
     padding: 6px 12px max(8px, env(safe-area-inset-bottom));
     gap: 6px;
+  }
+
+  /* embertide-23b (2026-06-20): the 64px title strip + 12px margin ate
+     ~76px of the ~340px Safari-landscape height, pushing the champion
+     plates + START tight and contributing to the left-rail / passive
+     squeeze. Shrink it hard on phone landscape — the screen content
+     ("CHOOSE YOUR CHAMPIONS") still reads at a smaller cap. */
+  .setup-title-strip {
+    height: 34px;
+    margin: 0 0 4px;
+    font-size: var(--hc-text-base);
+    letter-spacing: var(--hc-tracking-chrome-wide);
   }
 
   .setup-root-cathedral {
@@ -5646,10 +5721,12 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
   .setup-champion-tile {
     --setup-tile-width: 100%;
 
-    /* Art panel taller so each champion illustration reads clearly;
-       paired with tighter plate typography below to keep the START
-       button visible without overlap. */
-    --setup-tile-art-height: 124px;
+    /* embertide-23b (2026-06-20): art panel shortened 124 → 84 so the
+       plate below has room to show the FULL passive without truncation.
+       At real Safari landscape height (~340) the 124px art squeezed the
+       passive to ~2 clipped lines — players couldn't tell what each
+       champion does. */
+    --setup-tile-art-height: 84px;
 
     width: 100%;
   }
@@ -5667,11 +5744,11 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
   }
 
   .setup-champion-passive {
-    font-size: var(--hc-text-px-8);
-    line-height: 1.15;
-
-    /* No clamp — full passive renders, but at 8px / line-height 1.15
-       the four hero passives all fit in 4 lines or fewer. */
+    /* embertide-23b: bumped 8 → 9px for legibility (the 6yo readability
+       bar) now that the shorter art panel leaves room. Full passive
+       renders unclamped. */
+    font-size: var(--hc-text-px-9);
+    line-height: 1.2;
     -webkit-line-clamp: unset;
     line-clamp: unset;
     display: block;

@@ -2,6 +2,7 @@ import { useState, type DragEvent, type JSX } from 'react';
 import type { Card } from '../types/card';
 import CardTemplate from './CardTemplate';
 import { useDropHintStore } from '../store/dropHintStore';
+import { useTouchPointer } from './useTouchPointer';
 
 const TILE_TOUCH_STYLE = {
   minWidth: 44,
@@ -42,6 +43,11 @@ export default function InPlay({ cards, onDropPlayCard }: InPlayProps): JSX.Elem
   const [dragOver, setDragOver] = useState(false);
   const hintSeen = useDropHintStore((s) => s.seen);
   const markHintSeen = useDropHintStore((s) => s.markSeen);
+  // embertide-23b: on touch (landscape mobile) HTML5 drag never fires, so
+  // "Drag a card here" misled players into a gesture that can't work. Tap
+  // is the real path (Hand onClick → detail modal → Play), so the hint
+  // says "Tap" on touch and "Drag" on mouse.
+  const isTouch = useTouchPointer();
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
     if (!onDropPlayCard) return;
@@ -87,7 +93,9 @@ export default function InPlay({ cards, onDropPlayCard }: InPlayProps): JSX.Elem
           aria-hidden="true"
         >
           {showFirstRunHint ? (
-            <span className="drop-zone-empty-label">Drag a card here to play it</span>
+            <span className="drop-zone-empty-label">
+              {isTouch ? 'Tap a card to play it' : 'Drag a card here to play it'}
+            </span>
           ) : null}
         </div>
       ) : null}
