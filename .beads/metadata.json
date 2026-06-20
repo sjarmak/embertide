@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "embertide",
+  "project_id": "336e170b-1b8c-4fed-9976-194c24108a68"
+}
