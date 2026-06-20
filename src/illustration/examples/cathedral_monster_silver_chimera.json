@@ -1,0 +1,23 @@
+{
+  "id": "cathedral_monster_silver_chimera_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "charge-warrior",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "broken_spires",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "rearing centaur warrior with zebra-striped black-and-silver coat, bull-horned head, silver-chrome greatsword raised overhead",
+  "secondaryElement": "jagged broken-spires rays on cobalt and indigo glass panels",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Wild-boss surface — HARDER counterpart to Sentinel per stat-ordering invariant",
+    "Fix-rainbow-chimera (2026-04-22) regen: black + silver-white zebra-striped coat replaces the previous uniform silver-gray",
+    "Silver-chrome weapon and armor accents reflect the metal sheen",
+    "Cobalt / indigo glass backdrop with dramatic side-lighting",
+    "Broken-spires segmentation chosen to signal aggression vs Sentinel's ordered hex lattice"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_silver_chimera_001.webp"
+}

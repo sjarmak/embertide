@@ -1,0 +1,12 @@
+# cathedral_monster_willowisp
+
+- **Bead:** embertide-gdd.2.2 (regen v2 — drop friendly cartoon eyes per user 2026-04-25)
+- **Card:** willowisp (Hollow Shrine regular, u-6c)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_monster_willowisp_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_monster_willowisp.json`
+
+## Prompt
+
+Painterly Elysian-Cathedral stained glass illustration, square 1:1 format, in the cathedral monster art style: gothic pointed-arch frame with leaded stone pillars, trefoil quatrefoil cornices in the spandrels and gold-leaf filigree, plain leaded inner border (regular-enemy treatment). Subject: the Willowisp — a hostile lantern-ghost hovering centered in the arch at about sixty-five percent of arch height in a spooky predatory pose, lit only from within. Its body is a tattered hood-cloaked shadow-shroud of deep-indigo with cool-cyan inner translucence; the hood is fully shadowed inside, a deep black void where a face would be, with two pinpoint glowing orbs of pale cold-yellow light burning where eyes would be — no pupils, no whites, no expression, just two unblinking orbs like distant lantern-flames. In one ghostly-skeletal hand it holds aloft a tarnished brass lantern with a pale cold-blue spirit-flame flickering inside. The lower half of the body tapers into a wispy ragged ghost-tail of black-and-indigo shadow, no legs, and faint cold-cyan vapor curls from the hem of the shroud. Our gilding motif corrupts the spirit: hairline gold fracture-lines branch across the shroud and the lantern with a faint warm-amber glow leaking from the cracks — the one warm light in an otherwise cold figure — as though something is gilding the ghost from beneath its shadow. Background: stained-glass rose pattern in deep-indigo and silver-white moonlight panels with small skull-silhouette inlays in the outer ring, thick dark leading lines separating each segment, painterly tone variation within each pane. Dramatic and ominous, never cute or friendly. Colors permitted: deep-indigo-shroud, shadowed-black-hood-void, pale-cold-yellow eye-orbs, tarnished-brass-lantern, cold-blue spirit-flame, cracked-gold fracture-lines, warm-amber gild-glow, silver-moonlight, ghostly-translucent-cyan-trim, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

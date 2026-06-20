@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_starter_home_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "starter",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "small cottage homestead with peaked roof and lit window",
+  "secondaryElement": "warm hearth glow",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": false,
+  "notes": ["Homestead Starter — neutral starter card", "Sapphire and amber tones on parchment"],
+  "rasterImageUrl": "/illustrations/cathedral_starter_home_001.webp"
+}

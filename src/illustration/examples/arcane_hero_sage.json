@@ -1,0 +1,19 @@
+{
+  "id": "arcane_hero_sage_001",
+  "theme": "arcane",
+  "archetype": "hero",
+  "subtype": "sage",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_sage_halo",
+  "segmentationId": "radial_halo",
+  "ornamentId": "arcane_ring",
+  "focalElement": "circular aura with staff jewel",
+  "secondaryElement": "soft robe geometry",
+  "cellBudget": 12,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Arcane glyph marks must remain symbolic and sparse",
+    "Favor circular compositional pull around the head"
+  ]
+}

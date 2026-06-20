@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_chest_mid_001",
+  "theme": "cathedral",
+  "archetype": "chest",
+  "subtype": "ornate-gold-mid-tier",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "ornate open gold treasure chest with single emerald gem inlay and warm-amber interior glow",
+  "secondaryElement": "sapphire-and-gold stained-glass concentric rings",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["kkm0 v2 2026-04-25 — chest-mid (Ornate Chest), gold not wood"],
+  "rasterImageUrl": "/illustrations/cathedral_chest_mid_001.webp"
+}

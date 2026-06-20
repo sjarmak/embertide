@@ -1,0 +1,16 @@
+{
+  "id": "cathedral_monster_willowisp_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "lantern-ghost",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_caster_spines",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "hooded faceless ghost with cold-yellow eye-orbs holding brass lantern with cold-blue spirit-flame",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.2 — Shadow regular"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_willowisp_001.webp"
+}

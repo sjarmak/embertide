@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Post-merge git hook: runs the worktree sweeper in --dry-run mode after
+# every successful merge to master. The sweep log accumulates at
+# .claude/worktrees/.sweep.log — review it, then promote this hook to
+# --apply by changing the flag below.
+#
+# Install once per clone:
+#   git config core.hooksPath .githooks
+#
+# To skip in a single merge: env SKIP_SWEEP=1 git merge ...
+#
+# SECURITY (Sec H3): this hook executes scripts/sweep-stale-worktrees.sh
+# from the working tree at hook-fire time. A commit that modifies that
+# script will run with the developer's credentials on the next merge.
+# Treat any PR touching .githooks/ or scripts/sweep-stale-worktrees.sh as
+# requiring careful review — same trust profile as a postinstall script.
+
+set -u
+
+if [ -n "${SKIP_SWEEP:-}" ]; then
+  exit 0
+fi
+
+# Code M3: skip during rebase. `git rebase` replays each commit through a
+# fast-forward that fires post-merge; without this guard the sweeper runs
+# N-1 spurious times per rebase (each one defeated by the flock, but noisy).
+# Real merges set ORIG_HEAD; rebase replays do not.
+if [ ! -f "$(git rev-parse --git-dir)/ORIG_HEAD" ]; then
+  exit 0
+fi
+
+# Only sweep on master — feature-branch merges aren't a useful trigger.
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+if [ "$branch" != "master" ]; then
+  exit 0
+fi
+
+repo_root=$(git rev-parse --show-toplevel)
+sweeper="$repo_root/scripts/sweep-stale-worktrees.sh"
+if [ ! -x "$sweeper" ]; then
+  exit 0
+fi
+
+# Default to --dry-run so the first weeks log decisions without acting.
+# Promote to --apply (edit this line) after the log has been audited.
+"$sweeper" --master master || true

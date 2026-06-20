@@ -1,0 +1,12 @@
+# cathedral_item_aegis_pane
+
+- **Bead:** embertide-tib8 (item-check opener portrait batch)
+- **Card:** aegis-pane (item-check opener; breaks the Sentinel's guard — Gilded Cage wild boss). Distinct from elysian-shield (pure absorb shield).
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_item_aegis_pane_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_item_aegis_pane.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with leaded stone pillars on left and right, trefoil quatrefoil cornices in the arch spandrels and gold leaf filigree. Subject: the Aegis Pane — a tall tower shield standing vertically in the center of the arch, about seventy percent of the arch height, whose entire face is a single panel of leaded STAINED GLASS set into a heavy brass frame (the shield itself is a window, on-motif with the cathedral world). The glass face is a small rosette of deep-sapphire, amber, and ruby leaded segments encircling a clear central pane; a brass rim of beaded filigree bands the outer edge, with four corner bosses and a riveted brass grip-bar glimpsed at the back-left where the shield turns slightly. A bright beam of golden-white light strikes the glass from the upper-left and the clear central pane throws it back as a sharp radiant ray toward the upper-right — the shield catching and returning light and spellfire, the guard-breaking purpose made visible. Hairline brass came-lines and pale-blue glints across the glass keep it reading as a luminous glazed panel, not a painted heraldic board. Background: stained-glass panels in a radiant warm-gold and pale-sapphire palette radiating outward behind the shield in a sunburst pattern of returned light, with small lozenge-pane inlays in the outer ring. Thick dark leading lines separating glass segments, painterly stained-glass tone variation within each segment. Brilliant directional cathedral lighting from upper left, gold-and-glass palette. Colors permitted: brass-gold-frame, deep-sapphire-glass, amber-glass, ruby-glass, clear-pale-glass, radiant-white-beam, bronze-rivet-brown, deep-amber-shadow, ivory-highlight, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

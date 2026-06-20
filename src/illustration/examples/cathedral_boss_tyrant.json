@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_boss_tyrant_001",
+  "theme": "cathedral",
+  "archetype": "boss",
+  "subtype": "tyrant",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "crowned silhouette on throne; gold sunburst halo",
+  "secondaryElement": "ruby red sunburst rays radiating outward",
+  "cellBudget": 11,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Symmetrical regal pose; crown is the readable focal point",
+    "Ruby red dominant; gold ornament throughout"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_boss_tyrant_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_craghorn_tusk_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "heirloom",
+  "paletteRole": "legendary",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "broken Craghorn horn trophy — thick ivory bone with ridged gnarls, red-wrapped base",
+  "secondaryElement": "deep burgundy + amber stained-glass blood-aura behind the horn",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — Craghorn wild-boss heirloom drop, lifts relic placeholder off `craghorn-tusk`.",
+    "Wired on card id `craghorn-tusk` (role='item')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_craghorn_tusk_001.webp"
+}

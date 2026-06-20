@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Realm Ascension</title>
+    <!--
+      embertide-cup (PRD V-1b / A-12): preload the two body-weight faces
+      the Elysian Cathedral ships in the initial paint so first-contentful
+      type swap is imperceptible. Only body-weight Inter Variable + Cinzel 700
+      are preloaded — other Cinzel weights (400 / 900) are lazy per
+      typography.md §6. `crossorigin` is mandatory even for same-origin font
+      preloads, otherwise the browser re-fetches on actual use.
+    -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/InterVariable.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/Cinzel-700.woff2" crossorigin />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

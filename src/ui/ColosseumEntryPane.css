@@ -1,0 +1,128 @@
+/*
+ * ColosseumEntryPane — Elysian Cathedral colosseum entry surface
+ * (embertide-4hr1.4).
+ *
+ * Visual treatment: obsidian-shadow backing + double gold lead frame
+ * (mirrors the modal-window leading in HC components.md §3) signals
+ * "this is a destination cathedral surface", distinguishing it from
+ * the wild/region altar panes which use the boss-altar variants. The
+ * amber accent on the unlocked tier rows ties the entry to the
+ * "arena lit by torchlight" lore framing without introducing new
+ * tokens.
+ *
+ * All colors resolve through existing `--hc-*` tokens. No hex / rgb
+ * literals — `lint:tokens` (stylelint-declaration-strict-value)
+ * enforces this contract project-wide.
+ */
+
+.colosseum-entry-pane {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 8px 10px 10px;
+  min-width: 160px;
+  border: 2px solid var(--hc-lead-gold-700);
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--hc-shadow-700) 0%, var(--hc-shadow-800) 100%);
+  color: var(--hc-text-primary);
+  font-family: var(--hc-font-display);
+  cursor: pointer;
+  appearance: none;
+  text-align: left;
+  outline: none;
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-900),
+    inset 0 2px 6px var(--hc-shadow-900),
+    0 0 6px 1px var(--hc-lead-gold-700-alpha-35);
+  transition: transform 200ms ease-out;
+}
+
+.colosseum-entry-pane:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-900),
+    inset 0 2px 6px var(--hc-shadow-900),
+    0 0 10px 2px var(--hc-glow-amber);
+}
+
+.colosseum-entry-pane:active {
+  transform: translateY(-1px);
+}
+
+.colosseum-entry-pane:focus-visible {
+  outline: 2px solid var(--hc-lead-gold-500);
+  outline-offset: 2px;
+}
+
+.colosseum-entry-pane-header {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--hc-lead-gold-500);
+  font-size: var(--hc-text-sm);
+  text-align: center;
+  padding: 2px 0;
+  border-bottom: 1px solid var(--hc-lead-gold-700);
+}
+
+.colosseum-entry-pane-tiers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  /*
+   * Defensive cap (embertide-vrqs): the pane now renders only
+   * unlocked tiers, but at full unlock (5 rows of rosters) the list
+   * could still grow tall enough to push the End Turn button below
+   * the fold on short viewports. Capping the roster list and letting
+   * it scroll internally keeps the rail — and End Turn — bounded.
+   */
+  max-height: 38vh;
+  overflow-y: auto;
+}
+
+.colosseum-entry-pane-tier-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--hc-lead-iron-700);
+  background: var(--hc-shadow-900);
+}
+
+.colosseum-entry-pane-tier-row[data-unlocked='true'] {
+  border-color: var(--hc-lead-gold-500);
+  background: linear-gradient(180deg, var(--hc-shadow-700) 0%, var(--hc-shadow-800) 100%);
+}
+
+.colosseum-entry-pane-tier-row[data-unlocked='false'] {
+  opacity: 0.55;
+  filter: saturate(0.7);
+}
+
+.colosseum-entry-pane-tier-label {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: var(--hc-text-xs);
+  color: var(--hc-lead-gold-500);
+}
+
+.colosseum-entry-pane-tier-row[data-unlocked='false'] .colosseum-entry-pane-tier-label {
+  color: var(--hc-lead-silver-500);
+}
+
+.colosseum-entry-pane-tier-roster {
+  font-family: var(--hc-font-body);
+  font-size: var(--hc-text-xs);
+  color: var(--hc-text-primary);
+  line-height: 1.3;
+}

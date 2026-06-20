@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_aegis_pane_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "armor",
+  "paletteRole": "legendary",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "ornate gold-rimmed heater shield with a polished silver-mirror face reflecting a golden beam into a sharp ray",
+  "secondaryElement": "gold face-crest motif; radiant gold-silver sunburst of reflected light",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "tib8 — bespoke item-check opener portrait (nano-banana-pro, 2K webp).",
+    "Wired on card id `aegis-pane` (role='item'; breaks the Sentinel's guard). Laser-reflect mirror face — distinct from the navy absorb `elysian-shield`."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_aegis_pane_001.webp"
+}

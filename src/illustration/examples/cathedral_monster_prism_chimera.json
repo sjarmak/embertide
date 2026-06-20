@@ -1,0 +1,23 @@
+{
+  "id": "cathedral_monster_prism_chimera_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "charge-warrior",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "majestic rearing centaur warrior with iridescent prismatic coat shifting across full visible spectrum, bull-horned head, silver-chrome greatsword raised overhead",
+  "secondaryElement": "radial rose-window rainbow halo backdrop — violet/indigo/blue/green/yellow/orange/red concentric panels meeting at a white halo center",
+  "cellBudget": 13,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Fix-rainbow-chimera (2026-04-22): rare post-completion wild-boss surface — unlocks only after all four core wild bosses (craghorn + boulderkin + sentinel + silver-chimera) are defeated",
+    "Outside the u-9f balance band by design — bonus climax encounter, 2x Silver Chimera HP and 1.5x dpt",
+    "Iridescent prismatic coat over silver-chrome base: rainbow spectrum flows across body, legs, and mane",
+    "Radial_halo backdrop with full rainbow concentric panels — more dramatic than any other boss surface",
+    "Gold lead framing on the arch to signal 'epic endgame boss' ornament tier"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_prism_chimera_001.webp"
+}

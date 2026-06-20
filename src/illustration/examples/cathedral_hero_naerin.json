@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_hero_naerin_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "water-warrior",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Naerin the Maren Princess Sage of Water, pale-aqua scales + swept head-fin + silver tiara + sapphire gem + glowing pearl",
+  "secondaryElement": "sapphire-blue + aquatic-teal stained-glass panels with wave-crest + pearl inlays",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — canon Naerin portrait, lifts warrior placeholder off `water-warrior`.",
+    "Wired on card id `water-warrior` (role='hero')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_hero_naerin_001.webp"
+}

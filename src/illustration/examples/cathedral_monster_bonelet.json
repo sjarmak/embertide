@@ -1,0 +1,16 @@
+{
+  "id": "cathedral_monster_bonelet_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "small-skeleton-warrior",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_stalker_cloaked",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "small jagged skeletal humanoid in predatory crouch with rusted iron shortsword",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.2 — Shadow regular"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_bonelet_001.webp"
+}

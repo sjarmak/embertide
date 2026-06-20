@@ -1,0 +1,27 @@
+{
+  "id": "cathedral_combat_bg_sylvani_wild_001",
+  "role": "combat-background",
+  "theme": "cathedral",
+  "zoneId": "sylvani",
+  "bossTier": "wild",
+  "aspectRatio": "16:9",
+  "resolution": "2048x1152",
+  "palette": {
+    "base": "deep forest green (#1a3826)",
+    "shadow": "dark-bark brown (#2a1f14)",
+    "glass": "emerald leaf-light (#2d6a3f)",
+    "highlight": "dappled amber-gold sunshaft (#d6a24a)"
+  },
+  "compositionNotes": [
+    "Outdoor tangled forest glade — natural arch of leaning ancient trunks instead of a cathedral nave.",
+    "Fallen moss-swallowed log + toadstools at the side; faint leaf-motif stained-glass segments in the upper canopy edges.",
+    "Lower-center mossy flagstone clearing is the battlefield stage — brighter than the framing trunks."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_combat_bg_sylvani_wild_001.webp",
+  "generatedBy": "fal-ai/nano-banana-pro",
+  "promptDoc": "docs/prompts/cathedral_combat_bg_sylvani_wild.md",
+  "notes": [
+    "Wild-boss variant sibling to cathedral_combat_bg_sylvani_001 (region arena).",
+    "Post-gamma 0.68 applied: raw 18.6% → final 29.5% luminance."
+  ]
+}

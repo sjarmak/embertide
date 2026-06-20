@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_bow_and_arrow_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "weapon",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "drawn walnut recurve bow with nocked steel-tipped arrow",
+  "secondaryElement": "forest-green + gold stained-glass panels radiating behind the weapon",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — weapon item art (nano-banana-pro, 2K webp).",
+    "Wired on card id `bow` (role='item'; gm0.15 supply card, embertide-9hy)."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_bow_and_arrow_001.webp"
+}

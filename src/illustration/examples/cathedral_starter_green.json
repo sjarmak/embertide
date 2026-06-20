@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_starter_green_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "starter",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "vertical-hex Aurelia-canon emerald shard, six faceted cells",
+  "secondaryElement": "transparent backdrop (magenta-keyed; floats on card chrome)",
+  "cellBudget": 8,
+  "usesHalo": false,
+  "usesBackdropMotif": false,
+  "notes": [
+    "Shard — +1 green per play",
+    "Transparent backdrop so the gem floats on the card-chrome parchment (rkbf 2026-04-26)"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_starter_green_001.png"
+}

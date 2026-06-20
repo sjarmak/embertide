@@ -1,0 +1,16 @@
+{
+  "id": "cathedral_monster_sandwyrm_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "sand-worm-juvenile",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "fearsome small sand-worm with armored skull, gaping toothed maw, and prehensile tongue, Wind Waker canon",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.3 — Spirit regular"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_sandwyrm_001.webp"
+}

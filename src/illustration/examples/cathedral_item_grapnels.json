@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_grapnels_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "weapon",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "symmetric pair of bronze-and-gold grappling gauntlets with three-pronged steel claws and coiled chains",
+  "secondaryElement": "crimson-ruby gem in each gauntlet housing; bronze-crimson double-burst backdrop",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "tib8 — bespoke item-check opener portrait (nano-banana-pro, 2K webp).",
+    "Wired on card id `grapnels` (role='item'; breaks Voltwyrm T3's guard). Twin grapple gauntlets, distinct from the single-launcher `grapplethorn`."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_grapnels_001.webp"
+}

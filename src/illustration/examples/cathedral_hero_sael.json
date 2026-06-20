@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_hero_sael_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "scholar-princess",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Sael the young Umbra scholar, silver-white braid + crimson eyes + ancient scroll + blue quill",
+  "secondaryElement": "dawn-blue + pale-gold stained-glass panels with Umbra-scroll + blossom inlays",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — canon Sael portrait, lifts warrior placeholder off `scholar-princess`.",
+    "Wired on card id `scholar-princess` (role='hero')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_hero_sael_001.webp"
+}

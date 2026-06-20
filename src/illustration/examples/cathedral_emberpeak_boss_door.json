@@ -1,0 +1,16 @@
+{
+  "id": "cathedral_emberpeak_boss_door_001",
+  "role": "boss-door",
+  "theme": "cathedral",
+  "zone": "emberpeak",
+  "aspectRatio": "1:1",
+  "focalElement": "closed obsidian-basalt gothic double door veined with glowing lava cracks and a dragon-scale escutcheon keyhole",
+  "secondaryElement": "scorched red-charcoal stone arch with Cragkin spiral motif, ember sparks, molten-orange keyhole glow",
+  "notes": [
+    "Boss-door overlay for the Emberpeak locked region-boss slot (gm0.12 + qzl).",
+    "Chroma-keyed: #00FF00 background stripped to alpha via scripts/chroma-key-green.py.",
+    "Rendered inside BossDoor.tsx when RegionBossEncounterSlot reports data-locked='true'."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_emberpeak_boss_door_001.png",
+  "promptDoc": "docs/prompts/cathedral_emberpeak_boss_door.md"
+}

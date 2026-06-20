@@ -1,0 +1,16 @@
+{
+  "id": "cathedral_monster_sunbleached_reaver_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "sun-bleached-skeletal-warrior",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_stalker_cloaked",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "sun-bleached cream-bone skeletal warrior with Duneborn headwrap and curved sandstone scimitar",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.3 — Spirit regular"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_sunbleached_reaver_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_grunt_orc_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "regular",
+  "paletteRole": "monster",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "canonical Aurelia Brute — bulldog-snouted brute with tusks, hide loincloth, club raised",
+  "secondaryElement": "mulberry-purple + dusk-ochre stained-glass panels behind the silhouette",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — lifts the stalker placeholder off the grunt-orc card (display name: Brute).",
+    "Wired on card id `grunt-orc` (role='monster')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_grunt_orc_001.webp"
+}

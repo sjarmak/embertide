@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_starter_champion_wisdom_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "starter",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "young scholar-princess holding a softly glowing sapphire rune tablet",
+  "secondaryElement": "halo of circular rune symbols; long embroidered robes with silver-pearl trim",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Champion starter — Lore Warden (seer-rune)",
+    "Sapphire + silver-pearl palette reflects champion-wisdom passive (draw 6 instead of 5)"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_starter_champion_wisdom_001.webp"
+}

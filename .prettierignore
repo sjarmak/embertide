@@ -1,0 +1,16 @@
+dist/
+node_modules/
+.beads/
+coverage/
+.ladle/
+package-lock.json
+
+# Long-form docs and generated content — preserve authorial formatting
+.brainstorm/
+.claude/
+AGENTS.md
+CLAUDE.md
+README.md
+docs/
+prd_*.md
+premortem_*.md

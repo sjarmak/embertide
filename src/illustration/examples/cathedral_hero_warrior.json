@@ -1,0 +1,21 @@
+{
+  "id": "cathedral_hero_warrior_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "warrior",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "vertical sword with emerald jewel at crossguard",
+  "secondaryElement": "sunburst halo wedges behind helm",
+  "cellBudget": 11,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Center the blade on the main axis",
+    "Use arch crown and top keystone",
+    "Large lower robe or armor cells, not fussy detail"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_hero_warrior_001.webp"
+}

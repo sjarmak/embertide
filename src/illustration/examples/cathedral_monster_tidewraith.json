@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_monster_tidewraith_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "water-amoeba-with-tendril",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "translucent water amoeba blob with red nucleus eye and coiling water-whip tendril, OoT region boss",
+  "secondaryElement": "water-temple sanctum background",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.1.1 — Maren region boss"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_tidewraith_001.webp"
+}

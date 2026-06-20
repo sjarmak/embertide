@@ -1,0 +1,172 @@
+/*
+ * CombatBattlefield — simple gold-bordered defenders row.
+ *
+ * nz8 rev-2 (2026-04-24) designer feedback: the marble-tile diagonal
+ * strip overlays (previously ::before / ::after) were retired as
+ * visually busy. The defenders row reads as a plain thin-gold-bordered
+ * pane with a near-solid shadow-600 background so the minion card
+ * tiles stay the visual focus.
+ */
+
+.combat-battlefield {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding: 8px;
+
+  /* itkj (2026-04-25): the pane must fully contain a defender card so
+     cards never extend into / behind the hand pane below; flex-shrink: 0
+     locks the pane's size against parent compression.
+
+     embertide-qauf (playtest 2026-05-26): in a boss area the large
+     boss portrait + this pane + hand + End Turn button overflowed the
+     viewport once a shield creature was played, forcing a manual
+     zoom-out. The old floor was 220px because battlefield tiles
+     inherited the global 200px `.card-template` min-height — even though
+     battlefield minions render at the compact 72px illustration size and
+     are explicitly meant NOT to dominate vertical space. We now give
+     battlefield tiles a compact 150px floor (see
+     `.combat-battlefield-card .card-template` below) and size the pane to
+     match (150 card + 16 padding + 4 buffer = 170px), reclaiming ~50px of
+     vertical budget so the boss arena fits without zooming.
+
+     embertide-1rrk (2026-06-04): the qauf 150px card was sized on the
+     assumption the art rendered at the compact 72px logical size, but the
+     art was actually ballooning (it filled the card via `width/height:100%`
+     with no width cap). With the art now pinned to a fixed 64px band (see
+     `.combat-battlefield-card .card-template-art`), the card no longer needs
+     150px — drop it to 104px (64 art + 40 chrome, in the spirit of the 110px
+     `.in-play-tile`) and size the pane to match (104 + 16 pad + 4 buffer =
+     124px). That reclaims a further ~46px so the boss portrait + defenders
+     pane + hand + End Turn button all fit a 1280×800 viewport with one OR
+     three shields in play (measured: End-Turn bottom 843 → 797px), not just
+     the hand.
+
+     p1rx (2026-04-25): the min-height applies ONLY when the battlefield
+     has actual defender cards. When empty, the
+     `.combat-battlefield-empty-wrap` modifier overrides it down to 48px
+     so the plays-counter + hand + End Turn button stay visible. */
+  min-height: 124px;
+  flex-shrink: 0;
+  align-items: stretch;
+}
+
+.combat-battlefield-empty-wrap {
+  min-height: 48px;
+  padding: 6px 8px;
+  align-items: center;
+  justify-content: center;
+
+  /* nz8 rev-3 (2026-04-24): unified pane treatment shared with the
+     heart chips + hand + boss-info. embertide-thop (2026-06-04):
+     warm-obsidian plate token (was raw navy `rgb(11 18 40 / 75%)`). */
+  background: var(--hc-lead-iron-900-alpha-75);
+  border: 2px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px rgb(184 145 66 / 35%);
+
+  /* nz8 rev-4 (2026-04-24): prevent right-edge border clipping (see
+     CombatHand.css for the same fix + rationale). */
+  box-sizing: border-box;
+}
+
+.combat-battlefield-empty {
+  margin: auto;
+  color: var(--hc-parchment-300, #e0d2ab);
+  font-style: italic;
+}
+
+/*
+ * embertide-9u1 (nz8-c): each minion tile is rendered via CardTemplate
+ * wrapped in a .combat-battlefield-card positioned relative so the hp chip
+ * (below) can absolute-overlay the top-right corner.
+ */
+.combat-battlefield-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  /* embertide-1rrk (2026-06-04): the tile needs an EXPLICIT width, not
+     just a min-width. The card art renders as an `<svg width:100%;
+     height:100%>` (see `.card-template-art > svg` in app.css), so without a
+     fixed width the SVG's own intrinsic square size defines the card's
+     width — a played shield ballooned to ~243px wide / 311px tall, growing
+     the defenders pane to ~327px and pushing the combat hand off-screen.
+     Pinning the width (flex: none so it can't grow or shrink either) keeps
+     the played card in its slot, matching the explicit-width treatment every
+     other played-card tile already uses (`.in-play-tile` 78px,
+     `.field-card-tile` 132px). */
+  flex: none;
+  width: 96px;
+}
+
+.combat-battlefield-card .card-template {
+  width: 100%;
+
+  /* qauf (2026-05-26): battlefield minions render at the compact 72px
+     illustration size, so they don't need the global 200px card floor.
+     Drop to 150px here (unlayered → overrides the @layer base rule) so
+     the defenders row stays a compact strip and the boss arena fits the
+     viewport without a manual zoom-out.
+
+     embertide-1rrk (2026-06-04): the floor became a *fixed* height (cap
+     too, not just a min) so the flex:1-1-auto art panel can't stretch the
+     card past the boss-strip budget — the same balloon that blew the width
+     out also blew the height out (311px observed). 104px comfortably holds
+     the 64px art band + name + cost + a clamped rules line, in the spirit of
+     the 110px `.in-play-tile`, while reclaiming boss-area vertical budget so
+     the End Turn button stays on-screen with a defender in play. */
+  min-height: 104px;
+  max-height: 104px;
+}
+
+/* embertide-1rrk (2026-06-04): pin the art panel to a fixed band so it
+   renders at a stable, contained size. The shared `.card-template-art` is
+   `flex: 1 1 auto`, so under the fixed 104px card height it was the element
+   that absorbed all the slack — for a card with verbose rules text (e.g.
+   tower-shield) the art collapsed to ~2px while the text filled the card.
+   Pinning the art to `flex: 0 0` makes the rules box (last child, under the
+   card's `overflow: hidden`) the one that clips instead, so every defender —
+   short or long printed text — shows its portrait at the same size. */
+.combat-battlefield-card .card-template-art {
+  flex: 0 0 64px;
+}
+
+/*
+ * HP chip — overlays the top-right corner of the CardTemplate portrait.
+ * Reads as a small badge showing live `hp N / M` without obscuring the
+ * card illustration. Gold-rim + parchment-cream backing matches the
+ * cost-gem language so the two stacked overlays feel native to the card.
+ */
+.combat-battlefield-card-hp-chip {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 3;
+  padding: 2px 6px;
+  font-family: var(--hc-font-display);
+  font-size: var(--hc-text-xs);
+  font-weight: var(--hc-font-weight-bold);
+  letter-spacing: var(--hc-tracking-wide);
+  color: var(--hc-lead-iron-900, #0e0c14);
+  background: var(--hc-parchment-50, #fbf6e9);
+  border: 1px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 3px;
+  box-shadow: 0 1px 0 var(--hc-lead-gold-700, #8b6a2a);
+  pointer-events: none;
+}
+
+/*
+ * Fallback text label for unresolvable cardIds (defensive path — the
+ * reducer should always hand us a resolvable id, but we render raw text
+ * rather than crash so a future regression is visible, not fatal).
+ */
+.combat-battlefield-card-fallback-label {
+  padding: 8px;
+  font-size: var(--hc-text-sm);
+  color: var(--hc-parchment-50, #fbf6e9);
+  text-align: center;
+}

@@ -1,0 +1,11 @@
+# cathedral_aurelia_light_arrow
+
+- **Card:** embertide-light-lance (granted on crystal break, fix-aurelia 2026-04-22)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=1K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_aurelia_light_arrow_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_aurelia_light_arrow.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with leaded stone pillars on left and right entwined with gold filigree ivy, trefoil quatrefoil cornices in the arch spandrels. Subject: the Embertide Light-Lance — a single radiant lance-bolt of golden Embertide light streaking diagonally across the full sweep of the arch from lower-left to upper-right, the centerpiece of the panel. No archer, no bow, no hand, no figure of any kind — just the bolt itself, a pure projectile of living light. The lance reads as an elongated molten-gold spear of energy: a brilliant white-gold burning core running its length, a sharp gleaming lance-point at its leading head wreathed in a small starburst of impact-light, and a long tapering comet-tail of warm-amber light and scattered gold motes trailing behind it. Faint whorl-spirals of Embertide gold curl off its flanks where the light coils, echoing the relic's spiral signature. A corona of golden radiance haloes the whole bolt, casting warm glow onto the surrounding glass. Thick dark leading lines separate the stained-glass segments, painterly tone variation within each pane. Glass background: deep navy-blue panels with explosive radiant golden-amber rays bursting diagonally outward along the lance's path toward the upper-right, smaller bursts of pale-gold starlight scattered through the middle ground. Warm sun-washed holy lighting from upper-left on the stone arch frame. Dynamic diagonal composition, the bolt cutting a strong line of motion across a centered, vertically framed arch. Colors: gold, molten-gold, white-gold core, warm amber, cream highlights, deep navy-blue stained-glass background, glowing golden light energy. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

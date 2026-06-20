@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_tower_shield_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "armor",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Thornkin-shield-inspired wooden round buckler with iron rim + Thornkin-leaf motif",
+  "secondaryElement": "forest-green + warm-brown stained-glass rings behind the shield",
+  "cellBudget": 8,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — starter supply item, lifts relic placeholder off `tower-shield`.",
+    "Wired on card id `tower-shield` (role='item'). Distinct from the premium `elysian-shield`."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_tower_shield_001.webp"
+}

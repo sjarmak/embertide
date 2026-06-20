@@ -1,0 +1,21 @@
+{
+  "id": "cathedral_item_rainbow_prism_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "heirloom",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "small glowing multi-colored hexagonal crystal prism refracting full spectrum of light",
+  "secondaryElement": "concentric rainbow radial halo — violet/indigo/blue/green/yellow/orange/red rings around a white center",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Fix-rainbow-chimera (2026-04-22): heirloom drop from Prism Chimera — rare post-completion reward",
+    "Combat effect: combat-attack damage=8 (single most powerful attack card in the game)",
+    "Gold + rainbow palette to signal completion-tier reward"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_rainbow_prism_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_chest_vault_001",
+  "theme": "cathedral",
+  "archetype": "chest",
+  "subtype": "vault",
+  "paletteRole": "legendary",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "arcane_ring",
+  "focalElement": "open ornate gold chest radiating light, surrounded by piles of gold coins + gems",
+  "secondaryElement": "rose-window sapphire-and-gold stained-glass rings behind the vault",
+  "cellBudget": 12,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — boss-tier chest art, wired on role `chest-boss` (replaces the old cathedral_chest_big raster).",
+    "Designer feedback: vault should be a grand opened chest with piles of gold and gems, not a closed ornate box."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_chest_vault_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_wisp_in_bottle_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "consumable",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "clear glass bottle with cork stopper, canonical Aurelia pink glowing-orb wisp with translucent wings inside",
+  "secondaryElement": "muted rose-pink stained-glass panels behind the bottle",
+  "cellBudget": 8,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — revive consumable art (nano-banana-pro, 2K webp).",
+    "Wired on card id `wisp-in-bottle` (role='item'); gm0.16 ships usedFairyInBottleIds mechanic."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_wisp_in_bottle_001.webp"
+}

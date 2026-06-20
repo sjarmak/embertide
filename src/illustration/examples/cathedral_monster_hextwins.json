@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_monster_hextwins_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "sister-duo-witches",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_caster_spines",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Koume + Kotake sister-duo witches on broomsticks with crossing brooms forming heraldic X, fire-and-ice flanking",
+  "secondaryElement": "Dune Sanctum altar background",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.3 — Spirit region boss, single-card sister-duo composition"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_hextwins_001.webp"
+}

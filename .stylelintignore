@@ -1,0 +1,8 @@
+dist/
+node_modules/
+.beads/
+.claude/prd-build-artifacts/
+.claude/prd-build-archive/
+.claude/design/
+coverage/
+.ladle/

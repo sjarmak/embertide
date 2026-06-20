@@ -1,0 +1,12 @@
+# cathedral_monster_silver_chimera
+
+- **Bead:** fix-rainbow-chimera (2026-04-22 regen)
+- **Card:** silver-chimera (Gilded Cage wild boss, HARDER per stat-ordering invariant)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_monster_silver_chimera_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_monster_silver_chimera.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with leaded stone pillars left and right, trefoil quatrefoil cornices in the arch spandrels, with extra ornamental flourish and denser leading appropriate to a wild-boss raster. Subject: the Silver Chimera — a fierce centaur-formed beast-warrior centered in the arch at about sixty-five percent of arch height, a humanoid armored torso joined atop a powerful four-legged equine lower body, rearing in a mid-charge pose with forward momentum and front hooves lifted. Its head bears curved bull-like horns above a flowing mane; in both hands it raises a massive two-handed silver-chrome greatsword overhead. The coat is a bold black-and-silver striped pattern flowing across body, legs, and mane in clear alternating bands, the silhouette reading as distinct stripes of dark and bright. Silver-chrome metallic armor plates with dark lead filigree cover the shoulders, and striped barding drapes the equine flank. Our gilding motif corrupts the beast: hairline gold fracture-lines branch across the striped coat and the chrome armor with a faint warm-amber glow leaking from the cracks, cutting warm gilt seams through the cold silver as though the creature is being slowly turned to molten gold. Background: muted cobalt and deep-indigo stained-glass panels with sharp angular rays radiating outward in a broken-spires motif of jagged shards rather than a soft sunburst, thick dark leading lines separating each segment, painterly tone variation within each pane. Dramatic side-lighting from upper right picks out the silver stripes and the gilt fractures. Colors permitted: jet-black stripe, silver-white stripe, silver-chrome armor, dark-lead filigree, cracked-gold fracture-lines, warm-amber gild-glow, muted-cobalt background, deep-indigo shard-ray, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_boulderkin_core_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "heirloom",
+  "paletteRole": "legendary",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Boulderkin heart-core — basalt rock with glowing orange-amber gemstone vein",
+  "secondaryElement": "charcoal-grey + molten-amber stained-glass ember-aura",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — Boulderkin wild-boss heirloom drop, lifts relic placeholder off `boulderkin-core`.",
+    "Wired on card id `boulderkin-core` (role='item')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_boulderkin_core_001.webp"
+}

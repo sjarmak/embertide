@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_monster_reefblade_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "clam-mollusk",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "armored bivalve clam with pink fleshy tongue and shell-tooth rim, OoT canon",
+  "secondaryElement": "reef-shadow background",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.1.1 — Maren regular, OoT reefblade canon"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_reefblade_001.webp"
+}

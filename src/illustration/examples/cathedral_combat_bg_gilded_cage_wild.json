@@ -1,0 +1,27 @@
+{
+  "id": "cathedral_combat_bg_gilded_cage_wild_001",
+  "role": "combat-background",
+  "theme": "cathedral",
+  "zoneId": "gilded-cage",
+  "bossTier": "wild",
+  "aspectRatio": "16:9",
+  "resolution": "2048x1152",
+  "palette": {
+    "base": "weathered cream-marble (#99958a)",
+    "shadow": "cool shadow blue (#3a4a66)",
+    "glass": "ethereal pale blue-white (#c8d8e8)",
+    "highlight": "dusty gold (#b89142)"
+  },
+  "compositionNotes": [
+    "Crumbling outer cloister / ruined antechamber — cracked marble pillars, rubble, creeping ivy.",
+    "Distant sliver of ethereal blue-white light through a broken archway hints at the inner sanctum beyond.",
+    "Lower-center cracked marble floor is the battlefield stage."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_combat_bg_gilded_cage_wild_001.webp",
+  "generatedBy": "fal-ai/nano-banana-pro",
+  "promptDoc": "docs/prompts/cathedral_combat_bg_gilded_cage_wild.md",
+  "notes": [
+    "Wild-boss variant sibling to cathedral_combat_bg_gilded_cage_001 (region arena).",
+    "No post-gamma: raw luminance 36.0% already inside target 30-40% band."
+  ]
+}

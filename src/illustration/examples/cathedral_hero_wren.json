@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_hero_wren_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "ranch-keeper",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Wren the Lon Lon Ranch keeper, flowing orange hair + periwinkle dress + friendly ranch horse",
+  "secondaryElement": "warm sunset-orange + cream + sky-blue stained-glass pastoral panels",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — canon Wren portrait, lifts warrior placeholder off `ranch-keeper`.",
+    "Wired on card id `ranch-keeper` (role='hero')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_hero_wren_001.webp"
+}

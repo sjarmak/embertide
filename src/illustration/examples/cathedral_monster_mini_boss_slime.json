@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_mini_boss_slime_001",
+  "theme": "cathedral",
+  "archetype": "boss",
+  "subtype": "mini-boss",
+  "paletteRole": "boss",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "canonical Aurelia Tidewraith — glowing red-orange nucleus suspended in a churning aqua-blue water-tentacle body",
+  "secondaryElement": "sapphire-blue + teal stained-glass panels with pale-aqua light ripples",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — lifts the brute placeholder off the mini-boss-slime card (display name: Tidewraith).",
+    "Wired on card id `mini-boss-slime` (role='mini-boss')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_mini_boss_slime_001.webp"
+}

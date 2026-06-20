@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_wardeye_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "laser-turret",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "hex_lattice",
+  "ornamentId": "mechanical_aperture",
+  "focalElement": "stone-and-bronze eye-turret on a rune-etched pedestal firing a diagonal crimson laser beam",
+  "secondaryElement": "sun-gold sacred-light rays with a subtle secondary halo behind the turret head",
+  "cellBudget": 10,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Gilded Cage regular (u-6c) — mechanical sentinel variant of the Sentinel archetype",
+    "Hex-lattice + mechanical-aperture pairing echoes the Sentinel (wild-boss) spec for mechanical-construct consistency"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_wardeye_001.webp"
+}

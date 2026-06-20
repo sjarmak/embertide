@@ -1,0 +1,12 @@
+# cathedral_monster_spear_orc
+
+- **Bead:** embertide-pr2 (2026-04-23 card-art gap closure)
+- **Card:** spear-orc — in-theme display name "Brute Spearman"
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_monster_spear_orc_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_monster_spear_orc.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with leaded stone pillars left and right carved with crude barbaric reliefs, trefoil quatrefoil cornices in the arch spandrels, plain leaded inner border (regular-enemy treatment). Subject: the Tuskward Pikebrute — a hulking hunched boar-snouted brute centered in the arch at about seventy percent of arch height, standing in a grounded wary thrust stance. Its head has a broad bulldog-like snout with a wide downturned mouth showing twin upward-curving tusks, small beady eyes set deep, and large rounded ears; its hide is mottled dark-mulberry and dusk-ochre over a barrel-chested body with thick sloped shoulders. It wears ragged animal-hide armor with crude iron-banded studs on the shoulders and a wide leather belt, and grips a long wooden-hafted pike with a rusty leaf-shaped iron head diagonally across its body, leveling the point toward the viewer in a guarded thrust. Our gilding motif corrupts the brute: hairline gold fracture-lines branch across the hide, the hide-armor and the pike-haft with a faint warm-amber glow leaking from the cracks, the corruption creeping up the spear toward the rusted head as though the creature and its weapon are being slowly turned to gilt. Background: deep mulberry-purple and dusk-ochre stained-glass panels with diagonal faint light rays behind the silhouette, thick dark leading lines separating each segment, painterly tone variation within each pane. Warm sun-washed cathedral lighting from upper left on the stone arch frame; cool shadow on the body and spear-shaft, with the gild-glow as a warm secondary light. Colors permitted: mulberry-purple, dark-plum, dusk-ochre, ragged-hide-brown, dark-haft-wood, rusted-iron-spearhead, cracked-gold fracture-lines, warm-amber gild-glow, bone-white-tusk, beady-yellow-eye, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

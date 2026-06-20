@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_chest_ancient_001",
+  "theme": "cathedral",
+  "archetype": "chest",
+  "subtype": "ancient",
+  "paletteRole": "legendary",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "arcane_ring",
+  "focalElement": "weathered marble reliquary chest with glowing Umbra runes + Embertide apex",
+  "secondaryElement": "twilight indigo + Umbra-rune stained-glass star-field",
+  "cellBudget": 12,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — legendary top-tier chest art, awaits a `chest-ancient` card id in cards.ts + a chest-pool tier slot before wiring.",
+    "Designer direction: even more special than the vault — ancient Umbra / Embertide ceremonial reliquary feel."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_chest_ancient_001.webp"
+}

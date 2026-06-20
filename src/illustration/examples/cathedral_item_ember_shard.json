@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_ember_shard_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "consumable",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "quarter-wedge of a full crystal heart, ruby-red + rose-pink faceted jewel",
+  "secondaryElement": "warm rose-red + soft-pink stained-glass panels radiating behind the wedge",
+  "cellBudget": 8,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — partial-HP collectible art (nano-banana-pro, 2K webp).",
+    "gm0.16 ships the mechanic (4 pieces → vital ember via applyHeartReward); surfaced in HPStrip pip row + ChestReveal reward icon (bead embertide-063)."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_ember_shard_001.webp"
+}

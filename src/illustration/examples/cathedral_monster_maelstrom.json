@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_monster_maelstrom_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "armored-cyclops-octopus",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "massive Wind-Waker armored octopus with single eye and coiling tentacles",
+  "secondaryElement": "reef arena background",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.1.1 — Maren wild boss"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_maelstrom_001.webp"
+}

@@ -1,0 +1,278 @@
+/*
+ * CombatScreen — full-viewport arena layout (embertide-343, nz8-d).
+ *
+ * The zone raster is promoted from a scoped top-of-screen strip to a
+ * full-viewport absolute-fill layer behind the arena. The four combat
+ * panels (CombatBossStage, CombatBattlefield, CombatHand, Player HP row)
+ * sit on top of this backdrop in a vertical flex column; their legacy
+ * solid-color panel fills are retired in favor of transparent + lightly
+ * bordered chrome so the zone atmosphere reads through.
+ *
+ * A subtle dual-edge vignette scrim (.combat-bg-scrim) sits above the
+ * raster to preserve text legibility without muddying the art.
+ */
+
+.combat-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+/*
+ * Full-viewport backdrop layer — absolute-fill behind everything. Hosts
+ * the ArtPendingFrame fallback (while loading), the zone <img>
+ * (data-testid=combat-bg-image), and the legibility scrim overlay.
+ *
+ * Preserves the legacy `combat-bg-slot` testid on this element so the
+ * existing "no layout shift on raster failure" assertion
+ * (CombatScreen.test.tsx) targets the same DOM node.
+ */
+.combat-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--hc-shadow-900, #05080f);
+}
+
+.combat-bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/*
+ * Legibility scrim — a dual-edge vertical gradient darkening the top
+ * and bottom strips so the header + pass-button row read cleanly over
+ * any zone raster. The middle band stays clear so the boss stage and
+ * battlefield inherit the full atmosphere.
+ */
+.combat-bg-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(5 8 15 / 72%) 0%,
+    rgb(5 8 15 / 32%) 18%,
+    rgb(5 8 15 / 12%) 42%,
+    rgb(5 8 15 / 12%) 58%,
+    rgb(5 8 15 / 32%) 82%,
+    rgb(5 8 15 / 75%) 100%
+  );
+}
+
+/*
+ * Arena column — sits on top of the backdrop at z=1. Holds the four
+ * combat children in reading order: player HP row → boss stage →
+ * battlefield → plays counter → combat hand → pass button → combat log.
+ */
+.combat-arena {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+
+  /* p1rx (2026-04-25): arena gap tightened from 12px → 8px so the
+     vertical stack (HP row → boss stage → battlefield → plays counter
+     → hand → End Turn button) all fits within the 800px height budget
+     at the project's 1280×800 target without clipping the bottom. */
+  gap: 8px;
+  padding: 16px;
+  width: 100%;
+  min-height: 100%;
+
+  /* nz8 rev-5 (2026-04-24): without border-box, width:100% + 16px
+     horizontal padding extends the arena 32px past the viewport, and
+     .combat-screen's overflow: hidden then clips the right edge of
+     every pane inside. With border-box, the padding is subtracted
+     from the 100% width so panes sit comfortably inside the viewport
+     with 16px of zone backdrop visible on either side. */
+  box-sizing: border-box;
+}
+
+/*
+ * Player HP row — formerly an inline-styled flex row. Now class-driven
+ * so nz8-d can tune typography + spacing consistently with the rest of
+ * the arena. Sits centered with the Hearts label + per-player chips.
+ */
+.combat-player-hp-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 0;
+  font-family: var(--hc-font-display);
+  font-size: var(--hc-text-base);
+  letter-spacing: var(--hc-tracking-chrome-sm);
+  color: var(--hc-text-primary, #f6f2e6);
+}
+
+.combat-player-hp-row-label {
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-lg);
+  text-transform: uppercase;
+  color: var(--hc-lead-gold-500, #b89142);
+}
+
+.combat-player-hp-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  border: 2px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 8px;
+
+  /* embertide-thop (2026-06-04): warm-obsidian plate token
+     (was raw navy `rgb(11 18 40 / 75%)`, shadow-800) — see CombatBossStage.css. */
+  background: var(--hc-lead-iron-900-alpha-75);
+  box-shadow: inset 0 0 0 1px rgb(184 145 66 / 35%);
+}
+
+.combat-player-hp-chip[data-downed='true'] {
+  border-color: var(--hc-jewel-ruby-500, #a1223c);
+  background: rgb(161 34 60 / 25%);
+  box-shadow: inset 0 0 8px rgb(161 34 60 / 45%);
+}
+
+.combat-player-hp-hearts {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.combat-player-hp-readout {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--hc-font-weight-bold);
+  color: var(--hc-jewel-amber-100, #f6e7bc);
+}
+
+.combat-player-hp-chip[data-downed='true'] .combat-player-hp-readout {
+  color: var(--hc-jewel-ruby-100, #f1ccd4);
+}
+
+.combat-player-hp-name {
+  font-weight: var(--hc-font-weight-bold);
+}
+
+.combat-player-hp-downed-chip {
+  font-size: var(--hc-text-xs);
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: var(--hc-jewel-ruby-500, #a1223c);
+  color: var(--hc-parchment-50, #fbf6e9);
+  letter-spacing: var(--hc-tracking-chrome-wide);
+  font-weight: var(--hc-font-weight-bold);
+}
+
+/*
+ * Plays-this-turn counter — small uppercase cue above the hand tray.
+ * Color flips to amber when the per-turn cap is reached so the player
+ * sees they must Pass before playing more cards.
+ *
+ * nz8 rev-3 (2026-04-24): given the same translucent pane treatment as
+ * the heart chips + other combat panes so the text reads cleanly over
+ * the zone backdrop instead of disappearing into busy terrain.
+ */
+.combat-plays-counter {
+  align-self: center;
+  padding: 4px 14px;
+  text-align: center;
+  font-family: var(--hc-font-display);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-md);
+  text-transform: uppercase;
+  color: var(--hc-lead-gold-500, #b89142);
+
+  /* embertide-thop (2026-06-04): warm-obsidian plate token
+     (was raw navy `rgb(11 18 40 / 75%)`, shadow-800). */
+  background: var(--hc-lead-iron-900-alpha-75);
+  border: 2px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px rgb(184 145 66 / 35%);
+}
+
+.combat-plays-counter[data-cap-reached='true'] {
+  color: var(--hc-jewel-amber-100, #f6e7bc);
+}
+
+.combat-pass-turn-row {
+  display: flex;
+  justify-content: center;
+}
+
+.combat-pass-turn-button {
+  min-width: 240px;
+  min-height: 48px;
+  font-size: var(--hc-text-sm);
+}
+
+/*
+ * embertide-d5wm — must-pass pulse glow. When the player has hit
+ * the play cap or emptied their hand, the End Turn button gently
+ * pulses an amber outline so the next required action is unmissable.
+ * Reduced-motion users get a static highlight instead.
+ */
+.combat-pass-turn-button[data-must-pass='true'] {
+  box-shadow: 0 0 0 2px var(--hc-jewel-amber-500, #c48a1f);
+  animation: combat-pass-must-pulse 1400ms ease-in-out infinite;
+}
+
+@keyframes combat-pass-must-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 2px var(--hc-jewel-amber-500, #c48a1f);
+  }
+
+  50% {
+    box-shadow: 0 0 12px 4px var(--hc-jewel-amber-500, #c48a1f);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .combat-pass-turn-button[data-must-pass='true'] {
+    animation: none;
+    box-shadow: 0 0 0 3px var(--hc-jewel-amber-500, #c48a1f);
+  }
+}
+
+/*
+ * 0saq (2026-05-02) — narrow-height viewport compaction. The arena
+ * fit verified at 1280×800 in p1rx assumed the full 800px viewport,
+ * but real browsers eat 80–120px on tab/address bar + OS taskbar so
+ * the user reported clipping at their normal browser size (90%
+ * zoom-out used as workaround). Trigger is `(max-height: 760px)` so
+ * the well-tuned 1280×800 layout from p1rx stays intact and only the
+ * actually-overflowing band (1280×720-ish, 1366×768, 1280×686 with
+ * browser chrome) gets the compaction. Partner block lives in
+ * CombatBossStage.css.
+ */
+@media (height <= 760px) {
+  .combat-arena {
+    gap: 4px;
+    padding: 8px 16px;
+  }
+
+  .combat-player-hp-row {
+    gap: 12px;
+    padding: 2px 0;
+  }
+
+  .combat-player-hp-chip {
+    padding: 4px 12px;
+  }
+
+  .combat-plays-counter {
+    padding: 2px 10px;
+  }
+
+  .combat-pass-turn-button {
+    min-height: 40px;
+  }
+}

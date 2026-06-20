@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_starter_champion_power_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "starter",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "a muscular warrior hoisting a glowing ruby-red warblade overhead, braced in a battle-ready stance",
+  "secondaryElement": "crimson cloak with gold trim; sparks arcing off the blade edge; small flame motifs at the guard",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Champion starter — Might Warden (warblade)",
+    "Ruby + gold palette reflects champion-power passive (+2 power at start of turn)"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_starter_champion_power_001.webp"
+}

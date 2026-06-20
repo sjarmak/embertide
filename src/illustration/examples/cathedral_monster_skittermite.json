@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_skittermite_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "spider-leaper",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "four-legged dome-body with a single amber vertically-slit eye and a dangling brass key",
+  "secondaryElement": "radial rays from the eye with volcanic-ash specks trapped in the glass",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Emberpeak regular (u-6b) — the only regional regular with a `keys: 1` drop; the dangling key is the visual tell",
+    "Fourfold splayed-leg symmetry anchors the radial-halo segmentation"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_skittermite_001.webp"
+}

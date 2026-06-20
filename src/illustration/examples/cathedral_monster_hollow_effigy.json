@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_monster_hollow_effigy_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "gloom-corrupted-link",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "TotK gloom-corrupted Link silhouette with magenta-red gloom-vein network across body and red-orange gloom-eye pinpoints",
+  "secondaryElement": "corruption-bloom background",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.2.4 — Shadow wild boss, TotK gloom canon"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_hollow_effigy_001.webp"
+}

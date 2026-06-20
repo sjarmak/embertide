@@ -1,0 +1,12 @@
+# cathedral_altar_destiny_vurmox
+
+- **Bead:** embertide-u10d
+- **Card:** N/A — destiny-altar overlay (bespoke, Vurmox-only)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=3:4`, `output_format=png`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_altar_destiny_vurmox_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_altar_destiny_vurmox.json`
+
+## Prompt
+
+Transparent PNG cut-out illustration, portrait 2:3 aspect ratio, in the Elysian Cathedral card-art style: an ornate obsidian-and-gold altar dedicated to Vurmox the Cagewright, rendered as a dramatic decorative overlay with a LARGE TRANSPARENT OPENING in the center so a background shows through — the frame itself occupies only the outer ~25% perimeter of the image. Composition: heavy black obsidian altar stone veined with liquid gold and deep violet amethyst; carved into the back wall is a looming silhouetted relief of a gaunt, tall jailer-figure in gilt-locked plate — a long key-staff held upright, a belt-ring of small hanging cage-lanterns each holding one flickering stolen ember, the face hidden behind a gilded grille-mask, regal and cold. Two colossal pillars on left and right are inlaid with purple-amethyst flame motifs (curling violet tongues of flame licking upward, baked into the raster) and hung with gilded cage-lanterns. At the apex keystone, a radiant off-center molten-gold WHORL of caged ember-light — a tight spiral coalescing out of a dim amber-red glow, ringed by cage-bars as if held captive, never a triangle or geometric shape. Trefoil quatrefoil cornices in the arch spandrels are set with amethyst cabochons; at the base of each pillar, dark relics — stacked rusted padlocks, broken chain, an empty unlit cage-lantern, a spent key — are scattered ominously. Thick dark leading lines outline every stone block and flame for stained-glass style consistency. Dramatic directional cathedral light from the upper left cuts hard shadows into the crevices and throws the jailer-figure silhouette into sharp contrast against the back wall. Ceremonial, climactic, final-boss gravitas. The ENTIRE CENTER and inside of the arch MUST be fully transparent (alpha 0) — no glass, no sky, no fill, just the cutout so a stained-glass pane behind can show through. No text, no letters, no watermarks, no UI overlays, no background — just the frame on a transparent canvas.

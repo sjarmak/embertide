@@ -1,0 +1,19 @@
+{
+  "id": "cathedral_monster_squidlet_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "squidlet-rock-shooter",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "classic Squidlet — small bipedal red rock-shooting octopus enemy",
+  "secondaryElement": "shoreline arena background",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "1hzh — replaces sea-cephalopod (formerly displayed as 'Maelstrom' with pink-octopus art); reart to classic Squidlet per smashtopia ref."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_squidlet_001.webp"
+}

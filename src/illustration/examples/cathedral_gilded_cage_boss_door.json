@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_gilded_cage_boss_door_001",
+  "role": "boss-door",
+  "theme": "cathedral",
+  "zone": "gilded-cage",
+  "aspectRatio": "1:1",
+  "focalElement": "closed ivory-marble ceremonial double door with Embertide-of-Power apex and TWO side-by-side gold keyholes",
+  "secondaryElement": "alabaster lavender-veined stone arch with angelic relief spandrels and clock-face keystone, holy gold aura",
+  "notes": [
+    "Boss-door overlay for the Gilded Cage locked region-boss slot (gm0.12 + qzl).",
+    "Ceremonial two-key door per gm0.12 — both Sentinel and Silver Chimera keys required before Vurmox unlocks.",
+    "Chroma-keyed: #00FF00 background stripped to alpha via scripts/chroma-key-green.py.",
+    "Rendered inside BossDoor.tsx when RegionBossEncounterSlot reports data-locked='true'."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_gilded_cage_boss_door_001.png",
+  "promptDoc": "docs/prompts/cathedral_gilded_cage_boss_door.md"
+}

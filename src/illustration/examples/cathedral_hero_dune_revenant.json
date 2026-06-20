@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_hero_dune_revenant_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "fallen-champion-spirit",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "hooded fallen Duneborn champion-spirit in terracotta robe with ceremonial glaive and amber blessing aura",
+  "secondaryElement": "distant pyramid silhouettes in dusk-rose haze",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["2026-04-25 — Dune Sanctum zone-locked center-row hero, original designer character"],
+  "rasterImageUrl": "/illustrations/cathedral_hero_dune_revenant_001.webp"
+}

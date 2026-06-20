@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_bone_knight_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "undead-knight",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_stalker_cloaked",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "skeletal knight in tarnished plate mail with broadsword held defensively across the body and kite shield",
+  "secondaryElement": "sun-gold sacred rays behind with a pale violet specter-halo around the skull",
+  "cellBudget": 10,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Gilded Cage regular (u-6c) — hardest regular (red=6), guarded stance reads defensively",
+    "Pale bone-white silhouette + violet eye pinpoints contrast the warm Temple frame"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_bone_knight_001.webp"
+}

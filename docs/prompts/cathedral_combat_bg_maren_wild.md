@@ -1,0 +1,13 @@
+# cathedral_combat_bg_maren_wild
+
+- **Bead:** embertide-gdd.1.1
+- **Card:** N/A — combat-background (wild-boss arena, maren)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=16:9`, `output_format=jpeg`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_combat_bg_maren_wild_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_combat_bg_maren_wild.json`
+- **Post-processing:** gamma adjustment applied to land average luminance in the 30-40% target band.
+
+## Prompt
+
+Stained glass landscape panel, 16:9 widescreen format, Elysian Cathedral card-art style: a Tidehold wild deep-pool arena — a moonlit open-water cove ringed by polished cobalt rock outcroppings leaning inward to form a natural arch, with the towering silhouette of A MASSIVE ARMORED-SHELL FORM distantly visible far in the background submerged beneath the water (a dark colossal coiled-tentacle-and-shell shape in the distant haze, anchoring the wild-boss zone identity for maelstrom). Soft aqua moonshafts angle down from the upper left through a dense canopy of overhanging coral arches, pooling softly on a glassy reflecting-pool surface at lower-center. Small pearl-and-coral wisp-light motes drift through the moonshafts. Foreground: rippled water-and-pebble shoreline with a few coral sprigs and pale lily-pads at the outer edges. Rendered as a full stained-glass landscape panel: thick dark leading lines segmenting the glass into distinct painterly panes (sky-glass, coral-canopy-glass, rock-pillar-glass, water-glass, each its own leaded region), painterly stained-glass tone variation within each segment, saturated vivid cathedral-glass colors throughout — NOT a muted painterly interior, but a vibrant stained-glass window come to life in widescreen. Crucially, the lower-center area of the panel is a CLEAR OPEN STAGE — the glass tone at lower-center is intentionally lighter and cleaner (the brightest pooled water surface), with no creatures, no figures, no text, no UI, no cards, no banners — it reads as a battlefield surface that the UI will sit on top of. The peripheral rock-pillars, upper coral canopy, and outer corners are noticeably darker than the center stage to frame the eye inward. Overall brightness is dimmed to the 30-40% band (moonlight inside a stained-glass cove). Colors permitted: deep cobalt-blue, aqua-teal, polished-silver rock, pearl-pink coral, soft moon-aqua, dappled silver, pale-coral wisp sparkle, opal-iridescent highlight, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays, no hard UI edges — just the stained-glass panel itself filling the 16:9 canvas.

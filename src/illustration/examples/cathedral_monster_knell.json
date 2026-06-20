@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_monster_knell_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "taiko-drummer-spirit",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "royal-purple disembodied torso with crimson-red chest cyclops eye plus two floating purple hands with crimson-red palm-eyes drumming a giant taiko drum, OoT canon",
+  "secondaryElement": "concentric sound-wave rings background",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.2 — Shadow region boss, OoT knell canon"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_knell_001.webp"
+}

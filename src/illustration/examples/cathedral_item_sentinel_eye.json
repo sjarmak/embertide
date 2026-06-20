@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_sentinel_eye_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "heirloom",
+  "paletteRole": "legendary",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Sentinel optic lens — bronze Umbra housing with glowing cyan-teal central eye",
+  "secondaryElement": "slate-grey + cyan-teal Umbra-rune stained-glass rings",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — Sentinel wild-boss heirloom drop, lifts relic placeholder off `sentinel-eye`.",
+    "Wired on card id `sentinel-eye` (role='item')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_sentinel_eye_001.webp"
+}

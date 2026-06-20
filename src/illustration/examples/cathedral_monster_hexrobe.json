@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_hexrobe_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "mage",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_caster_spines",
+  "segmentationId": "radial_halo",
+  "ornamentId": "arcane_ring",
+  "focalElement": "hooded mage mid-cast with glowing violet eye-lights and spiraling magic-glyphs on both hands",
+  "secondaryElement": "radial violet rays from the staff tip contrasted against sun-gold Temple glass",
+  "cellBudget": 10,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Gilded Cage regular (u-6c) — arcane-ring ornament signals the `keys: 1` cost + caster flavor",
+    "Violet magic on sun-gold ground recreates the Temple's mystic vs sacred color contrast"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_hexrobe_001.webp"
+}

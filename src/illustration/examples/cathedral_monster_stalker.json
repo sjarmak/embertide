@@ -1,0 +1,21 @@
+{
+  "id": "cathedral_monster_stalker_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "stalker",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_stalker_cloaked",
+  "segmentationId": "broken_spires",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "hood void and bright eye line",
+  "secondaryElement": "single claw or blade glint",
+  "cellBudget": 10,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Use broken arch rhythm instead of heroic halo",
+    "Upper mass should feel predatory",
+    "Preserve one readable eye-line shape"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_stalker_001.webp"
+}

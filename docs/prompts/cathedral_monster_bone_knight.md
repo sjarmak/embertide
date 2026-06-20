@@ -1,0 +1,12 @@
+# cathedral_monster_bone_knight
+
+- **Bead:** embertide-25d
+- **Card:** bone-knight (Gilded Cage regular, u-6c)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_monster_bone_knight_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_monster_bone_knight.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with leaded stone pillars in sun-washed marble, trefoil and quatrefoil cornices in the arch spandrels, plain leaded inner border (regular enemy). Subject: the Bone Knight — a tall armored sentinel of fused armor and gilded stone, standing upright and centered at about sixty-five percent of the arch height in a guarded stance. There is no skeleton inside: the figure is a hollow suit of tarnished plate held together by the gilding motif — cracked gold-gilt corrosion welds the cuirass, pauldrons, and greaves at every seam, hairline gold fracture-lines branch across the dark metal, and through the gaps in the armor (the joints, the open visor, the vents of the breastplate) a faint amber inner glow shines from the empty cavity within, as if the suit is animated by caged ember-light rather than bone. A crested helm with two upswept gilt horns is lowered over a dark, faceless visor-slit from which two amber pinpoints stare. Both gauntleted hands grip a heavy broadsword held vertically before the body in a formal guard, the blade's fuller running with a thread of gold-gilt; a battered kite shield rides the other forearm, its boss gilded and cracked. Tattered banner-shreds and faint pale-gold vapor trail from the pauldrons. Background: sun-gold and amber stained-glass panels with radiating sacred-light rays behind the figure and a faint amber halo around the helm, thick dark leading lines separating segments, painterly tone variation within each pane. Colors permitted: tarnished dark-steel plate, cracked gold-gilt corrosion, gold fracture-lines, warm amber inner-glow and eye-pinpoints, gilt horns, pale-gold vapor, sun-gold background, amber pane, gold filigree trim, dark-leading-outline. Heraldic upright guarded-stance pose, strong vertical symmetry, sword held defensively before the body. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_boulderkin_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "lava-golem",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "broken_spires",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "towering humanoid boulder-golem with glowing molten lava veins and a crystalline ore-vein crown",
+  "secondaryElement": "radial rays with drifting volcanic ash, jagged broken-spire silhouettes above the arch",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Emberpeak wild-boss (u-6b) — broad-shouldered looming totem pose",
+    "Palette role elevated to `boss` while archetype stays `monster` (silver-chimera precedent)"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_boulderkin_001.webp"
+}

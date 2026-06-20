@@ -1,0 +1,22 @@
+{
+  "id": "cathedral_aurelia_light_arrow_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "aurelia_light_arrow",
+  "paletteRole": "legendary",
+  "silhouetteId": "hero_ranger_bow",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Princess Aurelia drawing a glowing golden light arrow at full draw",
+  "secondaryElement": "radiant golden rays bursting diagonally from the arrow tip; dark navy stained-glass background",
+  "cellBudget": 12,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Card face for princess-aurelia (granted on crystal break, fix-aurelia 2026-04-22)",
+    "Combat effect: combat-attack damage=5 (light-arrow shot) — authored in src/data/combatEffects.ts",
+    "Elysian royal dress with Embertide motifs, gold tiara with central pink jewel, blonde hair",
+    "Three-quarter archery pose, centered, full-figure head-to-below-knees"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_aurelia_light_arrow_001.webp"
+}

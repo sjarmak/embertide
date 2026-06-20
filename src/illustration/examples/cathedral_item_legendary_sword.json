@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_item_legendary_sword_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "legendary",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "vertical great sword with ruby pommel and gold crossguard",
+  "secondaryElement": "ethereal blue glow around silver blade",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["Sword centered on vertical axis", "Ruby + gold accents on emerald cathedral backdrop"],
+  "rasterImageUrl": "/illustrations/cathedral_item_legendary_sword_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_hero_brammel_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "mountain-king",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Brammel the Cragkin Sage of Fire, broad stony chieftain with dark beard and crossed arms",
+  "secondaryElement": "volcanic-red + warm-amber stained-glass panels with Cragkin-spiral inlays",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — canon Brammel portrait, lifts warrior placeholder off `mountain-king`.",
+    "Wired on card id `mountain-king` (role='hero')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_hero_brammel_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_saurian_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "scaled-warrior",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "broken_spires",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "bipedal reptilian warrior mid-lunge with a curved bronze scimitar raised overhead",
+  "secondaryElement": "molten-crimson heat-shimmer rays on volcanic-amber glass",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Emberpeak regular (u-6b) — aggressive lunge, broken-spires volcanic backdrop",
+    "Crimson + amber palette signals the Emberpeak zone"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_saurian_001.webp"
+}

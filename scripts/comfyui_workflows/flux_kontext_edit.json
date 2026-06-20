@@ -1,0 +1,100 @@
+{
+  "_comment": "Flux.1-Kontext-dev image-edit workflow (API format). Takes a reference image + a prompt; Kontext preserves the reference's style/structure while applying the prompt's instructions. Placeholders: <<PROMPT>>, <<REF_IMAGE>> (basename in ComfyUI's input/ dir), <<SEED>>, <<STEPS>>, <<GUIDANCE>>.",
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": ["11", 0],
+      "text": "<<PROMPT>>"
+    }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": ["11", 0],
+      "text": ""
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": ["13", 0],
+      "vae": ["10", 0]
+    }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "zs_kontext",
+      "images": ["8", 0]
+    }
+  },
+  "10": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    }
+  },
+  "11": {
+    "class_type": "DualCLIPLoader",
+    "inputs": {
+      "clip_name1": "t5xxl_fp16.safetensors",
+      "clip_name2": "clip_l.safetensors",
+      "type": "flux"
+    }
+  },
+  "12": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "flux1-kontext-dev.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "13": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": "<<SEED>>",
+      "steps": "<<STEPS>>",
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "model": ["12", 0],
+      "positive": ["16", 0],
+      "negative": ["7", 0],
+      "latent_image": ["20", 0]
+    }
+  },
+  "16": {
+    "class_type": "FluxGuidance",
+    "inputs": {
+      "conditioning": ["19", 0],
+      "guidance": "<<GUIDANCE>>"
+    }
+  },
+  "18": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "<<REF_IMAGE>>"
+    }
+  },
+  "19": {
+    "class_type": "ReferenceLatent",
+    "inputs": {
+      "conditioning": ["6", 0],
+      "latent": ["20", 0]
+    }
+  },
+  "20": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": ["21", 0],
+      "vae": ["10", 0]
+    }
+  },
+  "21": {
+    "class_type": "FluxKontextImageScale",
+    "inputs": {
+      "image": ["18", 0]
+    }
+  }
+}

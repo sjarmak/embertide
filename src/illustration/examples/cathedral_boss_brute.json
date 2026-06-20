@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_boss_brute_001",
+  "theme": "cathedral",
+  "archetype": "boss",
+  "subtype": "tyrant",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "broken_spires",
+  "ornamentId": "thorned_vines",
+  "focalElement": "horned head with tusks; broad forward-leaning torso",
+  "secondaryElement": "broken stone arch behind figure",
+  "cellBudget": 10,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Heavy upper mass; menacing forward lean",
+    "Amethyst purple dominant; broken arch framing"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_boss_brute_001.webp"
+}

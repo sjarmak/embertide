@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_red_squidlet_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "cephalopod",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_swarm_mask",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "crimson cephalopod body launching an ember-rock from a wide pursed mouth, eight stubby tentacles radiating",
+  "secondaryElement": "radial heat-wave rays from the mouth with soft volcanic-ash flecks",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Emberpeak regular (u-6b) — eightfold tentacle symmetry plus central projectile",
+    "Warm scarlet palette distinguishes this squidlet from the cooler aquatic flavor"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_red_squidlet_001.webp"
+}

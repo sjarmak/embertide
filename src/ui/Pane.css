@@ -1,0 +1,181 @@
+/*
+ * Pane primitive styles (embertide-b56 phase 1).
+ *
+ * Stained-glass backing + lead-frame border with optional corner
+ * medallions. All color values resolve through existing --hc-*
+ * tokens — NO new tokens introduced for this bead.
+ *
+ * Outer-padding budget: 8px MAX on the outer wrap.
+ *   - .pane-comfortable → 4px outer wrap padding
+ *   - .pane-compact     → 0px outer wrap padding
+ * Inner content padding is the consumer's responsibility (the
+ * .pane-content slot adds none).
+ *
+ * Naming: kebab-case throughout to satisfy the project stylelint
+ * `selector-class-pattern` rule. BEM-style `--` / `__` separators
+ * are not allowed in this project.
+ *
+ * stylelint note: this file composes --hc-* tokens inside
+ * linear-gradient(), radial-gradient(), and box-shadow lists. The
+ * project strict-value rule only inspects the first token after
+ * the declaration colon, so this file is exempted in
+ * .stylelintrc.cjs (same precedent as BossAltarPane.css). Every
+ * color reference still goes through a --hc-* token.
+ */
+
+.pane {
+  /*
+   * Per-family triplet — overridden by .pane-{family} modifiers
+   * below. Defaults sit on the neutral-shadow family so a Pane
+   * without a family modifier still renders sensibly.
+   */
+  --pane-jewel-100: var(--hc-shadow-500);
+  --pane-jewel-300: var(--hc-shadow-600);
+  --pane-jewel-700: var(--hc-shadow-800);
+  --pane-lead: var(--hc-lead-iron-700);
+  --pane-glow: var(--hc-glow-shadow);
+
+  position: relative;
+  display: block;
+  border: 1px solid var(--pane-lead);
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--pane-jewel-300) 0%, var(--pane-jewel-700) 100%);
+  box-shadow:
+    inset 0 0 0 1px var(--pane-lead),
+    inset 0 2px 6px var(--hc-shadow-900),
+    0 0 6px 1px var(--pane-glow);
+  color: var(--hc-text-primary);
+  isolation: isolate;
+}
+
+/* Density modifiers — control outer-wrap padding only. */
+.pane-comfortable {
+  padding: 4px;
+}
+
+.pane-compact {
+  padding: 0;
+}
+
+/*
+ * Color-family modifiers. Each rebinds the --pane-* triplet to a
+ * jewel + lead + glow combination from the existing token set. No
+ * structural CSS — only token rebinding — so every family inherits
+ * the base .pane geometry.
+ */
+.pane-sapphire {
+  --pane-jewel-100: var(--hc-jewel-sapphire-100);
+  --pane-jewel-300: var(--hc-jewel-sapphire-300);
+  --pane-jewel-700: var(--hc-jewel-sapphire-700);
+  --pane-lead: var(--hc-lead-silver-700);
+  --pane-glow: var(--hc-glow-sapphire);
+}
+
+.pane-emerald {
+  --pane-jewel-100: var(--hc-jewel-emerald-100);
+  --pane-jewel-300: var(--hc-jewel-emerald-300);
+  --pane-jewel-700: var(--hc-jewel-emerald-700);
+  --pane-lead: var(--hc-lead-iron-700);
+  --pane-glow: var(--hc-glow-emerald);
+}
+
+.pane-amber {
+  --pane-jewel-100: var(--hc-jewel-amber-100);
+  --pane-jewel-300: var(--hc-jewel-amber-300);
+  --pane-jewel-700: var(--hc-jewel-amber-700);
+  --pane-lead: var(--hc-lead-gold-700);
+  --pane-glow: var(--hc-glow-amber);
+}
+
+.pane-ruby {
+  --pane-jewel-100: var(--hc-jewel-ruby-100);
+  --pane-jewel-300: var(--hc-jewel-ruby-300);
+  --pane-jewel-700: var(--hc-jewel-ruby-700);
+  --pane-lead: var(--hc-lead-gold-700);
+  --pane-glow: var(--hc-glow-ruby);
+}
+
+.pane-amethyst {
+  --pane-jewel-100: var(--hc-jewel-amethyst-100);
+  --pane-jewel-300: var(--hc-jewel-amethyst-300);
+  --pane-jewel-700: var(--hc-jewel-amethyst-700);
+  --pane-lead: var(--hc-lead-iron-700);
+  --pane-glow: var(--hc-glow-pearl);
+}
+
+.pane-pearl {
+  --pane-jewel-100: var(--hc-jewel-pearl-100);
+  --pane-jewel-300: var(--hc-jewel-pearl-300);
+  --pane-jewel-700: var(--hc-jewel-pearl-700);
+  --pane-lead: var(--hc-lead-silver-700);
+  --pane-glow: var(--hc-glow-pearl);
+}
+
+.pane-neutral-shadow {
+  --pane-jewel-100: var(--hc-shadow-500);
+  --pane-jewel-300: var(--hc-shadow-600);
+  --pane-jewel-700: var(--hc-shadow-800);
+  --pane-lead: var(--hc-lead-iron-700);
+  --pane-glow: var(--hc-glow-shadow);
+}
+
+/*
+ * Content slot. No padding — inner padding is the consumer's
+ * responsibility per the b56 design contract. position:relative
+ * keeps content above the medallion <span>s in stacking order.
+ */
+.pane-content {
+  position: relative;
+  z-index: 1;
+}
+
+/*
+ * Corner medallions. Four 12px discs sitting on top of the lead
+ * frame, one per corner. The medallion fill mirrors the family's
+ * lead token so the medallions read as integral to the frame
+ * rather than as an applied ornament.
+ *
+ * Positioning anchors the medallion CENTER on the frame's outer
+ * border line (translate(-50%, -50%) on the corner coordinates),
+ * so density changes don't shift the medallion relative to the
+ * frame.
+ */
+.pane-medallion {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 35%,
+    var(--hc-lead-gold-500) 0%,
+    var(--pane-lead) 70%,
+    var(--hc-shadow-900) 100%
+  );
+  box-shadow: 0 0 4px 0 var(--pane-glow);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pane-medallions .pane-medallion-tl {
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.pane-medallions .pane-medallion-tr {
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.pane-medallions .pane-medallion-bl {
+  bottom: 0;
+  left: 0;
+  transform: translate(-50%, 50%);
+}
+
+.pane-medallions .pane-medallion-br {
+  bottom: 0;
+  right: 0;
+  transform: translate(50%, 50%);
+}

@@ -1,0 +1,22 @@
+{
+  "id": "cathedral_aurelia_freed_001",
+  "theme": "cathedral",
+  "archetype": "story-reveal",
+  "subtype": "aurelia_freed",
+  "paletteRole": "legendary",
+  "silhouetteId": "hero_sage_halo",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Princess Aurelia standing with golden aura, freed from the shattered crystal",
+  "secondaryElement": "rose-pink crystal shards drifting upward around her feet, warm holy sunrays fanning from behind",
+  "cellBudget": 12,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "PrincessCrystalCell reveal state (120w × 120h) — Aurelia replaces the crystal when `princessCrystal.freed === true`",
+    "Warm gold CSS drop-shadow glow applied on top of the webp in PrincessCrystalCell.css",
+    "Full figure from head to below-knees; centered vertical symmetry to match crystal silhouette geometry",
+    "No cathedral arch / stone frame inside the composition — the cell's chrome is the only frame"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_aurelia_freed_001.webp"
+}

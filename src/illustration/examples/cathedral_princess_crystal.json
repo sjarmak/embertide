@@ -1,0 +1,22 @@
+{
+  "id": "cathedral_princess_crystal_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "princess_crystal",
+  "paletteRole": "legendary",
+  "silhouetteId": "princess_in_crystal",
+  "segmentationId": "hex_lattice",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "isolated faceted pink rose-quartz crystal with Princess Aurelia slumbering inside",
+  "secondaryElement": "transparent PNG background — no frame, no arch; the crystal IS the cell",
+  "cellBudget": 8,
+  "usesHalo": false,
+  "usesBackdropMotif": false,
+  "notes": [
+    "PrincessCrystalCell interior (120w × 120h) — pink rose-quartz crystal with Aurelia's silhouette, isolated on transparent alpha",
+    "No cathedral arch / stone frame in the raster — the cell's surrounding UI chrome is the only frame",
+    "Princess rendered with blonde hair + white gown + gold tiara, visible through the translucent pink facets",
+    "Same raster renders for both charged and freed states; freed applies a brighter rose-halo CSS filter and the banner-swap signals state"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_princess_crystal_001.png"
+}

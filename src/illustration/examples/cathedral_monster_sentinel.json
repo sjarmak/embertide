@@ -1,0 +1,22 @@
+{
+  "id": "cathedral_monster_sentinel_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "sentinel",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "hex_lattice",
+  "ornamentId": "mechanical_aperture",
+  "focalElement": "glowing cyan eye with straight diagonal laser beam across the glass",
+  "secondaryElement": "six segmented legs curling in radial sentinel pose",
+  "cellBudget": 10,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Wild-boss surface — ancient mechanical defender of the cathedral interior",
+    "Teal-cyan glass dominant + silver-blue rays + gold filigree on body",
+    "Diagonal laser-beam breaks the vertical symmetry on purpose (menace signal)",
+    "Hex-lattice segmentation chosen for mechanical construct feel"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_sentinel_001.webp"
+}

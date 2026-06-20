@@ -1,0 +1,254 @@
+/*
+ * DieRollReveal — single-die rolling animation (embertide-ynn4).
+ *
+ * Replaces RollCommitModal's 3-face fan with a single die that tumbles,
+ * settles on a pre-rolled face, then reveals the outcome label. Palette
+ * + parchment cadence mirror ChestReveal so the two "automatic loot
+ * reveal" surfaces feel like siblings.
+ */
+
+/* stylelint-disable scale-unlimited/declaration-strict-value --
+   The die face / pip / shadow gradients use bespoke literal hex + rgba
+   values for one-off aesthetic depth (specular highlight on the die
+   face, near-black pips, soft drop-shadows). Tokenizing these would
+   bloat the design-token surface without reuse — each value appears
+   exactly once. The shared cathedral palette is still pulled in via
+   var(--hc-*) where it makes sense (parchment fills, lead-gold
+   borders, lead-900 text). */
+
+.die-roll-reveal-panel {
+  background: radial-gradient(
+    circle at 30% 25%,
+    var(--hc-parchment-100, #f7eccf) 0%,
+    var(--hc-parchment-300, #dbc289) 65%,
+    var(--hc-parchment-500, #b28a48) 100%
+  );
+  border: 2px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 18px;
+  padding: 24px 32px;
+  min-width: 280px;
+  max-width: min(420px, 92vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow:
+    0 0 0 4px rgba(184, 145, 66, 0.35),
+    0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.die-roll-reveal-title {
+  font-family: var(--hc-font-display);
+  font-size: var(--hc-text-xl);
+  font-weight: var(--hc-font-weight-bold);
+  color: var(--hc-lead-900, #1a1005);
+  letter-spacing: var(--hc-tracking-chrome-sm);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.die-roll-reveal-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  min-height: 96px;
+}
+
+.die-roll-reveal-die {
+  width: 88px;
+  height: 88px;
+  background: linear-gradient(135deg, #f3e8c8 0%, #c8a965 100%);
+  border: 2px solid var(--hc-lead-gold-700, #7a5a1e);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.25),
+    0 4px 12px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  transition:
+    transform 200ms ease-out,
+    box-shadow 200ms ease-out;
+}
+
+/*
+ * Tumble: 0.9s of fast rotation + bobbing while the displayFace prop
+ * cycles random values every 150ms. Combines a 360° spin with a small
+ * vertical bob so the die looks like it's being shaken in a fist.
+ */
+.die-roll-reveal-die[data-settled='false'] {
+  animation: die-roll-tumble 900ms cubic-bezier(0.55, 0.06, 0.68, 0.19);
+}
+
+@keyframes die-roll-tumble {
+  0% {
+    transform: rotate(-8deg) translateY(0) scale(0.92);
+  }
+
+  35% {
+    transform: rotate(180deg) translateY(-12px) scale(1.05);
+  }
+
+  70% {
+    transform: rotate(360deg) translateY(-6px) scale(1);
+  }
+
+  100% {
+    transform: rotate(720deg) translateY(0) scale(1);
+  }
+}
+
+/*
+ * Settle: brief 200ms wobble after landing. The transition rule on the
+ * base style handles the easing back to neutral.
+ */
+.die-roll-reveal-die[data-settled='true'] {
+  animation: die-roll-settle 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes die-roll-settle {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.die-roll-reveal-pips {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.die-roll-reveal-pip-filled,
+.die-roll-reveal-pip-empty {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.die-roll-reveal-pip-filled {
+  background: radial-gradient(circle at 30% 30%, #2c1a08 0%, #1a1005 100%);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.55);
+}
+
+.die-roll-reveal-pip-empty {
+  background: transparent;
+}
+
+/*
+ * Stained-glass d20 (embertide-x4r2). Drops the cream-marble panel
+ * box that the d6 pip die uses — the SVG has its own faceted body and
+ * gold leading, so the wrapper just needs to clip + drop-shadow.
+ *
+ * Footprint is intentionally larger than the d6 (144px vs 88px) so the
+ * five faceted panes read as leaded-glass at gameplay scale rather than
+ * collapsing into a flat blue blob (post-x4r2 polish round 1, after
+ * playtester capture flagged the 88px footprint as too cramped).
+ */
+.die-roll-reveal-die-d20 {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  width: 144px;
+  height: 144px;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
+}
+
+.die-roll-reveal-die-d20::before,
+.die-roll-reveal-die-d20::after {
+  content: none;
+}
+
+.die-roll-reveal-d20 {
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  /* Subtle radial halo behind the SVG so the pentagon doesn't sit
+     directly against the parchment panel — adds a hint of altar glow. */
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(232, 189, 89, 0.28) 0%,
+    rgba(232, 189, 89, 0.12) 35%,
+    transparent 70%
+  );
+  border-radius: 50%;
+}
+
+/*
+ * Outcome label slides in from the right after the die settles. Shorter
+ * ChestReveal-style entry — 280ms slide + fade.
+ */
+.die-roll-reveal-outcome {
+  font-family: var(--hc-font-display);
+  font-size: var(--hc-text-lg);
+  font-weight: var(--hc-weight-lg);
+  color: var(--hc-lead-900, #1a1005);
+  background: rgba(255, 255, 255, 0.55);
+  padding: 8px 14px;
+  border: 1px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 10px;
+  animation: die-roll-outcome-slidein 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes die-roll-outcome-slidein {
+  0% {
+    opacity: 0;
+    transform: translateX(12px) scale(0.94);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.die-roll-reveal-dismiss {
+  /* 44x44 tap-target compliance (REQ-12 L3 audit). */
+  min-width: 88px;
+  min-height: 44px;
+  padding: 8px 18px;
+  font-family: var(--hc-font-display);
+  font-size: var(--hc-text-sm);
+  font-weight: var(--hc-font-weight-bold);
+  letter-spacing: var(--hc-tracking-chrome-sm);
+  text-transform: uppercase;
+  color: var(--hc-lead-900, #1a1005);
+  background: linear-gradient(
+    180deg,
+    var(--hc-parchment-100, #f7eccf) 0%,
+    var(--hc-parchment-300, #dbc289) 100%
+  );
+  border: 1px solid var(--hc-lead-gold-700, #7a5a1e);
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+  transition:
+    background 120ms ease,
+    transform 120ms ease;
+}
+
+.die-roll-reveal-dismiss:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.die-roll-reveal-dismiss:hover:not(:disabled) {
+  background: linear-gradient(180deg, #fff8e0 0%, var(--hc-parchment-100, #f7eccf) 100%);
+  transform: translateY(-1px);
+}

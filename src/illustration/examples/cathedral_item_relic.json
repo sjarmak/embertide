@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_item_relic_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "relic",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "winged emerald talisman suspended in light beam",
+  "secondaryElement": "gold filigree wings flanking central gem",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": ["Symmetrical wings; emerald jewel is the focal point", "Gold + emerald palette"],
+  "rasterImageUrl": "/illustrations/cathedral_item_relic_001.webp"
+}

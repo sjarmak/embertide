@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_chimera_sword_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "heirloom",
+  "paletteRole": "legendary",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "curved silver-white Chimera saber with mane-hair-wrapped grip and rainbow-opal pommel",
+  "secondaryElement": "silver-white + prismatic pastel rainbow stained-glass rings",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — silver-chimera secondary heirloom art (nano-banana-pro, 2K webp).",
+    "Wired on card id `chimera-sword` (role='item'; gm0.15 secondary heirloom). Distinct from `silver-chimera-mane`."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_chimera_sword_001.webp"
+}

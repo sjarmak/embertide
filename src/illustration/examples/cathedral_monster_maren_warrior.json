@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_monster_maren_warrior_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "turquoise-spear-warrior",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_stalker_cloaked",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "turquoise-scaled Maren spear-wielder, Twilight Princess style",
+  "secondaryElement": "cool-cobalt water-light caustics",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.1.1 — Maren regular"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_maren_warrior_001.webp"
+}

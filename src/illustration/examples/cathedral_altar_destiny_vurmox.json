@@ -1,0 +1,27 @@
+{
+  "id": "cathedral_altar_destiny_vurmox_001",
+  "role": "destiny-altar",
+  "theme": "cathedral",
+  "variant": "destiny",
+  "aspectRatio": "2:3",
+  "resolution": "1536x2304",
+  "focalElement": "ornate obsidian-and-gold altar with Demon King silhouette carved into the back wall",
+  "secondaryElement": "purple-amethyst flame pillars, jagged Embertide fragment at apex, skulls and shattered Emberblade hilt at base",
+  "palette": [
+    "obsidian-black (#0a0a12)",
+    "hc-lead-gold-500 (#b89142)",
+    "hc-lead-gold-700 (#8b6a2a)",
+    "hc-jewel-amethyst-500 (#5b3a8a)",
+    "hc-jewel-amethyst-700 (#361e5b)",
+    "ember-red apex glow"
+  ],
+  "notes": [
+    "Bespoke raster for the Vurmox DESTINY slot — NOT a shared altar frame.",
+    "Rendered at 1536×2304 for high-DPR clarity. The destiny pane was formerly rendered at 1.5× CSS scale (u-9d) but the 2026-04-22 Round 2 polish reverted that to 1× to stop the pane from overflowing the altar row; the raster still scales down cleanly at the 1× footprint.",
+    "Cutout overlay: outer ~25% frame opaque, inner arch silhouette fully transparent (alpha 0) so the stained-glass pane shows through.",
+    "Raster was generated via fal-ai/nano-banana-pro at 3:4 aspect, 2K resolution, then chroma-keyed to alpha via BFS flood-fill on the model's checkerboard transparency indicator (tol=45 catches both shades of the grey checkerboard).",
+    "A soft gold aura CSS overlay (radial gradient, 4s opacity pulse) animates ON TOP of this raster but BELOW the boss portrait/name/HP children — see `[data-variant=\"destiny\"]` rules in BossAltarPane.css. (Earlier iterations used a 9s-12s conic+mask spin mandala; it was replaced in Round 2 polish because the rotation flickered against the raster's soft-alpha rim.)"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_altar_destiny_vurmox_001.webp",
+  "promptDoc": "docs/prompts/cathedral_altar_destiny_vurmox.md"
+}

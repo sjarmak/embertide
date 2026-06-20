@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_chest_sturdy_001",
+  "theme": "cathedral",
+  "archetype": "chest",
+  "subtype": "sturdy",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "humble oak-plank chest with iron bands and brass corner caps",
+  "secondaryElement": "forest-green + warm-amber stained-glass rings behind the chest",
+  "cellBudget": 8,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — entry-tier wooden chest art, wired on role `chest-std` (replaces the old cathedral_chest_medium raster).",
+    "Designer feedback: sturdy chest should read as honest wood, no gold filigree."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_chest_sturdy_001.webp"
+}

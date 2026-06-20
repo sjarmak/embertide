@@ -1,0 +1,12 @@
+# cathedral_item_ancient_sword
+
+- **Bead:** embertide-pr2 (2026-04-23 item art backlog)
+- **Card:** ancient-sword (existing id; bespoke art — legendary-sword currently aliases to it)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_item_ancient_sword_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_item_ancient_sword.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with leaded stone pillars on left and right carved with stacked-strata reliefs, trefoil quatrefoil cornices in the arch spandrels and radiant gold leaf filigree. Subject: an Ancient Sword standing vertically point-down as if planted in stone, approximately eighty-five percent of the arch height — a long, leaf-tapered single-fuller blade forged of dark meteoric iron, its surface a mottled smoke-grey with rippling watered-steel layering and warm copper oxidation creeping along the spine. Threading the central fuller is a thin inlaid channel of molten ember-amber light, the blade's relic heat showing through hairline fractures near the tip. The cross-guard is a flat crescent of pitted bronze, its two arms swept gently downward toward the blade and capped with small acorn-bosses; the grip is bound in oxblood cord lapped with fine gold wire; the pommel is a plain heavy iron drop, off-center-seamed, with a single bead of amber set in its base. No wings, no sapphire, no angular rune-script — the antiquity reads through weathering and the ember-channel, not engraving. Faint warm-amber heat-shimmer curls off the edges. Background: stained-glass panels in a deep slate-grey and warm-copper palette arranged as concentric strata-rings radiating outward behind the sword, with small acorn-boss inlays in the outer ring. Thick dark leading lines separating glass segments, painterly stained-glass tone variation within each segment. Cool low cathedral lighting from upper left with warm ember underglow from the blade-channel. Colors permitted: smoke-grey-steel, watered-steel-ripple, copper-oxidation, pitted-bronze-guard, ember-amber-channel, oxblood-cord, warm-gold-wire, iron-pommel-grey, deep-slate-grey, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

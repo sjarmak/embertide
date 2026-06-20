@@ -1,0 +1,72 @@
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+
+# Node / Vite
+node_modules
+dist
+dist-ssr
+*.local
+
+# Ladle static build output
+build
+
+# Editor/OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Generated theme strings — never committed (regenerated from tokens)
+theme.json
+
+# Test output
+coverage
+
+# Snapshot tooling output (curated finals live under docs/illustration-snapshots)
+screenshots/
+.snap/
+.screenshots/snap-*.png
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Playtester narrative reports (throwaway, regenerated per run)
+docs/playtest-reports/
+
+# Agent worktrees (orphan copies from prd-build dispatches — not source of truth)
+.claude/worktrees/
+.claude/scheduled_tasks.lock
+example_smudges/
+
+# Gas City
+.beads/*
+!.beads/config.yaml
+!.beads/metadata.json
+
+# prd-build orchestration artifacts
+.prd-build/
+
+# Local agent runtime state (Gas City events/settings)
+.gc/
+
+# Codex CLI install state (per-user plugin, not project state)
+.codex/
+
+# Ad-hoc user-shared screenshots (not curated assets)
+user_screenshots/
+
+# Art-regen progress manifest (local only)
+scripts/.regen-done.txt
+
+# De-IP migration artifacts + working dirs — kept on disk, OUT of the
+# clean product history (the term-map necessarily lists the source IP).
+deip/
+docs/_legacy-infringing/
+.brainstorm/
+.claude/
+.codegraph/

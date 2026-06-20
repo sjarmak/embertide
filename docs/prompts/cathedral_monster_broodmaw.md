@@ -1,0 +1,12 @@
+# cathedral_monster_broodmaw
+
+- **Bead:** embertide-iy8
+- **Card:** broodmaw (Sylvanwood region-boss, u-6a)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_monster_broodmaw_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_monster_broodmaw.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with leaded stone pillars left and right entwined with emerald ivy, trefoil and quatrefoil cornices in the arch spandrels, and a region-boss rose-window crowning the upper arch — a dense radial wheel of gold-filigree web-tracery, the densest ornamentation of the bestiary. Subject: the Broodmaw — a monstrous brood-mother centered at about sixty-five percent of the arch height, her bulk a single great egg-sac abdomen slung beneath a segmented thorax, eight barbed legs radiating outward in a symmetric radial fan. The gilding motif has consumed her: cracked gold-gilt corrosion plates the carapace and the swollen egg-sac, hairline gold fracture-lines run along every leg-segment, and a faint amber inner glow pulses through the translucent skin of the egg-sac, lighting the clustered eggs within from inside like embers in a lantern. Her face is a broad shield of gilt chitin split by twin curved mandibles and dominated by a single large amber eye with a narrow vertical slit pupil — the slit the only dark feature inside a smooth amber iris, glowing with the inner-furnace light, no extra spots or speckles. Thin pale-gold vapor drifts from the egg-sac seams. Background: deep forest-green and cool-viridian stained-glass panels with radial amber rays bursting outward from the eye, backlit by a tangled emerald webbing motif, thick dark leading lines separating segments, painterly tone variation within each pane. Colors permitted: emerald-black carapace, cracked gold-gilt corrosion, gold fracture-lines, warm amber inner-glow and eye, gilt chitin ridges, pale-gold vapor, forest-green background, cool-viridian pane, amber rim-highlight, dark-leading-outline. Heraldic menacing radial pose, strong eightfold symmetry (eight legs) around a vertical axis. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

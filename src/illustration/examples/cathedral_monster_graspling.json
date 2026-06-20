@@ -1,0 +1,16 @@
+{
+  "id": "cathedral_monster_graspling_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "disembodied-hand",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "massive disembodied shadowy hand descending from ceiling with single milky-white eye on the palm",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.2 — Shadow regular, OoT canon"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_graspling_001.webp"
+}

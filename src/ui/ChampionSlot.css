@@ -1,0 +1,111 @@
+/*
+ * ChampionSlot — main-board tray tile. Mirrors the Setup champion pick
+ * tile (.setup-champion-tile) so the player's chosen champion reads the
+ * same way in the tray as it did during selection: square art panel at
+ * the top, parchment name plate below (designer feedback 2026-04-24).
+ *
+ * Stylelint exception for declaration-strict-value (inside box-shadow
+ * lists) follows the BossAltarPane.css precedent.
+ */
+
+.champion-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 96px;
+  height: 96px;
+
+  /* User direction 2026-04-26 (arq3 follow-up): champion icon doubled
+     from 48px to 96px so the portrait reads at-a-glance in the player
+     pane. The full name plate is still dropped (display name surfaces
+     on hover via `title` attribute set on the wrapper). */
+  min-height: 0;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--hc-parchment-50, #fbf6e9);
+  border: 1.5px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-700, #8b6a2a),
+    0 1px 2px rgb(0 0 0 / 30%);
+}
+
+.champion-slot[data-active='true'] {
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow:
+    inset 0 0 0 1.5px var(--hc-lead-gold-500, #b89142),
+    0 0 0 2px var(--hc-glow-amber, rgb(232 189 89 / 55%)),
+    0 1px 4px rgb(0 0 0 / 45%);
+}
+
+.champion-slot-portrait {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+  background: var(--hc-parchment-100, #f4ebd3);
+  box-sizing: border-box;
+}
+
+.champion-slot-portrait > :first-child {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/*
+ * Designer polish 2026-04-22 Round 2 (Issue 2): block pointer events on
+ * the rendered SVG portrait so hover/tooltip resolution bubbles to the
+ * parent `.champion-slot` wrapper. Without this, browsers use the SVG's
+ * inner `<title>` element (which carries a generic "hero starter
+ * illustration" aria-label from `buildAriaLabel`) as the native tooltip,
+ * preempting the `title="<Hero>: <effect> (HP)"` on the wrapper. With
+ * pointer-events:none on the SVG, the cursor is always considered to
+ * be over the wrapper, so the composed tooltip shows.
+ */
+.champion-slot-portrait > svg {
+  pointer-events: none;
+}
+
+.champion-slot-plate {
+  /* User direction 2026-04-26: champion becomes a small icon square; the
+     visible name plate is hidden (display name still surfaces via the
+     wrapper's title attribute / aria-label). The plate stays in the DOM
+     so existing tests that reach the .champion-slot-{id}-name testid
+     still resolve, but it does not consume vertical space. */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.champion-slot-name {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome);
+  text-transform: uppercase;
+  color: var(--hc-parchment-700, #7f6a3f);
+  text-align: center;
+  line-height: 1.1;
+}
+
+.champion-slot-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 2;
+}

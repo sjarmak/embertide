@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_seeing_stone_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "revealer",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "arcane_ring",
+  "focalElement": "faceted scrying orb on ornate stone pedestal",
+  "secondaryElement": "gold radial light rays from orb",
+  "cellBudget": 10,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Sapphire/silver dominant; pedestal anchors composition",
+    "Rose-window backdrop instead of arch — accepted variant"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_seeing_stone_001.webp"
+}

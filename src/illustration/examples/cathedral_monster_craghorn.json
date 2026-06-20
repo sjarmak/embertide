@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_craghorn_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "one-eyed-ogre",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "massive one-eyed forest ogre with a glowing amber cyclops eye and a traveler's-weapon trophy necklace",
+  "secondaryElement": "radial amber rays bursting outward from the central eye",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Sylvanwood wild-boss (u-6a) — eye-centered radial composition signals the shard-level threat",
+    "Palette role elevated to `boss` while archetype stays `monster` (matches silver-chimera precedent)"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_craghorn_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_scrabling_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "goblin-raider",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "hunched goblin raider brandishing a knotted club overhead, brass keys at the belt",
+  "secondaryElement": "dappled forest sunbeam rays breaking through a high canopy",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Sylvanwood regular (u-6a) — humanoid charge pose",
+    "Scrabling's `keys: 1` drop is hinted visually by the belt-keys motif"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_scrabling_001.webp"
+}

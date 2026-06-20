@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_grapplethorn_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "weapon",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "spring-loaded bronze-and-steel grappling launcher with barbed claw-tip on a taut chain mid-fire",
+  "secondaryElement": "teal power-gem set in the brass-geared housing; steel-blue motion-burst backdrop",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "tib8 — bespoke item-check opener portrait (nano-banana-pro, 2K webp).",
+    "Wired on card id `grapplethorn` (role='item'; breaks Tidewraith's guard). Grapple chain + claw, distinct from the generic `relic` fallback."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_grapplethorn_001.webp"
+}

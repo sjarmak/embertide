@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_chest_medium_001",
+  "theme": "cathedral",
+  "archetype": "chest",
+  "subtype": "medium",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "gold-trimmed chest with central emerald jewel on lid",
+  "secondaryElement": "stained glass tracery framing the chest",
+  "cellBudget": 10,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Mid-tier ornamentation; emerald jewel on gold ground",
+    "Tracery rosettes flank composition"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_chest_medium_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_vital_ember_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "consumable",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "full crystal heart built from four wedge segments, ruby-red with gold filigree seams",
+  "secondaryElement": "rose-red + radiant-gold stained-glass starburst behind the heart",
+  "cellBudget": 8,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — +1 hpMax collectible art (nano-banana-pro, 2K webp).",
+    "Anchors the uncapped-HP story now that HP_CAP=Infinity. Surfaced in ChestReveal reward icon (bead embertide-063)."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_vital_ember_001.webp"
+}

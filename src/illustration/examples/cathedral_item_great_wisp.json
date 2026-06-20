@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_great_wisp_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "passive",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Great Wisp emerging from petals, rose-magenta hair, butterfly wings, benevolent pose",
+  "secondaryElement": "lotus-pink + gold stained-glass petals radiating behind the figure",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — boost/passive item art (nano-banana-pro, 2K webp).",
+    "Wired on card id `great-wisp` (role='item')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_great_wisp_001.webp"
+}

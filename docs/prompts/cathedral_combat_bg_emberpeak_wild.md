@@ -1,0 +1,13 @@
+# cathedral_combat_bg_emberpeak_wild
+
+- **Bead:** embertide-pr2 (wild-boss combat BG variants, 2026-04-23)
+- **Card:** N/A — combat-background (wild-boss arena, emberpeak)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=16:9`, `output_format=jpeg`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_combat_bg_emberpeak_wild_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_combat_bg_emberpeak_wild.json`
+- **Post-processing:** gamma 0.64 applied to lift average luminance from 16.8% (raw) into the 30-40% target band — final 29.1%.
+
+## Prompt
+
+Stained glass landscape panel, 16:9 widescreen format, Elysian Cathedral card-art style: a high exterior ridge on the flanks of Emberpeak — a weathered volcanic shelf, with the distant summit visible in the deep background haze, crowned by a free-floating SMOKE-RING HALO encircling the peak (a torus of charcoal smoke with embedded ember-fire, orbiting horizontally around the summit). Jagged obsidian basalt outcrops lean inward on left and right to form a natural ridge-top archway framing the scene, their surfaces veined with glowing lava-red cracks. A thick ribbon of molten lava flows across the mid-background between the outcrops, casting ember light into the scene. Small floating cinder sparks drift upward. Subtle gloom traces creep along cracks in the foreground rock — asymmetric irregular fuchsia-magenta stains with black-tar edges, a restrained cooler-toned magical-blight threat distinct from the orange lava. Rendered as a full stained-glass landscape panel: thick dark leading lines segmenting the glass into distinct painterly panes (sky-glass, smoke-halo-glass, basalt-glass, lava-glass, ridge-stage-glass), painterly stained-glass tone variation within each segment, saturated vivid cathedral-glass colors throughout. Crucially, the lower-center area of the panel is a CLEAR OPEN STAGE — the glass tone at lower-center is intentionally lighter and cleaner (a dark obsidian flagstone ridge-top pooled with ember light), with no creatures, no figures, no text, no UI, no cards, no banners — it reads as a battlefield surface that the UI will sit on top of. The outer basalt columns, upper smoke sky, and distant summit are noticeably darker than the stage center. Overall brightness is dimmed to the 30-40% band (exterior dusk with volcanic glow). Colors permitted: black basalt, obsidian, deep blood-red sky, molten-amber, ember-orange, fire-yellow, lava-red, iron gunmetal, charcoal smoke-grey, fuchsia-gloom trace, black-tar-gloom edge, bronze-accent, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays, no hard UI edges — just the stained-glass panel itself filling the 16:9 canvas.

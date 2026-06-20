@@ -1,0 +1,26 @@
+{
+  "id": "cathedral_monster_chimera_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "guard-warrior",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "poised centaur warrior with solid earth-red-brown coat, tawny golden-brown mane, bull-horned head, single bronze longsword held diagonally across the body in a forward-leaning guard stance",
+  "secondaryElement": "warm amber and sunset-rose glass panels with soft golden-pink gradient rays radiating outward, warm directional lighting from upper right",
+  "cellBudget": 10,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Tier-2 colosseum boss surface — LIGHTER counterpart to silver-chimera per the stat-ordering invariant (Adaptive 2 vs 3; gildedCage.ts:127-144)",
+    "Solid earth-red-brown coat with NO stripes or zebra pattern — distinguishes from silver-chimera's black-and-silver zebra register",
+    "Single bronze one-handed longsword (vs silver-chimera's two-handed silver-chrome greatsword) signals the lighter weapon tier",
+    "Leather + brass-scale armor (vs silver-chimera's chrome plate) signals the lighter armor tier",
+    "Poised guard stance, weight on rear hooves, ready-to-spring (vs silver-chimera's mid-charge with greatsword raised overhead)",
+    "Warm amber + sunset-rose glass with radial-halo segmentation (vs silver-chimera's cool-cobalt + indigo with broken-spires jagged shards) — distinct backdrop family signaling the lighter tier",
+    "cellBudget 10 (vs silver-chimera's 11) — fewer ornament cells signals the lighter render",
+    "Designer ruling: embertide-designer-ruling-pish-chimera-art-2026-05-05; designer re-review: embertide-designer-rereview-pish-prompt-2026-05-05"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_chimera_001.webp"
+}

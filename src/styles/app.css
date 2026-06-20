@@ -1,0 +1,5437 @@
+/*
+ * App-wide styles for the Kid Mode UI shell.
+ * Keep rules generic; no franchise-specific names.
+ */
+
+/*
+ * @font-face descriptors must remain as literal values — CSS spec does not
+ * reliably support `var()` substitution inside @font-face descriptor lists,
+ * so the family name + weight metadata stays inline. Stylelint typography
+ * enforcement (95bo) skips this block via the disable directive below.
+ */
+/* stylelint-disable scale-unlimited/declaration-strict-value */
+@font-face {
+  font-family: Cinzel;
+  src: url('/fonts/Cinzel-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter Variable';
+  src: url('/fonts/InterVariable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+/* stylelint-enable scale-unlimited/declaration-strict-value */
+
+/*
+ * Cascade-layer declaration (embertide-275m).
+ *
+ * The legacy cascade in this file mixes low-specificity baseline rules
+ * with higher-specificity scope-bound overrides in non-monotonic order.
+ * Stylelint's `no-descending-specificity` rule flagged 63 violations from
+ * the V-5 / V-9eou / 4jxh card-frame eras. Rather than reorder ~4000
+ * lines of CSS (high regression risk), we wrap the offending lower-
+ * specificity rules in `@layer base`. Unlayered rules win over all
+ * layered rules, so existing higher-specificity unlayered rules continue
+ * to dominate exactly as before — the cascade outcome is unchanged.
+ *
+ * Layer order matches `tokens.css`: tokens, base, typography, components,
+ * utilities, overrides. Only `base` is used in this file.
+ */
+@layer tokens, base, typography, components, utilities, overrides;
+
+:root {
+  color-scheme: dark;
+
+  /* 95bo: body face is Inter Variable, falls back to system-ui chain.
+     Per-element display work uses --hc-font-display (Cinzel). */
+  font-family: var(--hc-font-body);
+  font-weight: var(--hc-font-weight-regular);
+  font-feature-settings:
+    'cv05' 1,
+    'cv11' 1,
+    'ss01' 1;
+
+  /* embertide-9c7: explicit dark theme so the PWA manifest bg (#1a1a1a)
+     and the in-app canvas agree, and so we never render system-default black
+     text on a dark canvas. */
+  background-color: #1a1a1a;
+  color: #f2f2f2;
+  font-synthesis: none;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--hc-bg-app, #05080f);
+  color: var(--hc-text-primary, #f6f2e6);
+  font-family: var(--hc-font-body);
+}
+
+.app-root {
+  height: 100vh;
+
+  /* Use dynamic viewport height where supported so iOS Safari's home
+     bar / URL bar correctly reduce the available area in landscape.
+     Falls back to 100vh (above) for older browsers. */
+  height: 100dvh;
+  min-height: 100dvh;
+  padding: 4px 6px;
+  box-sizing: border-box;
+  background-color: var(--hc-bg-app, #05080f);
+  color: var(--hc-text-primary, #f6f2e6);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.game-board {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.tap-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.game-board {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  /* embertide-i5fk (4m5.f) 2026-05-15: reserve the safe-area-inset
+     gap at the bottom on touch devices so the bottom-most band
+     (trays-row: PlayerTray + DiscardPile + VoidPane) doesn't collide
+     with the iOS home-indicator on iPad. Desktop pointer surfaces
+     resolve env(safe-area-inset-bottom) to 0, so the inset is a no-op
+     there — no padding change on the desktop layout. */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* embertide-hqnc (2026-06-06, Stephanie ping): one canonical card
+   size across the four board zones — top row (always-available + chests),
+   center row (market), play area (in-play), and hand. A single pair of
+   custom properties drives every zone; the responsive values below are
+   the ONLY place card dimensions vary by viewport. The canonical size is
+   the compact (hand-sized) footprint so the four stacked rows + trays +
+   right rail clear the 1280×800 budget even with the top strip expanded
+   (cf. the End-Turn / hand clipping history in memory 1rrk). Combat-screen
+   tiles are NOT under .game-board, so they keep their own layout budget. */
+.game-board {
+  --hc-board-card-w: 90px;
+  --hc-board-card-h: 130px;
+}
+
+@media (width <= 1440px) {
+  .game-board {
+    --hc-board-card-w: 80px;
+    --hc-board-card-h: 112px;
+  }
+}
+
+/* Short-height laptops (e.g. 1280×720, 1366×720): trim further so the
+   bottom stack clears the viewport. Declared after the width query so it
+   wins when both match. */
+@media (height <= 760px) {
+  .game-board {
+    --hc-board-card-w: 70px;
+    --hc-board-card-h: 96px;
+  }
+}
+
+.trays {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tray {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 8px;
+  min-width: 140px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+
+  /* Stained-glass pane treatment: a warm diagonal light band over a
+     sapphire-shadow base, crossed by subtle color bands so the surface
+     reads as leaded glass rather than flat tinted plastic. */
+  background:
+    linear-gradient(
+      115deg,
+      rgba(232, 189, 89, 0) 0%,
+      rgba(232, 189, 89, 0.09) 38%,
+      rgba(232, 189, 89, 0.14) 50%,
+      rgba(232, 189, 89, 0.09) 62%,
+      rgba(232, 189, 89, 0) 100%
+    ),
+    radial-gradient(ellipse at 25% 15%, rgba(110, 140, 203, 0.22) 0%, rgba(110, 140, 203, 0) 55%),
+    linear-gradient(
+      180deg,
+      rgba(26, 46, 110, 0.88) 0%,
+      rgba(19, 29, 62, 0.9) 50%,
+      rgba(11, 18, 40, 0.92) 100%
+    );
+  backdrop-filter: blur(2px);
+  color: var(--hc-text-primary, #f6f2e6);
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.28),
+    inset 0 1px 0 rgba(246, 231, 188, 0.18),
+    inset 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.tray-active {
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.45),
+    inset 0 2px 6px rgba(0, 0, 0, 0.45),
+    0 0 0 2px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+}
+
+.tray-header {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-lg);
+  text-transform: uppercase;
+  color: var(--hc-lead-gold-500, #b89142);
+}
+
+.tray-header strong {
+  font-weight: var(--hc-font-weight-bold);
+}
+
+.tray-counters {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-family: var(--hc-font-display);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--hc-text-sm);
+  color: var(--hc-text-primary, #f6f2e6);
+}
+
+.tray-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tray-counter svg {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+
+.field {
+  /* sv77 (revised 2026-04-26): the inner `.field` container drops its
+     legacy sapphire-jewel translucent overlay so the parent
+     `.market-row`'s cream parchment ground shows through cleanly. The
+     designer review flagged the green/amber dappling as "stained-glass
+     leaking through cream" — that was this overlay mixing with the
+     parchment ground. Now the field is fully transparent + borderless
+     — chrome is owned by `.market-row`. */
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* arq3 (2026-04-26): .hand-row wraps the hand cream pane + the
+   PlayAllStartersButton so the button sits to the right of the hand
+   cards (user direction). The row owns the centering + content sizing;
+   .hand retains only the cream parchment plate styling for the cards
+   themselves. */
+.hand-row {
+  display: flex;
+
+  /* lqg6 (2026-04-26): gap 8 → 20 mirrors the .play-zones gap so the
+     PlayAllStartersButton in the hand-row right slot sits at the same
+     horizontal offset as the DiscardPile in the play-zones right slot
+     above. The two right elements stack visually as a column. */
+  gap: 20px;
+  align-items: center;
+  align-self: center;
+  width: max-content;
+  max-width: 100%;
+}
+
+.hand-row > [data-testid='play-all-starters-button'] {
+  flex: 0 0 auto;
+  align-self: center;
+}
+
+.hand {
+  /* embertide-bbr8 (2026-04-26): hand band reskinned as a parchment
+     plate to match the cream cathedral palette (consistent with .trays,
+     .market-row, always-row, setup). Compact padding so the hand band
+     sits at ~138px tall (cards 132 + ~6px chrome) — the cards already
+     dominate the band height.
+     arq3 (2026-04-26): hand pane now lives inside a .hand-row wrapper
+     that owns centering + content sizing. The pane keeps a 5-card
+     minimum width (5×78 + 4×4 gaps + 12px padding ≈ 418px) so it never
+     collapses below five hand slots even when the hand is empty. */
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 6px;
+  border-radius: 8px;
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  background: var(--hc-parchment-50, #fbf6e9);
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.32),
+    0 2px 6px rgba(0, 0, 0, 0.35);
+  min-height: 0;
+  flex: 0 1 auto;
+  width: max-content;
+  min-width: 418px;
+  max-width: 100%;
+}
+
+.card-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #fafafa;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+
+.card-tile-header {
+  font-size: var(--hc-text-xs);
+  margin-bottom: 4px;
+  text-align: center;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-cost {
+  font-size: var(--hc-text-xs);
+  margin-top: 4px;
+  color: #555;
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* Elysian button — unified treatment for every UI button that isn't a      */
+
+/* card tile. Dark reliquary gradient + gold leading + Cinzel small-caps so  */
+
+/* buttons read as part of the cathedral theme instead of generic UI.        */
+
+/* ------------------------------------------------------------------------- */
+
+.hc-button,
+.play-all-starters,
+.end-turn-button,
+.tutorial-dismiss {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-extra);
+  text-transform: uppercase;
+  color: var(--hc-lead-gold-500, #b89142);
+  background: linear-gradient(
+    180deg,
+    var(--hc-shadow-600, #1e2b52) 0%,
+    var(--hc-shadow-800, #0b1228) 100%
+  );
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+  transition:
+    color 0.14s ease-out,
+    box-shadow 0.14s ease-out,
+    transform 0.14s ease-out;
+}
+
+/* Primary CTA variant — End Turn + Play All Cards share the brighter
+   amber fill (arq3 2026-04-26: user direction, the two main action
+   buttons should read as one button family rather than the sapphire
+   secondary against the amber primary).
+   pym7 2026-05-09: this block (and the :disabled / :hover overrides
+   below) used to be wrapped in `@layer base { }` to silence stylelint's
+   no-descending-specificity rule. But unlayered rules ALWAYS beat named
+   layers regardless of specificity, so the layered variants never won —
+   END TURN and PLAY ALL CARDS rendered gold-on-sapphire at rest, then
+   illegible black-on-sapphire on hover. Fix: keep everything unlayered
+   and instead order selectors low → high specificity so stylelint stays
+   happy without breaking the cascade. */
+.end-turn-button,
+.play-all-starters {
+  color: var(--hc-lead-iron-900, #0e0c14);
+  background: linear-gradient(
+    180deg,
+    var(--hc-jewel-amber-300, #e8bd59) 0%,
+    var(--hc-jewel-amber-500, #c48a1f) 100%
+  );
+  border-color: var(--hc-lead-gold-900, #5a3f10);
+}
+
+.hc-button:disabled,
+.play-all-starters:disabled,
+.end-turn-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  color: var(--hc-text-muted, #b7ae95);
+}
+
+/*
+ * embertide-2gp follow-up 2026-04-22: hover styling for the four
+ * cathedral buttons. Previously the `.hc-button:hover` + `.play-all-
+ * starters:hover` selectors were accidentally glued to `.hand-empty,
+ * .combat-hand-empty` because a comment block sat between them in the
+ * selector list — CSS comments don't terminate selector lists, so the
+ * `.hand-empty { margin: auto; ... }` declaration was also being
+ * applied to the buttons on hover. That made `.play-all-starters`
+ * re-center inside its flex container when hovered, shifting the
+ * adjacent End Turn button off to the side — the "end turn runs away"
+ * quirk. Fix: merge the button hover rules into a single block, keep
+ * the empty-hand label rule truly separate.
+ */
+.hc-button:hover:not(:disabled),
+.play-all-starters:hover:not(:disabled),
+.end-turn-button:hover:not(:disabled),
+.tutorial-dismiss:hover:not(:disabled) {
+  color: var(--hc-jewel-amber-100, #f6e7bc);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
+    0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+  transform: translateY(-1px);
+}
+
+.end-turn-button:hover:not(:disabled),
+.play-all-starters:hover:not(:disabled) {
+  color: var(--hc-lead-iron-900, #0e0c14);
+}
+
+.hc-button:focus-visible:not(:disabled),
+.play-all-starters:focus-visible:not(:disabled),
+.end-turn-button:focus-visible:not(:disabled),
+.tutorial-dismiss:focus-visible:not(:disabled) {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
+    0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/*
+ * Empty-hand label — both main-board Hand and combat CombatHand render
+ * "Empty hand" when their respective card lists are empty. Designer
+ * polish 2026-04-22: match the font + color of the other cathedral
+ * panes (tray-header style — Cinzel small-caps, gold accent) so the
+ * label reads as part of the same visual system instead of a
+ * browser-default italic afterthought.
+ */
+.hand-empty,
+.combat-hand-empty {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-lg);
+  text-transform: uppercase;
+  color: var(--hc-lead-gold-500, #b89142);
+  font-style: normal;
+  margin: auto;
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* Chest reveal (embertide-z3z, ymgc rev-2). Full-viewport backdrop +     */
+
+/* centered cathedral-cream reliquary panel showing which reward dropped.    */
+
+/* Auto-dismisses after 1.6s; click anywhere on the panel to dismiss early.  */
+
+/* embertide-ymgc (2026-04-26): retired the dark-sapphire panel +        */
+
+/* heavy black scrim in favor of the post-9eou cream parchment + lead-       */
+
+/* gold border vocabulary (mirrors `.crystal-embertide-pane` rev-2 + the      */
+
+/* tray surfaces). The reveal now shows the actual rolled card via           */
+
+/* CardTemplate inside `.chest-reveal-card`, so the popup reads as a         */
+
+/* miniature stained-glass card face on cream — same aesthetic as the rest   */
+
+/* of the right-rail.                                                        */
+
+/* ------------------------------------------------------------------------- */
+
+.chest-reveal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+
+  /* Soft cream-toned veil (NOT sapphire) so the parchment panel reads as
+     part of the cathedral aesthetic. Low opacity keeps the board legible
+     during the 1.6s hold. */
+  background: rgba(20, 14, 4, 0.42);
+  pointer-events: none;
+}
+
+.chest-reveal-backdrop > * {
+  pointer-events: auto;
+}
+
+.chest-reveal {
+  /* `position: relative` makes this the containing block for the
+     absolutely positioned sparkle layer (4m5.d.1). */
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 240px;
+  padding: 22px 28px 20px;
+
+  /* Cream parchment + radial highlight — same vocabulary as
+     .crystal-embertide-pane (rev-2) and the per-tray fills. */
+  border: 1.5px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 12px;
+  background-color: var(--hc-parchment-100, #f4ebd3);
+  background-image: radial-gradient(
+    ellipse at 50% 18%,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-parchment-100, #f4ebd3) 60%,
+    var(--hc-parchment-300, #dbc289) 100%
+  );
+  color: var(--hc-lead-gold-900, #5a3f10);
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 14px 40px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  font-family: var(--hc-font-display);
+}
+
+.chest-reveal:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
+    0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+    0 14px 40px rgba(0, 0, 0, 0.45);
+}
+
+.chest-reveal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+}
+
+/* embertide-ymgc: card-art well wraps the inner CardTemplate so the
+   reveal panel sizes around the rolled card art instead of the generic
+   icon. CardTemplate brings its own chrome — this rule just gates the
+   spacing. */
+.chest-reveal-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 0 2px;
+}
+
+.chest-reveal-label {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-lg);
+  letter-spacing: var(--hc-tracking-chrome-extra);
+  text-transform: uppercase;
+
+  /* Lead-gold reads cleanly against cream parchment. */
+  color: var(--hc-lead-gold-700, #8b6a2a);
+}
+
+.chest-reveal-subtext {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-wide);
+  text-transform: uppercase;
+
+  /* Muted parchment-tone for the secondary line; high enough contrast
+     on cream to satisfy WCAG AA for the small uppercase copy. */
+  color: var(--hc-parchment-700, #7f6a3f);
+}
+
+/*
+ * embertide-4m5.2 (4m5.d.1) — chest-reveal sparkle layer.
+ *
+ * Four amber sparks radiate from the panel center during the 520ms reveal
+ * (telegraph → unlock → settle). Palette is anchored to the cost-gem amber
+ * family per the bead's "sparkle palette aligned with cost-gem" requirement:
+ *   --hc-jewel-amber-100/300/500 (radial gem fill)
+ *   --hc-glow-amber             (outer glow alpha)
+ * The translation distance is set in the layer (40px) — each spark inherits
+ * its angle from `--sparkle-angle` so the four glyphs form a balanced
+ * cross-burst around the icon / card.
+ *
+ * Reduced-motion users never see the sparkles: ChestReveal.tsx skips the
+ * `<SparkleBurst>` mount under `useReducedMotion()`, AND the @media block
+ * below force-hides any sparkle that does mount (defense in depth — covers
+ * a future SSR/hydration shape where the static frame ships with sparkles).
+ */
+.chest-reveal-sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.chest-reveal-sparkle {
+  --sparkle-angle: 0deg;
+  --sparkle-distance: 40px;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--hc-jewel-amber-100, #f6e7bc) 0%,
+    var(--hc-jewel-amber-300, #e8bd59) 55%,
+    rgba(196, 138, 31, 0) 100%
+  );
+  box-shadow:
+    0 0 6px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+    0 0 14px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+  transform: rotate(var(--sparkle-angle)) translateY(calc(-1 * var(--sparkle-distance)));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chest-reveal-sparkles {
+    display: none;
+  }
+}
+
+/*
+ * Status-bar HUD strip — uses the b56 Pane primitive for chrome
+ * (z40 lineage, migration phase 6). The Pane outer wrap supplies
+ * border / background / inner-shadow via colorFamily="neutral-shadow"
+ * (matches the .turn-banner gradient above it). This rule scopes the
+ * remaining layout knobs to the status-bar surface only:
+ *   - .status-bar — typography (cathedral cinzel, uppercase, tabular)
+ *     and the muted-gold ink that inherits down to spans.
+ *   - .status-bar .pane-content — the inner flex container (gap,
+ *     padding) since Pane intentionally does not pad children.
+ */
+.status-bar {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-wide);
+  text-transform: uppercase;
+  color: var(--hc-text-muted, #b7ae95);
+}
+
+/*
+ * 2026-04-26 follow-up: cathedral-title-strip retired. Its contents
+ * (TurnBanner + status-bar Pane) relocated into the always-row right
+ * rail so the bottom of the player panes stops getting cut off when
+ * the always-row is expanded. The .cathedral-title-strip class is no
+ * longer rendered (the testid pin in GameBoard.test.tsx was updated
+ * to assert absence). Legacy rules below kept zero-impact for any
+ * residual references; safe to delete after one release.
+ */
+.cathedral-title-strip {
+  display: none;
+}
+
+/* Always-row right rail — TurnBanner sits at the top, status-bar Pane
+   stacks beneath it when expanded. The rail is separated from the
+   card body by a vertical gold-leading divider so it reads as a
+   discrete HUD cluster, not an extension of the card row. */
+.always-row-strip-rail {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  align-self: stretch;
+  gap: 4px;
+  padding: 4px 6px 4px 12px;
+  margin-right: 36px; /* leave room for the chevron disc */
+  border-left: 1px solid var(--hc-lead-gold-500, #b89142);
+  box-shadow: -1px 0 0 rgba(255, 255, 255, 0.35);
+  min-width: 0;
+
+  /* embertide-r9ze 2026-05-10: pin the rail above the card body
+     so any overflowed body children (the always-available + chest
+     tiles carry !important widths and can spill past the body's
+     min-width:0 box at narrow viewports) paint UNDER the rail's
+     status text instead of over it. The strip itself is the stacking
+     context root (z-index:5), so a rail z-index of 1 is enough to
+     win against the body's auto-stacked siblings. */
+  position: relative;
+  z-index: 1;
+}
+
+/* When the strip is collapsed the rail only carries TurnBanner — keep
+   it on a single horizontal line at the chip band height. */
+.always-row-strip[data-expanded='false'] .always-row-strip-rail {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+/* TurnBanner inside the rail: the component carries its own dark
+   sapphire gradient + gold border by default — neutralize so it reads
+   as engraved cream-parchment text on the parchment rail. The
+   .turn-banner testid + class contract is preserved (the GameBoard /
+   TurnBanner / CombatScreen tests pin the testid, not the chrome). */
+.always-row-strip-rail .turn-banner {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  color: var(--hc-lead-iron-900, #0e0c14);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-md);
+  white-space: nowrap;
+  justify-content: flex-start;
+}
+
+/* status-bar Pane inside the rail — neutralize its neutral-shadow
+   chrome so the rail's own border-left + parchment ground does the
+   framing. The Pane class contract pinned by GameBoard.test.tsx
+   (status-bar / pane / pane-neutral-shadow / pane-compact / data-
+   color-family / role / aria-label) is unchanged. */
+.always-row-strip-rail .status-bar.pane {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.always-row-strip-rail .status-bar.pane,
+.always-row-strip-rail .status-bar .pane-content,
+.always-row-strip-rail .status-bar span {
+  color: var(--hc-lead-iron-900, #0e0c14);
+}
+
+.always-row-strip-rail .status-bar .pane-content {
+  display: grid;
+  grid-auto-flow: row;
+  grid-auto-rows: min-content;
+  gap: 2px 8px;
+  padding: 0;
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome);
+  line-height: 1.2;
+}
+
+@layer base {
+  .status-bar .pane-content {
+    display: flex;
+    gap: 14px;
+    padding: 4px 10px;
+  }
+}
+
+@layer base {
+  .turn-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6px 14px;
+    font-family: var(--hc-font-display);
+    font-size: var(--hc-text-base);
+    font-weight: var(--hc-font-weight-bold);
+    letter-spacing: var(--hc-tracking-chrome-lg);
+    text-transform: uppercase;
+    background: linear-gradient(
+      180deg,
+      var(--hc-shadow-600, #1e2b52) 0%,
+      var(--hc-shadow-800, #0b1228) 100%
+    );
+    color: var(--hc-lead-gold-500, #b89142);
+    border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+    border-radius: 8px;
+    box-shadow:
+      inset 0 0 0 1px rgba(184, 145, 66, 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/*
+ * embertide-uwg5 (2026-04-26): always-available + chest rows
+ * collapse into a single full-width top chip strip above the board
+ * grid. Pre-uwg5 each row lived in the right side rail with
+ * vertical-column orientation; the new strip flows horizontally and
+ * sits between the cathedral title strip and the board grid so kids
+ * see every always-buyable card on first scan.
+ *
+ * Default state EXPANDED (full CardTemplate tiles). When collapsed
+ * (chevron toggle), the inner rows render `compact` chips — 44px
+ * parchment squares — so the strip shrinks to the spec'd 44px tall
+ * footprint without losing click affordance.
+ */
+.always-row-strip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 4px;
+  padding: 6px 40px 6px 12px;
+
+  /* Re-revised 2026-04-26: the expanded body now sits in normal flow
+     and pushes the field band down instead of overlaying it. Earlier
+     playarea-layout.md §4 spec ("expanded body overlays the field")
+     hid the center row when kids opened the strip — flagged as a bug. */
+  z-index: 5;
+  background: radial-gradient(
+    circle at 30% 25%,
+    var(--hc-parchment-100, #f7eccf) 0%,
+    var(--hc-parchment-300, #dbc289) 70%,
+    var(--hc-parchment-500, #b28a48) 100%
+  );
+  border: 2px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 12px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.45) inset,
+    0 0 0 3px rgba(184, 145, 66, 0.28),
+    0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.always-row-strip[data-expanded='false'] {
+  /* Spec: collapsed state shrinks the strip to a 44px chip band. */
+  padding: 4px 40px 4px 12px;
+}
+
+.always-row-strip-body {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+
+  /* embertide-r9ze 2026-05-10: clip overflow on the X axis so the
+     fixed-width card tiles inside don't bleed into the rail's column
+     when the body shrinks past the row's intrinsic width. The rail
+     z-index above paints text-on-top regardless, but clipping here
+     also avoids a half-card visually leaking under the rail border. */
+  overflow-x: hidden;
+}
+
+/* When the strip is expanded, the body sits in the normal flow inside
+   the parent strip frame. The frame already paints the parchment +
+   gold-leading chrome, so the body itself stays transparent and just
+   carries the row layout. (Pre-fix: this rule absolutely-positioned the
+   body below the strip and overlaid the field — kids reported it
+   covering the center row of cards.) */
+.always-row-strip[data-expanded='true'] .always-row-strip-body {
+  padding: 4px 0;
+}
+
+.always-row-strip-body > .always-available-row,
+.always-row-strip-body > .chest-row {
+  /* Override the side-rail stacked layout so both rows flow horizontally
+     across the top strip when expanded. The chrome is owned by the
+     parent `.always-row-strip`, so the inner rows go transparent. */
+  flex: 0 1 auto;
+  flex-direction: row;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  backdrop-filter: none;
+}
+
+.always-row-strip-body > .chest-row {
+  /* Subtle gold-leading hairline separates Chests from Always-available
+     within the same band so the player can read them as two clusters. */
+  border-left: 1px solid rgba(122, 90, 30, 0.35);
+  padding-left: 12px;
+  margin-left: 4px;
+}
+
+/* Compact chip variant — used when the parent strip is collapsed. */
+.always-available-chip,
+.chest-chip {
+  width: 88px;
+  height: 36px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome);
+  text-transform: uppercase;
+  color: var(--hc-lead-iron-900, #0e0c14);
+  background: radial-gradient(
+    ellipse at 30% 28%,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-parchment-100, #f4ebd3) 60%,
+    var(--hc-parchment-300, #dbc289) 100%
+  );
+  border: 1.5px solid var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.32),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.14s ease-out,
+    box-shadow 0.14s ease-out,
+    border-color 0.14s ease-out;
+}
+
+.always-available-chip:hover:not(:disabled),
+.chest-chip:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
+    0 3px 7px rgba(0, 0, 0, 0.45);
+}
+
+@layer base {
+  .always-available-chip:disabled,
+  .chest-chip:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.always-available-chip-face,
+.chest-chip-face {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 6px;
+}
+
+.always-available-chip-label,
+.chest-chip-label {
+  flex: 1 1 auto;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.always-available-chip-cost,
+.chest-chip-cost {
+  flex: 0 0 auto;
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-wide);
+  color: var(--hc-lead-gold-700, #8b6a2a);
+  text-transform: none;
+}
+
+/* Chevron toggle at the right edge of the strip. The button itself
+   carries `min-width:44px; min-height:44px` inline (touch target), but
+   the visible chrome is sized via background-clip + a smaller padding
+   so the strip doesn't lose vertical space to a 44px disc. */
+.always-row-strip-chevron {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    ellipse at 30% 28%,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-parchment-100, #f4ebd3) 60%,
+    var(--hc-parchment-300, #dbc289) 100%
+  );
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.32),
+    0 2px 4px rgba(0, 0, 0, 0.45);
+  transition:
+    transform 0.14s ease-out,
+    box-shadow 0.14s ease-out;
+}
+
+.always-row-strip-chevron:hover {
+  border-color: var(--hc-lead-gold-500, #b89142);
+}
+
+.always-row-strip-chevron:focus-visible {
+  outline: none;
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
+    0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+}
+
+.card-tile {
+  position: relative;
+}
+
+.card-tile-cost-corner {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  pointer-events: none;
+}
+
+.cost-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 4px;
+  background: #ffffff;
+  border: 1px solid #444;
+  border-radius: 6px;
+  font-size: var(--hc-text-xs);
+  font-weight: var(--hc-font-weight-bold);
+  color: #111111;
+}
+
+.cost-badge-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.cost-badge-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.turn-actions {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+/*
+ * embertide-7c1 — dedicated chest row, in-play zone, and
+ * effect-text badges on hero / item card faces.
+ */
+
+.market-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+  /* sv77 + user direction 2026-04-26: center band is the primary focal
+     area, on a CREAM parchment ground (replacing the earlier sapphire
+     stained-glass) so the play area reads consistently with the
+     setup-page + always-row + hand chrome. 196px lands the band tall
+     enough for the narrow-viewport Field tiles (embertide-2u9w
+     2026-05-02 — sized down from 232 → 196 across two passes to recover
+     ~36px of vertical budget so the bottom row stops clipping at
+     1280×800). Solid background-color underneath the gradient so the
+     ZoneCell forest backdrop never bleeds through (designer review
+     flagged this 2026-04-26). embertide-hqnc 2026-06-06: the band
+     height now tracks the canonical card height (+24px chrome) so it no
+     longer reserves dead space when the center row shrank to the shared
+     footprint. */
+  min-height: calc(var(--hc-board-card-h) + 24px);
+  padding: 6px 10px;
+  border: 2px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 12px;
+  background-color: var(--hc-parchment-100, #f4ebd3);
+  background-image: radial-gradient(
+    ellipse at 50% 18%,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-parchment-100, #f4ebd3) 55%,
+    var(--hc-parchment-300, #dbc289) 100%
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 6px 18px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* Two-column board grid: main (market + play zones + hand + actions) on     */
+
+/* the left, side rail (always-available + chests + trays) on the right.    */
+
+/* ------------------------------------------------------------------------- */
+
+.board-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: start;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Push every grid child except the zone backdrop above z:0 so
+   ZoneCell's `inset:0` raster spans behind both board-main and
+   board-side as a unified scene backdrop. */
+.board-grid > :not([data-testid^='zone-cell-']) {
+  position: relative;
+  z-index: 1;
+}
+
+.board-main {
+  display: flex;
+  flex-direction: column;
+
+  /* arq3 (2026-04-26): bump gap 2 → 6 so the hand and play-zones cream
+     panes don't visually butt heads when the in-play tile (78×110)
+     comes close to the play-zones max-height. The extra breathing room
+     prevents the tile's bottom edge from kissing the top of the hand
+     pane during state transitions. */
+  gap: 6px;
+  min-width: 0;
+}
+
+.board-side {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: flex-start;
+
+  /* sv77: lock the right rail to 192px so the center band reads as the
+     primary focal area — the boss-altar-row keeps its existing slots
+     inside this fixed rail width. */
+  width: 192px;
+  flex: 0 0 192px;
+}
+
+/*
+ * u-9d introduced `.boss-altar-row` under the princess crystal. `.board-side`
+ * is a row rail — four column peers would blow out the horizontal budget and
+ * push `.board-main` into vertical overflow clipped by `board-grid`'s
+ * `overflow: hidden` (embertide-8rt). `.board-side-crystal-rail` groups
+ * the crystal + altar row into a single vertical sub-rail so the side pane
+ * stays three-columns-wide while the altar row visually sits under the
+ * crystal.
+ */
+.board-side-crystal-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+  min-width: 0;
+  width: 100%;
+}
+
+/*
+ * embertide-9eou rev-2 (2026-04-26): Crystal + Embertide share a
+ * single cream parchment pane (`.crystal-embertide-pane`) inside the
+ * right-rail. The pane reuses the trays' cathedral-cream gradient
+ * vocabulary so the rail reads as one cohesive cathedral artifact
+ * (Boss Altar above, Crystal-Embertide pane below). Earlier rev-1
+ * dropped a black gothic niche around the Embertide — user feedback:
+ * "weird black background arch thing" — replaced here with a unified
+ * cream backdrop.
+ */
+.board-side-crystal-rail > .crystal-embertide-pane {
+  align-self: center;
+  width: 100%;
+  max-width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 8px 12px;
+  border: 1.5px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 10px;
+  background-color: var(--hc-parchment-100, #f4ebd3);
+  background-image: radial-gradient(
+    ellipse at 50% 18%,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-parchment-100, #f4ebd3) 60%,
+    var(--hc-parchment-300, #dbc289) 100%
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+}
+
+.crystal-embertide-pane > .princess-crystal-cell {
+  width: 100%;
+  min-width: 0;
+}
+
+.crystal-embertide-pane > .embertide-hud {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.crystal-embertide-pane > .embertide-hud > [data-testid='embertide-strip'] {
+  width: 100%;
+  max-width: 132px;
+}
+
+/* lqg6 (2026-04-26): End Turn migrated to the .board-side-crystal-rail
+   beneath the crystal-embertide pane. Sized to match the
+   crystal-embertide-pane width so the right-rail reads as a coherent
+   stack of shared-progress artifacts (Boss Altar → Crystal+Embertide →
+   End Turn). The base .end-turn-button styling (gold border, cream fill,
+   hover/focus rings) is declared higher up in this file; this rule only
+   pins layout for the new location. */
+.board-side-crystal-rail > .board-side-end-turn {
+  align-self: center;
+  width: 100%;
+  max-width: 180px;
+  margin-top: 4px;
+}
+
+/* arq3 (2026-04-26): .trays-row wraps the .trays cream parchment plate
+   + the End Turn button so the button sits OUTSIDE the plate (matching
+   PlayAllStartersButton on .hand-row). The wrapper owns the centering
+   + content sizing; .trays retains only the cream parchment plate
+   styling for the player panes themselves. */
+.trays-row {
+  display: flex;
+
+  /* lqg6 (2026-04-26 rev-3): gap 8 → 16 so the .trays-row-pile-column
+     sits with breathing room from the trays cream plate (mirroring the
+     .play-zones / .hand-row spacing rhythm). */
+  gap: 16px;
+  align-items: center;
+  align-self: center;
+  width: max-content;
+  max-width: 100%;
+}
+
+@layer base {
+  .trays-row > .end-turn-button {
+    flex: 0 0 auto;
+    align-self: center;
+  }
+}
+
+.board-main .trays {
+  flex-flow: row nowrap;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+
+  /* User direction 2026-04-26: replace the sapphire-jewel ground with
+     a cream parchment plate so the trays read as part of the same
+     cathedral palette as Hand + always-row + setup. Compact padding
+     so the .trays band lands at ~95-100px tall instead of 200+.
+     Solid bg-color floor so the ZoneCell forest never bleeds through.
+     arq3 (2026-04-26): trays plate is content-sized inside .trays-row;
+     the row owns the centering, so the cream parchment plate no longer
+     bleeds empty space across the board-main column. */
+  flex: 0 1 auto;
+  width: max-content;
+  min-width: 418px;
+  max-width: 100%;
+  padding: 2px 6px;
+  border: 1.5px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 10px;
+  background-color: var(--hc-parchment-100, #f4ebd3);
+  background-image: radial-gradient(
+    ellipse at 50% 18%,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-parchment-100, #f4ebd3) 60%,
+    var(--hc-parchment-300, #dbc289) 100%
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+}
+
+/* 35rv (2026-04-26): each tray gets its own cream parchment fill
+   (defined further below) so a player can read their own pane at a
+   glance. The 2mlh transparent-tray override is retired. Active
+   highlight darkens the gold leading + adds an amber outer glow. */
+.board-main .trays > .tray {
+  border: 1px solid transparent;
+  backdrop-filter: none;
+}
+
+.board-main .trays > .tray.tray-active {
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 0 0 1px var(--hc-glow-amber, rgba(232, 189, 89, 0.45));
+}
+
+/*
+ * embertide-9eou (2026-04-26): TriforceStrip + PrincessCrystalCell
+ * are no longer peers in the `.trays` flex row — they relocated to
+ * `.board-side-crystal-rail` (right rail) so the player-trays band can
+ * compact to ~80–90px. The previous `.board-main .trays > .embertide-hud`
+ * and `.board-main .trays > .princess-crystal-cell` rules are gone with
+ * the markup that anchored them.
+ */
+
+.board-main .trays > .tray {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 240px;
+  font-size: var(--hc-text-xs);
+  padding: 4px 6px;
+
+  /* 35rv (2026-04-26): tighter pane. ChampionSlot is now a 48px icon
+     square (no name plate); two-column layout keeps it pinned to the
+     left, with HP/counters/items stacked in column 2. Tray height
+     ≤ 90px. Cream parchment fill replaces the rgba(white, 0.42)
+     overlay that read as a flat white pane on the cream trays band.
+     Active highlight switches to a stronger gold leading via
+     `.tray-active` rule. */
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 1px 6px;
+  align-items: center;
+  background-color: var(--hc-parchment-100, #f4ebd3);
+  background-image: linear-gradient(
+    180deg,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-parchment-100, #f4ebd3) 100%
+  );
+  border-radius: 6px;
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.board-main .trays > .tray > .tray-header {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-md);
+  color: var(--hc-parchment-700, #7f6a3f);
+}
+
+.board-main .trays > .tray > :nth-child(2) {
+  /* HPStrip wrapper */
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.board-main .trays > .tray > :nth-child(3) {
+  /* ChampionSlot — pinned to column 1, spans all rows as the icon.
+     arq3 (2026-04-26): the items chip moved up into tray-counters,
+     so the tray grid is now 3 rows (header / HPStrip / counters)
+     instead of 4. */
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  place-self: center center;
+  min-width: 0;
+}
+
+.board-main .trays > .tray > .tray-counters {
+  grid-column: 2;
+  grid-row: 3;
+
+  /* arq3 (2026-04-26): user direction — counter row uses a fixed 2-col
+     grid (regardless of player count) so the icon layout stays
+     visually consistent across 1p / 2p / 3p / 4p:
+       Row 1: GREEN | POWER
+       Row 2: CHEST | KEY      (key under power, right of chest)
+       Row 3: ITEMS  (spans both cols)
+     This replaces the prior flex-wrap layout where icon order shifted
+     based on container width. */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 6px;
+  font-size: var(--hc-text-xs);
+  color: var(--hc-lead-iron-900, #0e0c14);
+}
+
+.tray-counter-items {
+  /* arq3 (2026-04-26): items chip occupies the full bottom row of the
+     2-col counter grid so it sits below CHEST + KEY. */
+  grid-column: 1 / -1;
+  justify-self: center;
+}
+
+/* arq3 (2026-04-26): inside the tray-counters row the items-bag-chip
+   compacts to a tiny icon + count to fit alongside the shard / power /
+   key / chest counters. The full "Items" text label + 92px min-width
+   chip chrome is dropped — clicking still opens the popover, just from
+   a smaller anchor. */
+.tray-counter-items .items-bag-chip {
+  min-width: 0;
+  height: auto;
+  padding: 2px 6px;
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-wider);
+  gap: 3px;
+  border-width: 1px;
+  border-radius: 6px;
+}
+
+.tray-counter-items .items-bag-chip-label {
+  display: none;
+}
+
+.tray-counter-items .items-bag-chip-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* embertide-i5fk (4m5.f) 2026-05-15: on narrow viewports (iPad
+   portrait at 768w and similar) restore the chip's 44×44 floor that
+   the desktop compact rule above clips. n8s5 audit found the compact
+   chip at 43.5×24 — well under Apple HIG. The 1100px breakpoint
+   matches the existing ef6n width-pass and covers iPad-portrait +
+   narrower laptops without disturbing desktop layouts (the audit
+   only verifies at iPad scale, but kids on chromebooks at 1024w hit
+   the same chip and benefit from the larger tap target). */
+@media (width <= 1100px) {
+  .tray-counter-items .items-bag-chip {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 4px 10px;
+    gap: 4px;
+  }
+
+  .tray-counter-items .items-bag-chip-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/*
+ * 4-player crowding fallback. arq3 (2026-04-26): with End Turn moved
+ * out of .trays into .trays-row, the .trays plate now holds only the
+ * player tray children (N at N-player). Collapse each tray's 2-column
+ * grid into a single column ONLY when the band has 4 children (4p
+ * mode) — at 3p and below the 2-column tray still fits.
+ */
+.board-main .trays:has(> :nth-child(4)) > .tray {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.board-main .trays:has(> :nth-child(4)) > .tray > :nth-child(3) {
+  grid-column: 1;
+  grid-row: auto;
+  justify-self: stretch;
+}
+
+.play-zones {
+  display: flex;
+
+  /* lqg6 (2026-04-26): bumped gap 8 → 20 so the DiscardPile in the
+     right slot sits with breathing room from the InPlay cream pane —
+     the user wants the pile + matching PlayAllStartersButton (in the
+     hand-row right slot below) shifted away from the central panes
+     rather than crowded against them. */
+  gap: 20px;
+  align-items: center;
+
+  /* arq3 (2026-04-26): user direction — the hand + play-zones rows are
+     content-sized with a 5-card minimum and centered in the board-main
+     column rather than stretched full-width.
+     lqg6 (2026-04-26): max-height bumped 130 → 156 so the DiscardPile
+     pane (label + 110px tile + ×N badge ≈ 140-150px) renders fully
+     instead of clipping the count badge. In-play tiles still render at
+     the full 78×110 hand-card size. */
+  max-height: 156px;
+  align-self: center;
+  width: max-content;
+  max-width: 100%;
+}
+
+.play-zones > .in-play {
+  flex: 1 1 auto;
+  min-width: 418px;
+}
+
+.play-zones-spacer {
+  /* arq3 (2026-04-26): mirror the play-all-cards button's box dimensions
+     EXACTLY so .play-zones and .hand-row total to the same width. The
+     ::before pseudo carries the same label as the real button so the
+     spacer's intrinsic width tracks the button regardless of font /
+     letter-spacing changes. visibility: hidden keeps the spacer
+     invisible while still occupying layout space. */
+  flex: 0 0 auto;
+  visibility: hidden;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-extra);
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  white-space: nowrap;
+  min-width: 44px;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+.play-zones-spacer::before {
+  content: 'Play all cards';
+}
+
+@layer base {
+  .play-zones > .end-turn-button {
+    flex: 0 0 auto;
+    align-self: center;
+  }
+}
+
+/* lqg6 (2026-04-26): visible single-card pile pane (Discard, Void). The
+   pane is a content-sized cream parchment column with a small uppercase
+   label, the topmost card face-up at hand-card-tile dimensions
+   (78×110), and an optional "×N" count badge below. Sits inside
+   .play-zones-right-slot in the play-zones row; the matching
+   .hand-row-right-slot below holds the PlayAllStartersButton at the
+   same fixed slot width so the two right elements share an X centre
+   (column-stacked appearance) without the play-zones row having to
+   grow tall enough to host the button itself (which previously caused
+   the button to overlap the Hand pane). g294 reuses .card-pile with
+   variant=void for the TOTK-gloom backdrop pane. */
+.card-pile {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  min-width: 92px;
+  align-self: center;
+  box-sizing: border-box;
+}
+
+.card-pile-discard {
+  background: var(--hc-parchment-100, #f4ebd3);
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.22),
+    inset 0 1px 0 rgba(251, 246, 233, 0.5);
+}
+
+/* embertide-g294: TOTK-gloom backdrop. The raster is a 1024×1024
+   painterly canvas; we let it fill the plate as `cover` so the central
+   gloom area sits behind the card tile. Magenta veins + black tar set
+   the foreboding "this card is gone forever" mood — the kid reads
+   parchment for "I'll see this again" (Discard) and gloom for "this
+   is BANISHED to the Void". */
+.card-pile-void {
+  background:
+    linear-gradient(180deg, rgba(20, 6, 18, 0.32) 0%, rgba(8, 2, 10, 0.45) 100%),
+    url('/illustrations/cathedral_void_001.webp') center / cover no-repeat,
+    #1a0a18;
+  border: 1px solid var(--hc-void-magenta-700, #6e1e4d);
+  box-shadow:
+    inset 0 0 0 1px rgba(220, 92, 174, 0.28),
+    inset 0 1px 0 rgba(255, 200, 232, 0.08),
+    0 0 12px rgba(118, 22, 78, 0.35);
+}
+
+.card-pile-void .card-pile-label {
+  /* Light label against gloom — magenta-tinted silver, with a subtle
+     drop shadow so the gothic letters separate from the painterly
+     backdrop. */
+  color: #f1d6e7;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+}
+
+.card-pile-void .card-pile-empty-frame {
+  border: 1px dashed rgba(220, 92, 174, 0.55);
+  background: rgba(8, 2, 10, 0.18);
+}
+
+/* vj6s (2026-05-26): the count badge is an ABSOLUTE corner chip on the
+   tile, not a flow element below it. Below-the-tile flow added height
+   that (a) got clipped when the trays-row sat at the bottom of the
+   viewport and (b) made the Discard pile taller than the Void pile
+   whenever only one of them showed a count. Anchoring to the pile's
+   bottom-right corner removes both: every pile is now exactly
+   label + tile tall regardless of how many cards it holds. */
+.card-pile-count {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--hc-parchment-100, #f4ebd3);
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+.card-pile-void .card-pile-count {
+  color: #f1d6e7;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  background: rgba(20, 6, 18, 0.82);
+  border-color: var(--hc-void-magenta-700, #6e1e4d);
+}
+
+@layer base {
+  .card-pile-label {
+    font-family: var(--hc-font-display);
+    font-weight: var(--hc-font-weight-bold);
+    font-size: var(--hc-text-xs);
+    letter-spacing: var(--hc-tracking-chrome-extra);
+    text-transform: uppercase;
+    color: var(--hc-lead-gold-900, #5a4118);
+    line-height: 1;
+  }
+}
+
+.card-pile-tile {
+  /* Top-card tile inherits the hand-card-tile sizing rules above
+     (78×110 with full card chrome). Override the underline-only focus
+     ring to keep the parchment backdrop visible. */
+  cursor: pointer;
+}
+
+.card-pile-tile[data-testid$='-top']:focus-visible {
+  outline: 2px solid var(--hc-lead-gold-700, #8b6a2a);
+  outline-offset: 2px;
+}
+
+.card-pile-empty .card-pile-empty-frame {
+  /* Empty-state placeholder: dashed parchment frame at the same 78×110
+     footprint as the populated tile so the pane height does not shift
+     between empty and populated states. */
+  width: 78px;
+  height: 110px;
+  border: 1px dashed var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 6px;
+  background: rgba(251, 246, 233, 0.55);
+  box-sizing: border-box;
+}
+
+@layer base {
+  .card-pile-count {
+    font-family: var(--hc-font-display);
+    font-weight: var(--hc-font-weight-bold);
+    font-size: var(--hc-text-xs);
+    letter-spacing: var(--hc-tracking-chrome-sm);
+    color: var(--hc-lead-gold-900, #5a4118);
+    line-height: 1;
+  }
+}
+
+/* lqg6 (2026-04-26 rev-3): the play-zones + hand-row right slots are
+   identical fixed-width placeholders so the two centred rows have the
+   same total width — InPlay and Hand cream panes therefore left-align
+   despite each row having its own content. The hand-row slot hosts
+   PlayAllStartersButton; the play-zones slot is empty (DiscardPile
+   moved to the trays-row pile column — see .trays-row-pile-column
+   below). Keeping the play-zones slot present preserves the centred-
+   equal-width-rows alignment without adding new spacer plumbing. */
+:root {
+  --card-pile-slot-width: 140px;
+}
+
+.play-zones-right-slot,
+.hand-row-right-slot {
+  flex: 0 0 var(--card-pile-slot-width);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  min-height: 44px;
+}
+
+/* The button itself stays at its natural width within the slot — let
+   the slot do the centring rather than stretching the button to the
+   slot edges. */
+.hand-row-right-slot > [data-testid='play-all-starters-button'] {
+  flex: 0 0 auto;
+}
+
+/* lqg6 (2026-04-26 rev-3): pile column on the right of the trays plate.
+   Hosts the DiscardPile pane (and, after g294 lands, the VoidPane
+   sibling) so the player's "what just happened to my cards" surfaces
+   sit adjacent to the player tray panes — not buried in the play-zones
+   / hand-row band where they read as another market tile. Layout: a
+   centred row of card-pile children; vertical alignment matches the
+   trays plate's centre so the pile labels line up with the tray
+   header band. */
+.trays-row-pile-column {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  align-self: center;
+}
+
+/* arq3 (2026-04-26): in-play tiles match the hand-card-tile dimensions
+   (78×110) and render the FULL card chrome — art + name + cost + rules
+   box. User direction: post-play the player should see the whole card
+   they just played, not a cropped art tile. */
+.in-play-tile {
+  width: 78px !important;
+  min-height: 110px !important;
+}
+
+.in-play-tile .card-template {
+  min-height: 110px !important;
+}
+
+.market-row .field {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 6px;
+  gap: 6px;
+  justify-content: center;
+  align-items: stretch;
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* Elysian Cathedral card template (V-5)                                    */
+
+/* Portrait card shape (~5:8). Outer frame uses the gold-leading token; the  */
+
+/* art panel hosts the rendered illustration; the parchment name plate      */
+
+/* anchors the bottom in Cinzel serif.                                       */
+
+/* ------------------------------------------------------------------------- */
+
+.field-card-tile {
+  width: 132px;
+  min-height: 200px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  transition:
+    transform 0.14s ease-out,
+    filter 0.14s ease-out;
+}
+
+/* sv77 default (1440px+): center-band Field tiles bump to 152×208 so
+   the center row reads as the primary focal area. Hand, InPlay, the
+   always-row chip strip, and chest tiles all share .field-card-tile
+   but stay at the smaller default. The narrow-viewport (1280-1440)
+   override lands smaller still — see the @media block. */
+.market-row .field-card-tile {
+  width: 152px;
+  min-height: 208px;
+}
+
+.market-row .field-card-tile .card-template {
+  min-height: 208px;
+}
+
+/* Narrow viewports (laptop 1280–1440 and iPad landscape): scale EVERY
+   field-card tile down so the whole board (market row AND the side rail's
+   always-available + chest rows) fits without scrolling. Bumped the
+   breakpoint from 1360 → 1440 after jis telemetry: at 1366×768 the board
+   was overflowing by 306px because side-rail cards stayed at 132w, which
+   pushed board-main down to ~500w and forced its market row to wrap. */
+@media (width <= 1440px) {
+  .field-card-tile {
+    width: 108px;
+    min-height: 164px;
+  }
+
+  .field-card-tile .card-template {
+    min-height: 164px;
+  }
+
+  /* sv77 (revised 2026-04-26): center-band Field tiles at 134×158 to
+     fit the 1280×800 viewport budget. 6 tiles per row at 134w + 10px
+     gap = 864px + padding fits inside .board-main 1056w (1280 - 192
+     side - gaps - margins). Other bands (hand, always-row chip strip)
+     stay on the 78×110 compact size. embertide-2u9w 2026-05-02:
+     tile height 178 → 158 with !important + max-height cap to override
+     the .card-template global min-height: 200 floor that was holding
+     the band at ~216 even after the min-height drop. */
+  .market-row .field-card-tile {
+    width: 134px !important;
+    height: 158px !important;
+    min-height: 158px !important;
+    max-height: 158px !important;
+  }
+
+  .market-row .field-card-tile .card-template {
+    height: 158px !important;
+    min-height: 158px !important;
+    max-height: 158px !important;
+  }
+
+  /* Additional vertical compaction to land jis under viewport at
+     1280×800 and 1366×768. With the 2026-04-22 rev-4 sizing the strip
+     fills the tray height via `align-self: stretch` + `height: 100%`
+     on the SVG, so no fixed pixel override is needed here — the SVG's
+     aspect ratio keeps width proportional to tray height. Keep the
+     padding tight so the SVG has room to breathe vertically. */
+  [data-testid='embertide-strip'] {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    gap: 8px !important;
+  }
+
+  .play-zones {
+    gap: 6px;
+  }
+
+  .hand {
+    padding: 4px;
+    min-height: 44px;
+  }
+
+  .market-row .field {
+    padding: 4px;
+    gap: 4px;
+  }
+}
+
+/* Hover lift + focus ring are scoped to interactive <button> tiles so that
+   read-only zones (InPlay, Relics) don't invite clicks they won't service. */
+button.field-card-tile:not(:disabled) {
+  cursor: pointer;
+}
+
+button.field-card-tile:hover:not(:disabled),
+button.field-card-tile:focus-visible:not(:disabled) {
+  transform: translateY(-4px);
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.45));
+}
+
+button.field-card-tile:focus-visible:not(:disabled) {
+  outline: none;
+}
+
+button.field-card-tile:focus-visible:not(:disabled) .card-template {
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
+    0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+    0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+@layer base {
+  .card-template {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+
+    /* dpy0 (2026-05-02 rev-2): outer bg shifted parchment-50 → parchment-100
+       to match the warm-beige tone painted into the raster illustrations
+       (short-sword / vital-ember / mystic / elysian-soldier all carry a
+       parchment-100-ish backdrop). The prior parchment-50 read as stark
+       white around the painted beige — beige-square-in-white-square
+       amateurism. Champion variant explicitly opts back to parchment-50
+       below so hero portraits keep the bright "highlighted" reading. */
+    background: var(--hc-parchment-100, #f4ebd3);
+    border: 2px solid var(--hc-lead-gold-500, #b89142);
+    border-radius: 6px;
+    box-shadow:
+      inset 0 0 0 1px var(--hc-lead-gold-700, #8b6a2a),
+      0 3px 8px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+  }
+}
+
+/* embertide-hqnc: canonical board card size applied to all four zones
+   — top row (always-available + chests), center row (market), play area
+   (in-play), and hand. Authored in @layer base with !important so it beats
+   the per-zone size rules (some unlayered-important) that previously gave
+   each zone a different footprint. Width/height/min/max are pinned to the
+   shared --hc-board-card-* pair (see .game-board above) so every zone
+   resolves to the same dimensions at every breakpoint. The inner
+   .card-template is pinned to the same height so the card chrome fills the
+   tile without the global 200px min-height floor re-inflating it.
+
+   Scoped to height > 500px so the landscape-phone art-only layout
+   (@media orientation:landscape and height<=500) keeps its own
+   deliberately non-uniform icon tiles. */
+@media (height > 500px) {
+  @layer base {
+    .always-row-strip .field-card-tile,
+    .board-main .in-play-tile,
+    .board-main .market-row .field-card-tile,
+    .board-main .hand-row .hand-card-tile {
+      width: var(--hc-board-card-w) !important;
+      height: var(--hc-board-card-h) !important;
+      min-height: var(--hc-board-card-h) !important;
+      max-height: var(--hc-board-card-h) !important;
+    }
+
+    .always-row-strip .field-card-tile .card-template,
+    .board-main .in-play-tile .card-template,
+    .board-main .market-row .field-card-tile .card-template,
+    .board-main .hand-row .hand-card-tile .card-template {
+      height: var(--hc-board-card-h) !important;
+      min-height: var(--hc-board-card-h) !important;
+      max-height: var(--hc-board-card-h) !important;
+    }
+  }
+}
+
+/* Art panel — full-bleed art (dpy0 rev-2). Padding dropped 3px → 0px so
+   the SVG raster reaches the card edge, eliminating the visible parchment
+   "mat ring" the user flagged as amateur. Background stays transparent
+   so the variant outer bg (parchment-100 default, shadow-700/800 for
+   bosses, parchment-50 for champion) shows through any letterbox margins
+   the SVG's xMidYMid-meet aspect ratio leaves at the top/bottom of the
+   art panel. The radial mask on the SVG fades the corners into the
+   inherited bg so dark stone-arch borders / glow shadows blend instead
+   of reading as a hard smudge. */
+.card-template-art {
+  position: relative;
+  flex: 1 1 auto;
+  display: block;
+  background: transparent;
+  padding: 0;
+  overflow: hidden;
+}
+
+.card-template-art > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.card-template-cost-overlay {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
+}
+
+/* v2.1 REQ-21 / gm0.6: small chest icon overlay on monster cards stamped
+   with `hasAttachedChest`. Positioned top-right (opposite the cost gems)
+   so it never collides with the cost overlay or the rules-text box. */
+.card-template-monster-chest-overlay {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.55));
+}
+
+/* Tight rules-text panel — small uppercase title centered at the top, then
+   the effect text below in a readable serif. Gold seam separates it from
+   the art panel above. */
+.card-template-rules-box {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 4px 6px 5px;
+  background: linear-gradient(
+    180deg,
+    var(--hc-parchment-100, #f4ebd3) 0%,
+    var(--hc-parchment-300, #e0d2ab) 100%
+  );
+  border-top: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  text-align: center;
+  min-height: 38px;
+}
+
+.card-template-name {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-md);
+  color: var(--hc-parchment-700, #7f6a3f);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.card-template-effect {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-banner);
+  color: var(--hc-lead-iron-900, #0e0c14);
+  line-height: 1.2;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* cby6 / ppf9-4d.1: dual-slot passive line. Demoted relative to
+   .card-template-effect so the on-equip / on-play fire reads as the
+   primary mechanic and the always-on passive sits as secondary detail.
+   Mirrors .card-template-combat's secondary-line treatment (italic,
+   muted iron-700, 9px Cinzel-600). */
+.card-template-passive {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-semibold);
+  font-style: italic;
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-banner);
+  color: var(--hc-lead-iron-700, #3a3440);
+  line-height: 1.2;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* embertide-2gp: combat-effect summary line. Rendered under the
+   main effect for market heroes/items so buyers see combat impact at
+   purchase time. Visually demoted (slightly smaller, muted color,
+   italic) so it reads as secondary info relative to the on-play
+   effect above. */
+.card-template-combat {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-semibold);
+  font-style: italic;
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-banner);
+  color: var(--hc-lead-iron-700, #3a3440);
+  line-height: 1.2;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* sapr: hand-card art/text rebalance. The ei7o art-fill made the art reach
+   the panel edges, but on hand cards the bottom rules plate still ate ~70%
+   of the face (Stephanie: "the cards in hand have too much of the space
+   taken up with text"). Two moves, both pure-layout — no font shrink, the
+   rules text stays at the 12px --hc-text-xs readability floor for a 6yo:
+
+   1. The card NAME is dropped from the VISIBLE hand face (kept in the a11y
+      tree). The art already identifies the card for a pre-reader, and the
+      full name is one tap away in the card-zoom modal (Hand.tsx's
+      onZoomCard). Removing the redundant title line is what actually lets
+      the art panel reclaim space and become the dominant element — a
+      nameplate banner relocated onto the art only sandwiches the art into a
+      sliver (it occupies art pixels), so it's removal, not relocation, that
+      wins. The span is visually hidden rather than unmounted because the
+      hand button (Hand.tsx) carries no explicit aria-label and derives its
+      accessible name from this span; clip-hiding keeps the card's name in
+      the button's accessible name.
+   2. The bottom rules plate is tightened (zero gap, minimal padding,
+      line-height 1) so the two wrapped Market/Combat sections sit compactly
+      and the art panel clears half the face.
+
+   Authored UNLAYERED and placed BEFORE the variant block on purpose: the
+   base `.card-template-rules-box` (just above) is itself unlayered, and
+   unlayered declarations beat any `@layer base` rule regardless of
+   specificity — the earlier `@layer base .hand-card-tile …` override was
+   silently dead for exactly this reason. Sitting after the lower-specificity
+   base rules and before the higher-specificity `[data-variant]` rules keeps
+   the selector order ascending so stylelint's no-descending-specificity
+   stays satisfied without re-layering (cf. the pym7 note above ~line 380). */
+.hand-card-tile .card-template-rules-box {
+  gap: 0;
+  padding: 3px 2px;
+  min-height: 0;
+}
+
+/* Visually hidden, still in the a11y tree (see note 1 above). */
+.hand-card-tile .card-template-name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.hand-card-tile .card-template-effect,
+.hand-card-tile .card-template-combat,
+.hand-card-tile .card-template-passive {
+  line-height: 1;
+  letter-spacing: var(--hc-tracking-normal);
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* Card-frame variants (embertide-4jxh).                                  */
+
+/* Five card classes — regular / wild-boss / region-boss / item / champion —  */
+
+/* share the V-5 portrait shape but differ in border, name-plate gradient,    */
+
+/* and accent so each reads as a distinct class at a glance. Variant is set   */
+
+/* via the data-variant attribute by CardTemplate.tsx (see deriveCardVariant). */
+
+/* All colors come from --hc-* tokens. app.css is exempt from the strict-     */
+
+/* value rule for gradient lookup limitations (see .stylelintrc.cjs §A-5);    */
+
+/* the bead's A3 ("zero hardcoded hex/px") is honored by inspection.          */
+
+/* ------------------------------------------------------------------------- */
+
+/* regular = current default (gold-leading, parchment plate). No override
+   needed — the base .card-template + .card-template-rules-box rules above
+   already define this state. The selector is included for completeness so
+   future variant tweaks have a documented home. */
+.card-template[data-variant='regular'] {
+  /* inherits base .card-template treatment */
+}
+
+/* wild-boss — in-zone mini-boss. Iron-leading border with amber inner crown,
+   storm-grey/shadow name plate so the boss reads as ominous against the
+   warmer regular monster cards. */
+.card-template[data-variant='wild-boss'] {
+  background: var(--hc-shadow-700);
+  border-color: var(--hc-lead-iron-500);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-jewel-amber-300),
+    0 3px 8px var(--hc-glow-shadow);
+}
+
+/* dpy0: art-panel bg is now `transparent` on the base rule and inherits
+   from .card-template bg above, so wild-boss gets shadow-700 mat for free. */
+.card-template[data-variant='wild-boss'] .card-template-rules-box {
+  background: linear-gradient(180deg, var(--hc-shadow-700) 0%, var(--hc-shadow-800) 100%);
+  border-top-color: var(--hc-jewel-amber-300);
+}
+
+.card-template[data-variant='wild-boss'] .card-template-name {
+  color: var(--hc-jewel-amber-300);
+}
+
+.card-template[data-variant='wild-boss'] .card-template-effect,
+.card-template[data-variant='wild-boss'] .card-template-passive,
+.card-template[data-variant='wild-boss'] .card-template-combat {
+  color: var(--hc-parchment-100);
+}
+
+/* region-boss — zone gatekeeper / final-boss. Gold + ruby crown frame on a
+   royal shadow plate so the region encounter reads as the highest-stakes
+   card in the row. Ruby accent ties into the boss-banner palette
+   (--hc-jewel-ruby-700 = "Final-boss banner base" per palette.md §1). */
+.card-template[data-variant='region-boss'] {
+  background: var(--hc-shadow-800);
+  border-color: var(--hc-lead-gold-500);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-jewel-ruby-700),
+    0 3px 8px var(--hc-glow-ruby);
+}
+
+/* dpy0: art-panel bg inherits from .card-template (shadow-800). */
+.card-template[data-variant='region-boss'] .card-template-rules-box {
+  background: linear-gradient(180deg, var(--hc-shadow-700) 0%, var(--hc-jewel-ruby-900) 100%);
+  border-top-color: var(--hc-lead-gold-500);
+}
+
+.card-template[data-variant='region-boss'] .card-template-name {
+  color: var(--hc-jewel-amber-300);
+}
+
+.card-template[data-variant='region-boss'] .card-template-effect,
+.card-template[data-variant='region-boss'] .card-template-passive,
+.card-template[data-variant='region-boss'] .card-template-combat {
+  color: var(--hc-parchment-100);
+}
+
+/* item — inventory crate. Neutral iron-leading on a deeper parchment plate
+   so items read as utility relative to the warmer hero / monster cards.
+   Rules-box is compacted (tighter padding, no gradient) per the designer
+   note "effects render compact". */
+.card-template[data-variant='item'] {
+  border-color: var(--hc-lead-iron-500);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-iron-700),
+    0 3px 8px var(--hc-glow-shadow);
+}
+
+.card-template[data-variant='item'] .card-template-rules-box {
+  padding: 3px 5px 4px;
+  background: var(--hc-parchment-300);
+  border-top-color: var(--hc-lead-iron-500);
+  gap: 0;
+}
+
+.card-template[data-variant='item'] .card-template-name {
+  color: var(--hc-lead-iron-700);
+}
+
+/* champion — playable hero portrait. Gold border with pearl inner band
+   (sword/champion adjacency per palette §6) on a light parchment-50 plate
+   so heroes read as the brightest card class on the board. */
+.card-template[data-variant='champion'] {
+  background: var(--hc-parchment-50);
+  border-color: var(--hc-lead-gold-500);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-jewel-pearl-300),
+    0 3px 8px var(--hc-glow-amber);
+}
+
+/* dpy0: art-panel bg inherits from .card-template (parchment-50). */
+.card-template[data-variant='champion'] .card-template-rules-box {
+  background: linear-gradient(180deg, var(--hc-parchment-50) 0%, var(--hc-parchment-100) 100%);
+  border-top-color: var(--hc-lead-gold-500);
+}
+
+.card-template[data-variant='champion'] .card-template-name {
+  color: var(--hc-lead-gold-700);
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* Disabled tile state — used uniformly across Field, ChestRow, and          */
+
+/* AlwaysAvailableRow so any unaffordable card reads as "can't act now".     */
+
+/* ------------------------------------------------------------------------- */
+
+.field-card-tile:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.55) brightness(0.78);
+  opacity: 0.85;
+}
+
+.field-card-tile:disabled:hover,
+.field-card-tile:disabled:focus-visible {
+  transform: none;
+  filter: grayscale(0.55) brightness(0.78);
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* Card-zone frames — Always Available + Chests (side rails), InPlay and     */
+
+/* Relics (active player zones). Every zone that hosts CardTemplate tiles    */
+
+/* shares one cathedral treatment: dark reliquary panel with a thin gold     */
+
+/* leading, so the board reads as one unified visual system.                 */
+
+/* ------------------------------------------------------------------------- */
+
+@layer base {
+  .always-available-row,
+  .chest-row,
+  .in-play,
+  .items-row {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(19, 29, 62, 0.82) 0%, rgba(11, 18, 40, 0.86) 100%);
+    backdrop-filter: blur(2px);
+    border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+    box-shadow:
+      inset 0 0 0 1px rgba(184, 145, 66, 0.22),
+      inset 0 2px 6px rgba(0, 0, 0, 0.45);
+  }
+}
+
+/* arq3 — InPlay row uses cream parchment ground (instead of the shared
+   sapphire gradient above) so post-drop the in-play tiles sit on the same
+   warm cream that frames the empty drop-zone hint. Keeps the band visually
+   continuous with the dashed-amber border vocabulary. Padding tightened to
+   match the hand-row pane (3px 6px) for visual continuity between the two
+   centered cream rows. */
+@layer base {
+  .in-play {
+    padding: 3px 6px;
+    background: var(--hc-parchment-100, #f4ebd3);
+    backdrop-filter: none;
+    box-shadow:
+      inset 0 0 0 1px rgba(184, 145, 66, 0.22),
+      inset 0 1px 0 rgba(251, 246, 233, 0.5);
+  }
+}
+
+@layer base {
+  .always-available-row,
+  .chest-row {
+    flex-direction: column;
+    padding: 10px 8px;
+  }
+}
+
+@layer base {
+  .in-play,
+  .items-row {
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 56px;
+    margin-top: 4px;
+  }
+}
+
+/* dpy0 rev-2 (2026-05-02): always-available tiles bumped to MATCH the
+   market center-row sizing (134×178 narrow, 152×208 wide) instead of a
+   small variant — user feedback: art on Oracle / Elysian Soldier read
+   as super-tiny in the smaller variant, and the always-row is hidable
+   anyway so the vertical footprint is acceptable. Mirrors the market
+   rule below. Hand tiles stay capped (the hand row carries 8+ cards in
+   one horizontal band so center-row sizing wouldn't fit at 1280px).
+
+   Hand: 90×130 capped (ratio 1.44, matches market 1.43). The INNER
+   .card-template uses an EXPLICIT height because the default 168px
+   illustration would otherwise blow the card past 1.5 ratio.
+
+   Chest: 78×110 — chest sprites read fine at the narrower footprint,
+   and "small reliquary slot" is the chest convention. */
+
+/* always-available — center-row size (mirror .market-row .field-card-tile)
+   at wide viewports; compact 108×144 at narrow viewports
+   (embertide-2u9w 2026-05-02) so the always-row band lands at ~165px
+   instead of 203px and the .trays-row stops clipping at 1280×800. The
+   tiles still scan as full cards (chest tiles at 78×110 are smaller),
+   just at a narrow-viewport-appropriate footprint. */
+@layer base {
+  .always-available-row .field-card-tile {
+    width: 134px;
+    min-height: 178px;
+  }
+}
+
+@layer base {
+  .always-available-row .field-card-tile .card-template {
+    min-height: 178px;
+  }
+}
+
+@media (width <= 1440px) {
+  .always-available-row .field-card-tile {
+    width: 96px !important;
+    height: 128px !important;
+    min-height: 128px !important;
+    max-height: 128px !important;
+  }
+
+  .always-available-row .field-card-tile .card-template {
+    height: 128px !important;
+    min-height: 128px !important;
+    max-height: 128px !important;
+  }
+
+  /* embertide-2u9w 2026-05-02: narrow-viewport compaction pass.
+     Shed ~50px from the vertical budget by tightening the hand band
+     and the trays-row pile column (DiscardPile + VoidPane) so the
+     player tray's bottom counter row + END TURN button stop clipping
+     at 1280×800. Hand cards stay readable at 80×112; pile tiles drop
+     to 78×100 (matching the chest-row convention). */
+  .hand-card-tile {
+    width: 80px !important;
+    min-height: 112px !important;
+  }
+
+  @layer base {
+    .hand-card-tile .card-template {
+      height: 112px !important;
+      min-height: 112px !important;
+      max-height: 112px !important;
+    }
+  }
+
+  .trays-row .card-pile-tile {
+    width: 78px !important;
+    min-height: 100px !important;
+  }
+
+  .trays-row .card-pile-tile .card-template {
+    height: 100px !important;
+    min-height: 100px !important;
+    max-height: 100px !important;
+  }
+
+  .game-board {
+    gap: 3px !important;
+  }
+
+  .board-main {
+    gap: 3px !important;
+  }
+
+  /* embertide-2u9w 2026-05-02: shrink ChampionSlot 96 → 56 at narrow
+     viewports so the .trays grid no longer enforces a 96px minimum on
+     column-1 height. Combined with the tray-counters compaction below,
+     this brings .trays-row from 176 → ~140 and clears the bottom-row
+     clipping that triggered the user's "zoom to 80% to see everything"
+     symptom. */
+  .board-main .trays .champion-slot {
+    width: 56px !important;
+    height: 56px !important;
+  }
+
+  .board-main .trays > .tray {
+    grid-template-columns: 56px minmax(0, 1fr) !important;
+    padding: 2px 4px !important;
+  }
+
+  /* tray-counters compaction at narrow viewport — smaller icons + tighter
+     row-gap so the 2-col + items-row counter grid lands at ~46px instead
+     of ~72px. Icons stay readable at 18px (down from 24); the kid-6yo
+     audience can still parse them. */
+  .board-main .trays .tray-counters {
+    gap: 0 4px !important;
+  }
+
+  .board-main .trays .tray-counter svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* embertide-rz26 2026-05-09: right-rail compaction so the
+     End-Turn button (last child of `.board-side-crystal-rail`)
+     fits inside the 1280×800 AND 1366×768 viewports. Pre-fix the
+     rail intrinsic height was ~656px against ~593px of available
+     board-grid track at 1280×800 (and ~561px at 1366×768), pushing
+     End-Turn 67/95px below the viewport bottom respectively. The
+     2u9w pass compacted the main column only — the right rail
+     (BossAltarRow + Crystal/Embertide + End-Turn) was never touched.
+     The shrinks below shave ~155px off the rail so End-Turn lands
+     comfortably inside both viewports. Wide viewports (>1440px)
+     keep the original 96/120/132 sizes via the unmediated rules
+     above. */
+
+  /* PrincessCrystalCell: crystal raster 120 → 96, integrity bar
+     mirrors. The cracked-crystal stages still read clearly at 96. */
+  .board-side-crystal-rail .princess-crystal-art-surface {
+    width: 96px !important;
+    height: 96px !important;
+  }
+
+  .board-side-crystal-rail .princess-crystal-integrity-bar {
+    width: 96px !important;
+  }
+
+  /* TriforceStrip: cap width 132 → 96. Aspect-ratio is preserved
+     (SVG viewBox 128×118), so the strip's height also shrinks ~30px. */
+  .board-side-crystal-rail .crystal-embertide-pane > .embertide-hud > [data-testid='embertide-strip'] {
+    max-width: 96px !important;
+  }
+
+  /* crystal-embertide-pane: tighter paddings + child gap. */
+  .board-side-crystal-rail > .crystal-embertide-pane {
+    padding: 4px 8px 6px !important;
+    gap: 4px !important;
+  }
+
+  /* BossAltarPane: ornament art 96 → 60. The wild + region panes
+     still wrap (one per row at 192px rail width) but each pane is
+     ~36px shorter, saving ~72px over the stacked pair. */
+  .board-side-crystal-rail .boss-altar-pane-art {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  /* boss-altar-row: drop the row's own vertical padding and tighten
+     the inter-pane gap. Saves ~12px on the stacked pair. */
+  .board-side-crystal-rail .boss-altar-row {
+    padding: 0 !important;
+    gap: 2px !important;
+  }
+
+  /* board-side-crystal-rail itself: tighten the inter-block gap from
+     8 → 4 to claw back another 8px between BossAltarRow,
+     CrystalTriforcePane, and End-Turn. */
+  .board-side-crystal-rail {
+    gap: 4px !important;
+  }
+
+  /* End-Turn pin: drop its own margin-top so it tucks tight against
+     the crystal-embertide-pane. Saves another 4px. */
+  .board-side-crystal-rail > .board-side-end-turn {
+    margin-top: 0 !important;
+  }
+}
+
+/* embertide-ef6n 2026-05-10: narrower-viewport pass for laptop
+   widths ≤ 1100 (i.e., the resize range below 1180 — the lowest
+   target in the bead acceptance is 1024). The 2u9w + rz26 compactions
+   targeted ≤ 1440 and got 1180/1280/1366 fitting. At 1024 the
+   .market-row 6-tile band still wraps to a second row (134w × 6 +
+   50 gap + 8 padding ≈ 862 > the ~796px of board-main width left
+   over after the 192px right rail), pushing the bottom stack
+   (.trays-row: PlayerTray + Discard + Void) ~150px below the viewport
+   bottom — exactly the symptom Stephanie reported on resize.
+
+   Wrap threshold is viewport_w ≈ 1078 (board-main ≈ viewport_w − 216,
+   needs ≥ 862 for one-row market). Setting the breakpoint at 1100
+   activates only when wrap would actually occur and leaves 1180+
+   sizes untouched.
+
+   The fix: shrink .market-row .field-card-tile so 6 still fit on one
+   row at 1024w. Aspect ratio approximated 134:158 → 110:130 so art
+   doesn't squish. Bands above and below (always-row, hand, trays-row
+   pile column) are already small enough at 1024 once the market row
+   stops wrapping. */
+@media (width <= 1100px) {
+  .market-row .field-card-tile {
+    width: 110px !important;
+    height: 130px !important;
+    min-height: 130px !important;
+    max-height: 130px !important;
+  }
+
+  .market-row .field-card-tile .card-template {
+    height: 130px !important;
+    min-height: 130px !important;
+    max-height: 130px !important;
+  }
+
+  /* Field band min-height drops with the smaller tiles so the band
+     doesn't reserve dead space below them. */
+  .market-row {
+    min-height: 156px !important;
+  }
+}
+
+/* embertide-ef6n 2026-05-10: tight-height pass for laptop sizes
+   ≤ 760px tall. Independent of width — at 1280×720 / 1366×720 the
+   bottom stack still pokes ~35-40px below the viewport even after
+   the rz26 right-rail compaction, because the main column's vertical
+   budget shrinks with the viewport but the band heights don't. This
+   block trims the three tallest main-column bands (market-row / hand /
+   trays-row pile column) at heights ≤ 760 only, restoring fit at
+   1024×700, 1180×700, 1280×720, 1366×720. Heights > 760 (the typical
+   laptop default of 768/800/900/1080) keep the wider 158/112/100
+   tile sizes from the ≤ 1440 pass. */
+@media (height <= 760px) {
+  /* market-row: tile 134×158 → 110×120 at narrow heights. The shorter
+     band reclaims ~38px of vertical budget that the bottom stack
+     (PlayerTray + Discard + Void) needs to clear h≤720 viewports. */
+  .market-row .field-card-tile {
+    width: 110px !important;
+    height: 120px !important;
+    min-height: 120px !important;
+    max-height: 120px !important;
+  }
+
+  .market-row .field-card-tile .card-template {
+    height: 120px !important;
+    min-height: 120px !important;
+    max-height: 120px !important;
+  }
+
+  .market-row {
+    min-height: 144px !important;
+  }
+
+  /* hand: when the band has cards (non-empty hand), the tile drives the
+     band's height. Tile 80×112 → 70×96 saves ~16px. */
+  .hand-card-tile {
+    width: 70px !important;
+    min-height: 96px !important;
+  }
+
+  @layer base {
+    .hand-card-tile .card-template {
+      height: 96px !important;
+      min-height: 96px !important;
+      max-height: 96px !important;
+    }
+  }
+
+  /* trays-row pile column: DiscardPile + VoidPane tiles 78×100 → 64×84
+     saves ~16px of pile-column height (which then propagates to the
+     trays-row band height). */
+  .trays-row .card-pile-tile {
+    width: 64px !important;
+    min-height: 84px !important;
+  }
+
+  .trays-row .card-pile-tile .card-template {
+    height: 84px !important;
+    min-height: 84px !important;
+    max-height: 84px !important;
+  }
+
+  /* always-available + chest tiles share the always-row-strip header
+     band. Smaller tiles → shorter strip. always-available-row-tile
+     drops 96×128 → 80×104 (saves 24), chest tiles 78×110 → 70×92
+     (saves 18). The strip's intrinsic height tracks the taller of the
+     two, so the band lands at ~108 instead of ~136. */
+  .always-available-row .field-card-tile {
+    width: 80px !important;
+    height: 104px !important;
+    min-height: 104px !important;
+    max-height: 104px !important;
+  }
+
+  .always-available-row .field-card-tile .card-template {
+    height: 104px !important;
+    min-height: 104px !important;
+    max-height: 104px !important;
+  }
+
+  .chest-row .field-card-tile {
+    width: 70px !important;
+    height: 92px !important;
+    min-height: 92px !important;
+    max-height: 92px !important;
+  }
+
+  .chest-row .field-card-tile .card-template {
+    height: 92px !important;
+    min-height: 92px !important;
+    max-height: 92px !important;
+  }
+}
+
+/* hand — capped 90×130 so the band fits 8+ cards on a 1280-wide board */
+.hand-card-tile {
+  width: 90px;
+  min-height: 130px;
+}
+
+@layer base {
+  .hand-card-tile .card-template {
+    height: 130px;
+    min-height: 130px;
+    max-height: 130px;
+  }
+}
+
+/* chest — narrow 78×110 by convention */
+@layer base {
+  .chest-row .field-card-tile {
+    width: 78px;
+    min-height: 110px;
+  }
+}
+
+@layer base {
+  .chest-row .field-card-tile .card-template {
+    min-height: 110px;
+  }
+}
+
+/* Chest rules-box stays at a tight footprint (chest names are short).
+   (The hand rules-box footprint is set unlayered near the base card-text
+   rules — see the sapr block above the variant section.) */
+.chest-row .field-card-tile .card-template-rules-box {
+  min-height: 28px;
+  padding: 2px 4px 3px;
+}
+
+@layer base {
+  .hand-card-tile .card-template-name,
+  .always-available-row .field-card-tile .card-template-name,
+  .chest-row .field-card-tile .card-template-name {
+    font-size: var(--hc-text-xs);
+    letter-spacing: var(--hc-tracking-chrome-wide);
+    line-height: 0.95;
+  }
+}
+
+@layer base {
+  .hand-card-tile .card-template-effect,
+  .always-available-row .field-card-tile .card-template-effect,
+  .chest-row .field-card-tile .card-template-effect {
+    font-size: var(--hc-text-xs);
+    letter-spacing: var(--hc-tracking-normal);
+    line-height: 1.15;
+  }
+}
+
+@layer base {
+  .hand-card-tile .card-template-passive,
+  .always-available-row .field-card-tile .card-template-passive,
+  .chest-row .field-card-tile .card-template-passive {
+    font-size: var(--hc-text-xs);
+    letter-spacing: var(--hc-tracking-normal);
+    line-height: 1.15;
+  }
+}
+
+.hand-card-tile .card-template-cost-overlay svg,
+.always-available-row .field-card-tile .card-template-cost-overlay svg,
+.chest-row .field-card-tile .card-template-cost-overlay svg {
+  width: 22px;
+  height: 22px;
+}
+
+/*
+ * Zone empty-state labels — Cinzel small-caps so they read as part of the
+ * cathedral typography system, not a placeholder.
+ */
+
+.in-play-empty,
+.items-row-empty {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-wide);
+  text-transform: uppercase;
+  color: var(--hc-text-muted, #b7ae95);
+  padding: 4px 8px;
+  font-style: normal;
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* fsyd sub-ask 7 — drop-zone gap. Replaces the legacy `.in-play-empty` text */
+
+/* placeholder with an explicit 64px-tall drop-target. Hand cards are        */
+
+/* HTML5-draggable; releasing on this surface dispatches `playCard`.         */
+
+/* ------------------------------------------------------------------------- */
+
+.in-play.in-play-empty-zone {
+  /* When InPlay has no cards, the band reduces to the drop-zone hint
+     surface only — flex-direction column so the dashed-target div
+     stretches across the full band width.
+
+     embertide-bkqv (playtest 2026-05-26): keep the SAME horizontal
+     box geometry as the .hand pane below (3px 6px padding + a 1px
+     transparent border) instead of padding:0/border:none. .hand is
+     content-box, so its 6px padding + 1px border made it ~14px wider
+     than this zone; with both rows content-sized and centred, the
+     narrower empty zone drifted ~7px to the right of the hand. Matching
+     the box (transparent border keeps it invisible) makes the two rows
+     equal width so their left edges — and the drop target over the hand
+     cards — line up. */
+  flex-direction: column;
+  align-items: stretch;
+  padding: 3px 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* arq3 — drop-zone has TWO empty states:
+ *  1. post-first-run (default): simple cream background, no copy. Player has
+ *     learned the affordance; the dashed amber border alone signals the gap.
+ *  2. first-run (.drop-zone-first-run): painterly stained-glass cream — a
+ *     slightly-darker warm cream with subtle leaded-glass tracery + amber
+ *     corner glows behind the "Drag a card here to play it" hint. Persists
+ *     via localStorage (rasc.dropHintSeen) so an experienced player never
+ *     sees it again.
+ */
+.drop-zone-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* bkqv: border-box so width:100% spans exactly the in-play content
+     box (no padding/border overflow past the pane edge). */
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px;
+  border: 2px dashed var(--hc-lead-gold-500, #b89142);
+  border-radius: 8px;
+  background: var(--hc-parchment-100, #f4ebd3);
+  transition:
+    border-color 0.16s ease-out,
+    background 0.16s ease-out,
+    box-shadow 0.16s ease-out;
+}
+
+.drop-zone-empty.drop-zone-first-run {
+  background:
+    radial-gradient(ellipse at top left, rgba(246, 211, 90, 0.22) 0%, transparent 55%),
+    radial-gradient(ellipse at bottom right, rgba(246, 211, 90, 0.22) 0%, transparent 55%),
+    repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 22px,
+      rgba(139, 106, 42, 0.08) 22px,
+      rgba(139, 106, 42, 0.08) 23px
+    ),
+    linear-gradient(
+      135deg,
+      var(--hc-parchment-200, #ecdfb8) 0%,
+      var(--hc-parchment-300, #dbc289) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(251, 246, 233, 0.55),
+    inset 0 0 0 1px rgba(184, 145, 66, 0.32);
+}
+
+.in-play-drag-over .drop-zone-empty,
+.in-play-drag-over.in-play-empty-zone .drop-zone-empty {
+  border-style: solid;
+  border-width: 3px;
+  border-color: var(--hc-jewel-amber-300, #e8bd59);
+
+  /* arq3 — solid cream base under the amber wash so the drag-over highlight
+     is visible (the empty-zone parent is transparent, so a translucent-only
+     amber overlay would read as invisible). */
+  background:
+    linear-gradient(rgba(232, 189, 89, 0.22), rgba(232, 189, 89, 0.22)),
+    var(--hc-parchment-100, #f4ebd3);
+  box-shadow:
+    inset 0 0 0 1px rgba(232, 189, 89, 0.4),
+    0 0 16px rgba(232, 189, 89, 0.35);
+}
+
+.drop-zone-empty-label {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-wide);
+  text-transform: uppercase;
+  color: var(--hc-lead-gold-700, #8b6a2a);
+  text-shadow: 0 1px 0 rgba(251, 246, 233, 0.55);
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* fsyd sub-ask 8 — items bag chip. Default-collapsed parchment chip living  */
+
+/* in the .trays band; tap → expands UPWARD to a popover above the band.     */
+
+/* ------------------------------------------------------------------------- */
+
+.items-bag {
+  position: relative;
+  flex: 0 0 auto;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@layer base {
+  .items-bag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 92px;
+    height: 44px;
+    padding: 0 10px;
+    font-family: var(--hc-font-display);
+    font-weight: var(--hc-font-weight-bold);
+    font-size: var(--hc-text-xs);
+    letter-spacing: var(--hc-tracking-chrome-md);
+    text-transform: uppercase;
+    color: var(--hc-lead-iron-900, #0e0c14);
+    background: radial-gradient(
+      ellipse at 30% 28%,
+      var(--hc-parchment-50, #fbf6e9) 0%,
+      var(--hc-parchment-100, #f4ebd3) 60%,
+      var(--hc-parchment-300, #dbc289) 100%
+    );
+    border: 1.5px solid var(--hc-lead-gold-700, #8b6a2a);
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow:
+      inset 0 0 0 1px rgba(184, 145, 66, 0.32),
+      0 2px 4px rgba(0, 0, 0, 0.4);
+    transition:
+      transform 0.14s ease-out,
+      border-color 0.14s ease-out,
+      box-shadow 0.14s ease-out;
+  }
+}
+
+.items-bag-chip:hover,
+.items-bag-chip:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
+    0 3px 7px rgba(0, 0, 0, 0.45);
+  outline: none;
+}
+
+.items-bag[data-open='true'] .items-bag-chip {
+  border-color: var(--hc-jewel-amber-300, #e8bd59);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-jewel-amber-300, #e8bd59),
+    0 3px 8px rgba(232, 189, 89, 0.45);
+}
+
+@layer base {
+  .items-bag-chip-icon {
+    flex: 0 0 auto;
+  }
+}
+
+@layer base {
+  .items-bag-chip-label {
+    flex: 1 1 auto;
+  }
+}
+
+.items-bag-chip-count {
+  flex: 0 0 auto;
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-wide);
+  color: var(--hc-lead-gold-700, #8b6a2a);
+  font-variant-numeric: tabular-nums;
+}
+
+.items-bag-popover {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  border: 1.5px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 10px;
+  background: linear-gradient(
+    180deg,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-parchment-100, #f4ebd3) 100%
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.4),
+    0 8px 22px rgba(0, 0, 0, 0.5);
+}
+
+.items-bag-popover-grid {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 6px;
+  align-items: start;
+}
+
+.items-bag-popover-empty-slot {
+  width: 56px;
+  height: 56px;
+  border: 1px dashed var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 6px;
+  background: rgba(184, 145, 66, 0.08);
+}
+
+.effect-badge {
+  font-size: var(--hc-text-xs);
+  margin-top: 4px;
+  padding: 2px 4px;
+  background: #ffffff;
+  border: 1px solid #666;
+  border-radius: 4px;
+  color: #111111;
+  max-width: 96px;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.tray-items {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-wide);
+  text-transform: uppercase;
+  color: var(--hc-text-muted, #b7ae95);
+}
+
+@layer base {
+  .tray-items svg {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+  }
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* Tutorial modal — full-viewport backdrop + centered reliquary panel so     */
+
+/* first-run prompts don't render inline below the board and get occluded    */
+
+/* by card art at narrow viewports.                                          */
+
+/* ------------------------------------------------------------------------- */
+
+.tutorial-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(5, 8, 15, 0.72);
+}
+
+.tutorial-overlay {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 420px;
+  padding: 22px 26px;
+  background: linear-gradient(
+    180deg,
+    var(--hc-shadow-600, #1e2b52) 0%,
+    var(--hc-shadow-800, #0b1228) 100%
+  );
+  border: 1px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 10px;
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.35),
+    0 12px 36px rgba(0, 0, 0, 0.65);
+}
+
+.tutorial-title {
+  margin: 0;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-lg);
+  letter-spacing: var(--hc-tracking-chrome-lg);
+  text-transform: uppercase;
+  color: var(--hc-lead-gold-500, #b89142);
+}
+
+.tutorial-body {
+  margin: 0;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-sm);
+  line-height: 1.45;
+  letter-spacing: var(--hc-tracking-wide);
+  color: var(--hc-text-primary, #f6f2e6);
+}
+
+@layer base {
+  .tutorial-dismiss {
+    align-self: flex-start;
+  }
+}
+
+/*
+ * embertide-9c7 — heart-gain feedback.
+ * Floats a small "+N" next to the hearts counter so the player sees the
+ * reward land. Purely visual — no engine state changes.
+ */
+
+.tray-counter-hearts {
+  position: relative;
+}
+
+.heart-feedback {
+  position: absolute;
+  top: -6px;
+  right: -18px;
+  font-size: var(--hc-text-sm);
+  font-weight: var(--hc-font-weight-bold);
+  color: var(--hc-jewel-amber-200, #f6d35a);
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/*
+ * Rev-2 2026-04-22: HP-loss feedback variant. Deeper ruby red,
+ * slightly larger font so the damage number reads at a glance during
+ * boss-turn resolution. Motion (shake + scale pulse) lives on the
+ * motion.span itself via HeartFeedback's variants.
+ */
+.heart-feedback.heart-feedback-loss {
+  color: var(--hc-jewel-ruby-200, #ff4d6d);
+  font-size: var(--hc-text-base);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.7),
+    0 0 6px rgba(255, 77, 109, 0.45);
+}
+
+/*
+ * embertide-4m5.4 (4m5.d.3) — heart-gain sparkle + halo flourish.
+ * Sibling visual of `.heart-feedback`. Renders centered over the
+ * sockets row via absolute positioning so the heart strip itself
+ * keeps its intrinsic size (no layout shift on gain — A3).
+ *
+ * Sparkle dots drift up + outward, the halo pulses once and fades.
+ * Both layers use warm-gold `--hc-jewel-amber-*` + `--hc-glow-amber`
+ * tokens so the read is "reward" (kid-6yo: no scary glow, no
+ * screen-shake — constraints satisfied by the soft glow halo and
+ * lack of x-axis displacement on the root).
+ */
+.heart-gain-fx {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.heart-gain-fx-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--hc-jewel-amber-100, #f6e7bc) 0%,
+    var(--hc-glow-amber, rgba(232, 189, 89, 0.55)) 45%,
+    transparent 75%
+  );
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.heart-gain-fx-sparkle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: var(--hc-jewel-amber-100, #f6e7bc);
+  box-shadow: 0 0 6px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+  pointer-events: none;
+}
+
+/*
+ * HP sockets row — briefly flashes red when the player's HP decreases
+ * so the entire bar registers damage, not just the socket that
+ * emptied. Paired with the "-N" HeartFeedback float. Animation is
+ * short (500ms) so it doesn't linger into the next boss turn.
+ */
+@keyframes hp-damage-flash-keyframes {
+  0% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  35% {
+    background-color: var(--hc-jewel-ruby-900-alpha-35, rgba(110, 16, 42, 0.5));
+    box-shadow: 0 0 12px var(--hc-jewel-ruby-700, #6e102a);
+  }
+
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+.hp-sockets-row.hp-damage-flash {
+  border-radius: 4px;
+  animation: hp-damage-flash-keyframes 500ms ease-out;
+}
+
+/* Respect users who opt out of motion — still flash color so the
+   damage signal registers, but skip the box-shadow pulse. */
+@media (prefers-reduced-motion: reduce) {
+  .hp-sockets-row.hp-damage-flash {
+    animation: none;
+    background-color: var(--hc-jewel-ruby-900-alpha-35, rgba(110, 16, 42, 0.5));
+    transition: background-color 400ms ease-out;
+  }
+}
+
+/* v2.1 gm0.17 — vital-ember-lands pulse. When `hpMax` grows by 1
+ * (grunt-meter promotion, tough kill auto-promote, or slot-boss drop)
+ * the newly-added socket fades in with a ruby-glow pulse for 400ms so
+ * the player notices the container landed. prefers-reduced-motion
+ * downgrades to a silent fade-in (no glow, no transform) — the socket
+ * still appears because player.hpMax drives the socket count. */
+@keyframes hp-socket-container-pulse-keyframes {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+    filter: drop-shadow(0 0 0 rgba(217, 106, 130, 0));
+  }
+
+  40% {
+    opacity: 1;
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px var(--hc-jewel-ruby-300, #d96a82));
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(217, 106, 130, 0));
+  }
+}
+
+.hp-socket-container-pulse {
+  animation: hp-socket-container-pulse-keyframes 400ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hp-socket-container-pulse {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* Setup screen (embertide-sl9). Elysian Cathedral frame hosting a      */
+
+/* gem-style player-count row, a pill solo-vs-bot toggle, and bespoke        */
+
+/* champion portrait tiles. Selected-state is driven purely off               */
+
+/* [aria-pressed="true"] to keep one source of truth.                         */
+
+/* ------------------------------------------------------------------------- */
+
+.setup-root {
+  display: flex;
+  flex-direction: column;
+
+  /* embertide-1vm: vertical rhythm tightened so 4 seat rows + player-
+     count gems + Start button fit the 1280x800 single-screen target. */
+  gap: 10px;
+  padding: 12px clamp(20px, 4vw, 48px);
+
+  /* embertide-1vm: min-height uses 100% (fill the padded .app-root)
+     instead of 100vh (which forced setup-root past the parent's bottom by
+     exactly the parent padding, causing a deterministic 4px scrollbar
+     even at players=1). */
+  min-height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    var(--hc-bg-app, #0b1228) 0%,
+    var(--hc-bg-panel, #131d3e) 100%
+  );
+  color: var(--hc-text-primary, #f6f2e6);
+}
+
+/* vwao (2026-04-25): Setup landing now uses a generated Elysian
+   Cathedral stained-glass raster (cathedral_setup_landing_001.webp)
+   instead of the flat 5qql gradient. The webp covers the viewport
+   with cover/center positioning so the rose window stays roughly
+   centered on the vertical golden ratio, with the lower negative
+   space sitting where the live UI (player-count gems + champion
+   picker + Start button) renders. A subtle shadow vignette is
+   layered on top so the UI reads cleanly over any focal hot spots
+   in the raster. The 5qql gradient is retained as a background-color
+   fallback in case the raster fails to load. */
+.setup-root-cathedral {
+  /* embertide-aigj/zd3z/r349 (2026-04-25): the painterly cathedral
+     raster (cathedral_setup_landing_001.webp) carries the full
+     atmosphere — window in the upper 30%, dim marble nave in the lower
+     70%. r349 retired the radial-gradient overlay that the prior
+     revisions stacked on top: it was sized 100%×60% and anchored
+     `center top`, which left a hard horizontal cutoff at the layer's
+     bottom edge (~y=480 on a 800px viewport) where the gradient ended
+     and the raw raster resumed. The raster's own internal haze is
+     enough; no CSS overlay needed.
+
+     padding-top pushes the UI stack below the rose window. clamp keeps
+     it proportional across viewport heights — 30vh on 800px = 240px,
+     which clears the window's bottom edge with breathing room. The
+     remaining ~548px fits the 4 sections + Start button at the
+     project's 1280×800 target. */
+  background-color: var(--hc-shadow-900, #05080f);
+  background-image: url('/illustrations/cathedral_setup_landing_001.webp');
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  /* embertide-bkf2 (2026-04-26): padding-top reduced from
+     clamp(200,30vh,280) → 16 now that the cathedral title-strip
+     overlay (64px) handles the top framing. The 2×2 champion grid
+     (664px tall) needs the reclaimed vertical budget to fit alongside
+     the title-strip + Start button without truncation. The rose
+     window in the painterly background still reads as art behind the
+     translucent grid — the cards float over it as a "stained-glass
+     cards in front of stained-glass window" composition. */
+  padding-top: 16px;
+}
+
+/* vwao (2026-04-25): the legacy SVG arch overlay (5qql) was retired in
+   favor of the generated stained-glass landing raster. The class is
+   kept as a no-op so the existing JSX <span className="setup-cathedral-
+   arches"/> doesn't 404 against missing styles; component cleanup ships
+   in a follow-up. */
+.setup-cathedral-arches {
+  display: none;
+}
+
+/* All direct setup-root children sit above the decorative arch layer. */
+.setup-root > .setup-section,
+.setup-root > .setup-start-button {
+  position: relative;
+  z-index: 1;
+}
+
+@layer base {
+  .setup-section {
+    display: flex;
+    flex-direction: column;
+
+    /* embertide-1vm: compact intra-section rhythm for single-viewport fit. */
+    gap: 6px;
+  }
+}
+
+.setup-section-title {
+  /* embertide-w95e (2026-04-25): wrap the section header in a
+     cream-parchment chip so it reads against the painterly cathedral
+     background. Pre-w95e the heading was gold ink directly on the
+     stained-glass raster; legibility failed at the kid-target reading
+     distance. The chip mirrors the .setup-count-button (b9br) +
+     .setup-champion-plate (vmh5) chrome family so the chrome reads as
+     part of the same v6 surface vocabulary, not a one-off pane. */
+  display: inline-block;
+  align-self: flex-start;
+  margin: 0;
+  padding: 4px 14px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-sm);
+  letter-spacing: var(--hc-tracking-chrome-max);
+  text-transform: uppercase;
+  color: var(--hc-lead-iron-900, #0e0c14);
+  background: radial-gradient(
+    circle at 30% 25%,
+    var(--hc-parchment-100, #f7eccf) 0%,
+    var(--hc-parchment-300, #dbc289) 100%
+  );
+  border: 1px solid var(--hc-lead-gold-700, #7a5a1e);
+  border-radius: 999px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+/*
+ * embertide-bkf2 (2026-04-26): cathedral title-strip chrome at the
+ * top of the Setup landing. Layered over the existing painterly
+ * cathedral_setup_landing_001.webp background — the strip is overlay
+ * chrome only, the user explicitly wanted the v6 illustration preserved.
+ * Same chrome family as the in-game cathedral title-strip planned in
+ * 7lal so the player sees a consistent top-banner across screens.
+ */
+.setup-title-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  height: 64px;
+  margin: 0 0 12px;
+  padding: 0 24px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-weight-2xl);
+  font-size: var(--hc-text-2xl);
+  letter-spacing: var(--hc-tracking-chrome-extra);
+  text-transform: uppercase;
+  color: var(--hc-lead-iron-900, #0e0c14);
+  background: radial-gradient(
+    circle at 30% 25%,
+    var(--hc-parchment-100, #f7eccf) 0%,
+    var(--hc-parchment-300, #dbc289) 70%,
+    var(--hc-parchment-500, #b28a48) 100%
+  );
+  border: 2px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 4px rgba(184, 145, 66, 0.35),
+    0 8px 22px rgba(0, 0, 0, 0.45);
+  position: relative;
+  z-index: 1;
+}
+
+/*
+ * Two-column body: vertical seat/bot rail on the LEFT (240px),
+ * centered champion grid on the RIGHT (1040px max). Replaces the
+ * pre-bkf2 stacked-section column.
+ */
+.setup-body {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: flex-start;
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.setup-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 240px;
+  flex: 0 0 240px;
+}
+
+.setup-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/*
+ * Section heading inside the main pane gets the same parchment chip
+ * chrome but centers above the champion grid. The rail-side headings
+ * keep their default left-aligned chip via align-self: flex-start.
+ */
+.setup-section-title-main {
+  align-self: center;
+}
+
+/* --- Player-count gem buttons --- */
+
+.setup-count-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.setup-count-button {
+  /* embertide-b9br (2026-04-25): retired the sapphire-jewel radial
+     gradient that didn't match the rest of the cathedral UI (player
+     pills, champion plate — all parchment-cream + gold leading). The
+     count buttons now read as the same family — parchment-cream face,
+     gold leading border, lead-iron numeral. Active state uses the same
+     gold-glow halo as setup-player-pill[aria-checked='true'] so the
+     three click targets feel like a unified picker.
+     1vm: 44px square matches the TOUCH_TARGET_STYLE inline min floor. */
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xl);
+  color: var(--hc-lead-iron-900, #0e0c14);
+  background: radial-gradient(
+    ellipse at 30% 28%,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-parchment-100, #f4ebd3) 60%,
+    var(--hc-parchment-300, #dbc289) 100%
+  );
+  border: 2px solid var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.35),
+    0 3px 6px rgba(0, 0, 0, 0.5);
+  transition:
+    transform 0.14s ease-out,
+    box-shadow 0.14s ease-out,
+    border-color 0.14s ease-out;
+}
+
+.setup-count-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
+    0 4px 10px rgba(0, 0, 0, 0.55);
+}
+
+@layer base {
+  .setup-count-button:focus-visible {
+    outline: none;
+    border-color: var(--hc-lead-gold-500, #b89142);
+    box-shadow:
+      inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
+      0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+      0 3px 6px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.setup-count-button[aria-pressed='true'] {
+  border-color: var(--hc-lead-gold-500, #b89142);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 0 0 2px var(--hc-lead-gold-500, #b89142),
+    0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+    0 3px 6px rgba(0, 0, 0, 0.55);
+}
+
+/* --- Solo-vs-bot pill toggle --- */
+
+.setup-pill-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-extra);
+  text-transform: uppercase;
+  color: var(--hc-lead-gold-500, #b89142);
+  background: linear-gradient(
+    180deg,
+    var(--hc-shadow-600, #1e2b52) 0%,
+    var(--hc-shadow-800, #0b1228) 100%
+  );
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+  transition:
+    color 0.14s ease-out,
+    box-shadow 0.14s ease-out;
+}
+
+.setup-pill-toggle:focus-visible,
+.setup-pill-toggle:hover:not(:disabled) {
+  outline: none;
+  color: var(--hc-jewel-amber-100, #f6e7bc);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
+    0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.setup-pill-label {
+  font-variant-numeric: tabular-nums;
+}
+
+.setup-pill-track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 60px;
+  height: 26px;
+  padding: 0 10px 0 28px;
+  background: var(--hc-shadow-900, #05080f);
+  border: 1px solid var(--hc-lead-iron-700, #1a1620);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-lg);
+  color: var(--hc-text-muted, #b7ae95);
+  transition:
+    background 0.14s ease-out,
+    color 0.14s ease-out;
+}
+
+.setup-pill-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 28%,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-parchment-300, #e0d2ab) 55%,
+    var(--hc-parchment-500, #bfa979) 100%
+  );
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-700, #8b6a2a),
+    0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: transform 0.16s ease-out;
+}
+
+.setup-pill-toggle[aria-pressed='true'] .setup-pill-track {
+  background: linear-gradient(
+    180deg,
+    var(--hc-jewel-amber-300, #e8bd59) 0%,
+    var(--hc-jewel-amber-500, #c48a1f) 100%
+  );
+  color: var(--hc-lead-iron-900, #0e0c14);
+}
+
+.setup-pill-toggle[aria-pressed='true'] .setup-pill-thumb {
+  transform: translateX(34px);
+}
+
+.setup-pill-state {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+}
+
+/* --- Champion tiles --- */
+
+/* --- Player pill strip (embertide-ajb) ---
+   Horizontal row of pills — one per seat — that indicates which player
+   is currently picking and shows a live preview of each seat's current
+   champion. Active pill is aria-checked + data-seat-active; clicking a
+   pill sets activeSeat. Replaces the prior repeated per-seat rows. */
+
+.setup-player-strip {
+  /* embertide-bkf2 (2026-04-26): vertical column inside the 240px
+     left rail. Pre-bkf2 this was flex-wrap row spread horizontally
+     across the page; now stacks each seat group vertically so the
+     champion grid can occupy the centered focal area. */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 6px;
+  width: 100%;
+}
+
+/* d8vc (2026-04-25): seat group wraps the player pill + per-seat bot
+   toggle so they sit as a paired column inside the .setup-player-strip
+   row. The pill stays the visual anchor; the bot toggle reads as a
+   small chip under it. */
+.setup-player-pill-group {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.setup-player-pill {
+  /* embertide-bkf2 (2026-04-26): full-width inside the 240px rail.
+     Pre-bkf2 was inline-flex auto-width so multiple pills tiled in a
+     row; in the new vertical rail each pill takes the full column. */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 14px;
+  width: 100%;
+  background: var(--hc-parchment-50, #fbf6e9);
+  border: 2px solid var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  color: var(--hc-lead-iron-900, #0e0c14);
+  transition:
+    transform 0.14s ease-out,
+    box-shadow 0.14s ease-out,
+    border-color 0.14s ease-out,
+    filter 0.14s ease-out,
+    opacity 0.14s ease-out;
+}
+
+/*
+ * embertide-bkf2 (2026-04-26) + post-ship feedback (2026-04-26):
+ * inactive-seat treatment retired. Per user feedback the
+ * grayscale + opacity dim on inactive pills made them read as
+ * disabled; the gold border glow on the active pill (aria-checked=
+ * 'true', styled below) is sufficient to signal which seat is
+ * picking. Inactive pills now render at full parchment with no
+ * translucency or desaturation.
+ */
+
+/*
+ * embertide-oovz (2026-04-26) + post-ship feedback: per-seat
+ * human/bot SLIDE TOGGLE simplified to a single "Bot" label adjacent
+ * to the track. Pre-feedback dual labels (HUMAN | BOT) read as
+ * redundant — the toggle position alone carries the binary state, so
+ * we drop the human label and let the switch's ON/OFF appearance
+ * (track muted-shadow when OFF, gold-glow when ON) signal "this seat
+ * is now a bot". The "Bot" label brightens on data-active to confirm
+ * the affordance verbally.
+ */
+.setup-bot-toggle {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.setup-bot-toggle-label {
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  line-height: 1;
+  letter-spacing: var(--hc-tracking-chrome-lg);
+  text-transform: uppercase;
+  color: var(--hc-lead-iron-900, #0e0c14);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.14s ease-out;
+}
+
+.setup-bot-toggle-label[data-active='true'] {
+  opacity: 1;
+}
+
+.setup-bot-toggle-track {
+  position: relative;
+  display: inline-block;
+  box-sizing: content-box;
+  width: 60px;
+  height: 20px;
+  padding: 0;
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 11px;
+  background: var(--hc-shadow-700, #131d3e);
+  cursor: pointer;
+  transition:
+    background 0.18s ease-out,
+    border-color 0.14s ease-out,
+    box-shadow 0.14s ease-out;
+}
+
+/* Track flips to gold when ON (bot mode) — completes the visual
+   "obviously on" affordance the user asked for. The knob also
+   slides right; together the two state changes are unambiguous. */
+.setup-bot-toggle-track[data-state='bot'] {
+  background: var(--hc-lead-gold-500, #b89142);
+  border-color: var(--hc-lead-gold-700, #8b6a2a);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.setup-bot-toggle-track:focus-visible,
+.setup-bot-toggle-track:hover:not(:disabled) {
+  outline: none;
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow: 0 0 0 2px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+}
+
+.setup-bot-toggle-knob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  background: var(--hc-parchment-50, #fbf6e9);
+  border: 1px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  transition: transform 180ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.setup-bot-toggle-track[data-state='bot'] .setup-bot-toggle-knob {
+  transform: translateX(40px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .setup-bot-toggle-knob {
+    transition: none;
+  }
+}
+
+.setup-player-pill:focus-visible,
+.setup-player-pill:hover:not(:disabled) {
+  outline: none;
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow: 0 0 0 2px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+}
+
+.setup-player-pill[aria-checked='true'] {
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow:
+    inset 0 0 0 2px var(--hc-lead-gold-500, #b89142),
+    0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+  transform: translateY(-1px);
+}
+
+.setup-player-pill-label {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-wide);
+  text-transform: uppercase;
+
+  /* embertide-w95e (2026-04-25): was --hc-parchment-700 (tan
+     #7f6a3f) on parchment-50 — passes ink-on-cream tonally but fails
+     contrast at the 11px display size against a busy painterly
+     backdrop. Switching to lead-iron-700 ink keeps the parent pill's
+     hierarchy (label muted vs pick bold) intact while clearing the
+     readability bar. */
+  color: var(--hc-lead-iron-700, #2a221a);
+  line-height: 1;
+}
+
+.setup-player-pill-pick {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-sm);
+  letter-spacing: var(--hc-tracking-wide);
+  color: var(--hc-lead-iron-900, #0e0c14);
+  line-height: 1;
+}
+
+.setup-champion-row {
+  /* embertide-bkf2 (2026-04-26): 2x2 grid centered in the right
+     pane. Pre-bkf2 was flex-wrap with 156×280 tiles in one row; now a
+     deterministic 2x2 grid of 256×320 tiles so each tile has room for
+     full ability text without truncation, and the grid centers
+     horizontally inside the 1040px main column. */
+  display: grid;
+  grid-template-columns: repeat(2, 256px);
+  place-content: start center;
+  gap: 24px;
+  align-self: center;
+}
+
+.setup-champion-tile {
+  /* embertide-jrw: Elysian Cathedral restyle. Per-champion stained-
+     glass fill (assigned via [data-champion-id]) framed by a 2px gold
+     stroke, with corner medallions layered at each corner and a dark
+     rules-plate beneath the art panel. The selected state pulses the
+     gold-glow outline (see @keyframes setup-champion-pulse below) and
+     reveals a stained-glass shimmer overlay on the portrait. */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  /* embertide-5qql polish: --setup-tile-width is the source of truth
+     for tile geometry. Default carries the jrw width so any non-`-large`
+     consumer keeps the existing layout; `.setup-champion-tile-large`
+     rebinds it for the bigger kid-friendly tap target.
+     embertide-bkf2 (2026-04-26): bumped 156→256 + 152→220 so the 2x2
+     grid in the new centered main pane gives the kid a properly large
+     portrait + room for full ability text without truncation. */
+  --setup-tile-width: 256px;
+  --setup-tile-art-height: 220px;
+
+  width: var(--setup-tile-width);
+  padding: 0;
+  background: var(--hc-parchment-50, #fbf6e9);
+  border: 2px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  color: var(--hc-lead-iron-900, #0e0c14);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-700, #8b6a2a),
+    0 3px 8px rgba(0, 0, 0, 0.45);
+  transition:
+    transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 320ms ease-out;
+}
+
+/* embertide-jrw: per-champion stained-glass fills feed a soft radial
+   tint behind the art panel so the parchment portrait reads as backed by
+   the champion's jewel color. The fill is mixed with parchment-50 at the
+   center so the illustration foreground stays legible. */
+.setup-champion-tile[data-champion-id='champion-courage'] {
+  background: radial-gradient(
+    ellipse at 50% 38%,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-jewel-emerald-100, #c9e7d1) 70%,
+    var(--hc-champion-courage-fill, #1f7a46) 100%
+  );
+}
+
+.setup-champion-tile[data-champion-id='champion-wisdom'] {
+  background: radial-gradient(
+    ellipse at 50% 38%,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-jewel-sapphire-100, #cbd8f1) 70%,
+    var(--hc-champion-wisdom-fill, #2e4ba0) 100%
+  );
+}
+
+.setup-champion-tile[data-champion-id='champion-power'] {
+  background: radial-gradient(
+    ellipse at 50% 38%,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-jewel-ruby-100, #f1ccd4) 70%,
+    var(--hc-champion-power-fill, #a1223c) 100%
+  );
+}
+
+.setup-champion-tile[data-champion-id='champion-sword'] {
+  background: radial-gradient(
+    ellipse at 50% 38%,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-jewel-pearl-100, #f2f4f7) 70%,
+    var(--hc-champion-sword-fill, #8a97a5) 100%
+  );
+}
+
+.setup-champion-tile:focus-visible,
+.setup-champion-tile:hover:not(:disabled) {
+  outline: none;
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
+    0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+    0 6px 14px rgba(0, 0, 0, 0.55);
+}
+
+/*
+ * embertide-bkf2 (2026-04-26) + post-ship feedback (2026-04-26):
+ * "claimed" affordance — champions that have been picked by ANY seat
+ * read as lit (full color + jewel saturation); unclaimed champions
+ * desaturate to the in-game "unavailable card" treatment so the kid
+ * sees at a glance which champions are taken across the whole party.
+ *
+ * Pre-feedback the rule was "selected (active seat) lit, others dim",
+ * which dimmed already-claimed champions belonging to OTHER seats.
+ * The new rule mirrors the center-row "can't afford" pattern: claimed
+ * tiles stay lit; only unclaimed tiles desaturate. Translucency
+ * (opacity) was dropped per user feedback — the desaturation alone
+ * carries the unclaimed read; translucency made the tiles look
+ * disabled-not-just-unclaimed.
+ */
+.setup-champion-tile[data-claimed='false']:not(:hover, :focus-visible) {
+  filter: grayscale(0.85) saturate(0.4);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-700, #8b6a2a),
+    0 1px 4px rgba(0, 0, 0, 0.3);
+  transform: none;
+}
+
+.setup-champion-tile[data-claimed='false']:hover:not(:disabled) {
+  filter: grayscale(0.5) saturate(0.7);
+}
+
+.setup-champion-tile[aria-pressed='true'] {
+  transform: translateY(-3px);
+  border-color: var(--hc-lead-gold-500, #b89142);
+
+  /* embertide-jrw: gold pulse outline on the selected tile. The
+     keyframe steps through three tiers of --hc-glow-amber spread to
+     read as a slow heartbeat. DUR.base (320ms) governs the ramp-in;
+     the pulse loops every 2400ms after that (still well under the
+     `ambient` token, kept inline for a single-purpose decoration). */
+  animation:
+    setup-champion-arrival 320ms cubic-bezier(0.34, 1.56, 0.64, 1) both,
+    setup-champion-pulse 2400ms ease-in-out 320ms infinite;
+  box-shadow:
+    inset 0 0 0 2px var(--hc-lead-gold-500, #b89142),
+    0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+    0 6px 14px rgba(0, 0, 0, 0.55);
+}
+
+@keyframes setup-champion-arrival {
+  0% {
+    transform: translateY(0) scale(0.985);
+    box-shadow:
+      inset 0 0 0 1px var(--hc-lead-gold-700, #8b6a2a),
+      0 3px 8px rgba(0, 0, 0, 0.45);
+  }
+
+  60% {
+    transform: translateY(-5px) scale(1.02);
+  }
+
+  100% {
+    transform: translateY(-3px) scale(1);
+    box-shadow:
+      inset 0 0 0 2px var(--hc-lead-gold-500, #b89142),
+      0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+      0 6px 14px rgba(0, 0, 0, 0.55);
+  }
+}
+
+@keyframes setup-champion-pulse {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 0 2px var(--hc-lead-gold-500, #b89142),
+      0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+      0 6px 14px rgba(0, 0, 0, 0.55);
+  }
+
+  50% {
+    box-shadow:
+      inset 0 0 0 2px var(--hc-lead-gold-500, #b89142),
+      0 0 0 6px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+      0 8px 18px rgba(0, 0, 0, 0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .setup-champion-tile {
+    transition: none;
+  }
+
+  .setup-champion-tile[aria-pressed='true'] {
+    /* Reduced-motion fallback — solid gold border, no pulse, no spring. */
+    animation: none;
+    transform: none;
+    border-color: var(--hc-lead-gold-500, #b89142);
+    box-shadow:
+      inset 0 0 0 2px var(--hc-lead-gold-500, #b89142),
+      0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+      0 6px 14px rgba(0, 0, 0, 0.55);
+  }
+}
+
+/* --- Corner medallions (embertide-jrw) ---
+   Four small Embertide medallions layered at each corner of the champion
+   tile. Pure decoration; the parent <span> is aria-hidden. Pointer-events
+   off so they never intercept clicks meant for the tile button. */
+
+.setup-champion-medallions {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.setup-champion-medallion {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
+}
+
+.setup-champion-medallion[data-corner='tl'] {
+  top: 4px;
+  left: 4px;
+}
+
+.setup-champion-medallion[data-corner='tr'] {
+  top: 4px;
+  right: 4px;
+}
+
+.setup-champion-medallion[data-corner='bl'] {
+  bottom: 4px;
+  left: 4px;
+}
+
+.setup-champion-medallion[data-corner='br'] {
+  bottom: 4px;
+  right: 4px;
+}
+
+.setup-champion-medallion-svg {
+  display: block;
+}
+
+.setup-champion-art {
+  /* embertide-ajb: full-width square art panel at the top of the
+     portrait tile. Size tuned to match CHAMPION_ART_SIZE plus padding.
+     embertide-jrw layers a stained-glass shimmer overlay above the
+     illustration when the tile is selected. embertide-5qql adds
+     `-large` modifier — height pulls from --setup-tile-art-height so the
+     same rule services both sizes. */
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 100%;
+  height: var(--setup-tile-art-height, 152px);
+  padding: 6px;
+  box-sizing: border-box;
+  background: var(--hc-parchment-100, #f4ebd3);
+  border-bottom: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+}
+
+/* embertide-5qql: kid-friendly enlarged tile (~1.5× the jrw baseline).
+   Width 234 / art 228 keeps the CHAMPION_ART_SIZE=210 illustration
+   centered with the existing 6px art padding. 4 × 234 + 3 × 12 gap = 972;
+   well inside the 1280-px content column at the project's constrained
+   viewport (1280×800) after setup-root padding. */
+.setup-champion-tile-large {
+  --setup-tile-width: 234px;
+  --setup-tile-art-height: 228px;
+}
+
+@layer base {
+  .setup-champion-art > svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    object-fit: contain;
+  }
+}
+
+/* embertide-jrw: stained-glass shimmer overlay. Hidden by default;
+   fades in when the tile is selected. Reduced-motion users still see a
+   faint static tint so the active tile remains visually distinct. */
+.setup-champion-shimmer {
+  position: absolute;
+  inset: 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    var(--hc-glow-pearl, rgba(242, 244, 247, 0.35)) 48%,
+    var(--hc-glow-amber, rgba(232, 189, 89, 0.55)) 56%,
+    transparent 74%
+  );
+  background-size: 220% 220%;
+  background-position: 0% 0%;
+  transition: opacity 320ms ease-out;
+}
+
+.setup-champion-tile[aria-pressed='true'] .setup-champion-shimmer {
+  opacity: 1;
+  animation: setup-champion-shimmer-sweep 2400ms ease-in-out 320ms infinite;
+}
+
+@keyframes setup-champion-shimmer-sweep {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .setup-champion-shimmer {
+    transition: none;
+  }
+
+  .setup-champion-tile[aria-pressed='true'] .setup-champion-shimmer {
+    /* Hold a static tint instead of the cycling sweep. */
+    animation: none;
+    opacity: 0.4;
+    background-position: 50% 50%;
+  }
+}
+
+.setup-champion-plate {
+  /* embertide-vmh5 (2026-04-25): the prior shadow-blue plate
+     (jrw — shadow-600 → shadow-700) didn't match the rest of the
+     cathedral chrome which is parchment-cream throughout. The plate
+     is now parchment-50 → parchment-100 with lead-iron-900 ink for
+     legibility on the same cream that tiles, pills, and chest reveals
+     use. Bottom edge stays a single uniform color (parchment), gold
+     leading on the top edge separates the plate from the art panel
+     above. The "fancier" name treatment is in .setup-champion-name —
+     Cinzel bold caps with a subtle gold-leaf gild stroke, and the
+     passive line uses italic Cormorant Garamond for the cathedral-
+     manuscript flavour. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 8px 10px 12px;
+  flex: 1 1 auto;
+  min-width: 0;
+  background: linear-gradient(
+    180deg,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-parchment-100, #f4ebd3) 100%
+  );
+  border-top: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+}
+
+/* --- Champion pick badges (embertide-jrw) ---
+   CostGem-style stained-glass chips, 24px, layered on the bottom-right
+   of a champion tile. One chip per seat that has claimed this champion;
+   duplicates stack horizontally. Decorative only — aria-hidden. */
+
+.setup-champion-badges {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.setup-champion-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+
+.setup-champion-badge-svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.setup-champion-name {
+  /* embertide-vmh5 (2026-04-25): the plate is now parchment-cream so
+     the gold-on-dark name has been re-tuned for legibility on a light
+     ground. Lead-gold-700 (the darker gold) reads as gilded-manuscript
+     ink against parchment, and a thin lead-iron-900 text-shadow gives
+     the letters the "engraved leaded glass" feel without sacrificing
+     contrast. Cinzel bold caps + 0.14em letterspacing keeps the name
+     decorative-but-legible — the "fancy lettering" the user asked for. */
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-lg);
+  letter-spacing: var(--hc-tracking-chrome-wide);
+  text-transform: uppercase;
+  color: var(--hc-lead-gold-700, #8b6a2a);
+  line-height: 1.05;
+  text-shadow:
+    0 1px 0 rgba(255, 246, 220, 0.65),
+    0 0 1px rgba(14, 12, 20, 0.35);
+}
+
+.setup-champion-passive {
+  /* embertide-vmh5: passive flavour line on the cream plate. Italic
+     Cormorant Garamond (with a Cinzel-italic / Georgia-italic fallback
+     stack) reads as the manuscript-script line beneath the engraved
+     name — fancier than plain Cinzel but still legible at 14px. Color
+     is lead-iron-900 for high contrast on parchment. Clamped to 2 lines
+     so longer passives (Blade Warden) don't push the tile past its
+     viewport budget. */
+
+  /* 95bo: italic body text uses Inter italic per typography.md spec
+     (Cormorant Garamond italic was off-spec — only two faces allowed). */
+  font-family: var(--hc-font-body);
+  font-style: italic;
+  font-weight: var(--hc-font-weight-semibold);
+  font-size: var(--hc-text-sm);
+  line-height: 1.25;
+  letter-spacing: var(--hc-tracking-banner);
+  color: var(--hc-lead-iron-900, #0e0c14);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  /* embertide-jrw: leave bottom breathing room so the seat-badge
+     chips layered via .setup-champion-badges don't overlap the last
+     passive line. 24px badge + 6px inset = 30px clearance. */
+  padding-bottom: 18px;
+}
+
+/* --- Start button --- */
+
+@layer base {
+  .setup-start-button {
+    align-self: flex-start;
+
+    /* embertide-1vm: marginally leaner padding preserves the 44px touch
+       target (inline style floor) while shaving a few pixels of vertical
+       budget for the single-viewport fit. */
+    padding: 10px 28px;
+    font-family: var(--hc-font-display);
+    font-weight: var(--hc-font-weight-bold);
+    font-size: var(--hc-text-sm);
+    letter-spacing: var(--hc-tracking-chrome-max);
+    text-transform: uppercase;
+    color: var(--hc-lead-iron-900, #0e0c14);
+    background: linear-gradient(
+      180deg,
+      var(--hc-jewel-amber-300, #e8bd59) 0%,
+      var(--hc-jewel-amber-500, #c48a1f) 100%
+    );
+    border: 1px solid var(--hc-lead-gold-900, #5a3f10);
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow:
+      inset 0 0 0 1px rgba(184, 145, 66, 0.45),
+      0 3px 8px rgba(0, 0, 0, 0.5);
+    transition:
+      transform 0.14s ease-out,
+      box-shadow 0.14s ease-out;
+  }
+}
+
+.setup-start-button:focus-visible,
+.setup-start-button:hover:not(:disabled) {
+  outline: none;
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
+    0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+    0 4px 10px rgba(0, 0, 0, 0.55);
+}
+
+/* -------------------------------------------------------------------------- */
+
+/* End-of-game winner overlay (embertide-x8b). Freezes the board with a   */
+
+/* click-blocking backdrop and surfaces the victorious player in a centered   */
+
+/* Elysian Cathedral frame — gold leading, parchment inlay, Cinzel caps.     */
+
+/* -------------------------------------------------------------------------- */
+
+/* embertide-6846: cream-toned cathedral veil (matches reveal surfaces);
+   higher alpha than `.chest-reveal-backdrop` since this is terminal, not transient. */
+.winner-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(20, 14, 4, 0.62);
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+  animation: winner-overlay-fade 320ms ease-out;
+}
+
+@keyframes winner-overlay-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.winner-banner {
+  max-width: min(520px, 92vw);
+  padding: 32px 40px;
+  text-align: center;
+  background: linear-gradient(
+    180deg,
+    var(--hc-parchment-50, #fbf6e9) 0%,
+    var(--hc-parchment-100, #f4ebd3) 55%,
+    var(--hc-parchment-300, #e0d2ab) 100%
+  );
+  border: 3px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 10px;
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-700, #8b6a2a),
+    0 0 0 4px var(--hc-glow-amber, rgba(232, 189, 89, 0.55)),
+    0 12px 32px rgba(0, 0, 0, 0.65);
+  color: var(--hc-lead-iron-900, #0e0c14);
+  animation: winner-banner-rise 420ms cubic-bezier(0.2, 0.7, 0.3, 1.1);
+}
+
+@keyframes winner-banner-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.winner-banner-headline {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-4xl);
+  letter-spacing: var(--hc-tracking-chrome-extra);
+  text-transform: uppercase;
+  color: var(--hc-parchment-700, #7f6a3f);
+  margin-bottom: 12px;
+}
+
+.winner-banner-body {
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-weight-2xl);
+  font-size: var(--hc-text-2xl);
+  letter-spacing: var(--hc-tracking-wide);
+  color: var(--hc-lead-iron-900, #0e0c14);
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* embertide-gy7n: tap-to-zoom card detail modal. Portal-based overlay   */
+
+/* over a darkened backdrop. Mounts on touch devices when a Field/Hand tile  */
+
+/* is tapped so the player can read full card text on tiny mobile tiles.    */
+
+/* ------------------------------------------------------------------------- */
+.card-detail-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: rgba(5, 8, 15, 0.78);
+  backdrop-filter: blur(4px);
+}
+
+.card-detail-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: min(92vw, 360px);
+  max-height: 92vh;
+}
+
+.card-detail-card {
+  /* Render the card big enough to read at arms-length on a phone. The
+     parent panel uses max-width so we don't blow past the viewport in
+     landscape — the card is ~240px wide which fits a 393px landscape
+     viewport with comfortable padding on each side. */
+  width: 240px;
+}
+
+.card-detail-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.card-detail-action {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 10px 18px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-sm);
+  letter-spacing: var(--hc-tracking-chrome-extra);
+  text-transform: uppercase;
+  color: var(--hc-lead-iron-900, #0e0c14);
+  background: linear-gradient(
+    180deg,
+    var(--hc-jewel-amber-300, #e8bd59) 0%,
+    var(--hc-jewel-amber-500, #c48a1f) 100%
+  );
+  border: 2px solid var(--hc-lead-gold-500, #b89142);
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.card-detail-action:hover:not(:disabled),
+.card-detail-action:focus-visible:not(:disabled) {
+  outline: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 6px 14px rgba(0, 0, 0, 0.55),
+    0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+}
+
+@layer base {
+  .card-detail-action:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.card-detail-cancel {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 10px 18px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-sm);
+  letter-spacing: var(--hc-tracking-chrome-lg);
+  text-transform: uppercase;
+  color: var(--hc-text-primary, #f6f2e6);
+  background: linear-gradient(
+    180deg,
+    var(--hc-shadow-600, #1e2b52) 0%,
+    var(--hc-shadow-800, #0b1228) 100%
+  );
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.card-detail-cancel:hover,
+.card-detail-cancel:focus-visible {
+  outline: none;
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow: 0 0 0 2px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* embertide-vj6s (2026-05-26): full-pile viewer overlay. Reuses the   */
+
+/* card-detail backdrop pattern but shows EVERY card in a scrollable grid   */
+
+/* rather than a single zoomed card.                                        */
+
+.pile-viewer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(5, 8, 15, 0.78);
+  backdrop-filter: blur(4px);
+}
+
+.pile-viewer-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: min(94vw, 720px);
+  max-height: 88vh;
+  padding: 18px;
+  border-radius: 12px;
+  background: var(--hc-parchment-100, #f4ebd3);
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.22),
+    0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+@layer base {
+  .pile-viewer-title {
+    margin: 0;
+    font-family: var(--hc-font-display);
+    font-weight: var(--hc-font-weight-bold);
+    font-size: var(--hc-text-lg);
+    letter-spacing: var(--hc-tracking-chrome-lg);
+    text-transform: uppercase;
+    color: var(--hc-lead-gold-900, #5a4118);
+  }
+
+  .pile-viewer-empty {
+    margin: 0;
+    font-family: var(--hc-font-body);
+    font-size: var(--hc-text-sm);
+    color: var(--hc-lead-gold-900, #5a4118);
+  }
+}
+
+.pile-viewer-grid {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.pile-viewer-cell {
+  flex: 0 0 auto;
+}
+
+/* k64i: each pile tile is a tap-to-expand affordance. Strip the native
+   button chrome so the CardTemplate reads as the tile; the pointer +
+   focus ring signal the expand interaction. The card art itself is well
+   over the 44px kid-touch minimum. */
+.pile-viewer-card {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.pile-viewer-card:focus-visible {
+  outline: none;
+  border-radius: 8px;
+  box-shadow: 0 0 0 3px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+}
+
+/* k64i: ART-FORWARD pile rendering. The Princess Aurelia card "looks
+   perfect" because a champion carries almost no rules text, so the art
+   fills the tile. Text-heavy cards (items, monsters) otherwise turn the
+   pile into a wall of copy. Here we cap the rules box to a short teaser
+   and clamp each section to a line so the illustration keeps the majority
+   of every tile; the full text is one tap away in CardDetailModal. Scoped
+   to the pile viewer so board / market / hand tiles keep their full card
+   face. Wrapped in @layer base so these lower-specificity rules don't trip
+   no-descending-specificity against the variant-scoped rules above. */
+@layer base {
+  .pile-viewer-cell .card-template-rules-box {
+    max-height: 3.4em;
+    overflow: hidden;
+    mask-image: linear-gradient(180deg, var(--hc-shadow-900, #06080f) 60%, transparent 100%);
+  }
+
+  .pile-viewer-cell .card-template-effect,
+  .pile-viewer-cell .card-template-combat,
+  .pile-viewer-cell .card-template-passive {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    overflow: hidden;
+  }
+}
+
+.pile-viewer-close {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 10px 24px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-sm);
+  letter-spacing: var(--hc-tracking-chrome-lg);
+  text-transform: uppercase;
+  color: var(--hc-text-primary, #f6f2e6);
+  background: linear-gradient(
+    180deg,
+    var(--hc-shadow-600, #1e2b52) 0%,
+    var(--hc-shadow-800, #0b1228) 100%
+  );
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.pile-viewer-close:hover,
+.pile-viewer-close:focus-visible {
+  outline: none;
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow: 0 0 0 2px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* kw.glossary-ui (lhlo.44): player-facing keyword glossary. Chrome mirrors */
+
+/* the pile-viewer modal so the two read as one design language.            */
+
+.rules-book-trigger {
+  min-height: 44px;
+  padding: 8px 16px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-sm);
+  letter-spacing: var(--hc-tracking-chrome-lg);
+  text-transform: uppercase;
+  color: var(--hc-text-primary, #f6f2e6);
+  background: linear-gradient(
+    180deg,
+    var(--hc-shadow-600, #1e2b52) 0%,
+    var(--hc-shadow-800, #0b1228) 100%
+  );
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.rules-book-trigger:hover,
+.rules-book-trigger:focus-visible {
+  outline: none;
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow: 0 0 0 2px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+}
+
+.rules-book-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(5, 8, 15, 0.78);
+  backdrop-filter: blur(4px);
+}
+
+.rules-book-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: min(94vw, 560px);
+  max-height: 88vh;
+  padding: 18px;
+  border-radius: 12px;
+  background: var(--hc-parchment-100, #f4ebd3);
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 145, 66, 0.22),
+    0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+@layer base {
+  .rules-book-title {
+    margin: 0;
+    font-family: var(--hc-font-display);
+    font-weight: var(--hc-font-weight-bold);
+    font-size: var(--hc-text-lg);
+    letter-spacing: var(--hc-tracking-chrome-lg);
+    text-transform: uppercase;
+    color: var(--hc-lead-gold-900, #5a4118);
+  }
+
+  .rules-book-category,
+  .rules-book-glossary-category {
+    margin: 0 0 6px;
+    font-family: var(--hc-font-display);
+    font-weight: var(--hc-font-weight-bold);
+    font-size: var(--hc-text-sm);
+    letter-spacing: var(--hc-tracking-chrome-lg);
+    text-transform: uppercase;
+    color: var(--hc-lead-gold-700, #8b6a2a);
+  }
+}
+
+.rules-book-scroll {
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rules-book-group {
+  width: 100%;
+}
+
+.rules-book-rule-list {
+  margin: 0;
+  padding: 0 0 0 20px;
+  list-style: disc;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rules-book-rule-line {
+  font-family: var(--hc-font-body);
+  font-size: var(--hc-text-sm);
+  line-height: 1.45;
+  color: var(--hc-text-inverse, #0e0c14);
+}
+
+.rules-book-glossary-group {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.rules-book-list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rules-book-item {
+  display: grid;
+  grid-template-columns: minmax(96px, 28%) 1fr;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.rules-book-term {
+  margin: 0;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-sm);
+  color: var(--hc-lead-gold-900, #5a4118);
+}
+
+.rules-book-gloss {
+  margin: 0;
+  font-family: var(--hc-font-body);
+  font-size: var(--hc-text-sm);
+  color: var(--hc-text-inverse, #0e0c14);
+}
+
+.rules-book-close {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 10px 24px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-sm);
+  letter-spacing: var(--hc-tracking-chrome-lg);
+  text-transform: uppercase;
+  color: var(--hc-text-primary, #f6f2e6);
+  background: linear-gradient(
+    180deg,
+    var(--hc-shadow-600, #1e2b52) 0%,
+    var(--hc-shadow-800, #0b1228) 100%
+  );
+  border: 1px solid var(--hc-lead-gold-700, #8b6a2a);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.rules-book-close:hover,
+.rules-book-close:focus-visible {
+  outline: none;
+  border-color: var(--hc-lead-gold-500, #b89142);
+  box-shadow: 0 0 0 2px var(--hc-glow-amber, rgba(232, 189, 89, 0.55));
+}
+
+/* ------------------------------------------------------------------------- */
+
+/* embertide-gy7n (2026-04-26): Mobile-landscape fit-to-viewport.        */
+
+/* Scope: `@media (orientation: landscape) and (max-height: 500px)` —        */
+
+/* covers all current iPhones in landscape (393–430px tall) plus most        */
+
+/* Android phones, while leaving iPad and desktop untouched.                  */
+
+/* Strategy: keep the desktop layout but shrink dense elements (cards,       */
+
+/* paddings, gaps, chrome heights) so the play area + hand + trays fit       */
+
+/* in the ~393px viewport. Where shrinking still overflows, allow the        */
+
+/* board-main column to scroll vertically as a graceful fallback rather      */
+
+/* than clipping content the player can't reach.                              */
+
+/* ------------------------------------------------------------------------- */
+@media (orientation: landscape) and (height <= 500px) {
+  /* App shell — honor iOS safe-area insets so the home bar / notch in
+     landscape doesn't eat into the title strip or bottom HUD. */
+  .app-root {
+    padding: max(2px, env(safe-area-inset-top)) max(4px, env(safe-area-inset-right))
+      max(4px, env(safe-area-inset-bottom)) max(4px, env(safe-area-inset-left));
+    gap: 2px;
+  }
+
+  .game-board {
+    gap: 3px;
+    min-height: 0;
+  }
+
+  /* Title strip retired (cathedral-title-strip is display:none); no
+     mobile override needed. */
+
+  /* Always-row chip strip — tighter chrome */
+  .always-row-strip {
+    margin: 0 0 2px;
+    padding: 2px 36px 2px 8px;
+    border-radius: 8px;
+    gap: 6px;
+  }
+
+  .always-row-strip[data-expanded='false'] {
+    padding: 2px 36px 2px 8px;
+  }
+
+  /* Right rail — tighten padding + shrink stat/banner font on phone landscape */
+  .always-row-strip-rail {
+    margin-right: 32px;
+    padding: 2px 4px 2px 8px;
+  }
+
+  .always-row-strip-rail .turn-banner {
+    font-size: var(--hc-text-px-10);
+    letter-spacing: var(--hc-tracking-wider);
+  }
+
+  .always-row-strip-rail .status-bar .pane-content {
+    font-size: var(--hc-text-px-9);
+    letter-spacing: var(--hc-tracking-chrome-sm);
+    gap: 1px 6px;
+  }
+
+  .always-row-strip-chevron {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+  }
+
+  /* Two-column board grid — tighter padding, narrower side rail.
+     v2: side rail collapses to a thin boss-state column (80px) so the
+     main play area gets the full width. */
+  .board-grid {
+    padding: 2px 4px;
+    gap: 4px;
+    border-radius: 6px;
+    overflow: visible;
+
+    /* HUD overlays (.trays, .play-all-starters) anchor to this box. */
+    position: relative;
+  }
+
+  .board-side {
+    width: 80px;
+    flex: 0 0 80px;
+    gap: 4px;
+  }
+
+  .board-main {
+    gap: 2px;
+    position: relative;
+  }
+
+  /* ------------------------------------------------------------------- */
+
+  /* Compact HUD strip: trays + END TURN sit as a single 36px row at the */
+
+  /* bottom of the play area. Mirrors the "edge HUD" pattern in          */
+
+  /* Ascension / Hearthstone / Marvel Snap mobile. Player names hide so  */
+
+  /* each tray reads as a chip with HP hearts + items + END TURN.        */
+
+  /* ------------------------------------------------------------------- */
+  .board-main .trays {
+    flex: 0 0 auto;
+    height: 40px;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    margin: 0;
+  }
+
+  .board-main .trays > .tray {
+    flex: 1 1 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2px 6px;
+    height: 36px;
+    min-width: 0;
+    font-size: var(--hc-text-px-9);
+    gap: 4px;
+    overflow: hidden;
+  }
+
+  .board-main .trays > .tray > .tray-header {
+    font-size: var(--hc-text-px-8);
+    margin: 0;
+    flex: 0 0 auto;
+    line-height: 1;
+  }
+
+  .board-main .trays > .tray > .tray-counters {
+    flex-flow: row nowrap;
+    gap: 2px;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .board-main .trays > .tray > .tray-counters > .tray-counter {
+    font-size: var(--hc-text-px-9);
+  }
+
+  /* arq3 (2026-04-26): .tray-items wrapper retired — items chip lives
+     inside .tray-counters now. Mobile landscape rule retargeted to the
+     in-row .tray-counter-items slot. */
+  .board-main .trays > .tray > .tray-counters > .tray-counter-items {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .trays-row > .end-turn-button {
+    flex: 0 0 auto;
+    height: 36px;
+    padding: 4px 14px;
+    font-size: var(--hc-text-px-10);
+    letter-spacing: var(--hc-tracking-chrome-md);
+    border-radius: 8px;
+  }
+
+  /* PLAY ALL CARDS button — shorten visible text to "PLAY ALL" so it
+     fits next to the hand row without overflowing the board-main
+     column into the boss rail. The font-size:0 trick hides the
+     original "Play all cards" text; ::before paints the shorter
+     label. aria-label="Play all cards" stays intact for screen readers.
+     arq3 (2026-04-26): selector retargeted from .play-zones to
+     .hand-row after the button moved next to the hand. */
+  .hand-row > .play-all-starters {
+    font-size: 0;
+    padding: 4px 10px;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .hand-row > .play-all-starters::before {
+    content: 'PLAY ALL';
+    font-family: var(--hc-font-display);
+    font-weight: var(--hc-font-weight-bold);
+    font-size: var(--hc-text-px-10);
+    letter-spacing: var(--hc-tracking-chrome-md);
+  }
+
+  /* Boss-side rail compaction — boss-altar-pane has min-width: 160 by
+     default which blew past the 80px rail; override to fit. The whole
+     rail must fit inside board-grid height (≈viewport - title strip -
+     chip strip - app padding ≈ 290px), so we constrain the crystal +
+     embertide pane to a tiny footprint. */
+  .board-side {
+    align-self: stretch;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .board-side-crystal-rail {
+    gap: 2px;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .board-side-crystal-rail > .crystal-embertide-pane {
+    padding: 2px 3px;
+    gap: 2px;
+    max-width: 100%;
+    flex: 0 1 auto;
+    min-height: 0;
+  }
+
+  .crystal-embertide-pane > .embertide-hud > [data-testid='embertide-strip'] {
+    max-width: 72px;
+  }
+
+  .crystal-embertide-pane > .princess-crystal-cell {
+    transform: scale(0.55);
+    transform-origin: center top;
+    margin: -8px 0 -28px;
+  }
+
+  .board-side .boss-altar-pane {
+    min-width: 0;
+    width: 100%;
+    flex: 0 0 auto;
+    padding: 4px;
+  }
+
+  .board-side .boss-altar-pane * {
+    font-size: var(--hc-text-px-8) !important;
+    line-height: 1.1 !important;
+  }
+
+  /* END TURN button: same shorter-label trick used on PLAY ALL so it
+     fits the compact HUD strip without truncation. arq3 (2026-04-26):
+     selector retargeted from .board-main .trays to .trays-row after
+     End Turn moved out of the .trays cream plate. */
+  .trays-row > .end-turn-button {
+    font-size: 0;
+  }
+
+  .trays-row > .end-turn-button::before {
+    content: 'END';
+    font-family: var(--hc-font-display);
+    font-weight: var(--hc-font-weight-bold);
+    font-size: var(--hc-text-px-10);
+    letter-spacing: var(--hc-tracking-chrome-wide);
+  }
+
+  /* Field / chest pool / hand cards — 78×110 → 56×80 (28% smaller) */
+  .hand-card-tile,
+  .always-available-row .field-card-tile,
+  .chest-row .field-card-tile {
+    width: 56px;
+    min-height: 80px;
+  }
+
+  .hand-card-tile .card-template,
+  .always-available-row .field-card-tile .card-template,
+  .chest-row .field-card-tile .card-template {
+    min-height: 80px;
+  }
+
+  .hand-card-tile .card-template-rules-box,
+  .always-available-row .field-card-tile .card-template-rules-box,
+  .chest-row .field-card-tile .card-template-rules-box {
+    min-height: 22px;
+    padding: 1px 3px 2px;
+  }
+
+  .hand-card-tile .card-template-name,
+  .always-available-row .field-card-tile .card-template-name,
+  .chest-row .field-card-tile .card-template-name {
+    font-size: var(--hc-text-px-9);
+    line-height: 1.05;
+    letter-spacing: var(--hc-tracking-banner);
+  }
+
+  .hand-card-tile .card-template-effect,
+  .always-available-row .field-card-tile .card-template-effect,
+  .chest-row .field-card-tile .card-template-effect {
+    font-size: var(--hc-text-px-8);
+    line-height: 1.1;
+  }
+
+  .hand-card-tile .card-template-passive,
+  .always-available-row .field-card-tile .card-template-passive,
+  .chest-row .field-card-tile .card-template-passive {
+    font-size: var(--hc-text-px-7);
+    line-height: 1.1;
+  }
+
+  .hand-card-tile .card-template-cost-overlay svg,
+  .always-available-row .field-card-tile .card-template-cost-overlay svg,
+  .chest-row .field-card-tile .card-template-cost-overlay svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Field / market band, in-play, items — tighter padding */
+  .always-available-row,
+  .chest-row,
+  .in-play,
+  .items-row {
+    padding: 4px;
+    gap: 4px;
+  }
+
+  .always-available-row,
+  .chest-row {
+    padding: 6px 4px;
+  }
+
+  .in-play,
+  .items-row {
+    min-height: 40px;
+    margin-top: 2px;
+  }
+
+  /* Cards become art-only tiles. All inline text hidden (effect, combat,
+     rules box including name). Player taps any card to open the
+     CardDetailModal which shows the full card with rules + cost +
+     action buttons. Frees vertical budget for bigger art. */
+  @layer base {
+    .hand-card-tile .card-template-effect,
+    .hand-card-tile .card-template-passive,
+    .hand-card-tile .card-template-combat,
+    .hand-card-tile .card-template-rules-box,
+    .market-row .field-card-tile .card-template-effect,
+    .market-row .field-card-tile .card-template-passive,
+    .market-row .field-card-tile .card-template-combat,
+    .market-row .field-card-tile .card-template-rules-box,
+    .always-available-row .field-card-tile .card-template-effect,
+    .always-available-row .field-card-tile .card-template-passive,
+    .always-available-row .field-card-tile .card-template-combat,
+    .always-available-row .field-card-tile .card-template-rules-box,
+    .chest-row .field-card-tile .card-template-effect,
+    .chest-row .field-card-tile .card-template-passive,
+    .chest-row .field-card-tile .card-template-combat,
+    .chest-row .field-card-tile .card-template-rules-box {
+      display: none;
+    }
+  }
+
+  /* Market row — single row of compact icon tiles. */
+  .market-row {
+    min-height: 0;
+    padding: 3px 4px;
+    gap: 3px;
+    border-radius: 6px;
+  }
+
+  .market-row .field {
+    padding: 2px;
+    gap: 3px;
+  }
+
+  /* Market tiles are bigger — more vertical budget for art now that
+     all text is hidden. 6 cards × ~70px wide = 420px, fits easily
+     inside the ~720px board-main width on iPhone 15 landscape. */
+  @layer base {
+    .field-card-tile,
+    .market-row .field-card-tile {
+      width: 70px;
+      min-height: 90px;
+    }
+  }
+
+  @layer base {
+    .field-card-tile .card-template,
+    .market-row .field-card-tile .card-template {
+      min-height: 90px;
+    }
+  }
+
+  /* Hand band — slimmer cards above the HUD. */
+  .hand {
+    padding: 2px 4px;
+    min-height: 0;
+    gap: 3px;
+  }
+
+  .hand-card-tile,
+  .always-available-row .field-card-tile,
+  .chest-row .field-card-tile {
+    width: 56px;
+    min-height: 70px;
+  }
+
+  @layer base {
+    .hand-card-tile .card-template,
+    .always-available-row .field-card-tile .card-template,
+    .chest-row .field-card-tile .card-template {
+      min-height: 70px;
+    }
+  }
+
+  .play-zones {
+    gap: 4px;
+    max-height: 36px;
+  }
+
+  .play-zones > .in-play {
+    max-height: 36px;
+    min-height: 0;
+  }
+
+  @layer base {
+    .in-play,
+    .items-row {
+      min-height: 0;
+    }
+  }
+
+  /* In-play tiles match the icon-tile sizing of the rest of the field */
+  .in-play-tile {
+    width: 44px !important;
+    min-height: 32px !important;
+  }
+
+  @layer base {
+    .in-play-tile .card-template {
+      min-height: 32px !important;
+    }
+  }
+
+  /* Trays band — compress vertical footprint */
+  @layer base {
+    .trays {
+      gap: 4px;
+    }
+  }
+
+  .board-main .trays > .tray {
+    padding: 4px 6px;
+    font-size: var(--hc-text-px-10);
+    min-width: 110px;
+  }
+
+  .board-main .trays > .tray > .tray-header {
+    font-size: var(--hc-text-px-9);
+  }
+
+  /* ------------------------------------------------------------------- */
+
+  /* Setup screen — 4-column champion row instead of 2x2 so all picks    */
+
+  /* are visible without scrolling, plus narrower rail and tighter chrome */
+
+  /* ------------------------------------------------------------------- */
+  .setup-root {
+    /* Explicit safe-area-aware padding so the START button can't sit
+       under the home indicator on iOS Safari landscape. */
+    padding: 6px 12px max(8px, env(safe-area-inset-bottom));
+    gap: 6px;
+  }
+
+  .setup-root-cathedral {
+    padding-top: 6px;
+  }
+
+  .setup-body {
+    gap: 8px;
+  }
+
+  /* Rail compaction — must fit PLAYERS gems + SEATS pills (up to 4 with
+     bot toggles) all visible without scrolling. Pill-group flips to a
+     horizontal row (pill text + bot toggle side-by-side) so 4 seats
+     stack as 4 short rows instead of 4 tall column-blocks. START moves
+     out of the rail (centered under the champion row) at this size. */
+  .setup-rail {
+    width: 140px;
+    flex: 0 0 140px;
+    gap: 4px;
+  }
+
+  .setup-main {
+    gap: 4px;
+  }
+
+  .setup-section {
+    gap: 2px;
+  }
+
+  .setup-section-title {
+    font-size: var(--hc-text-px-9);
+    padding: 1px 6px;
+    letter-spacing: var(--hc-tracking-chrome-wide);
+  }
+
+  .setup-count-row {
+    gap: 4px;
+  }
+
+  .setup-count-button {
+    width: 26px;
+    height: 26px;
+    font-size: var(--hc-text-xs);
+    border-width: 1px;
+    border-radius: 6px;
+  }
+
+  .setup-player-strip {
+    gap: 3px;
+    margin-bottom: 0;
+  }
+
+  /* Pill + toggle in a single row instead of stacked. Cuts each seat's
+     vertical footprint roughly in half so 4 seats fit comfortably. */
+  .setup-player-pill-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .setup-player-pill {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 2px 6px;
+    border-radius: 6px;
+    border-width: 1px;
+    gap: 0;
+  }
+
+  .setup-player-pill-label {
+    font-size: var(--hc-text-px-7);
+    letter-spacing: var(--hc-tracking-wider);
+  }
+
+  .setup-player-pill-pick {
+    font-size: var(--hc-text-px-9);
+    line-height: 1.1;
+
+    /* Long champion names truncate cleanly inside the narrow rail */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .setup-bot-toggle-track {
+    width: 32px;
+    height: 12px;
+    border-radius: 7px;
+    flex: 0 0 32px;
+  }
+
+  .setup-bot-toggle-knob {
+    width: 10px;
+    height: 10px;
+  }
+
+  .setup-bot-toggle-track[data-state='bot'] .setup-bot-toggle-knob {
+    transform: translateX(20px);
+  }
+
+  .setup-bot-toggle-label {
+    font-size: var(--hc-text-px-6);
+    left: 4px;
+    letter-spacing: var(--hc-tracking-chrome);
+  }
+
+  /* START button: leave the rail and center under the champion grid.
+     `flex: 0 0 auto` + explicit margin guarantees a clear gap below
+     the body so the button never overlays champion plates. */
+  .setup-start-button {
+    align-self: center;
+    flex: 0 0 auto;
+    margin-top: 6px;
+    font-size: var(--hc-text-xs);
+    padding: 5px 22px;
+    letter-spacing: var(--hc-tracking-chrome-extra);
+  }
+
+  /* Body: don't grow past available space; clip if content overflows
+     so START always has its reserved row below. */
+  .setup-body {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* Champion picker — single-row 4-up. Art height tuned so the row +
+     section heading + START button all fit within the 393px landscape
+     viewport with safe-area-bottom clearance. */
+  .setup-champion-row {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    align-items: stretch;
+
+    /* Stop content bleeding into the START button's reserved space. */
+    margin-bottom: 4px;
+  }
+
+  .setup-champion-tile {
+    --setup-tile-width: 100%;
+
+    /* Art panel taller so each champion illustration reads clearly;
+       paired with tighter plate typography below to keep the START
+       button visible without overlap. */
+    --setup-tile-art-height: 124px;
+
+    width: 100%;
+  }
+
+  .setup-champion-plate {
+    padding: 3px 5px 4px;
+    gap: 1px;
+    flex: 1 1 auto;
+  }
+
+  .setup-champion-name {
+    font-size: var(--hc-text-px-10);
+    letter-spacing: var(--hc-tracking-chrome-sm);
+    line-height: 1;
+  }
+
+  .setup-champion-passive {
+    font-size: var(--hc-text-px-8);
+    line-height: 1.15;
+
+    /* No clamp — full passive renders, but at 8px / line-height 1.15
+       the four hero passives all fit in 4 lines or fewer. */
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+    display: block;
+    padding-bottom: 0;
+    overflow: visible;
+  }
+
+  .setup-champion-badge-svg {
+    width: 14px;
+    height: 14px;
+  }
+}

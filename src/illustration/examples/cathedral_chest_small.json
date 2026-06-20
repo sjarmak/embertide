@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_chest_small_001",
+  "theme": "cathedral",
+  "archetype": "chest",
+  "subtype": "small",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "wooden barrel chest with brass clasp",
+  "secondaryElement": "lit lancet window in background",
+  "cellBudget": 8,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Modest scale; warm wood + parchment palette",
+    "Brass clasp is the readable focal point"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_chest_small_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_broodmaw_001",
+  "theme": "cathedral",
+  "archetype": "boss",
+  "subtype": "arachnid-tyrant",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "sunburst_halo",
+  "focalElement": "eight-legged arachnid tyrant with a single enormous crimson vertical-slit eye, legs radiating outward",
+  "secondaryElement": "radial crimson rays backlit by tangled emerald webbing on deep forest-green glass",
+  "cellBudget": 12,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Sylvanwood region-boss (u-6a) — eightfold radial symmetry, region-boss sunburst halo treatment",
+    "Usesa halo: true (matches cagewright-vurmox region-boss convention)"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_broodmaw_001.webp"
+}

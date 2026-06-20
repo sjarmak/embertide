@@ -1,0 +1,92 @@
+{
+  "_comment": "Flux.1-dev text-to-image workflow for ComfyUI (API format). Placeholders `<<PROMPT>>`, `<<WIDTH>>`, `<<HEIGHT>>`, `<<SEED>>`, `<<STEPS>>`, `<<GUIDANCE>>` are filled by scripts/_comfyui_client.py before POST /prompt.",
+  "5": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": "<<WIDTH>>",
+      "height": "<<HEIGHT>>",
+      "batch_size": 1
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": ["11", 0],
+      "text": "<<PROMPT>>"
+    }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": ["11", 0],
+      "text": ""
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": ["13", 0],
+      "vae": ["10", 0]
+    }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "filename_prefix": "zs_flux",
+      "images": ["8", 0]
+    }
+  },
+  "10": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ae.safetensors"
+    }
+  },
+  "11": {
+    "class_type": "DualCLIPLoader",
+    "inputs": {
+      "clip_name1": "t5xxl_fp16.safetensors",
+      "clip_name2": "clip_l.safetensors",
+      "type": "flux"
+    }
+  },
+  "12": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "flux1-dev.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "13": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": "<<SEED>>",
+      "steps": "<<STEPS>>",
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0,
+      "model": ["17", 0],
+      "positive": ["16", 0],
+      "negative": ["7", 0],
+      "latent_image": ["5", 0]
+    }
+  },
+  "16": {
+    "class_type": "FluxGuidance",
+    "inputs": {
+      "conditioning": ["6", 0],
+      "guidance": "<<GUIDANCE>>"
+    }
+  },
+  "17": {
+    "class_type": "ModelSamplingFlux",
+    "inputs": {
+      "model": ["12", 0],
+      "max_shift": 1.15,
+      "base_shift": 0.5,
+      "width": "<<WIDTH>>",
+      "height": "<<HEIGHT>>"
+    }
+  }
+}

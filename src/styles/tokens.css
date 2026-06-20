@@ -1,0 +1,380 @@
+@layer tokens, base, typography, components, utilities, overrides;
+
+/*
+ * Elysian Cathedral — design tokens.
+ * Source of truth: .claude/design/elysian-cathedral/palette.md
+ *
+ * DO NOT edit src/theme/tokens.ts by hand. It is regenerated from this file by
+ * the Vite plugin in tools/vite-plugin-tokens.ts. Drift is checked in CI via
+ * `npm run verify:tokens`.
+ *
+ * COMPAT-BLOCK AUDIT (V-2b / embertide-rkw, 2026-04-24):
+ * Audited every CSS file in the repo for legacy custom-property names
+ * (--color-*, --bg-*, --text-*, --primary-*, --secondary-*, --accent-*,
+ *  --surface-*, --fg-*, --brand-*, --theme-*, --fill-*, --paper-*, etc.).
+ * Result: ZERO global legacy tokens. Every visual token already lives under
+ * the --hc-* namespace, and the only non-hc custom properties in `src/` are
+ * component-scoped knobs (--boss-altar-*, --pane-*) that are defined inside
+ * their own component selectors and resolve to --hc-* values internally.
+ * Conclusion: no compat block is required at :root/[data-hc='on'] for legacy
+ * → HC remapping. Pre-HC visual fidelity is already preserved via the
+ * `var(--hc-*, <hex>)` fallback pattern used in app.css and component CSS;
+ * those fallbacks are inert today (the --hc-* tokens are always defined here)
+ * and only matter if tokens.css fails to load. The data-hc='off' vs
+ * data-hc='on' palette divergence will be handled in a future bead by
+ * branching --hc-* values directly under [data-hc='on'], not by reintroducing
+ * a legacy namespace.
+ */
+
+@layer tokens {
+  :root {
+    /* --------------------------------------------------------------------
+     * 1. Jewel family — stained-glass cells
+     * -------------------------------------------------------------------- */
+
+    /* Sapphire (cool anchor, Wisdom, Water) */
+    --hc-jewel-sapphire-100: #cbd8f1;
+    --hc-jewel-sapphire-300: #6e8ccb;
+    --hc-jewel-sapphire-500: #2e4ba0;
+    --hc-jewel-sapphire-700: #1a2e6e;
+    --hc-jewel-sapphire-900: #0d1a46;
+
+    /* Emerald (neutral-good, Courage, Forest, green shard) */
+    --hc-jewel-emerald-100: #c9e7d1;
+    --hc-jewel-emerald-300: #5fb079;
+    --hc-jewel-emerald-500: #1f7a46;
+    --hc-jewel-emerald-700: #0f5028;
+    --hc-jewel-emerald-900: #062e17;
+
+    /* Ruby (warn/danger, Power, Monsters, Hearts) */
+    --hc-jewel-ruby-100: #f1ccd4;
+    --hc-jewel-ruby-300: #d96a82;
+    --hc-jewel-ruby-500: #a1223c;
+    --hc-jewel-ruby-700: #6e102a;
+    --hc-jewel-ruby-900: #3a0517;
+
+    /* Amber (triumph, Gold, Boss crown) */
+    --hc-jewel-amber-100: #f6e7bc;
+    --hc-jewel-amber-300: #e8bd59;
+    --hc-jewel-amber-500: #c48a1f;
+    --hc-jewel-amber-700: #8a5a10;
+    --hc-jewel-amber-900: #4d2f04;
+
+    /* Amethyst (rare/legendary, Mini-Boss, Shadow magic) */
+    --hc-jewel-amethyst-100: #decde9;
+    --hc-jewel-amethyst-300: #9570ba;
+    --hc-jewel-amethyst-500: #5b3a8a;
+    --hc-jewel-amethyst-700: #361e5b;
+    --hc-jewel-amethyst-900: #1b0c30;
+
+    /* Silver-pearl (Sword champion, Legendary Sword, Shield) */
+    --hc-jewel-pearl-100: #f2f4f7;
+    --hc-jewel-pearl-300: #c9d2db;
+    --hc-jewel-pearl-500: #8a97a5;
+    --hc-jewel-pearl-700: #4a5460;
+    --hc-jewel-pearl-900: #232830;
+
+    /* --------------------------------------------------------------------
+     * 2. Leading family — metallic frames
+     * -------------------------------------------------------------------- */
+
+    --hc-lead-iron-500: #2e2838;
+    --hc-lead-iron-700: #1a1620;
+    --hc-lead-iron-900: #0e0c14;
+
+    --hc-lead-gold-500: #b89142;
+    --hc-lead-gold-700: #8b6a2a;
+    --hc-lead-gold-900: #5a3f10;
+
+    /* Alpha variant of --hc-lead-gold-700 (#8b6a2a = rgb(139, 106, 42)),
+     * used for low-emphasis separators such as .setup-seat-row dividers.
+     * Kept as an explicit token for greppability; sits outside the
+     * lead-{family}-{step} pattern so the extractor groups it under
+     * `semantic` rather than `lead.gold`. */
+    --hc-lead-gold-700-alpha-35: rgba(139, 106, 42, 0.35);
+
+    /* Alpha variant of --hc-lead-iron-900 (#0e0c14 = rgb(14, 12, 20)) — the
+     * warm-obsidian translucent plate shared by every in-combat chrome
+     * surface (boss-stage info, battlefield, hand tray, heart chips, plays
+     * counter). Replaces the prior raw `rgb(11 18 40 / 75%)` literal
+     * (shadow-800 navy), which read as an off-theme blue plate against the
+     * jewel-tone zone backdrops (designer report 2026-06-04, Craghorn combat).
+     * Iron-900 is a near-black warm neutral, so the plate recedes behind
+     * the gold leading instead of clashing with the warm dawn / forest
+     * backdrops. Sits outside the lead-{family}-{step} pattern so the
+     * extractor groups it under `semantic` rather than `lead.iron`. */
+    --hc-lead-iron-900-alpha-75: rgba(14, 12, 20, 0.75);
+
+    --hc-lead-silver-500: #8a95a2;
+    --hc-lead-silver-700: #5e6775;
+
+    /* --------------------------------------------------------------------
+     * 3. Parchment family — warm neutrals
+     * -------------------------------------------------------------------- */
+
+    --hc-parchment-50: #fbf6e9;
+    --hc-parchment-100: #f4ebd3;
+    --hc-parchment-300: #e0d2ab;
+    --hc-parchment-500: #bfa979;
+    --hc-parchment-700: #7f6a3f;
+
+    /* --------------------------------------------------------------------
+     * 4. Shadow family — temple depths
+     * -------------------------------------------------------------------- */
+
+    --hc-shadow-500: #2e3d69;
+    --hc-shadow-600: #1e2b52;
+    --hc-shadow-700: #131d3e;
+    --hc-shadow-800: #0b1228;
+    --hc-shadow-900: #05080f;
+
+    /* --------------------------------------------------------------------
+     * 5. Glow family — light through glass (always semi-transparent)
+     * -------------------------------------------------------------------- */
+
+    --hc-glow-amber: rgba(232, 189, 89, 0.55);
+    --hc-glow-sapphire: rgba(110, 140, 203, 0.45);
+    --hc-glow-emerald: rgba(95, 176, 121, 0.45);
+    --hc-glow-ruby: rgba(217, 106, 130, 0.5);
+    --hc-glow-pearl: rgba(242, 244, 247, 0.35);
+    --hc-glow-shadow: rgba(5, 8, 15, 0.6);
+
+    /* --------------------------------------------------------------------
+     * 6. Champion assignments — fill/lead/glow triplets
+     * -------------------------------------------------------------------- */
+
+    --hc-champion-courage-fill: var(--hc-jewel-emerald-500);
+    --hc-champion-courage-lead: var(--hc-lead-iron-700);
+    --hc-champion-courage-glow: var(--hc-glow-emerald);
+
+    --hc-champion-wisdom-fill: var(--hc-jewel-sapphire-500);
+    --hc-champion-wisdom-lead: var(--hc-lead-silver-700);
+    --hc-champion-wisdom-glow: var(--hc-glow-sapphire);
+
+    --hc-champion-power-fill: var(--hc-jewel-ruby-500);
+    --hc-champion-power-lead: var(--hc-lead-gold-700);
+    --hc-champion-power-glow: var(--hc-glow-ruby);
+
+    --hc-champion-sword-fill: var(--hc-jewel-pearl-500);
+    --hc-champion-sword-lead: var(--hc-lead-iron-900);
+    --hc-champion-sword-glow: var(--hc-glow-pearl);
+
+    /* --------------------------------------------------------------------
+     * 7. Resource assignments — gem + leading pairs
+     * -------------------------------------------------------------------- */
+
+    --hc-resource-shard-green-gem: var(--hc-jewel-emerald-500);
+    --hc-resource-shard-green-lead: var(--hc-lead-iron-700);
+
+    --hc-resource-power-gem: var(--hc-jewel-ruby-500);
+    --hc-resource-power-lead: var(--hc-lead-gold-700);
+
+    --hc-resource-sword-gem: var(--hc-jewel-pearl-500);
+    --hc-resource-sword-lead: var(--hc-lead-iron-900);
+
+    --hc-resource-heart-gem: var(--hc-jewel-ruby-300);
+    --hc-resource-heart-lead: var(--hc-lead-gold-500);
+
+    --hc-resource-key-gem: var(--hc-jewel-amber-500);
+    --hc-resource-key-lead: var(--hc-lead-gold-700);
+
+    --hc-resource-shield-gem: var(--hc-jewel-sapphire-500);
+    --hc-resource-shield-lead: var(--hc-lead-silver-700);
+
+    /* --------------------------------------------------------------------
+     * 8. Chest tier assignments — glass / leading / cap-jewel
+     * -------------------------------------------------------------------- */
+
+    --hc-tier-small-glass: var(--hc-parchment-500);
+    --hc-tier-small-lead: var(--hc-lead-iron-700);
+    --hc-tier-small-cap: var(--hc-jewel-amber-300);
+
+    --hc-tier-medium-glass: var(--hc-jewel-emerald-700);
+    --hc-tier-medium-lead: var(--hc-lead-gold-500);
+    --hc-tier-medium-cap: var(--hc-jewel-amber-500);
+
+    --hc-tier-big-glass: var(--hc-jewel-sapphire-700);
+    --hc-tier-big-lead: var(--hc-lead-gold-700);
+    --hc-tier-big-cap: var(--hc-jewel-amber-300);
+
+    /* --------------------------------------------------------------------
+     * 9. Semantic aliases — role-neutral application tokens
+     * -------------------------------------------------------------------- */
+
+    --hc-bg-app: var(--hc-shadow-800);
+    --hc-bg-panel: var(--hc-shadow-700);
+    --hc-bg-parchment: var(--hc-parchment-100);
+
+    --hc-text-primary: #f6f2e6;
+    --hc-text-inverse: #0e0c14;
+    --hc-text-muted: #b7ae95;
+    --hc-text-gold: var(--hc-lead-gold-500);
+
+    --hc-border-default: var(--hc-lead-iron-700);
+    --hc-border-muted: var(--hc-lead-iron-500);
+    --hc-border-gold: var(--hc-lead-gold-700);
+
+    --hc-focus-ring: var(--hc-glow-amber);
+    --hc-scrim: var(--hc-glow-shadow);
+
+    /* --------------------------------------------------------------------
+     * 10. Typography family — Cinzel display + Inter body
+     *
+     * Source of truth: .claude/design/elysian-cathedral/typography.md
+     *
+     * Two faces only — Cinzel (display, carved-in-stone) and Inter (body,
+     * humanist sans). Numeric tier shares the Inter family but always
+     * applies tabular-nums (see `.hc-num` utility below). Cinzel Decorative
+     * is title-screen-only and intentionally NOT exposed as a token here
+     * to prevent in-game drift; if needed, declare it locally on the title
+     * screen component.
+     *
+     * Type scale: 1.250 (Major Third), anchored at 16px body, expressed in
+     * rem. Line-heights tuned per tier — tight for display heraldry, loose
+     * for body comfort. Kid-6yo readability bar: rules-text never below
+     * `--hc-text-xs` (12px), and `--hc-text-xs` is reserved for badges /
+     * placeholders / fine print — never long-form body. Card rules-text
+     * uses `--hc-text-sm` (14px) minimum.
+     * -------------------------------------------------------------------- */
+
+    /* Faces */
+    --hc-font-display: 'Cinzel', 'Iowan Old Style', 'Palatino Linotype', georgia, serif;
+    --hc-font-body:
+      'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', roboto, sans-serif;
+    --hc-font-numeric: var(--hc-font-body);
+
+    /* Narrow-viewport chrome shrink tier — explicitly OFF-SCALE.
+     *
+     * These are reserved for media-query overrides on phone-width viewports
+     * where the iPad-portrait readability bar (12px floor) does not apply
+     * because the device itself is below the iPad target. Never use at
+     * widths >= 768px (iPad portrait baseline). Used by the compact-board
+     * rail and setup picker on small phones to avoid label collisions
+     * inside <80px chrome bands. UI reviewer should flag any usage outside
+     * a `@media (max-width: ...)` query.
+     *
+     * Token names are pixel-explicit (--hc-text-px-N) to make the off-scale
+     * status unmistakable at the call site. The main scale (xs..display)
+     * resumes below. */
+    --hc-text-px-6: 0.375rem; /* 6px — bot-toggle pill, extreme micro chrome */
+    --hc-text-px-7: 0.4375rem; /* 7px — narrow setup-passive chrome */
+    --hc-text-px-8: 0.5rem; /* 8px — micro chrome shrink (passive plates, BOSS rail labels) */
+    --hc-text-px-9: 0.5625rem; /* 9px — narrow-viewport tray chrome shrink */
+    --hc-text-px-10: 0.625rem; /* 10px — narrow-viewport rail labels, END/PLAY ALL pseudo content */
+    --hc-text-px-11: 0.6875rem; /* 11px — narrow-viewport step between 10px and xs floor */
+
+    /* Type scale — size paired with default line-height per tier */
+    --hc-text-xs: 0.75rem; /* 12px — badges, "Empty" placeholder, fine print only */
+    --hc-text-sm: 0.875rem; /* 14px — secondary body, card effect text, tray labels */
+    --hc-text-base: 1rem; /* 16px — default body, card names, tooltips */
+    --hc-text-lg: 1.125rem; /* 18px — modal section headings, tray heading */
+    --hc-text-xl: 1.25rem; /* 20px — chest-reveal title, construct-row label */
+    --hc-text-2xl: 1.5rem; /* 24px — modal H2, FinalBoss explainer */
+    --hc-text-3xl: 1.875rem; /* 30px — TurnBanner */
+    --hc-text-4xl: 2.25rem; /* 36px — FinalBossBanner headline */
+    --hc-text-display: 3rem; /* 48px — title screen only */
+
+    /* Default line-heights paired to scale steps */
+    --hc-line-xs: 1.4; /* 12px @ 1.4 — kid-readable for badges */
+    --hc-line-sm: 1.4; /* 14px @ 1.4 — card rules text comfort */
+    --hc-line-base: 1.5; /* 16px @ 1.5 — body */
+    --hc-line-lg: 1.4;
+    --hc-line-xl: 1.3;
+    --hc-line-2xl: 1.25;
+    --hc-line-3xl: 1.2;
+    --hc-line-4xl: 1.1;
+    --hc-line-display: 1;
+
+    /* Semantic line-height aliases (use when a custom pairing is needed) */
+    --hc-line-tight: 1.1;
+    --hc-line-normal: 1.4;
+    --hc-line-loose: 1.6;
+
+    /* Weights — full Cinzel / Inter range */
+    --hc-font-weight-regular: 400;
+    --hc-font-weight-medium: 500;
+    --hc-font-weight-semibold: 600;
+    --hc-font-weight-bold: 700;
+    --hc-font-weight-extrabold: 800;
+    --hc-font-weight-black: 900;
+
+    /*
+     * Per-tier default-weight aliases (embertide-d7df).
+     *
+     * Each --hc-weight-{tier} mirrors the canonical default weight for the
+     * matching --hc-text-{tier} step from typography.md §2. Call sites that
+     * pair a tier with its default weight should use the alias so the
+     * intent ("tier default") is visible at the use site instead of being
+     * re-asserted through a generic primitive. Sites that intentionally
+     * deviate from the default (Cinzel small-caps chrome at xs+bold, etc.)
+     * keep the explicit --hc-font-weight-{name} primitive — the alias is
+     * for tier-defaults only, not a full replacement for the primitives.
+     *
+     * Source of truth stays in the --hc-font-weight-* primitives above:
+     * each alias references one of them so a future weight rebalance
+     * touches a single value.
+     */
+    --hc-weight-xs: var(--hc-font-weight-medium); /* 500 */
+    --hc-weight-sm: var(--hc-font-weight-medium); /* 500 */
+    --hc-weight-base: var(--hc-font-weight-regular); /* 400 */
+    --hc-weight-lg: var(--hc-font-weight-semibold); /* 600 */
+    --hc-weight-xl: var(--hc-font-weight-semibold); /* 600 */
+    --hc-weight-2xl: var(--hc-font-weight-bold); /* 700 */
+    --hc-weight-3xl: var(--hc-font-weight-bold); /* 700 */
+    --hc-weight-4xl: var(--hc-font-weight-extrabold); /* 800 */
+    --hc-weight-display: var(--hc-font-weight-black); /* 900 */
+
+    /* Letter-spacing — Cinzel needs positive tracking; Inter stays neutral.
+     *
+     * Two tiers:
+     *   1. Standard tier (typography.md §4): -0.01em..0.08em — body and
+     *      button tracking, including the spec floor for Cinzel buttons.
+     *   2. Chrome tier (embertide-5hw8 / typography.md §4.1): 0.10..0.22em
+     *      reserved for ALL-CAPS Cinzel chrome labels (tray-headers, boss
+     *      altar heraldry, dropdown buttons, locked-state plates). Designer
+     *      judgement (embertide-5hw8): the chrome tier intentionally
+     *      exceeds typography.md's "<=0.04em on Cinzel" body bound because
+     *      small-caps-style chrome labels need wider tracking for legibility
+     *      at the small font sizes (--hc-text-xs/sm) used in cathedral
+     *      heraldry. Never apply chrome-tier tokens to body text or running
+     *      copy. */
+
+    /* Standard tier */
+    --hc-tracking-tight: -0.01em; /* large Inter only — rare */
+    --hc-tracking-normal: 0;
+    --hc-tracking-banner: 0.02em; /* Cinzel large banners */
+    --hc-tracking-wide: 0.04em; /* Cinzel buttons (typography.md §3 spec) */
+    --hc-tracking-wider: 0.08em; /* Cinzel small-caps-ish chrome labels */
+
+    /* Chrome tier — Cinzel ALL-CAPS heraldry, small-caps idiom only */
+    --hc-tracking-chrome-sm: 0.06em; /* small-chrome floor (boss-altar name, combat hp-row, card-pile-count) */
+    --hc-tracking-chrome: 0.1em; /* base chrome (champion-slot, setup-passive, dialog plates) */
+    --hc-tracking-chrome-md: 0.12em; /* tray-header, card-template-name, PLAY ALL pseudo */
+    --hc-tracking-chrome-wide: 0.14em; /* dropdown buttons, modal heraldry */
+    --hc-tracking-chrome-lg: 0.16em; /* combat hp-row label, tray-header, board chrome */
+    --hc-tracking-chrome-extra: 0.18em; /* boss-altar heraldry, modal headings, FinalBoss banners */
+    --hc-tracking-chrome-max: 0.22em; /* boss-altar locked-label, dropdown chrome (extreme) */
+  }
+}
+
+/*
+ * embertide-cup (PRD V-1b / typography.md §5).
+ *
+ * `.hc-num` / `[data-hc-numeric]` — tabular-figures utility for every number
+ * that can change turn-to-turn (hearts, shards, keys, cost badges, hand
+ * count, turn number). Dual declarations ensure broad browser coverage:
+ * `font-variant-numeric` is the standard property; `font-feature-settings`
+ * is the low-level fallback some engines still honor preferentially.
+ *
+ * Lives in the `utilities` layer so component-layer rules can't accidentally
+ * override it with a later, more-specific declaration.
+ */
+@layer utilities {
+  .hc-num,
+  [data-hc-numeric] {
+    font-family: var(--hc-font-numeric);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+    font-weight: var(--hc-font-weight-bold);
+  }
+}

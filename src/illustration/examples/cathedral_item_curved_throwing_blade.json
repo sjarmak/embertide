@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_curved_throwing_blade_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "weapon",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Umbra-adjacent crescent steel throwing blade with leather grip",
+  "secondaryElement": "slate-grey + cool-silver stained-glass crescent arcs",
+  "cellBudget": 8,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — starter supply item, lifts relic placeholder off `curved-throwing-blade`.",
+    "Wired on card id `curved-throwing-blade` (role='item')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_curved_throwing_blade_001.webp"
+}

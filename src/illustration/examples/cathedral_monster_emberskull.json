@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_emberskull_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "cursed-wisp",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_stalker_cloaked",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "bleached ram skull haloed by a hovering violet-blue flame sphere, empty sockets glowing violet",
+  "secondaryElement": "radial violet-blue mystical rays contrasted against sun-gold Temple glass",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Gilded Cage regular (u-6c) — cool violet flame against warm sun-gold frame for palette contrast",
+    "Radial-halo segmentation centers the floating orb composition"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_emberskull_001.webp"
+}

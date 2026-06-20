@@ -1,0 +1,22 @@
+{
+  "id": "cathedral_monster_cagewright_vurmox_001",
+  "theme": "cathedral",
+  "archetype": "boss",
+  "subtype": "tyrant",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "horned-crowned tyrant silhouette seated on ornate throne; gold sunburst halo behind head",
+  "secondaryElement": "crimson sunburst rays radiating from halo through gothic arch frame",
+  "cellBudget": 12,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Region-boss / final-fight surface — highest governance weight in v2.0",
+    "Crimson dominant + black silhouette + gold filigree accents",
+    "Strong vertical symmetry; heraldic regal pose on throne",
+    "Stone arch + trefoil spandrels preserve Elysian Cathedral frame"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_cagewright_vurmox_001.webp"
+}

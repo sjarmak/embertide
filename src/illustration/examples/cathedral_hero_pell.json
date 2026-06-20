@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_hero_pell_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "key-vendor",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Pell, the purple-bunny-hooded A Link Between Worlds traveling merchant, with his cloth rental-wares satchel",
+  "secondaryElement": "twilight-purple + gold stained-glass panels with key + shard inlays",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "nvd 2026-04-24 — canon Pell portrait (A Link Between Worlds rental merchant), lifts warrior fallback off key-vendor.",
+    "Wired on card id key-vendor (role='hero')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_hero_pell_001.webp"
+}

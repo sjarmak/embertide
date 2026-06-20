@@ -1,0 +1,12 @@
+# cathedral_hero_coll
+
+- **Bead:** embertide-pr2 (2026-04-23 hero-art gap closure)
+- **Card:** wandering-merchant — in-theme display name "Coll"
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_hero_coll_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_hero_coll.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with carved-marble pillars left and right scored with drawer-and-lantern motifs, trefoil quatrefoil cornices in the arch spandrels, hero-tier gold-leaf rose-window glowing in the upper arch. Subject: Coll the Packwright — a wandering tinker-merchant of Elysia, a lean, slightly stooped man of middle years standing centered in the arch at about sixty-five percent of arch height. His defining feature is the towering BRASS-FRAME BACKPACK rising above his shoulders: a tall lattice cabinet of dozens of tiny labelled drawers and pigeonholes, capped by an iron hook-rack from which three small oil-lanterns sway on chains, casting a warm pool of light around him. The pack is fixed to him by broad padded leather shoulder-straps and a waist-belt of buckled tool-loops. He wears a heavy canvas APRON stained dark with ink and solder, sleeves rolled to the forearm, fingerless work-gloves, and a pair of round brass-rimmed magnifier GOGGLES pushed up onto his brow. His face is open and weathered, sun-creased at the eyes, with a friendly merchant's half-smile; warm tan skin, close-cropped grey-flecked brown hair. Pose: he leans into a welcoming "step up and see the wares" gesture, one hand sliding a little drawer open, the other holding up a single glinting glass shard between thumb and finger. Background: stained-glass panels in warm amber, lantern-gold and dusk-teal arranged as concentric rings of drawer-fronts and key-shapes behind him, thick dark leading lines separating segments, painterly tone variation within each pane, warm lantern rim-light gilding the brass frame from below. Colors permitted: warm-tan skin, grey-flecked brown hair, ink-stained canvas apron, oiled-brown leather straps, polished-brass pack-frame, lantern-gold glow, glass-shard glint, amber background, dusk-teal accent, smoldering-amber rim-highlight, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

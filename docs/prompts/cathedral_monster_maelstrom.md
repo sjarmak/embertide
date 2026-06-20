@@ -1,0 +1,16 @@
+# cathedral_monster_maelstrom
+
+- **Bead:** embertide-gdd.1.1
+- **Card:** maelstrom (Tidehold wild-boss, u-6a)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_monster_maelstrom_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_monster_maelstrom.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with leaded stone pillars left and right entwined with pale-aqua kelp ribbons, trefoil quatrefoil cornices in the arch spandrels, jagged broken pier-piling silhouettes rising above the arch and extra ornamental flourish with denser leading (wild-boss treatment). Subject: the Maelstrom — a massive armored deep-water leviathan looming at the center of the arch, broad-bodied, filling about sixty-five percent of the arch height with intimidating bulk. Design it from first principles as a great barnacled siege-beast of the drowned reef: a bulbous dome-shaped mantle-body crowned with a heavy carapace-helm of riveted, water-worn shell-plates fused over its crown like the prow of a sunken ship; a single enormous glowing amber eye set dead-center in the front of the body where a helm-visor would be; and many thick coiling tentacle-limbs — six to eight visible — uncurling from beneath the mantle and looping symmetrically out to the frame edges to brace the composition, each limb ringed with rows of pale suckers. Our gilding motif marks it as Embertide-touched: hairline gold fracture-lines branch across the dark shell-plates and along the tentacle-bands, a warm amber light glowing up from the seams of the carapace as though the trapped ember burns deep inside the beast, and faint pale-gold vapor bleeding off the shell into the cold water. Background: deep cobalt and indigo stained-glass panels with radial amber rays bursting outward from the central eye and faint rippling water-caustic patterns at the edges. Warm sun-washed cathedral lighting from upper left on the stone arch frame only, keeping the interior cool and deep-water-toned. Thick dark leading lines separating segments, painterly tone variation within each pane. Looming, broad, centered with strong vertical symmetry, tentacles framing the composition.
+
+EYE RENDERING: the glowing amber central eye reads clean and uniform inside its almond-shaped iris. ONE and only one dark feature inside the iris: a single narrow vertical slit-pupil running through the center. No additional dark dots, spots, speckles, smudges, or secondary markings anywhere on the iris. The amber glow is smooth around the pupil with natural radial falloff toward the rim — no baked-in shadow blobs or paint artifacts inside the amber.
+
+Colors permitted: dark-cobalt mantle, deep-teal shadow, barnacled shell-plate, opal-iridescent plate-highlight, glowing-amber central eye, cracked-gold fracture-lines, warm-amber seam-glow, pale-gold vapor, pale-sucker cream, deep-indigo background, amber-ray accent, water-caustic shimmer, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel filling the square canvas.

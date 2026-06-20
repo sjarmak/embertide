@@ -1,0 +1,12 @@
+# cathedral_monster_boulderkin
+
+- **Bead:** embertide-gv6
+- **Card:** boulderkin (Emberpeak wild-boss, u-6b)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_monster_boulderkin_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_monster_boulderkin.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with leaded stone pillars left and right blackened with soot and veined by glowing ember-red cracks, trefoil and quatrefoil cornices in the arch spandrels, extra ornamental flourish and denser leading appropriate to a wild boss, jagged broken-spire silhouettes above the arch. Subject: the Boulderkin — a towering golem assembled from a stack of rough-hewn igneous boulders in a massive-shouldered totem form, standing centered at about sixty-five percent of the arch height, arms hanging as slabs of fused rock. The gilding motif binds the whole figure: cracked gold-gilt corrosion floods the seams between every boulder, hairline gold fracture-lines branch across the basalt faces, and a faint amber inner glow pulses in the deep crevices between the stacked stones as if molten ore is caged inside the cairn. A blunt boulder-head crowns the totem, split by a wide horizontal seam packed with gold-gilt from which two amber pinpoint eyes peer; a jagged crystalline ore-spur, gilded at its base, juts from the crown. Each fist is a single rounded boulder webbed in gold-gilt. Slow pale-gold vapor and a few drifting cinders rise from the figure's shoulders. Background: deep-crimson and amber stained-glass panels with radial rays bursting outward, faint ash particles drifting upward through the frame, thick dark leading lines separating segments, painterly tone variation within each pane, amber rim-light along the silhouette. Colors permitted: dark charcoal-basalt boulders, cracked gold-gilt corrosion, gold fracture-lines, warm amber inner-glow and eyes, gilt ore-spur, pale-gold vapor, deep-crimson background, amber pane, smoldering-amber rim-highlight, dark-leading-outline. Heraldic looming broad-shouldered pose, strong vertical symmetry. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

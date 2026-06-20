@@ -1,0 +1,546 @@
+/*
+ * BossAltarPane — stained-glass pane primitive + boss-altar variant.
+ *
+ * This file is intentionally authored in terms of CSS custom properties so
+ * that bead `embertide-b56` can later absorb the variants into a
+ * unified `.pane` primitive without rewriting any consumer. The base rule
+ * mirrors the existing treatment shared by `.tray` / `.field` / `.hand`
+ * in `app.css` (stained-glass gradient, gold leading, inner-shadow).
+ *
+ * Variant contract (drives `data-variant` attribute on the root):
+ *   - wild    — gold static ember glow   — Wild Boss altar
+ *   - region  — amber static ember glow  — Region Boss altar
+ *   - destiny — purple-gold gradient border + persistent flame + soft
+ *               pulsing gold aura (via the mandala overlay, 4s cycle)
+ *
+ * Designer polish 2026-04-22 (Round 3): the ember-pulse animation was
+ * removed from the pane root per designer feedback ("the glowing pulsing
+ * is really distracting"). The static ember glow + gold leading remain.
+ * The destiny variant still carries its own subtle 4s aura via the
+ * `.boss-altar-pane-mandala` overlay — that signal was not called out
+ * as distracting and is the designated destiny treatment.
+ */
+
+.boss-altar-pane {
+  /*
+   * Public CSS variables — b56 will rename to --pane-* when the primitive
+   * is extracted. All values below can be overridden by a data-variant
+   * rule or by a consumer-supplied inline style.
+   */
+  --boss-altar-glow: var(--hc-lead-gold-500);
+  --boss-altar-header-color: var(--hc-lead-gold-500);
+  --boss-altar-border-color: var(--hc-lead-gold-700);
+  --boss-altar-border-width: 1px;
+  --boss-altar-bg-from: var(--hc-shadow-700);
+  --boss-altar-bg-to: var(--hc-shadow-800);
+  --boss-altar-scale: 1;
+  --boss-altar-inset-shadow-soft: var(--hc-lead-gold-700-alpha-35);
+  --boss-altar-inset-shadow-hard: var(--hc-shadow-900);
+  --boss-altar-header-bg: var(--hc-shadow-900);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0 0 8px;
+  min-width: 160px;
+  min-height: 44px;
+  border: var(--boss-altar-border-width) solid var(--boss-altar-border-color);
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--boss-altar-bg-from) 0%, var(--boss-altar-bg-to) 100%);
+  color: var(--hc-text-primary);
+  font-family: var(--hc-font-display);
+  cursor: pointer;
+
+  /*
+   * Designer polish 2026-04-22 (Round 3): the ember-pulse animation has
+   * been removed. The glow is now a static, moderate-radius outer shadow
+   * that preserves the "lit altar" signal without drawing the eye.
+   */
+  box-shadow:
+    inset 0 0 0 1px var(--boss-altar-inset-shadow-soft),
+    inset 0 2px 6px var(--boss-altar-inset-shadow-hard),
+    0 0 6px 1px var(--boss-altar-glow);
+  transform: scale(var(--boss-altar-scale));
+  transform-origin: top center;
+  transition: transform 200ms ease-out;
+
+  /* Button reset for when the pane is rendered as <button>. */
+  appearance: none;
+  text-align: center;
+  outline: none;
+}
+
+.boss-altar-pane[data-disabled='true'] {
+  filter: grayscale(0.8) brightness(0.6);
+  cursor: not-allowed;
+  box-shadow:
+    inset 0 0 0 1px var(--boss-altar-inset-shadow-soft),
+    inset 0 2px 6px var(--boss-altar-inset-shadow-hard);
+}
+
+.boss-altar-pane:focus-visible {
+  box-shadow:
+    inset 0 0 0 1px var(--boss-altar-inset-shadow-soft),
+    inset 0 2px 6px var(--boss-altar-inset-shadow-hard),
+    0 0 0 3px var(--boss-altar-glow);
+}
+
+/* Variants — swap color tokens and border treatment per variant.
+ *
+ * embertide-odgv: the wild + region panes previously inherited the base
+ * navy app-ground fill (--hc-shadow-700 → --hc-shadow-800), which showed
+ * through the altar-frame raster's transparent cutout interior and read as a
+ * "clashing blue" against the current aesthetic (playtest 2026-05-26). The
+ * altar-frame rasters themselves carry NO blue (verified: 0% blue-dominant
+ * pixels — stone/gold/ruby ornament with a transparent middle). Retheme the
+ * stained-glass fill to the documented jewel-tone for each boss tier per
+ * design system components.md §card-variants: mini-boss → amethyst,
+ * final/region-boss → ruby. Borders stay gold leading. */
+.boss-altar-pane[data-variant='wild'] {
+  --boss-altar-glow: var(--hc-lead-gold-500);
+  --boss-altar-header-color: var(--hc-lead-gold-500);
+  --boss-altar-bg-from: var(--hc-jewel-amethyst-500);
+  --boss-altar-bg-to: var(--hc-jewel-amethyst-700);
+}
+
+.boss-altar-pane[data-variant='region'] {
+  --boss-altar-glow: var(--hc-jewel-amber-500);
+  --boss-altar-header-color: var(--hc-jewel-amber-500);
+  --boss-altar-bg-from: var(--hc-jewel-ruby-700);
+  --boss-altar-bg-to: var(--hc-jewel-ruby-900);
+}
+
+.boss-altar-pane[data-variant='destiny'] {
+  --boss-altar-glow: var(--hc-jewel-amber-500);
+  --boss-altar-header-color: var(--hc-jewel-amber-100);
+  --boss-altar-border-width: 2px;
+  --boss-altar-border-color: transparent;
+
+  /*
+   * Designer polish 2026-04-22 Round 2 (Issue 1): scale reverted to 1×.
+   * The pane previously rendered at 1.5× to feel "important", but that
+   * made it overflow the `.boss-altar-row` into the rows below
+   * (AlwaysAvailableRow / ChestRow). Visual distinctiveness now comes
+   * exclusively from the bespoke Vurmox ornament raster, the
+   * purple→gold gradient border, and the gold aura mandala — physical
+   * size no longer carries the signal.
+   */
+
+  background:
+    linear-gradient(180deg, var(--hc-shadow-700) 0%, var(--hc-shadow-800) 100%) padding-box,
+    linear-gradient(135deg, var(--hc-jewel-amethyst-500) 0%, var(--hc-jewel-amber-500) 100%)
+      border-box;
+}
+
+/*
+ * u-10a (REQ-33 §D2) — Optional ornament overlay.
+ *
+ * The <img> sits between the stained-glass background and the pane's
+ * header/body children: z-index 1 places it above the CSS gradient
+ * background, while the header/body lift to z-index 2 (via `position:
+ * relative`) so the boss portrait + name + HP stay on top.
+ *
+ * `pointer-events: none` keeps the ornament from stealing the pane's
+ * click target when the pane is rendered as a <button>. `aria-hidden`
+ * on the <img> itself keeps assistive tech from announcing the
+ * decorative frame.
+ */
+.boss-altar-pane-ornament {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+/*
+ * embertide-4e21 — Zone-backdrop layer for the PRE-CLICK boss tile.
+ *
+ * Designer feedback 2026-06-04 (Stephanie): the live boss-selection tiles
+ * read as a "weird solid color background" (Craghorn purple / Broodmaw red) —
+ * the per-variant jewel gradient showing through the altar frame's
+ * transparent interior. The fix paints the active zone's backdrop art
+ * (same raster as `ZoneCell`) in that interior instead.
+ *
+ * Layering: this sits at z-index 0 — above the pane's own background fill
+ * but below the ornament frame (z-index 1) and the header/body (z-index 3).
+ * The altar frame's transparent middle lets the zone art read through, so
+ * the ornate stone/gold border stays intact around the painted backdrop.
+ */
+.boss-altar-pane-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.boss-altar-pane-backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/*
+ * Token-based dual-edge vignette — transparent through the middle so the
+ * portrait + art read crisply, darker at top/bottom so the header divider
+ * and the name/HP readout keep contrast over the painted backdrop. Mirrors
+ * the `ZoneCell` ZONE_SCRIM convention, scaled for the tile and driven by
+ * the `--hc-scrim` token (A3: --hc-* only for chrome/overlay).
+ */
+.boss-altar-pane-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    var(--hc-scrim) 0%,
+    transparent 30%,
+    transparent 64%,
+    var(--hc-scrim) 100%
+  );
+}
+
+/*
+ * When a backdrop is present, neutralize the per-variant jewel gradient to
+ * a flat near-black so any transparency in the art reads as on-theme depth
+ * rather than the old amethyst-purple / ruby-red fill. The backdrop <img>
+ * covers this in the common case; the override guarantees no jewel bleed
+ * at the edges or through the scrim.
+ */
+.boss-altar-pane[data-backdrop='true'] {
+  --boss-altar-bg-from: var(--hc-shadow-900);
+  --boss-altar-bg-to: var(--hc-shadow-900);
+}
+
+/*
+ * u-10c (REQ-33 §D2) — Cleared-state desaturation for the ornament.
+ *
+ * When a slot's boss is defeated the pane root gets `data-disabled="true"`
+ * (and `aria-disabled="true"` for AT). The pane itself already fades via
+ * `filter: grayscale(0.8) brightness(0.6)` above; we pile an extra
+ * grayscale + opacity on the ornament so the frame reads as "spent" even
+ * when the pane's CSS filter doesn't fully neutralize its colors (e.g.
+ * the gold Embertide in the wild frame stays vivid through 0.8 grayscale
+ * alone). Kept distinct from the pane-level rule so b56 can absorb the
+ * ornament rules independently when it unifies the primitive.
+ */
+.boss-altar-pane[data-disabled='true'] .boss-altar-pane-ornament {
+  filter: grayscale(1) opacity(0.6);
+}
+
+.boss-altar-pane-header {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  padding: 3px 8px;
+  box-sizing: border-box;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-extra);
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--boss-altar-header-color);
+  background: var(--boss-altar-header-bg);
+  border-bottom: 1px solid var(--boss-altar-glow);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.boss-altar-pane-body {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.boss-altar-pane-art {
+  width: 96px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.boss-altar-pane-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.boss-altar-pane-name {
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-sm);
+  color: var(--hc-parchment-50);
+}
+
+.boss-altar-pane-hp {
+  font-size: var(--hc-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--hc-jewel-ruby-100);
+  letter-spacing: var(--hc-tracking-wider);
+}
+
+.boss-altar-pane-cleared {
+  font-family: var(--hc-font-display);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-extra);
+  text-transform: uppercase;
+  color: var(--hc-text-muted);
+  padding: 16px 8px;
+}
+
+/*
+ * embertide-wnj — Locked region-boss slot interior.
+ *
+ * `BossAltarLocked` renders the zone-specific boss-door raster inside
+ * the region-variant `BossAltarPane`, with an amber lock glyph overlaid
+ * on the door and a SEALED legend beneath. The interior sits above the
+ * pane ornament (z:3, same as the body) so the door + glyph stay
+ * legible through the stained-glass frame.
+ *
+ * When `ZONE_BOSS_DOOR_SRC[zoneId]` is null the raster is omitted; the
+ * glyph + SEALED label alone carry the "gate is closed" signal so the
+ * row layout stays stable.
+ */
+.boss-altar-pane-locked {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.boss-altar-pane-locked-raster {
+  width: 112px;
+  height: 112px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55));
+  animation: boss-altar-pane-locked-shimmer 5.2s ease-in-out infinite;
+}
+
+@keyframes boss-altar-pane-locked-shimmer {
+  0%,
+  100% {
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55)) brightness(1);
+  }
+
+  50% {
+    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.65)) brightness(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boss-altar-pane-locked-raster {
+    animation: none;
+  }
+}
+
+.boss-altar-pane-locked-glyph {
+  position: absolute;
+  top: 42px;
+  font-size: var(--hc-text-3xl);
+  line-height: 1;
+  color: var(--hc-jewel-amber-500);
+  text-shadow:
+    0 0 4px rgba(0, 0, 0, 0.8),
+    0 0 8px var(--hc-jewel-amber-500);
+  pointer-events: none;
+}
+
+.boss-altar-pane-locked-label {
+  font-family: var(--hc-font-display);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-max);
+  text-transform: uppercase;
+  color: var(--hc-text-muted);
+}
+
+/*
+ * embertide-3ub — Dormant placeholder (wild-boss slot during Stirring
+ * phase). Same outer padding as `.boss-altar-pane-cleared` so the altar
+ * row layout is stable across the Stirring → Rising transition. Cool
+ * silver tone (vs the warm parchment used by cleared) encodes "asleep,
+ * will wake" rather than "spent". The two-line layout reserves room for
+ * the unlock-turn subline which is the whole point of this variant.
+ *
+ * rtf4: gains an hourglass glyph (shared with `BossAltarPhaseLocked`)
+ * so the wild-slot dormant cue and the region-slot phase-locked cue
+ * read consistently.
+ */
+.boss-altar-pane-dormant {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--hc-font-display);
+  padding: 16px 8px;
+}
+
+.boss-altar-pane-dormant-label {
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-extra);
+  text-transform: uppercase;
+  color: var(--hc-lead-silver-500);
+}
+
+.boss-altar-pane-dormant-subline {
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-wide);
+  text-transform: uppercase;
+  color: var(--hc-lead-silver-700);
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * embertide-rtf4 — Phase-locked altar variant.
+ *
+ * Used by the region slot during Stirring + Rising (turns 1-5) and
+ * shares the hourglass glyph with `BossAltarDormant` (wild slot during
+ * Stirring). The aesthetic is intentionally distinct from
+ * `BossAltarLocked` (wild-boss-sealed): no door raster, no padlock
+ * shimmer animation — just an hourglass + "Available turn N" subline
+ * to encode "wakes on the clock" vs the locked variant's "wakes when
+ * the player drops the key".
+ *
+ * Same outer padding as `.boss-altar-pane-cleared` and
+ * `.boss-altar-pane-dormant` so the altar row layout stays stable
+ * across the Stirring → Rising → Boss transitions.
+ */
+.boss-altar-pane-phase-locked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--hc-font-display);
+  padding: 16px 8px;
+  width: 100%;
+}
+
+.boss-altar-pane-phase-glyph {
+  font-size: var(--hc-text-2xl);
+  line-height: 1;
+  margin-bottom: 4px;
+  color: var(--hc-lead-silver-300, var(--hc-lead-silver-500));
+  text-shadow:
+    0 0 4px rgba(0, 0, 0, 0.7),
+    0 0 6px var(--hc-lead-silver-700);
+  pointer-events: none;
+  animation: boss-altar-pane-phase-glyph-pulse 4s ease-in-out infinite;
+}
+
+@keyframes boss-altar-pane-phase-glyph-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boss-altar-pane-phase-glyph {
+    animation: none;
+  }
+}
+
+.boss-altar-pane-phase-label {
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-extra);
+  text-transform: uppercase;
+  color: var(--hc-lead-silver-500);
+}
+
+.boss-altar-pane-phase-subline {
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-wide);
+  text-transform: uppercase;
+  color: var(--hc-lead-silver-700);
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Row host used by GameBoard to sit two slots side by side directly under
+ * the PrincessCrystalCell. Layout-only; no variant coupling.
+ */
+.boss-altar-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 4px 0;
+}
+
+/*
+ * u-10d (REQ-33 §D3) — DESTINY slot gold aura.
+ *
+ * The destiny ornament raster (Vurmox obsidian-gold altar) is rendered by
+ * the shared `.boss-altar-pane-ornament` rule above.
+ *
+ * The aura overlay is a dedicated `<div>` emitted ONLY when
+ * `variant === 'destiny'` (see BossAltarPane.tsx), with testId
+ * `boss-altar-pane-mandala` (name preserved for test compatibility).
+ * It paints between the ornament raster (z-1) and the children (z-3),
+ * so the glow sits behind the boss portrait + name + HP readout without
+ * occluding them.
+ *
+ * Designer polish 2026-04-22 Round 2 (Issue 1): the original conic + mask
+ * mandala flickered at the ornament's soft-alpha rim every rotation. It
+ * has been replaced with a simple pulsing gold aura — a radial gradient
+ * that fades opacity 0.25 ↔ 0.45 on a 4s ease-in-out cycle. No rotation,
+ * no mask, no dark wedges — eliminates all perceived flicker while
+ * preserving the "destiny" signal via the soft gold glow behind Vurmox.
+ */
+.boss-altar-pane-mandala {
+  position: absolute;
+  inset: 10%;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 2;
+  background: radial-gradient(circle, var(--hc-jewel-amber-500, #c48a1f) 0%, transparent 60%);
+  opacity: 0.35;
+  mix-blend-mode: screen;
+  will-change: opacity;
+  animation: destiny-aura-pulse 4s ease-in-out infinite;
+}
+
+@keyframes destiny-aura-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/*
+ * When the destiny slot is cleared (Vurmox defeated), desaturate the
+ * mandala alongside the ornament so the whole pane reads as "spent".
+ */
+.boss-altar-pane[data-disabled='true'] .boss-altar-pane-mandala {
+  filter: grayscale(1) opacity(0.4);
+  animation: none;
+}

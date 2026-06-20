@@ -1,0 +1,16 @@
+{
+  "id": "cathedral_monster_duneweed_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "spike-cone-burrower",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "sand-cone burrower with predatory tooth-spike rim and dark central maw, OoT canon",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.3 — Spirit regular"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_duneweed_001.webp"
+}

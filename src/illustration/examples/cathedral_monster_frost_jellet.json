@@ -1,0 +1,16 @@
+{
+  "id": "cathedral_monster_frost_jellet_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "water-jelly-blob",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "amorphous resting blue water-jelly blob with internal cold-white core, BotW canon",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.1.1 — Maren regular"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_frost_jellet_001.webp"
+}

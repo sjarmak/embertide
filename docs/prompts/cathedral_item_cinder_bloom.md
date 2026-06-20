@@ -1,0 +1,12 @@
+# cathedral_item_cinder_bloom
+
+- **Bead:** embertide-pr2 (2026-04-23 item art backlog)
+- **Card:** cinder-bloom (explosive plant item)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_item_cinder_bloom_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_item_cinder_bloom.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with leaded stone pillars on left and right carved with thorn-vine reliefs, trefoil quatrefoil cornices in the arch spandrels and gold leaf filigree. Subject: the Cinder-Bloom — a volatile ember-veined seed-pod on a thorned stem, displayed centered in the arch, the whole plant roughly seventy percent of the arch height. From a small rocky-dirt base rises a single dark, thorned stem of charred green-black, studded with backward-curving thorns and a few stiff sickle-leaves. At its crown the stem swells into a heavy ovoid SEED-POD about thirty percent of the arch width — a leathery husk of deep ember-red and char-brown, its surface split by seams of glowing molten-amber light, as though something incandescent is packed tight inside under pressure. Faint amber glow leaks from the seam-cracks and from a hairline lattice of fracture-lines webbing the husk; a thin curl of pale heat-shimmer rises from the pod's apex. The pod reads as a natural growth charged with stored fire — tense, swollen, about to split — not a manufactured device, not a wick-and-fuse bomb. No flame, no fire, no burning fuse, no candle-wick — only the inner ember-glow showing through the seams. Background: stained-glass panels in a warm ember-orange and deep-forest-green palette radiating outward behind the pod in concentric rings, with small thorn-leaf silhouette inlays in the outer ring. Thick dark leading lines separating glass segments, painterly stained-glass tone variation within each segment. Warm directional cathedral lighting from upper left, amber underglow from the pod's seams. Colors permitted: ember-red-husk, char-brown, molten-amber-seam-glow, charred-green-black-stem, dark-thorn-grey, forest-green-leaf, dirt-brown-base, ember-orange, warm-gold-accent, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

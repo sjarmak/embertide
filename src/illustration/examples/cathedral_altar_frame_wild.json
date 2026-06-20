@@ -1,0 +1,18 @@
+{
+  "id": "cathedral_altar_frame_wild_001",
+  "role": "altar-frame",
+  "theme": "cathedral",
+  "variant": "wild",
+  "aspectRatio": "3:4",
+  "focalElement": "carved stone archway with Embertide-of-Courage motif at apex",
+  "secondaryElement": "twin fluted pillars entwined with emerald ivy, two UNLIT iron torch sconces at base",
+  "notes": [
+    "Shared across every Wild Encounter altar — not boss-specific.",
+    "Raster is a cutout overlay with transparent interior; the stained-glass CSS pane shows through.",
+    "Torches are UNLIT in the raster — the ember pulse on the pane is pure CSS (BossAltarPane animations).",
+    "Embertide-of-Courage chosen for the Wild variant to signal the Kid/wild-boss tier (courage ~ the first trial).",
+    "Alpha channel cleaned in resolution-bpa via `scripts/gen-altar-frames-v2.py --mode=cleanup`, which strips the bright-pure-grayscale opaque residue (checker-pattern transparency-indicator pixels that leaked through u-10c's BFS flood-fill). The cleanup preserves legitimate ornament (saturated colors and dark stone/shadow) and targets only the checker signature (R≈G≈B, value≥175, fully opaque)."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_altar_frame_wild_001.webp",
+  "promptDoc": "docs/prompts/cathedral_altar_frame_wild.md"
+}

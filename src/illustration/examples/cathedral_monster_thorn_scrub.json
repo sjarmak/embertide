@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_thorn_scrub_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "imp",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_stalker_cloaked",
+  "segmentationId": "vine_cells",
+  "ornamentId": "thorned_vines",
+  "focalElement": "crouched wooden scrub with glowing yellow eyes peeking from a hollowed stump",
+  "secondaryElement": "dappled forest-light rays on deep emerald glass panels",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Sylvanwood regular (u-6a) — mischievous imp silhouette",
+    "Vine-cells segmentation + thorned-vines ornament reinforce the forest-clearing read"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_thorn_scrub_001.webp"
+}

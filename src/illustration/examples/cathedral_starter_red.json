@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_starter_red_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "starter",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "crossed sword and flame icon",
+  "secondaryElement": "ruby and silver tones on parchment",
+  "cellBudget": 8,
+  "usesHalo": false,
+  "usesBackdropMotif": false,
+  "notes": ["Power Starter — +1 power per play", "Neutral parchment background"],
+  "rasterImageUrl": "/illustrations/cathedral_starter_red_001.webp"
+}

@@ -1,0 +1,11 @@
+# cathedral_colosseum_bg_tier5
+
+- **Bead:** embertide-y3no
+- **Surface:** Colosseum combat backdrop, Tier 5 (capstone tier — Malgar / Vexel / Gyorg / Trinity Aurogax)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=21:9`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_colosseum_bg_tier5_001.webp`
+
+## Prompt
+
+Stained glass landscape panel, 21:9 panoramic format, Elysian Cathedral card-art style: a ruined cathedral arena at the apex of three eras of Elysian power, seen through a leaded-glass window. A weathered cathedral-stone arena floor stretches across the foreground, intentionally trisected into three vertical zones of influence by faint lines of leading: the LEFT third corrupted to deep gloom-purple obsidian with small black gloom-tendrils along the floor seam; the CENTER third retaining its original weathered Umbra cathedral cream-stone with a single Umbra-eye glyph glowing pale cyan on the floor; the RIGHT third overlaid with faint Elysian gilded sacred-machinery in soft gold — distant gold gear-fans and circular Embertide-whorl motifs glimpsed through the rear arch. Behind the arena, a tall ribbed cathedral arch frames the rear, the densest and most ornate stained-glass leading of any tier — the climax of the visual grammar. Beyond the arch, an aurora-lit sky shows three bands: a low purple-black gloom band on the left blending into a luminous cyan ancient-tech band in the center blending into a warm-gold gilded band on the right, all woven together as one aurora. Triadic palette: gloom-purple and obsidian on the left, Umbra-cyan and weathered cream-stone in the center, gilded-gold on the right, all unified by the framing weathered cathedral stone. Thick dark leading lines separating glass segments, painterly stained-glass tone variation within each segment. Background reads as the fifth and final tier of the colosseum — everything-at-once, three-era capstone grandeur, the final boss arena. Composition is intentionally low-density in the center: the arena floor is mostly empty so that boss-card portraits placed on top remain the visual hero. No monsters, no characters, no figures of any kind in the panel. No text, no letters, no captions, no UI overlays — just the stained-glass panel itself filling the 21:9 canvas.

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_mini_boss_reptile_001",
+  "theme": "cathedral",
+  "archetype": "boss",
+  "subtype": "mini-boss",
+  "paletteRole": "boss",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "canonical Aurelia Scalelord — upright saurian warrior with scimitar + buckler, bronze-plate armor, spiked head-crest",
+  "secondaryElement": "deep emerald + dusk-green stained-glass panels with scale-pattern inlays",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — lifts the brute placeholder off the mini-boss-reptile card (display name: Scalelord).",
+    "Wired on card id `mini-boss-reptile` (role='mini-boss')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_mini_boss_reptile_001.webp"
+}

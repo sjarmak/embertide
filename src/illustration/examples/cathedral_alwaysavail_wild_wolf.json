@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_alwaysavail_wild_wolf_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "stalker",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_stalker_cloaked",
+  "segmentationId": "broken_spires",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "snarling wild wolf in profile mid-prowl, glowing yellow eyes",
+  "secondaryElement": "amber/ochre fur against forest green glass",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Always-available card '+1 heart' — predatory beast",
+    "Profile pose; jaws open showing teeth"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_alwaysavail_wild_wolf_001.webp"
+}

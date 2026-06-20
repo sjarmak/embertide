@@ -1,0 +1,16 @@
+{
+  "id": "cathedral_monster_scuttlespine_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "desert-cyclops-centipede",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_aberration_eye",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "huge segmented desert centipede with one giant glowing red-orange cyclops eye and twin pinching mandibles",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.3 — Spirit regular, sub-in for anubis"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_scuttlespine_001.webp"
+}

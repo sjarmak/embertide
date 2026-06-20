@@ -1,0 +1,19 @@
+{
+  "id": "cathedral_item_rainbow_ancient_chimera_sword_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "weapon",
+  "paletteRole": "legendary",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "tarnished silver-blue Ancient Sword with rainbow-prismatic chromatic coat, cyan-runed fuller, winged cross-guard, rainbow-opal pommel, planted point-down",
+  "secondaryElement": "prismatic pastel-rainbow stained-glass rings with Chimera-horn silhouette inlays in the outer ring",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "ydc 2026-04-24 — Prism Chimera's heirloom (nano-banana-pro, 2K webp). Replaces the rainbow-prism placeholder raster which was miscast as a crystal prism instead of a sword."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_rainbow_ancient_chimera_sword_001.webp"
+}

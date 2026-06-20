@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_hero_veylin_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "sage-keeper",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Veylin the Umbra Sage of Shadow, silver-white upright hair + crimson eyes + dark Umbra armor with eye-symbol",
+  "secondaryElement": "midnight-indigo + shadow-purple stained-glass panels with Umbra-eye inlays",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — canon Veylin portrait, lifts warrior placeholder off `sage-keeper`.",
+    "Wired on card id `sage-keeper` (role='hero')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_hero_veylin_001.webp"
+}

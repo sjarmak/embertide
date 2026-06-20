@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_wisp_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "consumable",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "canonical Aurelia pickup-wisp — pink glowing orb with translucent wings, no bottle",
+  "secondaryElement": "rose-pink + cream stained-glass panels with sparkle motes",
+  "cellBudget": 8,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — unbottled pickup wisp, lifts relic placeholder off `wisp`.",
+    "Wired on card id `wisp` (role='item'). Pair with `wisp-in-bottle` for the bottled variant."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_wisp_001.webp"
+}

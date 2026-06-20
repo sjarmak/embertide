@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_hero_coll_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "wandering-merchant",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Coll the wandering merchant, cheerful grin + red headband + iconic hercules-beetle wooden backpack",
+  "secondaryElement": "warm-gold + amber + sky-blue stained-glass panels with coin + shard inlays",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — canon Coll portrait, lifts warrior placeholder off `wandering-merchant`.",
+    "Wired on card id `wandering-merchant` (role='hero')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_hero_coll_001.webp"
+}

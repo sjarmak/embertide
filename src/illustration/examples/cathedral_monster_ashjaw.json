@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_ashjaw_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "fire-lizard",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "broken_spires",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "four-legged dragon-reptile in profile exhaling a ribbon of orange-red flame",
+  "secondaryElement": "heat-wave rays with a drifting ember trail on volcanic-amber glass",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Emberpeak regular (u-6b) — 'bigger bite' regular (hearts=2)",
+    "Side-profile silhouette emphasizes the fire-breath ribbon"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_ashjaw_001.webp"
+}

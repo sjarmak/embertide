@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_elysian_shield_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "armor",
+  "paletteRole": "legendary",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "royal-navy Elysian Shield with Embertide + crimson phoenix-bird crest",
+  "secondaryElement": "deep royal-blue + gold stained-glass crest-burst",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — premium shield item art (nano-banana-pro, 2K webp).",
+    "Wired on card id `elysian-shield` (role='item'; gm0.15 supply card). Distinct from the generic `tower-shield`."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_elysian_shield_001.webp"
+}

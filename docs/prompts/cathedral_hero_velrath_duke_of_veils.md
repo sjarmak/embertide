@@ -1,0 +1,20 @@
+# cathedral_hero_velrath_duke_of_veils
+
+- **Bead:** embertide-sa0c (regen v2 — strip ALL-CAPS title noun + cross-card filename reference + augment no-banner closer; previous render embedded "VELRATH, DUKE OF VEILS" as a title banner inside the image)
+- **Card:** velrath-duke-of-veils (Gilded Cage zone-locked supply hero)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_hero_velrath_duke_of_veils_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_hero_velrath_duke_of_veils.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: ornate gothic pointed arch frame with carved white-marble pillars left and right trimmed in rich gold-leaf filigree, elaborate trefoil quatrefoil cornices in the arch spandrels, a radiant gold-leaf rose-window in the upper arch (the densest, most-ornamented hero-card frame). Subject: Velrath, Duke of Veils — a supply-hero of the shadow-court, a courtly deceiver whose silver tongue is a weapon, an elegant figure standing centered in the arch at about sixty-five percent of arch height in a sly, theatrical, imperious pose.
+
+He is a tall slender man in elaborate court regalia: a high-collared MULBERRY-PURPLE-AND-BLACK DOUBLET embroidered with gold-thread scrollwork down the front, over it a long velvet OVERCOAT of deeper royal-purple to mid-calf whose inner lining flashes crimson-red silk as it sweeps, brass-buttoned cuffs, black breeches tucked into polished knee-high boots. A wide black-leather belt with a silver buckle crosses his waist, hung with a gold-handled RAPIER in a tooled scabbard.
+
+His face is half-hidden by an ORNATE HALF-MASK — a sleek silver-and-black theatrical mask shaped as a stylized vixen-face with sharp angular cheekbones, a slight tapered beak and small pointed ear-tips, covering from his hairline to just above the upper lip. Only his lower face shows: a thin-lipped SMIRK curling at one corner. Through narrow eye-slits in the silver, two glints of cold pale-violet light suggest faintly glowing eyes. No skull, no gore.
+
+His long jet-black hair carries a single streak of MOONLIGHT-SILVER, swept back and tied at the nape with a black-velvet ribbon. A slim silver-and-black DUCAL CIRCLET set with three small violet gems crowns his head.
+
+Pose: a theatrical fencing-master's stance — one hand resting on the rapier's gold pommel at his hip as if about to draw, the other raised palm-up in an emphatic storytelling gesture, fingers half-curled as though catching a falling lie. Just above the open palm a single PLAYING-CARD floats mid-flip, its face a stylized stained-glass crown-and-shadow device (a literal hand-prop for his trade in fictions). Faint violet-and-gold WHISPERS-OF-MIST curl in stylized ribbons around his head, drifting through the rose-window behind him. Background: sapphire-deep-purple and gold stained-glass panels in a concentric radiant rose-window motif, small mask-and-card silhouette inlays in the outer ring, warm gold halo lit from upper-left casting a slight shadow on the white-marble platform; thick dark leading lines segment the doublet-folds, mask, rapier, hair and mist-ribbons, painterly tone variation within each pane, strong vertical symmetry. Colors permitted: mulberry-purple doublet, royal-purple overcoat, crimson-red silk lining, gold-thread filigree, silver-and-black mask, cold pale-violet eye-glints, jet-black hair, moonlight-silver streak, polished-silver circlet, violet gemstone, gold rapier-pommel, black-leather scabbard, white-marble platform, sapphire-purple background, gold rose-window glow, violet mist-ribbon, dark-leading-outline. He reads instantly as a courtly deceiver — untrustworthy, dangerously charming, no horror, no gore, no overt menace. No text, no letters, no captions, no watermarks, no UI overlays, no banners, no title plaques, no name plates, no title cartouches, no inscribed labels, no scrolls, no inscriptions of any kind — just the stained-glass panel itself filling the square canvas.

@@ -1,0 +1,21 @@
+{
+  "id": "cathedral_hero_rogue_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "rogue",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_rogue_cloak",
+  "segmentationId": "radial_halo",
+  "ornamentId": "arcane_ring",
+  "focalElement": "hooded face opening with dagger highlight",
+  "secondaryElement": "belt gem and partial rune ring",
+  "cellBudget": 12,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Keep asymmetry elegant, not chaotic",
+    "Ring should sit behind hood, not dominate it",
+    "Use fewer broad cloak cells below waist"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_hero_rogue_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_chest_enchanted_001",
+  "theme": "cathedral",
+  "archetype": "chest",
+  "subtype": "enchanted",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "ornate gold-trim chest with magical sigils",
+  "secondaryElement": "royal-blue + warm-gold stained-glass panels behind the chest",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — middle-tier chest art. REUSES the existing cathedral_chest_medium raster rather than generating a new one (per designer: 'current sturdy chest art could be for a mid range chest called enchanted chest').",
+    "Awaits a `chest-enchanted` card id in cards.ts + a chest-pool tier slot before wiring."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_chest_medium_001.webp"
+}

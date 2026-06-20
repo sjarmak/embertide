@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_alwaysavail_militia_grunt_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "warrior",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "common foot soldier with sword raised and round shield",
+  "secondaryElement": "ruby red tabard accent",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Always-available card '+2 power' — basic combat fodder",
+    "Plain helm + chainmail; no royal regalia"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_alwaysavail_militia_grunt_001.webp"
+}

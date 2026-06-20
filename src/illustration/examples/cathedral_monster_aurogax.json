@@ -1,0 +1,21 @@
+{
+  "id": "cathedral_monster_aurogax_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "three-headed-gloom-ancient-auren-aurogax",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "three-headed TotK aurogax dragon — gloom-corrupted body shot through with pale-cyan ancient-arrow cracks, three heads (gloom / Umbra-ancient-tech / Auren-sacred-machinery) rising on three long necks",
+  "secondaryElement": "concentric corruption-bloom background woven with faint Auren spiral sigils and Umbra eye-sigils in stained glass",
+  "cellBudget": 12,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Colosseum mode (4hr1) — inaugural near-end-tier super-boss; flavor name 'Trinity Aurogax'",
+    "Body matches hollow-effigy aesthetic (blackened-purple + magenta gloom-veins) plus pale-cyan ancient-arrow cracks",
+    "Three heads carry three eras of Elysian power: Demon-King (gloom), Umbra (ancient tech), Auren (sacred machinery)"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_aurogax_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_starter_champion_sword_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "starter",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "a noble hero holding aloft an ancient ornate blade heirloom, its hilt inlaid with a glowing pearl and silver filigree",
+  "secondaryElement": "silver-pearl tunic with gold embroidery; soft light refracting through the blade; small star motifs in the hilt",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Champion starter — Blade Warden (ancient-keepsake)",
+    "Silver-pearl + gold palette reflects champion-sword passive (+1 green at start of turn, +1 bonus heart on final-boss kill)"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_starter_champion_sword_001.webp"
+}

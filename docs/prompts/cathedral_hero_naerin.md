@@ -1,0 +1,12 @@
+# cathedral_hero_naerin
+
+- **Bead:** embertide-pr2 (2026-04-23 hero-art gap closure)
+- **Card:** water-warrior — in-theme display name "Naerin"
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_hero_naerin_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_hero_naerin.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with carved-marble pillars left and right scored with wave-and-scale reliefs, trefoil quatrefoil cornices in the arch spandrels, hero-tier gold-leaf rose-window glowing in the upper arch. Subject: Naerin, Maren Tideguard — a finned tide-folk noble of Elysia's deep coast, a tall graceful aquatic humanoid standing centered in the arch at about sixty-five percent of arch height in a dignified regal stance. Her skin is smooth pale-aqua scaled hide shading to a cream underbelly, with subtle FIN-RIDGES running along her forearms and a gently finned silhouette; her eyes are large and wise, deep teal. Crowning her head is a delicate CORAL DIADEM — a circlet grown of branching rose-and-white coral set with a single pearl. Over her shoulders falls a flowing SCALED MANTLE of overlapping blue-green plates that drape like a cloak, clasped with a pearl brooch; a string of white pearls crosses her chest. In both hands she holds upright a tall PEARL-TIPPED TRIDENT — a slender silver-blue shaft whose three tines cradle a luminous pearl at their meeting point, catching cool light. Pose: poised and serene, the trident held vertical at her side like a guard's spear, her free hand open and turned outward in a calm protective gesture. Background: stained-glass panels in sapphire-blue, aquatic-teal and pale-aqua arranged as concentric rippling-water rings behind her, thick dark leading lines separating segments, painterly tone variation within each pane, cool watery rim-light and tiny drifting silver bubbles. Colors permitted: pale-aqua scale-skin, cream underbelly, deep-teal eyes, rose-and-white coral diadem, blue-green scaled mantle, white pearls, silver-blue trident, luminous pearl-glow, sapphire-blue background, aquatic-teal accent, pale-aqua highlight, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

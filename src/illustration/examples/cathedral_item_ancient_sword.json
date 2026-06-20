@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_ancient_sword_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "weapon",
+  "paletteRole": "legendary",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "tarnished silver-blue runed ancient sword with sapphire pommel, planted point-down",
+  "secondaryElement": "slate-grey + ancient-cyan stained-glass rune-circle rings",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — legendary-tier ancient weapon art (nano-banana-pro, 2K webp).",
+    "Wired on card id `ancient-sword` (role='item'; gm0.15 supply card; replaces the prior legendary-sword alias)."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_ancient_sword_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_starter_champion_courage_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "starter",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "young forest archer drawing a glowing emerald spirit arrow from an ornate bow",
+  "secondaryElement": "hooded forest cloak with gold embroidery; small leaf motifs at the bow tips",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Champion starter — Valor Warden (spirit-arrow)",
+    "Emerald + gold palette reflects champion-courage passive (+1 heart on boss kill)"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_starter_champion_courage_001.webp"
+}

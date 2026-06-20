@@ -1,0 +1,12 @@
+# cathedral_hero_pell
+
+- **Bead:** embertide-nvd (2026-04-24 key-vendor hero-art gap closure)
+- **Card:** key-vendor — in-theme display name "Pell"
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_hero_pell_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_hero_pell.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with carved-marble pillars left and right scored with key-and-keyhole motifs, trefoil quatrefoil cornices in the arch spandrels, hero-tier gold-leaf rose-window glowing in the upper arch. Subject: Pell the Hooded — a sly travelling peddler of Elysia, a wiry hunched figure standing centered in the arch at about sixty-five percent of arch height in a conspiratorial "come closer, look what I have" pose. He wears a deep PATCHED CLOAK of twilight-purple and dusk-grey, every panel a different mended scrap stitched with mismatched thread, trimmed at the hem and cuffs with a faint gold key-pattern. Over his head and face he wears a long BEAKED PLAGUE-DOCTOR-STYLE MASK of weathered brass-brown leather — a curved tapering beak and round dark glass eye-lenses that catch a single bright glint, so his actual face stays hidden and mysterious. Slung heavy across his chest is a bulging WARES-SATCHEL of cream canvas and worn leather, brass-buckled and overstuffed with trinkets — glimpses of a brass KEY, a coiled cord, a small lantern, a folded fan, and an assortment of glass shards poking from the open flap. One gloved hand draws the satchel-flap aside to show the goods; the other lifts a single large ornate brass KEY toward the viewer between two fingers. Background: stained-glass panels in twilight-purple, dusk-grey and warm-gold arranged as concentric rings of key and keyhole shapes behind him, thick dark leading lines separating segments, painterly tone variation within each pane, a moody twilight wash with a warm gold rim catching the beak and the raised key. Colors permitted: twilight-purple patched cloak, dusk-grey patches, faint-gold key-trim, brass-brown beaked mask, dark-glass eye-lenses, cream-canvas satchel, worn-leather buckles, brass key, twilight-purple background, sunset-gold accent, glass-shard glint, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

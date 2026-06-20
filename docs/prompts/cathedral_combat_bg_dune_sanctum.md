@@ -1,0 +1,12 @@
+# cathedral_combat_bg_dune_sanctum
+
+- **Bead:** embertide-gq82
+- **Card:** N/A — combat-background (per-zone arena raster, dune-sanctum)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=16:9`, `output_format=jpeg`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_combat_bg_dune_sanctum_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_combat_bg_dune_sanctum.json`
+
+## Prompt
+
+Stained glass landscape panel, 16:9 widescreen format, Elysian Cathedral card-art style: the interior of a half-buried sandstone vault — the Dune Sanctum — region-boss arena tuned for the hextwins fight. The frame is a vaulted gothic chamber whose stone ribs are carved sandstone arches in Duneborn style — fluted desert pillars rising on either side, drifts of fine gold sand banked against their bases, spiral glyphs etched into the column shafts, lapis-lazuli inlay along the capitals. Between the pillars: tall narrow stained-glass panels in fire-and-ice motif — ruby-red and ember-orange on the left side, cyan and pale-frost-blue on the right side, each panel divided by thick black leading. A central altar circle is set into the floor at lower-center — a flat sandstone disk inscribed with a faded gold Duneborn-spiral mandala, half-dusted with sand — flanked symmetrically by elemental motifs: a small fire-bowl glowing warm ember on the left of the altar, a small ice-basin glowing pale-cyan on the right (the fire-and-ice flanking cue for hextwins). Dappled dusk-rose and warm-amber light shafts angle down from the upper left through high clerestory slits choked with drifting gold dust, pooling softly on the altar disk at lower-center. Faint in the deep background, centered in the arch, a massive silhouetted half-collapsed sandstone vault-wall form, sand spilling through its broken upper courses — just a shape, not detailed. The lower-center altar area is a CLEAR OPEN STAGE — no creatures, no figures, no text, no UI, no cards, no banners — it reads as a battlefield that the UI will sit on top of. The peripheral pillars, ceiling ribs, sand-drifts, and outer side panels are noticeably darker than the center stage. Overall image is dimmed (dusk inside a sand-buried vault) — target average brightness about 32%. Palette: warm sandstone-tan (#c8a878), dusk-rose (#a86b6b), terracotta-orange (#c87850), sun-bleached cream (#e8d8b8), lapis-lazuli accent (#3a5a9a), ember-orange (#d6722a), pale-cyan-ice (#a8d8e0), gold-filigree (#d6a24a). Soft anti-aliasing. No hard UI edges. No text, no letters, no watermark, no logos.

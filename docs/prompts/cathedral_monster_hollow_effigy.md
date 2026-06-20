@@ -1,0 +1,12 @@
+# cathedral_monster_hollow_effigy
+
+- **Bead:** embertide-deip (original redesign — replaces a derivative legacy subject)
+- **Card:** hollow-effigy (Hollow Shrine wild-boss, u-6c)
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_monster_hollow_effigy_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_monster_hollow_effigy.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with leaded stone pillars left and right, trefoil quatrefoil cornices in the spandrels, with extra ornamental flourish appropriate to a wild-boss raster (dense leaded composition). Subject: the Hollow Effigy — a tall, gaunt, faceless revenant standing centered in the arch facing the viewer, about sixty-five percent of the arch height. Its body is a blank artist's-mannequin form wrapped in tattered grave-cloth wraps the color of ash; where a face should be there is only a smooth seamed mask of cracked gold, featureless except for a single vertical seam. Its limbs are deliberately mismatched and unfinished — one arm longer than the other, hands left as simple tapering mitts — because it is a thing that copies and never quite finishes the copy. Across the whole figure runs our gilding motif: a network of fine glowing gold fracture-lines branching over the wraps and mask like cracks in glaze, with a faint warm amber light leaking from within the seams, as though the body is hollow and lit from inside. Thin wisps of pale gold vapor rise from its shoulders and the hem of its wraps. It stands in a still, waiting, arms-slightly-open pose, like a mannequin about to take an impression. Background: stained-glass panels arranged in a concentric bloom of cracked-gold rings on a deep-indigo field, thick dark leading lines separating segments, painterly tone variation within each pane, faint amber rim-light from the figure's glow. Colors permitted: ash-grey wraps, cracked-gold mask and fracture-lines, warm amber inner-glow, pale-gold vapor, deep-indigo background, smoldering-amber rim-highlight, dark-leading-outline. No facial features, no cap, no weapons, no heraldry — it is anonymous by design. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel filling the square canvas.

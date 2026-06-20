@@ -1,0 +1,18 @@
+{
+  "id": "cathedral_setup_landing_001",
+  "theme": "cathedral",
+  "archetype": "background",
+  "subtype": "setup-landing",
+  "paletteRole": "atmosphere",
+  "silhouetteId": "cathedral_nave_rose_window",
+  "segmentationId": "triptych_arch",
+  "ornamentId": "rose_window",
+  "focalElement": "central rose window above an empty cathedral nave with negative-space lower foreground",
+  "cellBudget": 14,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "vwao — Setup screen landing background; minimalist composition with negative space in lower-center for the player-count buttons + champion picker + Start button to sit on top."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_setup_landing_001.webp"
+}

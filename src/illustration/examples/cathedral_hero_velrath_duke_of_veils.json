@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_hero_velrath_duke_of_veils_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "masked-courtly-deceiver",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "tall masked nobleman in mulberry purple doublet and royal overcoat with rapier and theatrical mask, courtly deceiver figure",
+  "secondaryElement": "gold rose-window radiant motif background",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["2026-04-25 — Gilded Cage zone-locked center-row hero, original designer character"],
+  "rasterImageUrl": "/illustrations/cathedral_hero_velrath_duke_of_veils_001.webp"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_spear_orc_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "regular",
+  "paletteRole": "monster",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "canonical Aurelia Brute Spearman — bulldog-snouted brute in iron-banded hide armor, two-handed spear thrust",
+  "secondaryElement": "mulberry-purple + dusk-ochre stained-glass panels behind the silhouette",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — lifts the stalker placeholder off the spear-orc card (display name: Brute Spearman).",
+    "Wired on card id `spear-orc` (role='monster')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_spear_orc_001.webp"
+}

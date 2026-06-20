@@ -1,0 +1,12 @@
+# cathedral_hero_brammel
+
+- **Bead:** embertide-pr2 (2026-04-23 hero-art gap closure)
+- **Card:** mountain-king — in-theme display name "Brammel"
+- **Model:** fal-ai/nano-banana-pro
+- **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
+- **Raster:** `public/illustrations/cathedral_hero_brammel_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_hero_brammel.json`
+
+## Prompt
+
+Stained glass cathedral window illustration, square 1:1 format, in the Elysian Cathedral card-art style: gothic pointed arch frame with carved-marble pillars left and right scored with anvil-and-flame reliefs, trefoil quatrefoil cornices in the arch spandrels, hero-tier gold-leaf rose-window glowing in the upper arch. Subject: Brammel, Cragkin Forgemaster — a broad, heavily-built smith of the mountain Cragkin folk, standing centered in the arch at about sixty-five percent of arch height. His skin is dark BASALT-GREY stone-hide, fissured all over with glowing cooling-magma VEINS of deep orange-red that run like lava in the cracks of his forearms, chest and brow, brightest at the knuckles and shoulders. He has a heavy slab-jawed face, a thick blunt brow, small deep-set ember-bright eyes, and a short cropped beard of cinder-grey. He wears a thick LEATHER FORGE-KILT scorched and studded with iron rivets, a heavy single shoulder-pauldron of hammered bronze, and a wide tool-belt of tongs; his chest and the other shoulder are bare stone. Over one shoulder he rests a massive long-handled SPLITTING-MAUL, its head a wedge of dark iron rimmed with heat-glow. Pose: planted and stoic, weight square, the maul-haft gripped low in one fist, the other hand open and turned toward the viewer as if presenting the work of the forge. Background: stained-glass panels in volcanic-red, ember-orange and deep-charcoal arranged as concentric rings of sparks and anvil-shapes behind him, thick dark leading lines separating segments, painterly tone variation within each pane, hot underside-glow from a forge below picking out the magma veins. Colors permitted: basalt-grey stone-hide, glowing magma-vein orange, cinder-grey beard, ember-bright eyes, scorched-brown forge-kilt, hammered-bronze pauldron, dark-iron maul, volcanic-red background, ember-orange accent, deep-charcoal shadow, smoldering rim-highlight, dark-leading-outline. No text, no letters, no captions, no watermarks, no UI overlays — just the stained-glass panel itself filling the square canvas.

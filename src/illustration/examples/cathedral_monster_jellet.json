@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_jellet_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "slime",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_swarm_mask",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "translucent emerald-green gel dome with two floating white eyes and a simple oval smile",
+  "secondaryElement": "trapped bubbles and soft radial highlights inside the gel",
+  "cellBudget": 8,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Sylvanwood regular (u-6a) — jiggly slime, centered radial pose",
+    "Radial-halo segmentation picks up the dome's wobble rings"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_jellet_001.webp"
+}

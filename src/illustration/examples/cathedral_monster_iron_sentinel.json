@@ -1,0 +1,17 @@
+{
+  "id": "cathedral_monster_iron_sentinel_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "spiked-armored-axe-knight",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "massive bulky armored knight with oversized spiked shoulder-domes and two-handed battle-axe in heavy-swing wind-up, OoT canon",
+  "secondaryElement": "Duneborn desert temple background",
+  "cellBudget": 11,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": ["gdd.3 — Spirit wild boss, OoT iron-sentinel canon"],
+  "rasterImageUrl": "/illustrations/cathedral_monster_iron_sentinel_001.webp"
+}

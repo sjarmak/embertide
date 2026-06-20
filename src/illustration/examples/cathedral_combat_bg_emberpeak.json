@@ -1,0 +1,29 @@
+{
+  "id": "cathedral_combat_bg_emberpeak_001",
+  "role": "combat-background",
+  "theme": "cathedral",
+  "zoneId": "emberpeak",
+  "aspectRatio": "16:9",
+  "resolution": "2048x1152",
+  "prompt": "Painterly Elysian-Cathedral illustration, landscape 16:9, a volcanic cathedral interior. The nave is carved from black basalt and obsidian, with heavy obsidian columns veined with glowing lava-red cracks running down their lengths. Between the columns, narrow stained-glass windows in deep crimson, iron grey, and molten orange with Embertide-of-Power hints in the tracery, heavy black leading. A forge glow from deeper in the scene backlights the rear columns, casting a warm ember cast on the nearer basalt ridges. Upper-left directional cathedral light mixes with the ember undercast. The floor at lower-center is a dark obsidian flagstone stage with faint lava-crack inlays — an OPEN CLEAR STAGE, no creatures, no figures, no text, no UI, no banners — it reads as a battlefield the UI will sit on top of. The outer columns and ceiling are significantly darker than the stage center. Overall image is dimmed (interior with glow) — target average brightness about 32%. Palette: black basalt (#0c0a0a), obsidian (#1a1418), lava-crack red-orange (#c9421a and #e06a1a), iron gunmetal (#2a262a), ember highlight (#d47a1a). Soft anti-aliasing. No hard UI edges. No text, no letters, no watermark, no logos.",
+  "palette": {
+    "base": "black basalt (#0c0a0a)",
+    "shadow": "obsidian (#1a1418)",
+    "glass": "crimson lava (#c9421a)",
+    "highlight": "ember orange (#d47a1a)"
+  },
+  "compositionNotes": [
+    "Obsidian stage at lower-center reads as the battlefield — brighter than the periphery",
+    "Lava-vein cracks on columns and floor communicate the volcanic zone identity",
+    "No figures, text, or UI elements baked into the raster",
+    "Forge glow from the rear anchors the scene depth"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_combat_bg_emberpeak_001.webp",
+  "generatedBy": "fal-ai/nano-banana-pro",
+  "promptDoc": "docs/prompts/cathedral_combat_bg_emberpeak.md",
+  "notes": [
+    "2K landscape (2048x1152), target overall luminance 30-40% per PRD §D1.",
+    "Post-gamma adjusted (gamma 0.54) to lift average brightness from source into the 30-40% band.",
+    "If this raster is regenerated, re-run Playwright visual-regression with --update-snapshots."
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_short_sword_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "weapon",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "simple iron-and-leather short sword, Sylvani-sword-inspired starter blade",
+  "secondaryElement": "soft forest-green + amber stained-glass rings behind the blade",
+  "cellBudget": 8,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — starter supply item, lifts relic placeholder off `short-sword`.",
+    "Wired on card id `short-sword` (role='item')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_short_sword_001.webp"
+}

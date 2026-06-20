@@ -1,0 +1,21 @@
+{
+  "id": "cathedral_hero_sentinel_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "sentinel",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_sentinel_shield",
+  "segmentationId": "shield_facets",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "large shield crest with central emerald inset",
+  "secondaryElement": "helm and shoulder arch framing",
+  "cellBudget": 10,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Shield should occupy about 40 percent of composition",
+    "Favor broad stable cells",
+    "Frame should feel protective, not radiant"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_hero_sentinel_001.webp"
+}

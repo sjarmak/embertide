@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_hero_liel_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "forest-sage",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "Liel the Sylvani Sage of Forest, emerald hair + green tunic + Wisp Songflute raised",
+  "secondaryElement": "emerald + jade-green stained-glass panels with wisp sparkle motes",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — canon Liel portrait, lifts warrior placeholder off `forest-sage`.",
+    "Wired on card id `forest-sage` (role='hero')."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_hero_liel_001.webp"
+}

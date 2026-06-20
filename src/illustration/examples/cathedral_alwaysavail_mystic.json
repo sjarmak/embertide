@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_alwaysavail_mystic_001",
+  "theme": "cathedral",
+  "archetype": "hero",
+  "subtype": "sage",
+  "paletteRole": "hero",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "hooded sage holding glowing emerald shard in both hands",
+  "secondaryElement": "halo of small light circles behind hood",
+  "cellBudget": 9,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Always-available card '+2g' — emerald shard is the readable focal point",
+    "Green/gold robes; benevolent stance"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_alwaysavail_mystic_001.webp"
+}

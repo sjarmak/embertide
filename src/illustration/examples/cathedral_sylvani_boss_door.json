@@ -1,0 +1,16 @@
+{
+  "id": "cathedral_sylvani_boss_door_001",
+  "role": "boss-door",
+  "theme": "cathedral",
+  "zone": "sylvani",
+  "aspectRatio": "1:1",
+  "focalElement": "closed oak-plank gothic double door with central thornkin-leaf escutcheon keyhole",
+  "secondaryElement": "weathered limestone arch frame wrapped in ivy and moss, bronze iron straps, warm amber keyhole glow",
+  "notes": [
+    "Boss-door overlay for the Sylvanwood locked region-boss slot (gm0.12 + qzl).",
+    "Chroma-keyed: #00FF00 background stripped to alpha via scripts/chroma-key-green.py.",
+    "Rendered inside BossDoor.tsx when RegionBossEncounterSlot reports data-locked='true'."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_sylvani_boss_door_001.png",
+  "promptDoc": "docs/prompts/cathedral_sylvani_boss_door.md"
+}

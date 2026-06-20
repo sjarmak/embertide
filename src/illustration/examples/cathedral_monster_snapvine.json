@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_snapvine_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "predator-plant",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_caster_spines",
+  "segmentationId": "vine_cells",
+  "ornamentId": "thorned_vines",
+  "focalElement": "coiling emerald stalk terminating in a snapping fang-lined flower-mouth with glowing crimson gullet",
+  "secondaryElement": "dappled forest rays slanting through deep forest-green glass",
+  "cellBudget": 9,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Sylvanwood regular (u-6a) — predator plant, mid-snap aggressive pose",
+    "Thorned-vines ornament echoes the stalk/vine body"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_snapvine_001.webp"
+}

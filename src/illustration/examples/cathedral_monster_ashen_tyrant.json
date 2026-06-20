@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_ashen_tyrant_001",
+  "theme": "cathedral",
+  "archetype": "boss",
+  "subtype": "dragon-tyrant",
+  "paletteRole": "boss",
+  "silhouetteId": "monster_brute_horned",
+  "segmentationId": "radial_halo",
+  "ornamentId": "sunburst_halo",
+  "focalElement": "titanic enthroned dragon-lizard with jaws cracked open on molten flame-glow and a crown of obsidian horn-spikes",
+  "secondaryElement": "radial lava-rays bursting from the jaws, jagged volcanic peaks in the distance, gold royal filigree mantle",
+  "cellBudget": 12,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Emberpeak region-boss (u-6b) — sunburst-halo region-boss convention with filigree inner border",
+    "Usesa halo: true (matches cagewright-vurmox / broodmaw region-boss framing)"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_ashen_tyrant_001.webp"
+}

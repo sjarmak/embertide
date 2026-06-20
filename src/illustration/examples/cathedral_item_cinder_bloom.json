@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_cinder_bloom_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "consumable",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "canonical Aurelia cinder-bloom plant — cobalt-blue bulb on reddish-brown stem with white-to-orange petal ring and green ground leaves",
+  "secondaryElement": "sunset-orange + forest-green stained-glass alert rings",
+  "cellBudget": 8,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — explosive plant item art (nano-banana-pro, 2K webp).",
+    "Wired on card id `cinder-bloom` (role='item'; gm0.15 supply card)."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_cinder_bloom_001.webp"
+}

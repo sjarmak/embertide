@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_monster_like_like_001",
+  "theme": "cathedral",
+  "archetype": "monster",
+  "subtype": "devourer",
+  "paletteRole": "monster",
+  "silhouetteId": "monster_swarm_mask",
+  "segmentationId": "vertical_cathedral",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "corrugated tube-creature with an enormous fanged circular maw swallowing a brass key mid-drop",
+  "secondaryElement": "sun-gold sacred-light rays contrasting the dark interior of the maw",
+  "cellBudget": 8,
+  "usesHalo": false,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Gilded Cage regular (u-6c) — the engulfed key visualizes the `keys: 1` drop",
+    "Vertical-cathedral segmentation frames the upright engulfing pose"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_monster_like_like_001.webp"
+}

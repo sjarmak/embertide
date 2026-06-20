@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_chest_big_001",
+  "theme": "cathedral",
+  "archetype": "chest",
+  "subtype": "big",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "arcane_ring",
+  "focalElement": "open gold vault chest with sapphire light beam",
+  "secondaryElement": "rampant lion guardians flanking chest",
+  "cellBudget": 12,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "Rose-window backdrop; richest of the chest tier",
+    "Sapphire/gold palette with ruby accents"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_chest_big_001.webp"
+}

@@ -1,0 +1,29 @@
+{
+  "id": "cathedral_combat_bg_gilded_cage_001",
+  "role": "combat-background",
+  "theme": "cathedral",
+  "zoneId": "gilded-cage",
+  "aspectRatio": "16:9",
+  "resolution": "2048x1152",
+  "prompt": "Painterly Elysian-Cathedral illustration, landscape 16:9, the sacred Gilded Cage sanctum interior. A tall gothic nave of cream-pale marble pillars with gold-leaf capitals recedes toward a central apse. In the far center-rear, a stone pedestal with the silhouette of the Emberblade driven into it (just the outline, no glint, no detail — a reverent shape). Behind the pedestal, a circular stained-glass rose window in the shape of the Embertide: three luminous golden triangles on an ethereal blue-white field with thick black leading. Ethereal blue-white light shafts angle down from the upper left through dust motes, pooling on a polished marble floor at lower-center. The floor area at lower-center is an OPEN CLEAR STAGE — no creatures, no figures, no text, no UI, no banners — it reads as a battlefield the UI will sit on top of. The peripheral columns and ceiling are in cool blue shadow, noticeably darker than the center stage. Overall image is dimmed (reverent cathedral interior) — target average brightness about 34%. Palette: cream-pale marble (#a9a599), cool shadow blue (#3a4a66), ethereal pale blue-white highlights (#c8d8e8), Embertide gold (#d6a24a). Soft anti-aliasing. No hard UI edges. No text, no letters, no watermark, no logos.",
+  "palette": {
+    "base": "cream-pale marble (#a9a599)",
+    "shadow": "cool shadow blue (#3a4a66)",
+    "highlight": "ethereal pale blue-white (#c8d8e8)",
+    "accent": "Embertide gold (#d6a24a)"
+  },
+  "compositionNotes": [
+    "Polished marble stage at lower-center lit by central light shaft — brighter than periphery",
+    "Embertide rose window behind the Emberblade pedestal silhouette anchors zone identity",
+    "No figures, text, or UI elements baked into the raster",
+    "Peripheral columns and ceiling in cool blue shadow"
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_combat_bg_gilded_cage_001.webp",
+  "generatedBy": "fal-ai/nano-banana-pro",
+  "promptDoc": "docs/prompts/cathedral_combat_bg_gilded_cage.md",
+  "notes": [
+    "2K landscape (2048x1152), target overall luminance 30-40% per PRD §D1.",
+    "No post-gamma adjustment needed — nano-banana-pro output already in the 30-40% luminance band.",
+    "If this raster is regenerated, re-run Playwright visual-regression with --update-snapshots."
+  ]
+}

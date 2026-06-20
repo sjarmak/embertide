@@ -1,0 +1,20 @@
+{
+  "id": "cathedral_item_boomerang_001",
+  "theme": "cathedral",
+  "archetype": "item",
+  "subtype": "weapon",
+  "paletteRole": "neutral",
+  "silhouetteId": "hero_warrior_upright",
+  "segmentationId": "radial_halo",
+  "ornamentId": "cathedral_arch",
+  "focalElement": "carved chestnut boomerang with flame-orange + turquoise tribal inlay",
+  "secondaryElement": "teal + sage stained-glass wind-rings behind the weapon",
+  "cellBudget": 8,
+  "usesHalo": true,
+  "usesBackdropMotif": true,
+  "notes": [
+    "pr2 2026-04-23 — thrown tool item art (nano-banana-pro, 2K webp).",
+    "Wired on card id `boomerang` (role='item'; gm0.15 supply card)."
+  ],
+  "rasterImageUrl": "/illustrations/cathedral_item_boomerang_001.webp"
+}
