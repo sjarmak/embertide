@@ -93,6 +93,7 @@ export function BossAltarLocked({
       variant="region"
       disabled
       locked
+      backdropZoneId={zoneId}
       ariaLabel={ariaLabel}
       testId={testId}
     >
@@ -238,6 +239,13 @@ export interface BossAltarPhaseLockedProps {
   readonly variant: BossAltarVariant;
   readonly unlockTurn: number;
   /**
+   * embertide round2 — active zone whose backdrop art renders behind the
+   * altar-frame cutout so the phase-locked altar reads as a dim lit altar
+   * (zone art under the disabled grayscale) rather than an empty/white
+   * hole. Optional so non-zone consumers stay byte-identical when omitted.
+   */
+  readonly backdropZoneId?: ZoneId;
+  /**
    * Optional override for the rendered label above the subline.
    * Defaults to "LOCKED" — Cinzel small-caps treatment via CSS keeps
    * the visual rhythm aligned with the SEALED legend used by
@@ -259,11 +267,19 @@ export function BossAltarPhaseLocked({
   unlockTurn,
   label = 'Locked',
   testId,
+  backdropZoneId,
 }: BossAltarPhaseLockedProps): JSX.Element {
   const subline = `Available turn ${unlockTurn}`;
   const ariaLabel = `${label} — ${subline}`;
   return (
-    <BossAltarPane header={header} variant={variant} disabled ariaLabel={ariaLabel} testId={testId}>
+    <BossAltarPane
+      header={header}
+      variant={variant}
+      disabled
+      backdropZoneId={backdropZoneId}
+      ariaLabel={ariaLabel}
+      testId={testId}
+    >
       <div
         className="boss-altar-pane-phase-locked"
         data-testid="boss-altar-pane-phase-locked"

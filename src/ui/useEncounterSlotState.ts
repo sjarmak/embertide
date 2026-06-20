@@ -21,8 +21,13 @@ import type { ZoneId } from '../store/types';
  *   - live    : Rising / Boss / Climax with a live wild boss bound to the slot.
  */
 export type WildSlotState =
-  | { readonly kind: 'dormant'; readonly unlockTurn: number; readonly phaseLabel: string }
-  | { readonly kind: 'cleared' }
+  | {
+      readonly kind: 'dormant';
+      readonly unlockTurn: number;
+      readonly phaseLabel: string;
+      readonly zoneId: ZoneId;
+    }
+  | { readonly kind: 'cleared'; readonly zoneId: ZoneId }
   | {
       readonly kind: 'live';
       readonly card: Card;
@@ -44,8 +49,8 @@ export type WildSlotState =
  * the SEALED padlock cue (rtf4 fix).
  */
 export type RegionSlotState =
-  | { readonly kind: 'cleared' }
-  | { readonly kind: 'phase-locked'; readonly unlockTurn: number }
+  | { readonly kind: 'cleared'; readonly zoneId: ZoneId }
+  | { readonly kind: 'phase-locked'; readonly unlockTurn: number; readonly zoneId: ZoneId }
   | { readonly kind: 'key-locked'; readonly zoneId: ZoneId }
   | {
       readonly kind: 'live';
@@ -81,11 +86,11 @@ export function useWildEncounterSlotState(): WildSlotState {
   }, [bossId, isDormant, fireTutorialBubbleOnce]);
 
   if (isDormant) {
-    return { kind: 'dormant', unlockTurn: RISING_PHASE_TURN, phaseLabel };
+    return { kind: 'dormant', unlockTurn: RISING_PHASE_TURN, phaseLabel, zoneId };
   }
   const card = bossId !== null ? KID_CARDS.find((c) => c.id === bossId) : undefined;
   if (card === undefined) {
-    return { kind: 'cleared' };
+    return { kind: 'cleared', zoneId };
   }
   return {
     kind: 'live',
@@ -122,10 +127,10 @@ export function useRegionEncounterSlotState(): RegionSlotState {
 
   const card = bossId !== null ? KID_CARDS.find((c) => c.id === bossId) : undefined;
   if (card === undefined) {
-    return { kind: 'cleared' };
+    return { kind: 'cleared', zoneId };
   }
   if (phaseLocked) {
-    return { kind: 'phase-locked', unlockTurn: BOSS_PHASE_TURN };
+    return { kind: 'phase-locked', unlockTurn: BOSS_PHASE_TURN, zoneId };
   }
   if (locked) {
     return { kind: 'key-locked', zoneId };

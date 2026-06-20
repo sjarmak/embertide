@@ -14,7 +14,7 @@
  *
  *   - Ossiarch (Twilit Fossil) — layered (Twilit Spine → Floating
  *                                  Skull, TP canon).
- *   - The Imprisoned           — sequence (toe-charge → toe-strike →
+ *   - The Fettered           — sequence (toe-charge → toe-strike →
  *                                  lap-up, SS canon — three steps,
  *                                  one longer than Phantom Vurmox T2's
  *                                  2-step volley).
@@ -27,12 +27,12 @@
  * NUMBERS ARE ILLUSTRATIVE. HP / damagePerTurn are first-pass
  * placeholders chosen to read as a step harder than tier-3 and a step
  * easier than tier-5 capstone. Layered HP totals match aggregate `hp`
- * (mirror Boulderkin T1 + Blackguard T2 + Helmaroc/Sandscourge T3
+ * (mirror Boulderkin T1 + Blackguard T2 + Skrall/Sandscourge T3
  * convention so untaught read-sites still see a sensible aggregate).
  * Final tuning is a playtest follow-up after the per-archetype
  * resolver beads consume these stateTags.
  *
- * Card-data registration in `KID_CARDS` (parallel to `trinityGleeok`)
+ * Card-data registration in `KID_CARDS` (parallel to `trinityAurogax`)
  * lands alongside the per-boss art batch beads — the sourceCardId
  * strings here are the canonical kebab-case names those card entries
  * will use.
@@ -76,12 +76,12 @@ export const COLOSSEUM_OSSIARCH_T4: CombatBoss = {
  * step longer than Phantom Vurmox T2's 2-step volley to climb the
  * difficulty step.
  *
- * The Imprisoned canon: SS sealed Oblivar predecessor — climbs the
+ * The Fettered canon: SS sealed Oblivar predecessor — climbs the
  * spiral pit toe-by-toe, with each lap a charge → toe-strike → repeat
  * cadence; Link's job is to interrupt the lap-up beat before it
  * crests.
  */
-export const COLOSSEUM_THE_IMPRISONED_T4: CombatBoss = {
+export const COLOSSEUM_THE_FETTERED_T4: CombatBoss = {
   hp: 32,
   hpMax: 32,
   attackPattern: {
@@ -126,7 +126,7 @@ export const COLOSSEUM_PYRAX_T4: CombatBoss = {
  * Sequence archetype — three-beat capstone dance. Step ids name the
  * beat firing this boss-turn; the sequence resolver bead reads
  * `currentIndex` to dispatch per-step damage/effect. Same length as
- * The Imprisoned (3 steps) but capstone-sized HP — final pre-T5
+ * The Fettered (3 steps) but capstone-sized HP — final pre-T5
  * sequence boss before Trinity Aurogax's 3-head rotation.
  *
  * Oblivar canon: SS final boss — charge → lightning → sword three-beat
@@ -153,14 +153,14 @@ export const COLOSSEUM_OBLIVAR_T4: CombatBoss = {
 
 /**
  * Tier-4 roster, ordered by the bead-stated designer ruling (Ossiarch
- * → The Imprisoned → Pyrax → Oblivar — Oblivar as the final, hardest
+ * → The Fettered → Pyrax → Oblivar — Oblivar as the final, hardest
  * pre-capstone fight). Consumers iterate this tuple to build the
  * tier-4 unlock pool when the per-boss art batch registers the
  * matching card data in `KID_CARDS`.
  */
 export const TIER_4_ROSTER = [
   COLOSSEUM_OSSIARCH_T4,
-  COLOSSEUM_THE_IMPRISONED_T4,
+  COLOSSEUM_THE_FETTERED_T4,
   COLOSSEUM_PYRAX_T4,
   COLOSSEUM_OBLIVAR_T4,
 ] as const satisfies readonly CombatBoss[];

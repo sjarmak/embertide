@@ -3,6 +3,7 @@ import type { Card } from '../types/card';
 import type { ChestVariant } from '../rules/chestPool';
 import AlwaysAvailableRow from './AlwaysAvailableRow';
 import ChestRow from './ChestRow';
+import type { ZoomedCardContext } from './Field';
 
 export interface AlwaysRowStripProps {
   readonly green: number;
@@ -28,6 +29,13 @@ export interface AlwaysRowStripProps {
    * carries useful info in the 44px chip band.
    */
   readonly statsCollapsed?: ReactNode;
+  /**
+   * round2: routes expanded top-row card taps through the shared
+   * CardDetailModal (name+image tile → full rules on tap). Forwarded to
+   * the expanded `AlwaysAvailableRow`; the collapsed chip strip ignores
+   * it. Omit to keep direct-dispatch clicks.
+   */
+  readonly onZoomCard?: (ctx: ZoomedCardContext) => void;
 }
 
 /**
@@ -54,6 +62,7 @@ export default function AlwaysRowStrip({
   onOpenChest,
   statsExpanded,
   statsCollapsed,
+  onZoomCard,
 }: AlwaysRowStripProps): JSX.Element {
   // Default-expanded (re-revised 2026-04-26): user direction is "show
   // the cards visible by default but keep them collapsible". The strip
@@ -79,6 +88,7 @@ export default function AlwaysRowStrip({
               onBuy={onBuy}
               onFight={onFight}
               onTrade={onTrade}
+              onZoomCard={onZoomCard}
             />
             <ChestRow cards={chestRow} keys={keys} onOpenChest={onOpenChest} />
           </>

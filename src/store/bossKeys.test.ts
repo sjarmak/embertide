@@ -75,19 +75,19 @@ describe('gm0.12 — canSpawnRegionBoss predicate', () => {
   });
 
   it('temple: Sentinel alone does NOT unlock Vurmox', () => {
-    const onlyGuardian = {
+    const onlySentinel = {
       ...emptyBossKeys(),
       'gilded-cage': ['sentinel'],
     };
-    expect(canSpawnRegionBoss(baseState(onlyGuardian), 'gilded-cage')).toBe(false);
+    expect(canSpawnRegionBoss(baseState(onlySentinel), 'gilded-cage')).toBe(false);
   });
 
   it('temple: Silver Chimera alone does NOT unlock Vurmox', () => {
-    const onlyLynel = {
+    const onlyChimera = {
       ...emptyBossKeys(),
       'gilded-cage': ['silver-chimera'],
     };
-    expect(canSpawnRegionBoss(baseState(onlyLynel), 'gilded-cage')).toBe(false);
+    expect(canSpawnRegionBoss(baseState(onlyChimera), 'gilded-cage')).toBe(false);
   });
 
   it('temple: BOTH Sentinel + Silver Chimera keys unlock Vurmox', () => {

@@ -57,14 +57,23 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+
+  /* dfx1 → round2: the player still read the top/bottom scrim as solid
+     bars. The combat header (player-hp chips) and the End-Turn button both
+     carry their OWN translucent plate backgrounds, so the scrim doesn't
+     need to darken those bands for legibility — its only job is a gentle
+     edge falloff. Pulled the end-stops down further (56→40 top, 58→44
+     bottom) and tightened the dark band into a thinner rim (top reached by
+     8%, bottom by 92%) so the zone art reads as the dominant field and the
+     "solid bar" reading is gone. */
   background: linear-gradient(
     to bottom,
-    rgb(5 8 15 / 72%) 0%,
-    rgb(5 8 15 / 32%) 18%,
-    rgb(5 8 15 / 12%) 42%,
-    rgb(5 8 15 / 12%) 58%,
-    rgb(5 8 15 / 32%) 82%,
-    rgb(5 8 15 / 75%) 100%
+    rgb(5 8 15 / 40%) 0%,
+    rgb(5 8 15 / 16%) 8%,
+    rgb(5 8 15 / 6%) 38%,
+    rgb(5 8 15 / 6%) 62%,
+    rgb(5 8 15 / 16%) 92%,
+    rgb(5 8 15 / 44%) 100%
   );
 }
 

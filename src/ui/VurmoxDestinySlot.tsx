@@ -30,7 +30,7 @@ const TEMPLE_ZONE = 'gilded-cage' as const;
  * same store action as the region-boss slot; only the visual treatment
  * differs.
  */
-export default function GanonDestinySlot(): JSX.Element {
+export default function VurmoxDestinySlot(): JSX.Element {
   const bossId = useGameStore((s) => currentRegionBossForZone(s, TEMPLE_ZONE));
   const engage = useGameStore((s) => s.engageRegionBossSlot);
   const fireTutorialBubbleOnce = useGameStore((s) => s.fireTutorialBubbleOnce);
@@ -53,6 +53,7 @@ export default function GanonDestinySlot(): JSX.Element {
         header="DESTINY"
         variant="destiny"
         disabled
+        backdropZoneId={TEMPLE_ZONE}
         ariaLabel="Destiny — fulfilled"
         testId="vurmox-destiny-slot"
       >
@@ -68,6 +69,7 @@ export default function GanonDestinySlot(): JSX.Element {
     <BossAltarPane
       header="DESTINY"
       variant="destiny"
+      backdropZoneId={TEMPLE_ZONE}
       ariaLabel={`Face destiny — ${name}, HP ${hp}`}
       testId="vurmox-destiny-slot"
       onClick={() => engage(TEMPLE_ZONE, VURMOX_ID)}

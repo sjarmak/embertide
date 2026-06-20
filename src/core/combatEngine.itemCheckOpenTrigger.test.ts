@@ -43,7 +43,7 @@ const CINDERWYRM_PATTERN: BossAttackPattern = {
   onDefeatEffect: { kind: 'wisp-drop' },
 };
 
-function makeVolvagia(): CombatBoss {
+function makeCinderwyrm(): CombatBoss {
   return {
     hp: 16,
     hpMax: 16,
@@ -121,7 +121,7 @@ function makeTurnState(
 describe('Item-Check open-window trigger via PLAYER_PLAY_CARD (4hr1.1)', () => {
   it('Cinderwyrm flips guarded(item-tag-bomb) → exposed{revertsTo} when an item-tag-bomb card is played', () => {
     const card = makeBombItemCard();
-    const state = makeTurnState(makeCombat(makeVolvagia(), [card]));
+    const state = makeTurnState(makeCombat(makeCinderwyrm(), [card]));
 
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
@@ -140,7 +140,7 @@ describe('Item-Check open-window trigger via PLAYER_PLAY_CARD (4hr1.1)', () => {
 
   it('Cinderwyrm stays guarded when a card without the matching tag is played', () => {
     const card = makeNonBombItemCard();
-    const state = makeTurnState(makeCombat(makeVolvagia(), [card]));
+    const state = makeTurnState(makeCombat(makeCinderwyrm(), [card]));
 
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
@@ -153,7 +153,7 @@ describe('Item-Check open-window trigger via PLAYER_PLAY_CARD (4hr1.1)', () => {
 
   it('Cinderwyrm stays guarded when an untagged starter card is played', () => {
     const card = makeUntaggedAttackCard();
-    const state = makeTurnState(makeCombat(makeVolvagia(), [card]));
+    const state = makeTurnState(makeCombat(makeCinderwyrm(), [card]));
 
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
@@ -166,7 +166,7 @@ describe('Item-Check open-window trigger via PLAYER_PLAY_CARD (4hr1.1)', () => {
 
   it('triggering play does NOT benefit from the freshly-applied exposed bonus (flip happens after damage)', () => {
     const card = makeBombItemCard(); // combat-attack damage=1
-    const state = makeTurnState(makeCombat(makeVolvagia(), [card]));
+    const state = makeTurnState(makeCombat(makeCinderwyrm(), [card]));
 
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
@@ -184,7 +184,7 @@ describe('Item-Check open-window trigger via PLAYER_PLAY_CARD (4hr1.1)', () => {
   it('subsequent play in the same turn DOES benefit from the exposed bonus', () => {
     const bombCard = makeBombItemCard();
     const followUp = makeUntaggedAttackCard(); // damage=1 starter
-    const state = makeTurnState(makeCombat(makeVolvagia(), [bombCard, followUp]));
+    const state = makeTurnState(makeCombat(makeCinderwyrm(), [bombCard, followUp]));
 
     const afterBomb = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
@@ -238,7 +238,7 @@ describe('Item-Check open-window trigger via PLAYER_PLAY_CARD (4hr1.1)', () => {
   it('a second matching-tag play while boss is already exposed is a no-op on stateTags (does not re-enter guarded)', () => {
     const bombCard = makeBombItemCard();
     const followUpBomb: Card = { ...makeBombItemCard(), id: 'cinder-bloom-test-copy-2' };
-    const state = makeTurnState(makeCombat(makeVolvagia(), [bombCard, followUpBomb]));
+    const state = makeTurnState(makeCombat(makeCinderwyrm(), [bombCard, followUpBomb]));
 
     const afterFirst = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
@@ -258,7 +258,7 @@ describe('Item-Check open-window trigger via PLAYER_PLAY_CARD (4hr1.1)', () => {
 
   it('preserves the original `until` discriminant byte-for-byte across the open flip (so close-window can restore it)', () => {
     const fireDragonGuard: CombatBoss = {
-      ...makeVolvagia(),
+      ...makeCinderwyrm(),
       stateTags: [{ kind: 'guarded', until: 'item-tag-fire-arrow' }],
     };
     const card: Card = { ...makeBombItemCard(), tags: ['item-tag-fire-arrow'] };

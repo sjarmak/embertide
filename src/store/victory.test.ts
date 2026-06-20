@@ -4,7 +4,7 @@ import { KID_CARDS, baseIdOf } from '../data/cards';
 import { createGameStore, applyDamage } from './gameStore';
 import { checkCoopVictory, EMBERTIDE_PIECES_TO_WIN } from './slices/endgame';
 import { fightMonster } from './slices/combat';
-import type { KidGameState, KidPlayer, SharedTriforce } from './types';
+import type { KidGameState, KidPlayer, SharedEmbertide } from './types';
 import { makeKidPlayer, makeKidGameState } from '../testing/stateFixtures';
 
 // ---------------------------------------------------------------------------
@@ -31,9 +31,9 @@ describe('v2 co-op victory (amendment A2) — checkCoopVictory', () => {
     expect(EMBERTIDE_PIECES_TO_WIN).toBe(3);
   });
 
-  it('(a) sharedTriforce with all 3 paths complete → outcome === "win"', () => {
+  it('(a) sharedEmbertide with all 3 paths complete → outcome === "win"', () => {
     const state = makeState({
-      sharedTriforce: { wisdom: true, courage: true, power: true },
+      sharedEmbertide: { wisdom: true, courage: true, power: true },
     });
     const next = checkCoopVictory(state);
     expect(next.outcome).toBe('win');
@@ -45,27 +45,27 @@ describe('v2 co-op victory (amendment A2) — checkCoopVictory', () => {
         makePlayer({ id: 'p0', hp: 5, hpMax: 5 }),
         makePlayer({ id: 'p1', hp: 5, hpMax: 5 }),
       ],
-      sharedTriforce: { wisdom: false, courage: false, power: false },
+      sharedEmbertide: { wisdom: false, courage: false, power: false },
     });
     const next = checkCoopVictory(state);
     expect(next.outcome).toBeNull();
   });
 
   it('partial shard pool (2 of 3) is not a victory', () => {
-    const partials: SharedTriforce[] = [
+    const partials: SharedEmbertide[] = [
       { wisdom: true, courage: true, power: false },
       { wisdom: true, courage: false, power: true },
       { wisdom: false, courage: true, power: true },
     ];
-    for (const sharedTriforce of partials) {
-      const state = makeState({ sharedTriforce });
+    for (const sharedEmbertide of partials) {
+      const state = makeState({ sharedEmbertide });
       expect(checkCoopVictory(state).outcome).toBeNull();
     }
   });
 
   it('is a no-op when outcome is already resolved', () => {
     const state = makeState({
-      sharedTriforce: { wisdom: true, courage: true, power: true },
+      sharedEmbertide: { wisdom: true, courage: true, power: true },
       outcome: 'loss',
     });
     const next = checkCoopVictory(state);
@@ -106,9 +106,9 @@ describe('v2 combat: HP heals instead of additive hearts, no shard grants', () =
     expect(state.players[0].hp).toBe(5);
 
     // Critical invariant: beasts never grant shards in v2 (amendment A2).
-    expect(state.sharedTriforce.wisdom).toBe(false);
-    expect(state.sharedTriforce.courage).toBe(false);
-    expect(state.sharedTriforce.power).toBe(false);
+    expect(state.sharedEmbertide.wisdom).toBe(false);
+    expect(state.sharedEmbertide.courage).toBe(false);
+    expect(state.sharedEmbertide.power).toBe(false);
   });
 
   it('heart reward at full hp grows hp + hpMax up to HP_CAP (vital-ember pass 2026-04-22)', () => {
@@ -187,8 +187,8 @@ describe('v2 shared loss (amendment A3)', () => {
     if (!allDowned) return state;
     const allRevivedAlready = state.players.every((p) => p.revivedThisIncident);
     if (!allRevivedAlready) return state;
-    const anyFairy = state.players.some((p) => p.items.some((c) => baseIdOf(c) === 'wisp'));
-    if (anyFairy) return state;
+    const anyWisp = state.players.some((p) => p.items.some((c) => baseIdOf(c) === 'wisp'));
+    if (anyWisp) return state;
     return { ...state, outcome: 'loss' };
   }
 

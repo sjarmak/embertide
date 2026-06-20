@@ -11,7 +11,7 @@ import { MotionConfig } from 'framer-motion';
  *
  * **Status (T-5):** Component is exported but NOT mounted in App.tsx —
  * V-1 mounts it. T-5 only ships the building block; mounting is gated
- * on V-1 also installing HyrulianDefs and the typography stylesheet.
+ * on V-1 also installing ElysianDefs and the typography stylesheet.
  */
 export interface MotionRootProps {
   children: ReactNode;

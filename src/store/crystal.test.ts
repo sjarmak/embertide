@@ -129,7 +129,7 @@ describe('Princess Crystal pure helpers (u-2e + vj52)', () => {
     const next = strikePrincessCrystal(state);
     expect(next).toBe(state);
     expect(next.princessCrystal.freed).toBe(false);
-    expect(next.sharedTriforce.wisdom).toBe(false);
+    expect(next.sharedEmbertide.wisdom).toBe(false);
   });
 
   it('(d) strikePrincessCrystal at charges=0 flips freed + shared wisdom + both players wisdomsLight', () => {
@@ -139,10 +139,10 @@ describe('Princess Crystal pure helpers (u-2e + vj52)', () => {
     const next = strikePrincessCrystal(state);
     expect(next.princessCrystal.freed).toBe(true);
     expect(next.princessCrystal.charges).toBe(0);
-    expect(next.sharedTriforce.wisdom).toBe(true);
+    expect(next.sharedEmbertide.wisdom).toBe(true);
     // The other shards are untouched — only the wisdom flag flips.
-    expect(next.sharedTriforce.courage).toBe(false);
-    expect(next.sharedTriforce.power).toBe(false);
+    expect(next.sharedEmbertide.courage).toBe(false);
+    expect(next.sharedEmbertide.power).toBe(false);
     // BOTH players receive the shared wisdomsLight buff.
     expect(next.players[0].wisdomsLight).toBe(true);
     expect(next.players[1].wisdomsLight).toBe(true);
@@ -188,7 +188,7 @@ describe('Princess Crystal pure helpers (u-2e + vj52)', () => {
   it('(e) strikePrincessCrystal on an already-freed crystal is idempotent', () => {
     const state = makeState({
       princessCrystal: { charges: 0, freed: true },
-      sharedTriforce: { wisdom: true, courage: false, power: false },
+      sharedEmbertide: { wisdom: true, courage: false, power: false },
       players: [
         makePlayer({ id: 'p0', wisdomsLight: true }),
         makePlayer({ id: 'p1', wisdomsLight: true }),
@@ -241,7 +241,7 @@ describe('fightMonster decrements the Princess Crystal counter (u-2e + vj52)', (
     // a Strike is required to actually claim the Wisdom shard.
     expect(state.princessCrystal.charges).toBe(0);
     expect(state.princessCrystal.freed).toBe(false);
-    expect(state.sharedTriforce.wisdom).toBe(false);
+    expect(state.sharedEmbertide.wisdom).toBe(false);
   });
 
   it('(h) kills past freed=true do NOT further decrement charges (idempotent)', () => {
@@ -250,12 +250,12 @@ describe('fightMonster decrements the Princess Crystal counter (u-2e + vj52)', (
       players: [makePlayer({ id: 'p0', red: 20 }), makePlayer({ id: 'p1' })],
       field: [{ ...GRUNT_ORC, id: 'grunt-orc-post' }],
       princessCrystal: { charges: 0, freed: true },
-      sharedTriforce: { wisdom: true, courage: false, power: false },
+      sharedEmbertide: { wisdom: true, courage: false, power: false },
     });
     state = fightMonster(state, 0, 'grunt-orc-post');
     expect(state.princessCrystal.charges).toBe(0);
     expect(state.princessCrystal.freed).toBe(true);
-    expect(state.sharedTriforce.wisdom).toBe(true);
+    expect(state.sharedEmbertide.wisdom).toBe(true);
   });
 });
 
@@ -292,7 +292,7 @@ describe('end-to-end: store-driven kill path + strikePrincessCrystal (u-2e + vj5
     }
     expect(store.getState().princessCrystal.charges).toBe(0);
     expect(store.getState().princessCrystal.freed).toBe(false);
-    expect(store.getState().sharedTriforce.wisdom).toBe(false);
+    expect(store.getState().sharedEmbertide.wisdom).toBe(false);
     // Both players start with wisdomsLight=false — confirm the Strike is
     // what lights them up, not the kills.
     expect(store.getState().players[0].wisdomsLight).toBe(false);
@@ -301,7 +301,7 @@ describe('end-to-end: store-driven kill path + strikePrincessCrystal (u-2e + vj5
     store.getState().strikePrincessCrystal();
     const after = store.getState();
     expect(after.princessCrystal.freed).toBe(true);
-    expect(after.sharedTriforce.wisdom).toBe(true);
+    expect(after.sharedEmbertide.wisdom).toBe(true);
     expect(after.players[0].wisdomsLight).toBe(true);
     expect(after.players[1].wisdomsLight).toBe(true);
   });
@@ -332,7 +332,7 @@ describe('end-to-end: store-driven kill path + strikePrincessCrystal (u-2e + vj5
     expect(store.getState().princessCrystal.charges).toBe(5);
     // Wild-wolf isn't banished — p0 still hasn't freed the Princess.
     expect(store.getState().princessCrystal.freed).toBe(false);
-    expect(store.getState().sharedTriforce.wisdom).toBe(false);
+    expect(store.getState().sharedEmbertide.wisdom).toBe(false);
   });
 
   it('strikePrincessCrystal is a no-op when charges > 0 (defensive guard)', () => {
@@ -346,7 +346,7 @@ describe('end-to-end: store-driven kill path + strikePrincessCrystal (u-2e + vj5
     const after = store.getState();
     expect(after.princessCrystal.charges).toBe(8);
     expect(after.princessCrystal.freed).toBe(false);
-    expect(after.sharedTriforce.wisdom).toBe(false);
+    expect(after.sharedEmbertide.wisdom).toBe(false);
     expect(after.players[0].wisdomsLight).toBe(false);
     expect(after.players[1].wisdomsLight).toBe(false);
   });
@@ -368,7 +368,7 @@ describe('end-to-end: store-driven kill path + strikePrincessCrystal (u-2e + vj5
     const after = store.getState();
     expect(after.outcome).toBe('loss');
     expect(after.princessCrystal.freed).toBe(false);
-    expect(after.sharedTriforce.wisdom).toBe(false);
+    expect(after.sharedEmbertide.wisdom).toBe(false);
   });
 
   it('strikePrincessCrystal throws outside Main phase (phase guard)', () => {
@@ -396,11 +396,11 @@ describe('end-to-end: store-driven kill path + strikePrincessCrystal (u-2e + vj5
     store.setState((s) => ({
       ...s,
       princessCrystal: { charges: 0, freed: false },
-      sharedTriforce: { wisdom: false, courage: true, power: true },
+      sharedEmbertide: { wisdom: false, courage: true, power: true },
     }));
     store.getState().strikePrincessCrystal();
     expect(store.getState().outcome).toBe('win');
-    expect(store.getState().sharedTriforce.wisdom).toBe(true);
+    expect(store.getState().sharedEmbertide.wisdom).toBe(true);
   });
 
   it('kills by BOTH players decrement the shared counter (amendment A2 — striker identity irrelevant)', () => {
@@ -460,7 +460,7 @@ describe('end-to-end: store-driven kill path + strikePrincessCrystal (u-2e + vj5
     store.getState().strikePrincessCrystal();
     const after = store.getState();
     expect(after.princessCrystal.freed).toBe(true);
-    expect(after.sharedTriforce.wisdom).toBe(true);
+    expect(after.sharedEmbertide.wisdom).toBe(true);
     // BOTH players receive wisdomsLight — not just the striker.
     expect(after.players[0].wisdomsLight).toBe(true);
     expect(after.players[1].wisdomsLight).toBe(true);
@@ -488,7 +488,7 @@ describe('end-to-end: store-driven kill path + strikePrincessCrystal (u-2e + vj5
     const after = store.getState();
     // Crystal state unchanged.
     expect(after.princessCrystal.freed).toBe(false);
-    expect(after.sharedTriforce.wisdom).toBe(false);
+    expect(after.sharedEmbertide.wisdom).toBe(false);
     expect(after.players[0].wisdomsLight).toBe(false);
     expect(after.players[1].wisdomsLight).toBe(false);
   });

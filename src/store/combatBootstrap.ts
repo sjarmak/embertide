@@ -34,7 +34,7 @@ import { ZONE_BOSS_SPECS } from '../data/zones/bossSpecs';
 import { baseIdOf, KID_CARDS } from '../data/cards';
 import { arenaForColosseumBoss } from '../data/colosseum/arenas';
 import { getBubbleById, renderBubbleTemplate, type TutorialBubbleId } from '../tutorial/v20';
-import { grantWildBossFairy } from './slices/combat';
+import { grantWildBossWisp } from './slices/combat';
 
 // ---------------------------------------------------------------------------
 // Combat reducer action union (v2.1 combat layer, u-8a, PRD §B1).
@@ -79,7 +79,7 @@ export interface CombatEnterAction {
 export interface CombatResolveWinAction {
   readonly type: 'COMBAT_RESOLVE_WIN';
   readonly heartsToAttackers: Readonly<Record<string, number>>;
-  readonly fairyDropTarget: string | null;
+  readonly wispDropTarget: string | null;
   readonly shardGrants: ReadonlyArray<'power' | 'courage' | 'wisdom'>;
   readonly zoneAdvance: boolean;
   /**
@@ -332,21 +332,21 @@ export function augmentHeartsWithChampionBonus(
 
 /**
  * Grant a wisp to a specific attacker by id (COMBAT_RESOLVE_WIN wild-
- * boss drop). Reuses `grantWildBossFairy` from the slice for the
+ * boss drop). Reuses `grantWildBossWisp` from the slice for the
  * 3-cap routing (defeater → teammate → warn+drop).
  */
-export function applyFairyDrop(
+export function applyWispDrop(
   state: KidGameState,
-  fairyDropTarget: string,
+  wispDropTarget: string,
   defeatedBaseId: string,
 ): KidGameState {
-  const idx = state.players.findIndex((p) => p.id === fairyDropTarget);
+  const idx = state.players.findIndex((p) => p.id === wispDropTarget);
   if (idx === -1) return state;
-  return grantWildBossFairy(state, idx, defeatedBaseId);
+  return grantWildBossWisp(state, idx, defeatedBaseId);
 }
 
 /**
- * Apply an array of shard grants to `sharedTriforce`. `OR`-s in each
+ * Apply an array of shard grants to `sharedEmbertide`. `OR`-s in each
  * flag so repeated grants are idempotent. Vurmox grants BOTH power AND
  * courage coincident per u-8e REQ-31 amendment.
  */
@@ -355,9 +355,9 @@ export function applyShardGrants(
   shards: ReadonlyArray<'power' | 'courage' | 'wisdom'>,
 ): KidGameState {
   if (shards.length === 0) return state;
-  const nextShard = { ...state.sharedTriforce };
+  const nextShard = { ...state.sharedEmbertide };
   for (const s of shards) nextShard[s] = true;
-  return { ...state, sharedTriforce: nextShard };
+  return { ...state, sharedEmbertide: nextShard };
 }
 
 /**
@@ -537,7 +537,7 @@ export function enterCombatAction(
   }
   // Both seats participate by default in v2.1 — co-op combat (§B6).
   // The active player is the "defeater" for drop routing (first id);
-  // teammate is the fallback wisp recipient inside grantWildBossFairy.
+  // teammate is the fallback wisp recipient inside grantWildBossWisp.
   const attackerPlayerIds = [
     state.players[state.currentPlayerIndex]?.id ?? 'p0',
     ...state.players.filter((_p, i) => i !== state.currentPlayerIndex).map((p) => p.id),
@@ -602,10 +602,10 @@ export function buildResolveWinAction(
   const tier = monsterCard.bossTier ?? null;
 
   // Wild-boss: wisp drop to the first attacker (defeater). The
-  // slice's `grantWildBossFairy` handles 3-cap routing internally; we
-  // pass the defeater id and let the reducer's applyFairyDrop run the
+  // slice's `grantWildBossWisp` handles 3-cap routing internally; we
+  // pass the defeater id and let the reducer's applyWispDrop run the
   // cap check.
-  const fairyDropTarget =
+  const wispDropTarget =
     tier === 'wild-boss' && attackerPlayerIds.length > 0 ? attackerPlayerIds[0] : null;
 
   // Region-boss: shard grants per attackPattern.onDefeatEffect.
@@ -627,7 +627,7 @@ export function buildResolveWinAction(
   return {
     type: 'COMBAT_RESOLVE_WIN',
     heartsToAttackers,
-    fairyDropTarget,
+    wispDropTarget,
     shardGrants,
     zoneAdvance,
     bossKey,

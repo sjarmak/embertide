@@ -61,7 +61,7 @@ const STROKE_PRESENCE = 2;
 const HIGHLIGHT_OPACITY = 0.8;
 const FACET_SHADE_OPACITY = 0.35;
 
-/* ---------- 3.1 GreenRupee --------------------------------------------- */
+/* ---------- 3.1 GreenShard --------------------------------------------- */
 //
 // rkbf (2026-04-26): Aurelia-canon vertical hexagonal shard — point top,
 // point bottom, longer than wide. Six visible facet cells via two
@@ -70,7 +70,7 @@ const FACET_SHADE_OPACITY = 0.35;
 // (width 12 within the 24-unit viewBox) than the prior 9d1g horizontal
 // hex so the gem reads as a tall narrow upright jewel instead of a
 // stout disc.
-export function GreenRupee({ size = DEFAULT_SIZE, title, tint }: IconProps) {
+export function GreenShard({ size = DEFAULT_SIZE, title, tint }: IconProps) {
   const lead = tint ?? IRON_700;
   return (
     <svg
@@ -107,12 +107,12 @@ export function GreenRupee({ size = DEFAULT_SIZE, title, tint }: IconProps) {
   );
 }
 
-/* ---------- 3.2 RedRupee (Power) --------------------------------------- */
+/* ---------- 3.2 RedShard (Power) --------------------------------------- */
 //
-// rkbf (2026-04-26): mirror the new GreenRupee vertical hex silhouette
+// rkbf (2026-04-26): mirror the new GreenShard vertical hex silhouette
 // + interior facet pattern for family kinship — only fill tones (ruby)
 // and leading color (gold) differ.
-export function RedRupee({ size = DEFAULT_SIZE, title, tint }: IconProps) {
+export function RedShard({ size = DEFAULT_SIZE, title, tint }: IconProps) {
   const lead = tint ?? GOLD_700;
   return (
     <svg
@@ -510,10 +510,10 @@ export function Boss({ size = DEFAULT_SIZE, title, tint }: IconProps) {
 
 /*
  * Embertide-shard inline icons (REQ-13 Phase 2d / gm0.4). Three small
- * triangular gems matching the shard-color canon used by TriforceStrip:
+ * triangular gems matching the shard-color canon used by EmbertideStrip:
  *   - Power:   warm gold (Din)
- *   - Wisdom:  cool emerald (Nayru)
- *   - Courage: warm ruby (Farore)
+ *   - Wisdom:  cool emerald
+ *   - Courage: warm ruby
  * Now migrated to the V-3 IconProps signature ({size, title, tint}) and
  * the three-layer recipe.
  */

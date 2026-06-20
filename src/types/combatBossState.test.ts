@@ -126,7 +126,7 @@ describe('BossStateTag — keyword-vocabulary type union', () => {
   });
 
   it('BossStateSwarm carries a parallel minion list (independent of central boss hp)', () => {
-    const deadHandSwarm: BossStateSwarm = {
+    const palegraspSwarm: BossStateSwarm = {
       kind: 'swarm',
       minions: [
         { id: 'finger-1', name: 'Grasping Finger', hp: 3, hpMax: 3, defeated: false },
@@ -134,9 +134,9 @@ describe('BossStateTag — keyword-vocabulary type union', () => {
         { id: 'finger-3', name: 'Grasping Finger', hp: 0, hpMax: 3, defeated: true },
       ],
     };
-    expect(bossStateKind(deadHandSwarm)).toBe('swarm');
-    expect(deadHandSwarm.minions).toHaveLength(3);
-    expect(deadHandSwarm.minions[2].defeated).toBe(true);
+    expect(bossStateKind(palegraspSwarm)).toBe('swarm');
+    expect(palegraspSwarm.minions).toHaveLength(3);
+    expect(palegraspSwarm.minions[2].defeated).toBe(true);
   });
 
   it('Guarded permits omitting `until` and Exposed permits omitting `bonus`', () => {

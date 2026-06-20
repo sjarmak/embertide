@@ -66,7 +66,7 @@ const STATIC_NAMES: Readonly<Record<string, readonly [string, string, string]>> 
 const TIDEWRAITH_LOW_TIDE_MAX = 1;
 const TIDEWRAITH_MID_TIDE_MAX = 3;
 
-function morphaName(ctx: AttackNameContext): string {
+function tidewraithName(ctx: AttackNameContext): string {
   const tide = ctx.tideGaugeSnapshot ?? 0;
   if (tide <= TIDEWRAITH_LOW_TIDE_MAX) return 'Tentacle Grab';
   if (tide <= TIDEWRAITH_MID_TIDE_MAX) return 'Water Whip';
@@ -78,7 +78,7 @@ function morphaName(ctx: AttackNameContext): string {
  * queued the boss surfaces its base shadow attack; when a player play
  * is queued, the next mirror reflects it.
  */
-function gloomLinkName(ctx: AttackNameContext): string {
+function hollowEffigyName(ctx: AttackNameContext): string {
   return ctx.echoQueue ? 'Mirror Strike' : 'Shadow Echo';
 }
 
@@ -86,7 +86,7 @@ function gloomLinkName(ctx: AttackNameContext): string {
  * Knell's drum cycle: even turn = telegraph (no damage), odd =
  * slam. Mirrors `knell-drum` resolver dispatch.
  */
-function bongoBongoName(ctx: AttackNameContext): string {
+function knellName(ctx: AttackNameContext): string {
   const turn = ctx.turnIndex ?? 0;
   return turn % 2 === 0 ? 'Drum Telegraph' : 'Drum Slam';
 }
@@ -95,7 +95,7 @@ function bongoBongoName(ctx: AttackNameContext): string {
  * Hextwins's 3-turn fire/ice/fire cycle. Indexes 0 and 2 are fire (full
  * damage); index 1 is ice (0 damage + hand-discard side effect).
  */
-function twinrovaName(ctx: AttackNameContext): string {
+function hextwinsName(ctx: AttackNameContext): string {
   const turn = ctx.turnIndex ?? 0;
   return turn % 3 === 1 ? 'Ice Freeze' : 'Fire Blast';
 }
@@ -104,7 +104,7 @@ function twinrovaName(ctx: AttackNameContext): string {
  * Iron-sentinel's 3-turn wind-up / heavy-swing / stagger cycle. Mirrors
  * `iron-sentinel-stagger` resolver dispatch.
  */
-function ironKnuckleName(ctx: AttackNameContext): string {
+function ironSentinelName(ctx: AttackNameContext): string {
   const turn = ctx.turnIndex ?? 0;
   switch (turn % 3) {
     case 0:
@@ -117,11 +117,11 @@ function ironKnuckleName(ctx: AttackNameContext): string {
 }
 
 const DYNAMIC_NAMES: Readonly<Record<string, (ctx: AttackNameContext) => string>> = Object.freeze({
-  tidewraith: morphaName,
-  'hollow-effigy': gloomLinkName,
-  'knell': bongoBongoName,
-  hextwins: twinrovaName,
-  'iron-sentinel': ironKnuckleName,
+  tidewraith: tidewraithName,
+  'hollow-effigy': hollowEffigyName,
+  'knell': knellName,
+  hextwins: hextwinsName,
+  'iron-sentinel': ironSentinelName,
 });
 
 /**

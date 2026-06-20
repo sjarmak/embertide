@@ -226,7 +226,7 @@ describe('GameBoard', () => {
     useGameStore.setState(
       makeState({
         players: [makePlayer({ id: 'p0', name: 'Alpha' })],
-        sharedTriforce: { wisdom: true, courage: false, power: false },
+        sharedEmbertide: { wisdom: true, courage: false, power: false },
       }),
     );
     render(<GameBoard />);
@@ -238,7 +238,7 @@ describe('GameBoard', () => {
     expect(screen.getByTestId('embertide-shard-power').getAttribute('data-filled')).toBe('false');
     // 9eou rev-2 (2026-04-26): Crystal + Embertide share a single
     // `.crystal-embertide-pane` that lives in the right-rail's
-    // `.board-side-crystal-rail`. Boss Altar → CrystalTriforcePane is
+    // `.board-side-crystal-rail`. Boss Altar → CrystalEmbertidePane is
     // the rail order; inside the pane the Crystal precedes the Embertide.
     const pane = screen.getByTestId('crystal-embertide-pane');
     expect(pane.classList.contains('crystal-embertide-pane')).toBe(true);

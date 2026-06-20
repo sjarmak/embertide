@@ -18,8 +18,8 @@ describe('icons vocabulary', () => {
 
   it('exports the expected icon names', () => {
     const expected = [
-      'GreenRupee',
-      'RedRupee',
+      'GreenShard',
+      'RedShard',
       'Key',
       'Heart',
       'Sword',

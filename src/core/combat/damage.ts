@@ -284,7 +284,7 @@ export function routeAoePlayerDamage(
  * minion (left-to-right scan); if every minion is defeated, damage
  * lands on `boss.hp` (the central head). Overdamage on a minion is
  * WASTED — no spillover to the next minion or to the head — keeping
- * each finger an explicit target the player must clear (Dead Hand
+ * each finger an explicit target the player must clear (Palegrasp
  * canon: "fingers grasp first, head bites only when caught").
  *
  * Returns the SAME boss reference (===) when:

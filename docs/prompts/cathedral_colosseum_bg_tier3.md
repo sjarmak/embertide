@@ -1,7 +1,7 @@
 # cathedral_colosseum_bg_tier3
 
 - **Bead:** embertide-y3no
-- **Surface:** Colosseum combat backdrop, Tier 3 (ancient tier — Helmaroc King / Voltwyrm / Kalle Demos / Sandscourge / Idolarch)
+- **Surface:** Colosseum combat backdrop, Tier 3 (ancient tier — Skrall King / Voltwyrm / Vinemaw / Sandscourge / Idolarch)
 - **Model:** fal-ai/nano-banana-pro
 - **Params:** `aspect_ratio=21:9`, `output_format=webp`, `resolution=2K`, `num_images=1`
 - **Raster:** `public/illustrations/cathedral_colosseum_bg_tier3_001.webp`

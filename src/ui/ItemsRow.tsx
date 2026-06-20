@@ -14,7 +14,7 @@ export interface ItemsRowProps {
    * Tap-to-use dispatcher for the wisp. Forwarded to the wisp cell;
    * non-wisp cells ignore it. See `ItemCell` for the full contract.
    */
-  readonly onPlayFairy?: (teammateId: string) => void;
+  readonly onPlayWisp?: (teammateId: string) => void;
 }
 
 /**
@@ -29,7 +29,7 @@ export interface ItemsRowProps {
 export default function ItemsRow({
   cards,
   downedTeammateId,
-  onPlayFairy,
+  onPlayWisp,
 }: ItemsRowProps): JSX.Element {
   return (
     <div className="items-row" data-testid="items-row">
@@ -43,7 +43,7 @@ export default function ItemsRow({
           key={card.id}
           card={card}
           downedTeammateId={downedTeammateId}
-          onPlayFairy={onPlayFairy}
+          onPlayWisp={onPlayWisp}
         />
       ))}
     </div>

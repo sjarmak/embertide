@@ -14,9 +14,9 @@ import type { SupplyCard, TemplateEntry } from './types';
 import { heroes } from './heroes';
 import { items, ancientBlade } from './items';
 import { monsters, miniBosses } from './monsters';
-import { kokiriRegulars } from './zones/sylvani';
-import { deathMountainRegulars } from './zones/emberpeak';
-import { zoraRegulars } from './zones/maren';
+import { sylvaniRegulars } from './zones/sylvani';
+import { emberpeakRegulars } from './zones/emberpeak';
+import { marenRegulars } from './zones/maren';
 import { shadowRegulars } from './zones/shadow';
 import { spiritRegulars } from './zones/spirit';
 import { chests } from './chests';
@@ -94,14 +94,14 @@ const SUPPLY_PLAN: readonly TemplateEntry[] = [
   // market — they spawn exclusively through the Wild/Region boss slot
   // selectors in src/rules/zones.ts. Templates remain in KID_CARDS for
   // by-id lookup (ZONE_METADATA, engagement dispatch, etc.).
-  ...kokiriRegulars.map((template) => ({ template, copies: 3 })),
+  ...sylvaniRegulars.map((template) => ({ template, copies: 3 })),
   // u-6b Emberpeak regulars (amendment A5): 4 regulars × 3 copies.
-  ...deathMountainRegulars.map((template) => ({ template, copies: 3 })),
+  ...emberpeakRegulars.map((template) => ({ template, copies: 3 })),
   // gdd.1 Tidehold regulars (v2.1 zone 3): 4 regulars × 3 copies.
   // Bosses (maelstrom, tidewraith) spawn exclusively through the
   // Wild/Region boss slot selectors in src/rules/zones.ts (same
   // post-u-9a contract as the Sylvani / Emberpeak bosses).
-  ...zoraRegulars.map((template) => ({ template, copies: 3 })),
+  ...marenRegulars.map((template) => ({ template, copies: 3 })),
   // gdd.2 Hollow Shrine regulars (v2.1 zone 4): 4 regulars × 3 copies.
   // Bosses (hollow-effigy, knell) spawn exclusively through the
   // Wild/Region boss slot selectors in src/rules/zones.ts.

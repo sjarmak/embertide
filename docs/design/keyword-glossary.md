@@ -168,7 +168,7 @@ Phase rule: never introduce a **new** rule late — phases only remix existing o
   the cycle triggers. Kid: "Wait for the eye to open, then hit it."
 - **Item-Check** (Ashjaw) — Rules: only a specific item tag (e.g. **Bomb**)
   breaks the guard. Kid: "Need the right tool to get through."
-- **Layered** (Talus / Helmaroc) — Rules: **Layered** shell → core; destroy outer
+- **Layered** (Talus / Skrall) — Rules: **Layered** shell → core; destroy outer
   before inner. Kid: "Break the outside before the inside."
 - **Sequence** (Hextwins) — Rules: **Sequence** tracking (Fire → Ice → Fire);
   triggers fire on the ordered pattern. Kid: "It attacks in a set order."

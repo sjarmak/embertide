@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { HP_CAP, applyHeartReward } from './vitalEmber';
-import { HEART_PIECES_PER_CONTAINER, addHeartPiece } from '../store/gameStore';
+import { HEART_PIECES_PER_CONTAINER, addEmberShard } from '../store/gameStore';
 import type { KidPlayer } from '../store/types';
 import { makeKidPlayer } from '../testing/stateFixtures';
 
@@ -84,10 +84,10 @@ describe('applyHeartReward (embertide 2026-04-22 vital-ember pass)', () => {
   });
 });
 
-describe('addHeartPiece (v2.1 gm0.16)', () => {
+describe('addEmberShard (v2.1 gm0.16)', () => {
   it('increments heartPieces by 1 without touching hp/hpMax while below the promotion threshold', () => {
     const start = makePlayer({ hp: 3, hpMax: 5, heartPieces: 0 });
-    const next = addHeartPiece(start);
+    const next = addEmberShard(start);
     expect(next.heartPieces).toBe(1);
     expect(next.hp).toBe(3);
     expect(next.hpMax).toBe(5);
@@ -96,7 +96,7 @@ describe('addHeartPiece (v2.1 gm0.16)', () => {
   it('stacks up to HEART_PIECES_PER_CONTAINER - 1 without promoting', () => {
     let p = makePlayer({ hp: 5, hpMax: 5, heartPieces: 0 });
     for (let i = 0; i < HEART_PIECES_PER_CONTAINER - 1; i += 1) {
-      p = addHeartPiece(p);
+      p = addEmberShard(p);
     }
     expect(p.heartPieces).toBe(HEART_PIECES_PER_CONTAINER - 1);
     expect(p.hpMax).toBe(5);
@@ -108,7 +108,7 @@ describe('addHeartPiece (v2.1 gm0.16)', () => {
       hpMax: 5,
       heartPieces: HEART_PIECES_PER_CONTAINER - 1,
     });
-    const next = addHeartPiece(start);
+    const next = addEmberShard(start);
     expect(next.heartPieces).toBe(0);
     expect(next.hpMax).toBe(6);
     expect(next.hp).toBe(6);
@@ -123,7 +123,7 @@ describe('addHeartPiece (v2.1 gm0.16)', () => {
       hpMax: 5,
       heartPieces: HEART_PIECES_PER_CONTAINER - 1,
     });
-    const next = addHeartPiece(start);
+    const next = addEmberShard(start);
     expect(next.heartPieces).toBe(0);
     expect(next.hp).toBe(4);
     expect(next.hpMax).toBe(5);
@@ -136,7 +136,7 @@ describe('addHeartPiece (v2.1 gm0.16)', () => {
       downed: true,
       heartPieces: HEART_PIECES_PER_CONTAINER - 1,
     });
-    const next = addHeartPiece(start);
+    const next = addEmberShard(start);
     expect(next.heartPieces).toBe(0);
     expect(next.hp).toBe(1);
     expect(next.downed).toBe(false);

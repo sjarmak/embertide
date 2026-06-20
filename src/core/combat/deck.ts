@@ -11,7 +11,7 @@ import type { CombatEntryContext } from '../../types/combat';
 import type { KidGameState, KidPlayer } from '../../store/types';
 import { createSeededRng } from '../../rules/chestPool';
 import { COMBAT_HAND_CAP, COMBAT_INITIAL_DRAW } from '../balance';
-import { baseIdOf, isActiveItemCard, isCombatEligibleStarterRole, isFairyCard } from './identity';
+import { baseIdOf, isActiveItemCard, isCombatEligibleStarterRole, isWispCard } from './identity';
 
 /**
  * Gather all cards from a single player's zones that contribute to
@@ -47,7 +47,7 @@ function gatherPlayerContributions(player: KidPlayer): Card[] {
   }
 
   for (const card of player.items) {
-    if (isActiveItemCard(card) && !isFairyCard(card)) {
+    if (isActiveItemCard(card) && !isWispCard(card)) {
       contributions.push(card);
     }
   }

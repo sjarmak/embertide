@@ -15,7 +15,7 @@ import type { BossResolveOutcome } from './types';
 /**
  * Stable log fragments for resolver-test substring assertions.
  *
- * Tests in `combatEngine.bongoBongoResolver.test.ts` import these
+ * Tests in `combatEngine.knellResolver.test.ts` import these
  * constants and assert `entry.includes(KNELL_LOG_*)` instead of
  * hard-coding bare substring literals. The constant is the contract —
  * a flavor rephrasing that drops the fragment from the rendered log
@@ -24,7 +24,7 @@ import type { BossResolveOutcome } from './types';
 export const KNELL_LOG_TELEGRAPH = 'drum-slam coming for';
 export const KNELL_LOG_SLAM = 'slams for';
 
-export function bongoBongoDrumResolver(combat: CombatState): BossResolveOutcome {
+export function knellDrumResolver(combat: CombatState): BossResolveOutcome {
   const slamDpt = combat.boss.attackPattern.damagePerTurn;
   const phase = combat.turnIndex % 2;
   if (phase === 0) {

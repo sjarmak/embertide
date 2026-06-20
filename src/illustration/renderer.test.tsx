@@ -200,13 +200,13 @@ describe('renderIllustration — error handling', () => {
   });
 
   it('throws a clear error for silhouettes with no concrete path data yet (vector-only specs)', () => {
-    const guardianSpec: IllustrationSpec = {
+    const sentinelSpec: IllustrationSpec = {
       ...cathedralWarrior,
       subtype: 'sentinel',
       silhouetteId: 'hero_sentinel_shield',
       rasterImageUrl: undefined,
     };
-    expect(() => renderIllustration(guardianSpec)).toThrow(
+    expect(() => renderIllustration(sentinelSpec)).toThrow(
       /path data not yet implemented for silhouette: hero_sentinel_shield/,
     );
   });

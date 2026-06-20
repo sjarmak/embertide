@@ -8,7 +8,7 @@ import { drawCards } from './slices/deck';
  *
  * Houses the pure helpers that previously lived as private functions in
  * `gameStore.ts` — replacePlayer, requireMainPhase, WISP_BASE_IDS,
- * playerHasFairy, checkCoopLoss, and the on-play deltas / banish-choice
+ * playerHasWisp, checkCoopLoss, and the on-play deltas / banish-choice
  * helpers. Per-domain slices (`banish`, `tutorial`, `dice`, `vendor`,
  * etc.) import from here rather than the store factory module to keep
  * the dependency graph one-directional (slice → _shared, never the
@@ -34,7 +34,7 @@ export function replacePlayer(state: KidGameState, idx: number, next: KidPlayer)
 /**
  * Guard: main-phase actions (playCard / buyFromField / buyAlwaysAvailable /
  * fightMonster / defeatAlwaysAvailable / openChest / reviveTeammate /
- * playFairyOn) require `state.phase === 'Main'`. Throws with a clear
+ * playWispOn) require `state.phase === 'Main'`. Throws with a clear
  * message when called from any other phase. Called at the top of every
  * main-phase action after the outcome-gate check.
  */
@@ -45,9 +45,9 @@ export function requireMainPhase(state: KidGameState, actionName: string): void 
 }
 
 /**
- * Set of wisp baseIds recognised by the co-op loss guard + `playFairyOn`
+ * Set of wisp baseIds recognised by the co-op loss guard + `playWispOn`
  * dispatch (v2.1 gm0.16). Any card in the items zone whose baseId matches
- * one of these satisfies `playerHasFairy`. Plain 'wisp' is the original
+ * one of these satisfies `playerHasWisp`. Plain 'wisp' is the original
  * u-1d card; 'great-wisp' and 'wisp-in-bottle' are the gm0.16 variants.
  */
 export const WISP_BASE_IDS: ReadonlySet<string> = new Set([
@@ -62,9 +62,9 @@ export const WISP_BASE_IDS: ReadonlySet<string> = new Set([
  * u-1d declares the 'wisp' card, u-2d renamed the zone from `constructs`
  * to `items`. gm0.16 extends the check to the two new wisp variants
  * (`great-wisp`, `wisp-in-bottle`) so all three satisfy the co-op
- * loss guard and `playFairyOn` dispatch.
+ * loss guard and `playWispOn` dispatch.
  */
-export function playerHasFairy(player: KidPlayer): boolean {
+export function playerHasWisp(player: KidPlayer): boolean {
   return player.items.some((c) => WISP_BASE_IDS.has(baseIdOf(c)));
 }
 
@@ -90,8 +90,8 @@ export function checkCoopLoss(state: KidGameState): KidGameState {
   if (!allDowned) return state;
   const allRevivedAlready = state.players.every((p) => p.revivedThisIncident);
   if (!allRevivedAlready) return state;
-  const anyFairy = state.players.some(playerHasFairy);
-  if (anyFairy) return state;
+  const anyWisp = state.players.some(playerHasWisp);
+  if (anyWisp) return state;
   return { ...state, outcome: 'loss' };
 }
 

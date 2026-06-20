@@ -1,5 +1,5 @@
 /**
- * HyrulianDefs — shared SVG `<defs>` mounted once near the App root.
+ * ElysianDefs — shared SVG `<defs>` mounted once near the App root.
  *
  * Spec: .claude/design/elysian-cathedral/icons.md §2 (verbatim).
  *
@@ -16,7 +16,7 @@
  * **Status (T-5):** component is exported but NOT yet mounted in App.tsx;
  * V-1 mounts it. Stories smoke-test the rendering shape today.
  */
-export function HyrulianDefs() {
+export function ElysianDefs() {
   return (
     <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true" focusable="false">
       <defs>

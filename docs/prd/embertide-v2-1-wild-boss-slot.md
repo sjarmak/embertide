@@ -164,11 +164,11 @@ Heirloom insert target: the hero's **own deck** (distinct from shared combat dec
 - `src/ui/WildBossEncounterSlot.tsx` — altar-variant pane, displays current wild boss art + HP + tap-to-engage. "Cleared" state when wild queue empty for current zone.
 - `src/ui/RegionBossEncounterSlot.tsx` — altar-variant pane, displays region boss art + HP + tap-to-engage. "Cleared" state when region boss defeated (rare; triggers zone advance before user sees it).
 - `src/ui/BossAltarPane.tsx` — shared pane primitive used by both slots above. Inline stained-glass variant with `--boss-altar-glow` CSS var + ENCOUNTER header strip. **This is the b56 seed** — the file should be structured so b56 can absorb it into a general Pane primitive with `variant="boss-altar"` without rewrite.
-- `src/ui/GanonDestinySlot.tsx` — special variant of `RegionBossEncounterSlot` for Gilded Cage. Larger dimensions, distinct color palette (deep purple / gold), ceremonial animation on tap. Only renders when `currentZone === 'gilded-cage'`.
+- `src/ui/VurmoxDestinySlot.tsx` — special variant of `RegionBossEncounterSlot` for Gilded Cage. Larger dimensions, distinct color palette (deep purple / gold), ceremonial animation on tap. Only renders when `currentZone === 'gilded-cage'`.
 
 ### Board layout changes
 
-`src/ui/Board.tsx` (or equivalent — verify current path): insert a new row directly beneath `<PrincessCrystalCell />`. Row contains `<WildBossEncounterSlot />` + `<RegionBossEncounterSlot />` side by side. When zone is `gilded-cage` and Sentinel + Silver Chimera both defeated, swap `<RegionBossEncounterSlot />` for `<GanonDestinySlot />`.
+`src/ui/Board.tsx` (or equivalent — verify current path): insert a new row directly beneath `<PrincessCrystalCell />`. Row contains `<WildBossEncounterSlot />` + `<RegionBossEncounterSlot />` side by side. When zone is `gilded-cage` and Sentinel + Silver Chimera both defeated, swap `<RegionBossEncounterSlot />` for `<VurmoxDestinySlot />`.
 
 ### Visual spec (rough)
 
@@ -257,13 +257,13 @@ Each unit targets ≤600 lines diff, ≤8 files (per v2 A11 context-window fit).
 - `pnpm typecheck` + `pnpm lint` + `pnpm test` pass
 
 ### u-9d — UI surfaces (MEDIUM)
-**Scope**: `src/ui/WildBossEncounterSlot.tsx` (new), `src/ui/RegionBossEncounterSlot.tsx` (new), `src/ui/BossAltarPane.tsx` (new), `src/ui/GanonDestinySlot.tsx` (new), `src/ui/Board.tsx` (or equivalent — the top-level board layout file), `src/ui/BossAltarPane.css` (styles).
+**Scope**: `src/ui/WildBossEncounterSlot.tsx` (new), `src/ui/RegionBossEncounterSlot.tsx` (new), `src/ui/BossAltarPane.tsx` (new), `src/ui/VurmoxDestinySlot.tsx` (new), `src/ui/Board.tsx` (or equivalent — the top-level board layout file), `src/ui/BossAltarPane.css` (styles).
 **Deps**: u-9a, u-9c.
-**Description**: Build the 4 new React components per C6. `BossAltarPane` is the shared primitive — inline stained-glass + boss-altar variant (ember glow border, ENCOUNTER header). `WildBossEncounterSlot` + `RegionBossEncounterSlot` wrap it with slot-specific state (current boss, HP, tap handler). `GanonDestinySlot` is a specialized variant with larger dimensions + DESTINY treatment. Board layout gains a new row under Princess Crystal hosting the two slots. Swap region slot for Vurmox DESTINY slot when zone is gilded-cage AND both wilds defeated.
+**Description**: Build the 4 new React components per C6. `BossAltarPane` is the shared primitive — inline stained-glass + boss-altar variant (ember glow border, ENCOUNTER header). `WildBossEncounterSlot` + `RegionBossEncounterSlot` wrap it with slot-specific state (current boss, HP, tap handler). `VurmoxDestinySlot` is a specialized variant with larger dimensions + DESTINY treatment. Board layout gains a new row under Princess Crystal hosting the two slots. Swap region slot for Vurmox DESTINY slot when zone is gilded-cage AND both wilds defeated.
 **Acceptance**:
 - `<WildBossEncounterSlot />` renders when `currentWildBossForZone` returns non-null; tapping dispatches `ENGAGE_WILD_BOSS_SLOT`
 - `<RegionBossEncounterSlot />` renders when `currentRegionBossForZone` returns non-null; tapping dispatches `ENGAGE_REGION_BOSS_SLOT`
-- `<GanonDestinySlot />` renders for `zone === 'gilded-cage'` when both wild bosses defeated
+- `<VurmoxDestinySlot />` renders for `zone === 'gilded-cage'` when both wild bosses defeated
 - Both slots show boss art + name + HP + engagement affordance
 - Slots disable (desaturated, no tap) when boss already defeated
 - `BossAltarPane` CSS variables structured so `embertide-b56` can later absorb the variant without rewriting consumers

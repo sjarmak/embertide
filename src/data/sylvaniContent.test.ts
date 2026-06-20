@@ -23,7 +23,7 @@ import { makeKidPlayer, makeKidGameState } from '../testing/stateFixtures';
  *  (d) Craghorn defeat grants a wisp with 3-cap routing (defeater →
  *      teammate → console.warn + no grant)
  *  (e) Broodmaw defeat triggers advanceZone sylvani → emberpeak
- *  (f) neither Craghorn nor Broodmaw flips any sharedTriforce flag
+ *  (f) neither Craghorn nor Broodmaw flips any sharedEmbertide flag
  *  (g) REQ-32 (u-9a): the region slot is always engageable once the
  *      zone is active; wild slot FIFO-advances as Craghorn falls. Gate
  *      coverage moved to src/rules/zones.test.ts.
@@ -144,12 +144,12 @@ describe('u-6a Craghorn wild-boss (b)', () => {
 
   it('red cost is ≥ 2× the highest regular (tough-enough threshold)', () => {
     const craghorn = cardById('craghorn');
-    const hinoxRed = craghorn.cost.red ?? 0;
+    const craghornRed = craghorn.cost.red ?? 0;
     const highestRegularRed = REGULAR_IDS.reduce((max, id) => {
       const r = cardById(id).cost.red ?? 0;
       return r > max ? r : max;
     }, 0);
-    expect(hinoxRed).toBeGreaterThanOrEqual(2 * highestRegularRed);
+    expect(craghornRed).toBeGreaterThanOrEqual(2 * highestRegularRed);
   });
 
   it('is NOT in the market supply (u-9a / REQ-32) — wild-boss slot only', () => {
@@ -159,8 +159,8 @@ describe('u-6a Craghorn wild-boss (b)', () => {
     // `currentWildBossForZone` is the authoritative spawn path.
     expect(KID_CARDS.filter((c) => c.id === 'craghorn')).toHaveLength(1);
     const supply = buildSupply(createSeededRng(42));
-    const hinoxCopies = supply.filter((c) => baseIdOf(c) === 'craghorn').length;
-    expect(hinoxCopies).toBe(0);
+    const craghornCopies = supply.filter((c) => baseIdOf(c) === 'craghorn').length;
+    expect(craghornCopies).toBe(0);
   });
 
   it('ZONE_METADATA.sylvani.wildBossIds contains craghorn', () => {
@@ -196,8 +196,8 @@ describe('u-6a Broodmaw region-boss (c)', () => {
     // `currentRegionBossForZone`.
     expect(KID_CARDS.filter((c) => c.id === 'broodmaw')).toHaveLength(1);
     const supply = buildSupply(createSeededRng(42));
-    const gohmaCopies = supply.filter((c) => baseIdOf(c) === 'broodmaw').length;
-    expect(gohmaCopies).toBe(0);
+    const broodmawCopies = supply.filter((c) => baseIdOf(c) === 'broodmaw').length;
+    expect(broodmawCopies).toBe(0);
   });
 });
 
@@ -219,9 +219,9 @@ describe('u-6a (d) — Craghorn defeat wisp routing via fightMonster', () => {
     s = fightMonster(s, 0, craghorn.id);
     const defeater = s.players[0];
     expect(defeater.items.length).toBe(1);
-    const grantedFairy = defeater.items[0];
-    expect(baseIdOf(grantedFairy)).toBe('wisp');
-    expect(grantedFairy.id).toMatch(/^wisp-wild-boss-craghorn-\d+$/);
+    const grantedWisp = defeater.items[0];
+    expect(baseIdOf(grantedWisp)).toBe('wisp');
+    expect(grantedWisp.id).toMatch(/^wisp-wild-boss-craghorn-\d+$/);
     // Defeat was recorded, no shard granted, zone unchanged (wild).
     expect(s.defeatedBossIds).toContain('craghorn');
     expect(s.currentZone).toBe('sylvani');
@@ -255,17 +255,17 @@ describe('u-6a (d) — Craghorn defeat wisp routing via fightMonster', () => {
   });
 
   it('successive Craghorn defeats mint unique wisp ids (never reuse)', () => {
-    const hinox1 = { ...cardById('craghorn'), id: 'craghorn-copy-1' };
-    const hinox2 = { ...cardById('craghorn'), id: 'craghorn-copy-2' };
+    const craghorn1 = { ...cardById('craghorn'), id: 'craghorn-copy-1' };
+    const craghorn2 = { ...cardById('craghorn'), id: 'craghorn-copy-2' };
     let s = makeState({
       players: [makePlayer({ id: 'p0', red: 30, keys: 4 }), makePlayer({ id: 'p1' })],
-      field: [hinox1],
+      field: [craghorn1],
     });
-    s = fightMonster(s, 0, hinox1.id);
+    s = fightMonster(s, 0, craghorn1.id);
     const firstId = s.players[0].items[0].id;
     // Mount the second craghorn in the field and defeat it.
-    s = { ...s, field: [hinox2] };
-    s = fightMonster(s, 0, hinox2.id);
+    s = { ...s, field: [craghorn2] };
+    s = fightMonster(s, 0, craghorn2.id);
     const secondId = s.players[0].items[1].id;
     expect(firstId).not.toBe(secondId);
     expect(firstId).toMatch(/^wisp-wild-boss-/);
@@ -333,7 +333,7 @@ describe('u-6a (e) — Broodmaw defeat triggers advanceZone sylvani → emberpea
 });
 
 // ---------------------------------------------------------------------------
-// (f) Neither Craghorn nor Broodmaw flips any sharedTriforce flag.
+// (f) Neither Craghorn nor Broodmaw flips any sharedEmbertide flag.
 // ---------------------------------------------------------------------------
 
 describe('u-6a (f) — no shard grant from Craghorn or Broodmaw', () => {
@@ -344,7 +344,7 @@ describe('u-6a (f) — no shard grant from Craghorn or Broodmaw', () => {
       field: [craghorn],
     });
     s = fightMonster(s, 0, craghorn.id);
-    expect(s.sharedTriforce).toEqual({ wisdom: false, courage: false, power: false });
+    expect(s.sharedEmbertide).toEqual({ wisdom: false, courage: false, power: false });
   });
 
   it('Broodmaw defeat (non-terminal zone) does NOT flip any shard', () => {
@@ -357,7 +357,7 @@ describe('u-6a (f) — no shard grant from Craghorn or Broodmaw', () => {
     s = fightMonster(s, 0, broodmaw.id);
     // sylvani is NOT the terminal zone — Courage only unlocks on full
     // 3-zone clear (u-5b). wisdom/power paths are untouched too.
-    expect(s.sharedTriforce).toEqual({ wisdom: false, courage: false, power: false });
+    expect(s.sharedEmbertide).toEqual({ wisdom: false, courage: false, power: false });
   });
 });
 

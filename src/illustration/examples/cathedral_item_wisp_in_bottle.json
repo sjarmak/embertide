@@ -14,7 +14,7 @@
   "usesBackdropMotif": true,
   "notes": [
     "pr2 2026-04-23 — revive consumable art (nano-banana-pro, 2K webp).",
-    "Wired on card id `wisp-in-bottle` (role='item'); gm0.16 ships usedFairyInBottleIds mechanic."
+    "Wired on card id `wisp-in-bottle` (role='item'); gm0.16 ships usedWispInBottleIds mechanic."
   ],
   "rasterImageUrl": "/illustrations/cathedral_item_wisp_in_bottle_001.webp"
 }

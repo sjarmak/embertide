@@ -2,7 +2,7 @@
  * Integration coverage for the Swarm-archetype damage router as wired
  * into `applyPlayerEffect` (embertide-ki0o, sub of lhlo + 4hr1).
  *
- * Verifies the full Dead Hand (T2) combat scenario end-to-end:
+ * Verifies the full Palegrasp (T2) combat scenario end-to-end:
  *  - Player attacks land on the first non-defeated finger.
  *  - Once all fingers are downed, attacks land on the central head.
  *  - WIN (`terminal: 'win'`) fires only after every finger is defeated
@@ -50,7 +50,7 @@ function makeMinion(id: string, hp = 4): BossLayer {
   return { id, name: `Grasping Finger ${id}`, hp, hpMax: 4, defeated: false };
 }
 
-function makeDeadHand(
+function makePalegrasp(
   args: {
     hp?: number;
     minions?: readonly BossLayer[];
@@ -149,13 +149,13 @@ function getSwarmMinions(boss: CombatBoss): readonly BossLayer[] {
 }
 
 // ---------------------------------------------------------------------------
-// combat-attack — single-target routing through a Dead Hand boss.
+// combat-attack — single-target routing through a Palegrasp boss.
 // ---------------------------------------------------------------------------
 
-describe('Dead Hand combat — combat-attack routes through swarm minions (A2)', () => {
+describe('Palegrasp combat — combat-attack routes through swarm minions (A2)', () => {
   it('A4a: a 3-damage attack damages finger-1 only; head HP untouched', () => {
     const card = makeAttackCard('attack-3', 3);
-    const state = makeTurnState(makeCombat(makeDeadHand(), [card]));
+    const state = makeTurnState(makeCombat(makePalegrasp(), [card]));
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
       cardId: 'attack-3',
@@ -171,7 +171,7 @@ describe('Dead Hand combat — combat-attack routes through swarm minions (A2)',
 
   it('A4b: a 4-damage attack downs finger-1; residual is wasted (no spillover)', () => {
     const card = makeAttackCard('attack-4', 4);
-    const state = makeTurnState(makeCombat(makeDeadHand(), [card]));
+    const state = makeTurnState(makeCombat(makePalegrasp(), [card]));
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
       cardId: 'attack-4',
@@ -183,7 +183,7 @@ describe('Dead Hand combat — combat-attack routes through swarm minions (A2)',
     expect(minions[1].hp).toBe(4);
   });
 
-  it('A3 + A5: full Dead Hand walkthrough — fingers fall, then head; WIN fires only on full clear', () => {
+  it('A3 + A5: full Palegrasp walkthrough — fingers fall, then head; WIN fires only on full clear', () => {
     // Six plays of 4-damage attacks: 3 to clear the fingers (each finger
     // 4 hp → no spillover), then 3 to drop the central head (12 hp).
     // COMBAT_PLAYS_PER_TURN caps each players-turn at 3 plays, so we
@@ -196,9 +196,9 @@ describe('Dead Hand combat — combat-attack routes through swarm minions (A2)',
     const card5 = makeAttackCard('a5', 4); // partial head
     const card6 = makeAttackCard('a6', 4); // finishing head
 
-    // Player needs enough HP to survive 1 Dead Hand boss-turn
+    // Player needs enough HP to survive 1 Palegrasp boss-turn
     // (battlefield-then-player @ dpt=3 → 7hp left, no LOSS).
-    const combat = makeCombat(makeDeadHand(), [card1, card2, card3, card4, card5, card6]);
+    const combat = makeCombat(makePalegrasp(), [card1, card2, card3, card4, card5, card6]);
     let s: CombatTurnState = {
       combat,
       players: [makeKidPlayer({ id: 'p0', hp: 14 })],
@@ -275,7 +275,7 @@ describe('Dead Hand combat — combat-attack routes through swarm minions (A2)',
 
   it('A3: WIN does NOT fire when minions absorb all damage (head still standing)', () => {
     const card = makeAttackCard('attack-12', 12); // overkill on finger-1 only
-    const state = makeTurnState(makeCombat(makeDeadHand(), [card]));
+    const state = makeTurnState(makeCombat(makePalegrasp(), [card]));
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
       cardId: 'attack-12',
@@ -294,10 +294,10 @@ describe('Dead Hand combat — combat-attack routes through swarm minions (A2)',
 // combat-attack-stun — stuns boss AND routes damage through swarm.
 // ---------------------------------------------------------------------------
 
-describe('Dead Hand combat — combat-attack-stun routes damage through swarm AND stuns (A2)', () => {
+describe('Palegrasp combat — combat-attack-stun routes damage through swarm AND stuns (A2)', () => {
   it('damage hits the first finger; bossStunTurns still accumulates', () => {
     const card = makeStunCard('stun-3', 3, 1);
-    const state = makeTurnState(makeCombat(makeDeadHand(), [card]));
+    const state = makeTurnState(makeCombat(makePalegrasp(), [card]));
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
       cardId: 'stun-3',
@@ -315,7 +315,7 @@ describe('Dead Hand combat — combat-attack-stun routes damage through swarm AN
       { id: 'finger-3', name: 'f3', hp: 0, hpMax: 4, defeated: true },
     ];
     const card = makeStunCard('stun-5', 5, 1);
-    const state = makeTurnState(makeCombat(makeDeadHand({ hp: 12, minions: allDown }), [card]));
+    const state = makeTurnState(makeCombat(makePalegrasp({ hp: 12, minions: allDown }), [card]));
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
       cardId: 'stun-5',
@@ -330,10 +330,10 @@ describe('Dead Hand combat — combat-attack-stun routes damage through swarm AN
 // combat-multishot — per-shot routing through swarm minions.
 // ---------------------------------------------------------------------------
 
-describe('Dead Hand combat — combat-multishot per-shot routes through swarm (A2)', () => {
+describe('Palegrasp combat — combat-multishot per-shot routes through swarm (A2)', () => {
   it('per-shot retarget: shot 1 chips finger-1 (4→2), shot 2 downs finger-1 (2→0), shot 3 routes to finger-2 (4→2); finger-3 + head untouched', () => {
     const card = makeMultishotCard('multi-2x3', 2, 3);
-    const state = makeTurnState(makeCombat(makeDeadHand(), [card]));
+    const state = makeTurnState(makeCombat(makePalegrasp(), [card]));
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
       cardId: 'multi-2x3',
@@ -360,7 +360,7 @@ describe('Dead Hand combat — combat-multishot per-shot routes through swarm (A
     ];
     const card = makeMultishotCard('multi-4x4', 4, 4);
     const state = makeTurnState(
-      makeCombat(makeDeadHand({ hp: 12, minions: oneFingerLeft }), [card]),
+      makeCombat(makePalegrasp({ hp: 12, minions: oneFingerLeft }), [card]),
     );
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
@@ -399,7 +399,7 @@ describe('combatTurnReducer — combat-attack dispatch composes exposed bonus th
     const bonus = 1;
     const card = makeAttackCard('attack-base', baseDamage);
 
-    // Synthetic boss: Dead Hand swarm + manually injected `exposed`
+    // Synthetic boss: Palegrasp swarm + manually injected `exposed`
     // tag. Drives the `applyPlayerEffect` 'combat-attack' branch
     // (which composes `effect.damage + exposedBonusFor(boss)` and
     // hands the total to `applySingleTargetBossDamage`).

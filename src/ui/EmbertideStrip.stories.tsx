@@ -1,5 +1,5 @@
 /**
- * Ladle stories for TriforceStrip (u-2a). Covers every {0,1,2,3}-shard
+ * Ladle stories for EmbertideStrip (u-2a). Covers every {0,1,2,3}-shard
  * combination so a designer can eyeball the filled / empty jewel
  * treatments for wisdom / courage / power without running the full game.
  *
@@ -8,11 +8,11 @@
 import type { CSSProperties } from 'react';
 import type { Story } from '@ladle/react';
 
-import TriforceStrip from './TriforceStrip';
-import type { SharedTriforce } from '../store/types';
+import EmbertideStrip from './EmbertideStrip';
+import type { SharedEmbertide } from '../store/types';
 
 export default {
-  title: 'Components / TriforceStrip',
+  title: 'Components / EmbertideStrip',
 };
 
 const pageStyle: CSSProperties = {
@@ -31,12 +31,12 @@ const captionStyle: CSSProperties = {
   color: 'var(--hc-text-muted, #b7ae95)',
 };
 
-function shards(partial: Partial<SharedTriforce> = {}): SharedTriforce {
+function shards(partial: Partial<SharedEmbertide> = {}): SharedEmbertide {
   return { wisdom: false, courage: false, power: false, ...partial };
 }
 
 interface DemoProps {
-  readonly shards: SharedTriforce;
+  readonly shards: SharedEmbertide;
   readonly caption: string;
 }
 
@@ -44,7 +44,7 @@ function Demo({ shards: s, caption }: DemoProps) {
   return (
     <div style={pageStyle}>
       <span style={captionStyle}>{caption}</span>
-      <TriforceStrip shards={s} />
+      <EmbertideStrip shards={s} />
     </div>
   );
 }

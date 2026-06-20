@@ -5,7 +5,7 @@
  * Boots `?debug=vurmox-destiny` (u-10d seed) which drops the player on
  * the main GameBoard with `currentZone === 'gilded-cage'` and both
  * Temple wild bosses (`sentinel`, `silver-chimera`) in `defeatedBossIds`,
- * so `GameBoard` mounts `<GanonDestinySlot />` in the altar row.
+ * so `GameBoard` mounts `<VurmoxDestinySlot />` in the altar row.
  * Screenshots the slot locator and asserts against a committed
  * baseline.
  *

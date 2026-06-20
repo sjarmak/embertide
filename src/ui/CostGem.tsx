@@ -108,7 +108,7 @@ function glyphDefs(kind: CostGemKind): JSX.Element {
 function glyphFor(kind: CostGemKind): JSX.Element {
   switch (kind) {
     case 'green':
-      return greenRupeeGlyph();
+      return greenShardGlyph();
     case 'red':
       return swordGlyph();
     case 'keys':
@@ -122,7 +122,7 @@ function glyphFor(kind: CostGemKind): JSX.Element {
    six visible cells per OoT/LttP/WW canon. rkbf (2026-04-26) replaced
    the prior 4-sided diamond and slimmed the silhouette per designer
    feedback. */
-function greenRupeeGlyph(): JSX.Element {
+function greenShardGlyph(): JSX.Element {
   return (
     <g>
       <polygon

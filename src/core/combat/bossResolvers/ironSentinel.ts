@@ -18,7 +18,7 @@ export const IRON_SENTINEL_BURST_BONUS = 1;
 /**
  * Stable log fragments for resolver-test substring assertions.
  *
- * Tests in `combatEngine.ironKnuckleResolver.test.ts` import these
+ * Tests in `combatEngine.ironSentinelResolver.test.ts` import these
  * constants and assert `entry.includes(IRON_SENTINEL_LOG_*)` instead of
  * hard-coding bare substring literals. The constant is the contract —
  * a flavor rephrasing that drops the fragment from the rendered log
@@ -29,7 +29,7 @@ export const IRON_SENTINEL_LOG_HEAVY_SWING = 'heavy swing';
 export const IRON_SENTINEL_LOG_STAGGERED = 'staggered';
 export const IRON_SENTINEL_LOG_ARMOR_CRACKS = 'armor cracks';
 
-export function ironKnuckleStaggerResolver(combat: CombatState): BossResolveOutcome {
+export function ironSentinelStaggerResolver(combat: CombatState): BossResolveOutcome {
   const baseDpt = combat.boss.attackPattern.damagePerTurn;
   const phase = combat.turnIndex % 3;
   if (phase === 0) {

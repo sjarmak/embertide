@@ -117,7 +117,7 @@ describe('ChestReveal', () => {
     expect(labelEl?.textContent).toBe('Wisp');
   });
 
-  // bead embertide-epwk: pickFairyVariant (slices/chests.ts) resolves
+  // bead embertide-epwk: pickWispVariant (slices/chests.ts) resolves
   // 50% of wisp chest rewards to the 'wisp-in-bottle' variant. The
   // sibling 'wisp' tests above exercise only the plain template; this
   // test covers the bottle variant through ChestReveal so future

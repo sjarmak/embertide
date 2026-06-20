@@ -304,6 +304,7 @@
   text-transform: uppercase;
   color: var(--hc-text-muted);
   padding: 16px 8px;
+  text-shadow: 0 1px 3px var(--hc-shadow-900);
 }
 
 /*
@@ -372,6 +373,7 @@
   letter-spacing: var(--hc-tracking-chrome-max);
   text-transform: uppercase;
   color: var(--hc-text-muted);
+  text-shadow: 0 1px 3px var(--hc-shadow-900);
 }
 
 /*
@@ -400,6 +402,11 @@
   letter-spacing: var(--hc-tracking-chrome-extra);
   text-transform: uppercase;
   color: var(--hc-lead-silver-500);
+
+  /* round2: the altar interior now reveals zone art behind the cutout, so
+     the dormant/phase labels sit over painted terrain rather than a flat
+     gradient — a soft dark halo keeps the silver legend legible. */
+  text-shadow: 0 1px 3px var(--hc-shadow-900);
 }
 
 .boss-altar-pane-dormant-subline {
@@ -408,6 +415,7 @@
   text-transform: uppercase;
   color: var(--hc-lead-silver-700);
   font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 3px var(--hc-shadow-900);
 }
 
 /*
@@ -469,6 +477,7 @@
   letter-spacing: var(--hc-tracking-chrome-extra);
   text-transform: uppercase;
   color: var(--hc-lead-silver-500);
+  text-shadow: 0 1px 3px var(--hc-shadow-900);
 }
 
 .boss-altar-pane-phase-subline {
@@ -477,6 +486,7 @@
   text-transform: uppercase;
   color: var(--hc-lead-silver-700);
   font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 3px var(--hc-shadow-900);
 }
 
 /*

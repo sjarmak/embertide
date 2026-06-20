@@ -102,7 +102,7 @@ function mintFreshFreedPrincess(): Card {
  * When charges have been fully whittled to 0 and the Princess has not
  * yet been freed, the Strike:
  *   (a) flips `princessCrystal.freed` to true
- *   (b) flips `sharedTriforce.wisdom` to true (shared pool — NOT
+ *   (b) flips `sharedEmbertide.wisdom` to true (shared pool — NOT
  *       granted to the striking player specifically)
  *   (c) flips `wisdomsLight` to true on BOTH players (shared passive)
  *   (d) grants a fresh Freed Princess hero card to BOTH players'
@@ -142,6 +142,6 @@ export function strikePrincessCrystal(state: KidGameState): KidGameState {
     ...state,
     players,
     princessCrystal: { charges: 0, freed: true },
-    sharedTriforce: { ...state.sharedTriforce, wisdom: true },
+    sharedEmbertide: { ...state.sharedEmbertide, wisdom: true },
   };
 }

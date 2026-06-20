@@ -188,7 +188,7 @@ describe('gdd.1 Maren — Courage gate extension (e)', () => {
     let s = makeState({ currentZone: 'emberpeak', zoneHistory: ['sylvani'] });
     s = advanceZone(s); // → maren
     expect(s.currentZone).toBe('maren');
-    expect(s.sharedTriforce.courage).toBe(false);
+    expect(s.sharedEmbertide.courage).toBe(false);
   });
 
   it('full 6-zone clearance flips Courage in the terminal-advance transaction (gdd.3 chain)', () => {
@@ -207,7 +207,7 @@ describe('gdd.1 Maren — Courage gate extension (e)', () => {
       'dune-sanctum',
       'gilded-cage',
     ]);
-    expect(s.sharedTriforce.courage).toBe(true);
+    expect(s.sharedEmbertide.courage).toBe(true);
   });
 
   it('advancing sylvani + emberpeak + maren + hollow-shrine + dune-sanctum WITHOUT terminal advance leaves Courage false', () => {
@@ -226,7 +226,7 @@ describe('gdd.1 Maren — Courage gate extension (e)', () => {
       'hollow-shrine',
       'dune-sanctum',
     ]);
-    expect(s.sharedTriforce.courage).toBe(false);
+    expect(s.sharedEmbertide.courage).toBe(false);
   });
 });
 
@@ -305,7 +305,7 @@ describe('gdd.1 Maren — tide-gauge slice substrate (f)', () => {
       tideGauge: 0,
       shadowCreep: 0,
       sandstormCounter: 0,
-      skullfishFieldWatchlist: [],
+      fangfishFieldWatchlist: [],
     });
     const next = advanceZone(s);
     expect(next).toBe(s);

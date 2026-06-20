@@ -5,11 +5,11 @@
  * from card role so new cards are opt-in):
  *
  *   Tier 1 — grunt: every 3rd kill from this set bumps `heartPieces` by
- *            1 (via `heartPieceMeter` 0..2 accumulator on KidPlayer).
+ *            1 (via `emberShardMeter` 0..2 accumulator on KidPlayer).
  *            The 4th piece auto-promotes to a vital ember, matching
- *            gm0.16's `addHeartPiece` contract.
+ *            gm0.16's `addEmberShard` contract.
  *
- *   Tier 2 — tough: 1 kill = 1 ember shard (direct `addHeartPiece`; no
+ *   Tier 2 — tough: 1 kill = 1 ember shard (direct `addEmberShard`; no
  *            meter). 4 kills ≈ 1 container.
  *
  *   Tier 3 — slot boss (wild-boss + region-boss): 1 kill = full heart
@@ -24,7 +24,7 @@
  */
 
 /**
- * Tier 1 drop allowlist: each defeat bumps `heartPieceMeter` by 1. On
+ * Tier 1 drop allowlist: each defeat bumps `emberShardMeter` by 1. On
  * the 3rd kill the meter resets to 0 and `heartPieces` gains +1. Sized
  * at 7 to match the seven zone-regular-monster ids most likely to see
  * repeated kills during a run.

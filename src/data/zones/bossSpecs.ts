@@ -253,7 +253,7 @@ export const ZONE_BOSS_SPECS: Readonly<Record<string, ZoneBossSpec>> = {
   // variant sitting one knob above silver-chimera (penalty:3); the
   // post-completion encounter earns the tightest duel-discipline
   // knob in v2.0. Dynamic-spawn path —
-  // `computeGoldenRainbowLynelSpawnChance` (src/rules/zones.ts)
+  // `computePrismChimeraSpawnChance` (src/rules/zones.ts)
   // rolls the encounter at silver-chimera's defeat; the lhlo.7
   // activation must read this spec via the same Card.id lookup as
   // the FIFO queue path so the dynamic-spawn case picks up the

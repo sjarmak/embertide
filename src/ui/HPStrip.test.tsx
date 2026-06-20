@@ -193,8 +193,8 @@ describe('HPStrip', () => {
     expect(screen.queryByTestId('hp-strip-p0-ember-shard-wedge-3')).toBeNull();
   });
 
-  it('renders a 3-segment meter; filled pips match heartPieceMeter', () => {
-    renderStrip({ player: { heartPieceMeter: 2, heartPieces: 0 } });
+  it('renders a 3-segment meter; filled pips match emberShardMeter', () => {
+    renderStrip({ player: { emberShardMeter: 2, heartPieces: 0 } });
     const meter = screen.getByTestId('hp-strip-p0-ember-shard-meter');
     expect(meter.getAttribute('data-meter')).toBe('2');
     expect(screen.getByTestId('hp-strip-p0-meter-pip-0').getAttribute('data-filled')).toBe('true');
@@ -203,7 +203,7 @@ describe('HPStrip', () => {
   });
 
   it('shows the stack when meter > 0 even with 0 pieces (progress toward next piece)', () => {
-    renderStrip({ player: { heartPieceMeter: 1, heartPieces: 0 } });
+    renderStrip({ player: { emberShardMeter: 1, heartPieces: 0 } });
     expect(screen.getByTestId('hp-strip-p0-ember-shard-stack')).toBeInTheDocument();
     expect(screen.getByTestId('hp-strip-p0-ember-shard-pending').getAttribute('data-pieces')).toBe(
       '0',
@@ -212,7 +212,7 @@ describe('HPStrip', () => {
   });
 
   it('renders the stack even at fresh-game 0/0 so the empty structure signals the progression goal', () => {
-    renderStrip({ player: { heartPieces: 0, heartPieceMeter: 0 } });
+    renderStrip({ player: { heartPieces: 0, emberShardMeter: 0 } });
     expect(screen.getByTestId('hp-strip-p0-ember-shard-stack')).toBeInTheDocument();
     // All meter pips and wedges render as empty (data-filled='false').
     for (let i = 0; i < 3; i += 1) {

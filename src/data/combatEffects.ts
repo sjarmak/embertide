@@ -122,7 +122,7 @@ const EXPLICIT_OVERRIDES: Readonly<Record<string, CombatEffect>> = {
   //                        premium-item / boss-chest drop).
   //   - wisp-in-bottle  → combat-heal amount:3 (same as plain wisp;
   //                        the reusable-once-per-combat mechanic lives
-  //                        in `playFairyOn`, not the combat effect).
+  //                        in `playWispOn`, not the combat effect).
   'great-wisp': { kind: 'combat-heal', amount: 5 },
   'wisp-in-bottle': { kind: 'combat-heal', amount: 3 },
   // (Heirloom overrides — craghorn-tusk, boulderkin-core, sentinel-eye,

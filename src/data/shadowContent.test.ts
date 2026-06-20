@@ -14,7 +14,7 @@ import { makeKidPlayer, makeKidGameState } from '../testing/stateFixtures';
  *
  * Six new cards: 4 regulars (willowisp / graspling / bonelet / duskwing),
  * 1 wild boss (hollow-effigy), 1 region boss (knell). This suite
- * mirrors zoraContent.test.ts one-for-one — same acceptance matrix
+ * mirrors marenContent.test.ts one-for-one — same acceptance matrix
  * substituted for hollow-shrine content + the shadow-creep substrate
  * (state field + increment + reset on zone advance).
  *
@@ -190,7 +190,7 @@ describe('gdd.2 Shadow — Courage gate extension (e)', () => {
     let s = makeState({ currentZone: 'maren', zoneHistory: ['sylvani', 'emberpeak'] });
     s = advanceZone(s); // → hollow-shrine
     expect(s.currentZone).toBe('hollow-shrine');
-    expect(s.sharedTriforce.courage).toBe(false);
+    expect(s.sharedEmbertide.courage).toBe(false);
   });
 
   it('full 6-zone clearance flips Courage in the terminal-advance transaction (gdd.3 chain)', () => {
@@ -209,7 +209,7 @@ describe('gdd.2 Shadow — Courage gate extension (e)', () => {
       'dune-sanctum',
       'gilded-cage',
     ]);
-    expect(s.sharedTriforce.courage).toBe(true);
+    expect(s.sharedEmbertide.courage).toBe(true);
   });
 });
 
@@ -287,7 +287,7 @@ describe('gdd.2 Shadow — shadow-creep slice substrate (f)', () => {
       ],
       shadowCreep: 0,
       sandstormCounter: 0,
-      skullfishFieldWatchlist: [],
+      fangfishFieldWatchlist: [],
     });
     const next = advanceZone(s);
     expect(next).toBe(s);

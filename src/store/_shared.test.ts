@@ -1,14 +1,14 @@
 import { describe, it, expect } from 'vitest';
 import { KID_CARDS } from '../data/cards';
 import type { KidGameState, KidPlayer } from './types';
-import { WISP_BASE_IDS, checkCoopLoss, playerHasFairy, replacePlayer } from './_shared';
+import { WISP_BASE_IDS, checkCoopLoss, playerHasWisp, replacePlayer } from './_shared';
 import { makeKidPlayer, makeKidGameState } from '../testing/stateFixtures';
 
 /**
  * Unit tests for the shared store-layer helpers extracted to ./_shared.ts
  * (embertide-hik1). These helpers are exercised end-to-end by the
  * existing slice + integration suites; this file pins the explicit
- * contracts for replacePlayer / playerHasFairy / checkCoopLoss so future
+ * contracts for replacePlayer / playerHasWisp / checkCoopLoss so future
  * refactors can land without spelunking through downstream tests.
  */
 
@@ -44,24 +44,24 @@ describe('replacePlayer', () => {
   });
 });
 
-describe('playerHasFairy', () => {
+describe('playerHasWisp', () => {
   it('returns false for a player with no items', () => {
-    expect(playerHasFairy(makePlayer({ items: [] }))).toBe(false);
+    expect(playerHasWisp(makePlayer({ items: [] }))).toBe(false);
   });
 
   it('returns true when the items zone contains a plain "wisp"', () => {
-    expect(playerHasFairy(makePlayer({ items: [WISP] }))).toBe(true);
+    expect(playerHasWisp(makePlayer({ items: [WISP] }))).toBe(true);
   });
 
   it('returns false for a non-wisp item', () => {
-    expect(playerHasFairy(makePlayer({ items: [GRUNT_ORC] }))).toBe(false);
+    expect(playerHasWisp(makePlayer({ items: [GRUNT_ORC] }))).toBe(false);
   });
 
   it('matches every baseId in WISP_BASE_IDS via baseIdOf', () => {
     for (const base of WISP_BASE_IDS) {
       const cardForBase = KID_CARDS.find((c) => c.id === base);
       expect(cardForBase, `wisp variant card "${base}" missing from KID_CARDS`).toBeTruthy();
-      expect(playerHasFairy(makePlayer({ items: [cardForBase!] }))).toBe(true);
+      expect(playerHasWisp(makePlayer({ items: [cardForBase!] }))).toBe(true);
     }
   });
 });

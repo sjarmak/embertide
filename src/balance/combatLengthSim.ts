@@ -287,8 +287,8 @@ function buildSyntheticPlayers(): readonly KidPlayer[] {
     usedKeyVendorThisTurn: false,
     wisdomsLight: false,
     heartPieces: 0,
-    heartPieceMeter: 0,
-    usedFairyInBottleIds: [],
+    emberShardMeter: 0,
+    usedWispInBottleIds: [],
     banished: [],
 
     nextChestItemRevealed: false,
@@ -326,8 +326,8 @@ const HEIRLOOM_COMBAT_EFFECTS: Readonly<Record<string, NonNullable<Card['combatE
 
 /**
  * Mint a heirloom card for injection into the simulated combat deck.
- * The structural shape mirrors the `craghornTusk` / `stoneTalusCore` /
- * `guardianEye` / `lynelSword` entries in `src/data/cards/heirlooms.ts`:
+ * The structural shape mirrors the `craghornTusk` / `boulderkinCore` /
+ * `sentinelEye` / `chimeraSword` entries in `src/data/cards/heirlooms.ts`:
  * role='item', itemKind='item-active', `cost: { green: 0 }`, no-op
  * `effects`, and an in-card `combatEffect` declaration matching the
  * authoring source of truth. We duplicate the shape rather than

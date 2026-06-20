@@ -50,7 +50,7 @@ import {
 } from './slices/crystal';
 import {
   advanceZone,
-  applySkullfishFragility,
+  applyFangfishFragility,
   canSpawnRegionBoss,
   incrementTideGauge,
   incrementShadowCreep,
@@ -74,7 +74,7 @@ import { d6, d20 } from '../rules/dice';
 import { GENERIC_BASE_ID_THEME } from '../theme/generic';
 import {
   PRISM_CHIMERA_ID,
-  computeGoldenRainbowLynelSpawnChance,
+  computePrismChimeraSpawnChance,
   currentRegionBossForZone,
   currentWildBossForZone,
 } from '../rules/zones';
@@ -253,7 +253,7 @@ export interface GameStore extends KidGameState {
    *    stays whatever it was — teammate-revive is the REVIVER's budget,
    *    not the reviver's prior-state.
    *
-   *  Fairies (see `playFairyOn`) are the orthogonal full-revive path —
+   *  Fairies (see `playWispOn`) are the orthogonal full-revive path —
    *  they do NOT consume the teammate-revive budget.
    */
   reviveTeammate(playerId: string): void;
@@ -264,12 +264,12 @@ export interface GameStore extends KidGameState {
    * AND the wisp is NOT consumed (soft UX — prevents accidental burn).
    * Throws if the active player has no wisp to play.
    */
-  playFairyOn(playerId: string): void;
+  playWispOn(playerId: string): void;
   /**
    * Strike the Princess-in-Crystal (REQ-8 / u-2e, amendment A2). When
    * `princessCrystal.charges === 0` and the Princess has not yet been
    * freed, the Strike flips `princessCrystal.freed = true`, grants the
-   * SHARED `sharedTriforce.wisdom` shard (not tied to the striking
+   * SHARED `sharedEmbertide.wisdom` shard (not tied to the striking
    * player), and flips `wisdomsLight: true` on both players. Runs
    * `checkCoopVictory` at the tail — a wisdom flip can complete the
    * three-shard shared win.
@@ -489,7 +489,7 @@ const EMPTY_STATE: KidGameState = {
   chestSupply: [],
   defeated: [],
   voided: [],
-  sharedTriforce: { wisdom: false, courage: false, power: false },
+  sharedEmbertide: { wisdom: false, courage: false, power: false },
   outcome: null,
   lastChestReward: null,
   lastChestRewardCard: null,
@@ -502,7 +502,7 @@ const EMPTY_STATE: KidGameState = {
   // embertide-044: center-row kill counter feeds the Golden
   // Rainbow Chimera one-shot spawn roll at Silver Chimera's defeat.
   centerRowKillCount: 0,
-  goldenRainbowLynelSpawned: false,
+  prismChimeraSpawned: false,
   // embertide-gdd.1: per-run tide-gauge counter, 0..TIDE_GAUGE_MAX.
   // Increments at End-phase while currentZone === 'maren'; resets to 0
   // on every advanceZone-driven currentZone change.
@@ -521,7 +521,7 @@ const EMPTY_STATE: KidGameState = {
   // End-phase scans `state.field` for fangfish; ids already present
   // here auto-discard ("school darts away" thematic). See KidGameState
   // docstring for the full lifecycle.
-  skullfishFieldWatchlist: [],
+  fangfishFieldWatchlist: [],
   // embertide-91p (b): per-card banish choice surface. Null until
   // a card whose `effects.kind === 'banish-from-hand'` resolves on play
   // and the active player has banishable cards in hand. See
@@ -559,7 +559,7 @@ export { buildResolveWinAction, enterCombatAction } from './combatBootstrap';
 
 import type { CombatAction, CombatResolveWinAction } from './combatBootstrap';
 import {
-  applyFairyDrop,
+  applyWispDrop,
   applyHeartsHeal,
   applyShardGrants,
   augmentHeartsWithChampionBonus,
@@ -589,7 +589,7 @@ export const HEART_PIECES_PER_CONTAINER = 4;
  *
  * Pure: returns a new `KidPlayer`.
  */
-export function addHeartPiece(player: KidPlayer): KidPlayer {
+export function addEmberShard(player: KidPlayer): KidPlayer {
   const next = player.heartPieces + 1;
   if (next >= HEART_PIECES_PER_CONTAINER) {
     const grown = applyHeartReward(player, 1);
@@ -657,7 +657,7 @@ export function buildResolveWinForCombat(
     return {
       type: 'COMBAT_RESOLVE_WIN',
       heartsToAttackers,
-      fairyDropTarget: null,
+      wispDropTarget: null,
       shardGrants: [],
       zoneAdvance: false,
       bossKey: null,
@@ -744,8 +744,8 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
             // tracking. Both start empty at game-start; chests and
             // `COMBAT_ENTER` hydrate them at runtime.
             heartPieces: 0,
-            heartPieceMeter: 0,
-            usedFairyInBottleIds: [],
+            emberShardMeter: 0,
+            usedWispInBottleIds: [],
             // 91p framework: permanent banish pile (deck-thinning).
             // No v2.0/v2.1 card currently banishes; cards land in 91p
             // follow-up beads (commit sequence b).
@@ -812,7 +812,7 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
           // flag on every fresh run so they stay per-game and never
           // leak across playthroughs.
           centerRowKillCount: 0,
-          goldenRainbowLynelSpawned: false,
+          prismChimeraSpawned: false,
           // embertide-91p (b): banish-prompt surface starts null;
           // playCard hydrates it on a banish-from-hand resolve.
           pendingBanishChoice: null,
@@ -1434,7 +1434,7 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
             // away" thematic). Fresh fangfish populate the watchlist
             // for a one-turn grace window. Pure no-op when no
             // fangfish is in the field.
-            state = applySkullfishFragility(state);
+            state = applyFangfishFragility(state);
             // Co-op shared-pool checks (amendment A2/A3).
             state = checkCoopVictory(state);
             state = checkCoopLoss(state);
@@ -1504,13 +1504,13 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
         set({ ...state, players });
       },
 
-      playFairyOn(playerId: string): void {
+      playWispOn(playerId: string): void {
         const state = get();
         if (state.outcome !== null) return;
-        requireMainPhase(state, 'playFairyOn');
+        requireMainPhase(state, 'playWispOn');
         const targetIdx = state.players.findIndex((p) => p.id === playerId);
         if (targetIdx === -1) {
-          throw new Error(`playFairyOn: unknown playerId ${playerId}`);
+          throw new Error(`playWispOn: unknown playerId ${playerId}`);
         }
         const activeIdx = state.currentPlayerIndex;
         const active = state.players[activeIdx];
@@ -1523,38 +1523,38 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
         const preferSingleUse = active.items.findIndex(
           (c) => baseIdOf(c) === 'wisp' || baseIdOf(c) === 'great-wisp',
         );
-        const fairyIdx =
+        const wispIdx =
           preferSingleUse !== -1
             ? preferSingleUse
             : active.items.findIndex((c) => WISP_BASE_IDS.has(baseIdOf(c)));
-        if (fairyIdx === -1) {
-          throw new Error('playFairyOn: active player has no wisp to play');
+        if (wispIdx === -1) {
+          throw new Error('playWispOn: active player has no wisp to play');
         }
         const target = state.players[targetIdx];
         // Soft UX (amendment A6): wisp is only consumed when it actually
         // revives a downed teammate. Outside that context, the action is a
         // no-op so the card is preserved for when it's really needed.
         if (!target.downed) return;
-        const consumed = active.items[fairyIdx];
-        const items = [...active.items.slice(0, fairyIdx), ...active.items.slice(fairyIdx + 1)];
+        const consumed = active.items[wispIdx];
+        const items = [...active.items.slice(0, wispIdx), ...active.items.slice(wispIdx + 1)];
         // gm0.16: Wisp-in-Bottle reusability. On first consumption of a
         // given bottle within a combat, re-equip it into the owner's
         // items zone so it can fuel ONE additional revive. The bottle's
-        // id is recorded in the owner's `usedFairyInBottleIds` so the
+        // id is recorded in the owner's `usedWispInBottleIds` so the
         // second consumption does NOT re-equip (the bottle is spent).
         // The tracking set resets at COMBAT_ENTER.
         const isBottle = baseIdOf(consumed) === 'wisp-in-bottle';
-        const alreadyUsed = isBottle && active.usedFairyInBottleIds.includes(consumed.id);
+        const alreadyUsed = isBottle && active.usedWispInBottleIds.includes(consumed.id);
         const shouldRefill = isBottle && !alreadyUsed;
         const nextActiveItems = shouldRefill ? [...items, consumed] : items;
         const nextUsedIds = shouldRefill
-          ? [...active.usedFairyInBottleIds, consumed.id]
-          : active.usedFairyInBottleIds;
+          ? [...active.usedWispInBottleIds, consumed.id]
+          : active.usedWispInBottleIds;
         const players = state.players.slice();
         players[activeIdx] = {
           ...active,
           items: nextActiveItems,
-          usedFairyInBottleIds: nextUsedIds,
+          usedWispInBottleIds: nextUsedIds,
         };
         players[targetIdx] = { ...target, hp: target.hpMax, downed: false };
         set({ ...state, players });
@@ -1638,11 +1638,11 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
             const entryBody = renderCombatBubbleBody('combat-entry', {
               bossName: bossDisplayName(action.boss.sourceCardId),
             });
-            // gm0.16: reset per-player `usedFairyInBottleIds` at every
+            // gm0.16: reset per-player `usedWispInBottleIds` at every
             // combat entry. Bottles are "once per combat" — a bottle
             // used in a prior combat gets a fresh refill in the next.
             const playersReset = state.players.map((p) =>
-              p.usedFairyInBottleIds.length === 0 ? p : { ...p, usedFairyInBottleIds: [] },
+              p.usedWispInBottleIds.length === 0 ? p : { ...p, usedWispInBottleIds: [] },
             );
             // embertide-4uyn.3: fire every owned item-passive declaring
             // `trigger: 'on-combat-enter'` for each player. Applies
@@ -1652,7 +1652,7 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
             // Idempotency: `COMBAT_ENTER` is dispatched exactly once per
             // combat entry via `fightMonster` / `engageWildBossSlot` /
             // `engageRegionBossSlot`; revive flows (`reviveTeammate`,
-            // `playFairyOn`) do NOT re-dispatch `COMBAT_ENTER`, and
+            // `playWispOn`) do NOT re-dispatch `COMBAT_ENTER`, and
             // `COMBAT_RESOLVE_WIN`/`_LOSS` both clear `activeCombat` to
             // null — so the passive fires exactly once per combat lifecycle
             // by construction. No runtime gate needed beyond the natural
@@ -1758,16 +1758,16 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
             // 2. Wisp drop (wild-boss only). Skipped for colosseum
             // entries — colosseum bosses share `sourceCardId` with
             // wild-bosses (e.g. 'craghorn') and `buildResolveWinAction`
-            // populates `fairyDropTarget` based on the source card's
+            // populates `wispDropTarget` based on the source card's
             // tier; the colosseum has its own reward routing in
             // 4hr1.6 (out of scope here).
             if (
               !isColosseumEntry &&
-              action.fairyDropTarget !== null &&
+              action.wispDropTarget !== null &&
               next.activeCombat !== null
             ) {
               const bossBaseId = baseIdOfString(next.activeCombat.boss.sourceCardId);
-              next = applyFairyDrop(next, action.fairyDropTarget, bossBaseId);
+              next = applyWispDrop(next, action.wispDropTarget, bossBaseId);
             }
 
             // 3. Shard grants (region-boss only — empty array for
@@ -1827,12 +1827,12 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
                 next = { ...next, centerRowKillCount: next.centerRowKillCount + 1 };
                 if (
                   baseIdOfString(defeatedSourceId) === 'silver-chimera' &&
-                  !next.goldenRainbowLynelSpawned &&
+                  !next.prismChimeraSpawned &&
                   !next.defeatedBossIds.includes(PRISM_CHIMERA_ID)
                 ) {
-                  const chance = computeGoldenRainbowLynelSpawnChance(next.centerRowKillCount);
+                  const chance = computePrismChimeraSpawnChance(next.centerRowKillCount);
                   if (next.rng() < chance) {
-                    next = { ...next, goldenRainbowLynelSpawned: true };
+                    next = { ...next, prismChimeraSpawned: true };
                   }
                 }
               }

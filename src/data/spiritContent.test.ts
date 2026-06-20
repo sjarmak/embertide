@@ -199,7 +199,7 @@ describe('gdd.3 Spirit — Courage gate extension (e)', () => {
     });
     s = advanceZone(s); // → dune-sanctum
     expect(s.currentZone).toBe('dune-sanctum');
-    expect(s.sharedTriforce.courage).toBe(false);
+    expect(s.sharedEmbertide.courage).toBe(false);
   });
 
   it('full 6-zone clearance flips Courage in the terminal-advance transaction', () => {
@@ -218,7 +218,7 @@ describe('gdd.3 Spirit — Courage gate extension (e)', () => {
       'dune-sanctum',
       'gilded-cage',
     ]);
-    expect(s.sharedTriforce.courage).toBe(true);
+    expect(s.sharedEmbertide.courage).toBe(true);
   });
 });
 

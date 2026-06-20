@@ -3,7 +3,7 @@
  * sub of lhlo + 4hr1). Pure-function coverage of the single-target /
  * AoE / non-swarm paths.
  *
- * Single-target rule (per Dead Hand canon): the FIRST non-defeated
+ * Single-target rule (per Palegrasp canon): the FIRST non-defeated
  * minion (left-to-right scan) absorbs the full damage; overdamage is
  * WASTED (no spillover) — keeps each finger an explicit target the
  * player must clear. Once every minion is defeated, single-target
@@ -373,7 +373,7 @@ describe('routeSwarmAttack — immutability', () => {
 
 describe('exposed-bonus × swarm-routing composition (embertide-4hr1.11)', () => {
   it('delivers base damage + exposed.bonus to finger-1 in one routed hit', () => {
-    // Dead Hand swarm boss with an active exposed window (bonus = 1).
+    // Palegrasp swarm boss with an active exposed window (bonus = 1).
     const boss = makeSwarmBoss({
       hp: 12,
       minions: [

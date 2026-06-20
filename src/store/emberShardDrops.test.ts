@@ -22,7 +22,7 @@ import { makeKidPlayer, makeKidGameState } from '../testing/stateFixtures';
  * What's covered here:
  *   - Grunt meter: 1/3, 2/3, 3/3 → piece + reset.
  *   - Grunt meter auto-promotes heartPieces at 4 (gm0.16 contract).
- *   - Tough: 1 kill = 1 piece (direct `addHeartPiece`).
+ *   - Tough: 1 kill = 1 piece (direct `addEmberShard`).
  *   - Tough: 4th kill auto-promotes to a vital ember.
  *   - Out-of-tier cards (grunt-orc / wild-wolf / brute): no effect.
  *   - Grunt precedence rule (when an id would be in both sets, grunt
@@ -52,34 +52,34 @@ function cardById(id: string): Card {
 }
 
 describe('applyHeartDropHooks — Tier 1 (grunt meter)', () => {
-  it('1st grunt defeat bumps heartPieceMeter from 0 → 1 (no piece yet)', () => {
-    const state = makeState(makePlayer({ heartPieceMeter: 0, heartPieces: 0 }));
+  it('1st grunt defeat bumps emberShardMeter from 0 → 1 (no piece yet)', () => {
+    const state = makeState(makePlayer({ emberShardMeter: 0, heartPieces: 0 }));
     const next = applyHeartDropHooks(state, cardById('thorn-scrub'), 0);
-    expect(next.players[0].heartPieceMeter).toBe(1);
+    expect(next.players[0].emberShardMeter).toBe(1);
     expect(next.players[0].heartPieces).toBe(0);
   });
 
   it('2nd grunt defeat bumps meter to 2 (no piece)', () => {
-    const state = makeState(makePlayer({ heartPieceMeter: 1, heartPieces: 0 }));
+    const state = makeState(makePlayer({ emberShardMeter: 1, heartPieces: 0 }));
     const next = applyHeartDropHooks(state, cardById('jellet'), 0);
-    expect(next.players[0].heartPieceMeter).toBe(2);
+    expect(next.players[0].emberShardMeter).toBe(2);
     expect(next.players[0].heartPieces).toBe(0);
   });
 
   it('3rd grunt defeat promotes: meter resets 2 → 0 AND heartPieces += 1', () => {
-    const state = makeState(makePlayer({ heartPieceMeter: 2, heartPieces: 0 }));
+    const state = makeState(makePlayer({ emberShardMeter: 2, heartPieces: 0 }));
     const next = applyHeartDropHooks(state, cardById('scrabling'), 0);
-    expect(next.players[0].heartPieceMeter).toBe(0);
+    expect(next.players[0].emberShardMeter).toBe(0);
     expect(next.players[0].heartPieces).toBe(1);
   });
 
   it('grunt meter 3rd kill at heartPieces=3 auto-promotes to container (gm0.16 contract)', () => {
     // heartPieces=3 + meter=2 → 3rd grunt kill bumps meter to 3 which
-    // triggers addHeartPieceLocal; that sees heartPieces=3 → next=4
+    // triggers addEmberShardLocal; that sees heartPieces=3 → next=4
     // → resets to 0 AND grows hp+hpMax by 1 via applyHeartReward.
-    const state = makeState(makePlayer({ heartPieceMeter: 2, heartPieces: 3, hp: 5, hpMax: 5 }));
+    const state = makeState(makePlayer({ emberShardMeter: 2, heartPieces: 3, hp: 5, hpMax: 5 }));
     const next = applyHeartDropHooks(state, cardById('skittermite'), 0);
-    expect(next.players[0].heartPieceMeter).toBe(0);
+    expect(next.players[0].emberShardMeter).toBe(0);
     expect(next.players[0].heartPieces).toBe(0);
     expect(next.players[0].hpMax).toBe(6);
     expect(next.players[0].hp).toBe(6);
@@ -90,26 +90,26 @@ describe('applyHeartDropHooks — Tier 1 (grunt meter)', () => {
     state = applyHeartDropHooks(state, cardById('snapvine'), 0);
     state = applyHeartDropHooks(state, cardById('snapvine'), 0);
     state = applyHeartDropHooks(state, cardById('snapvine'), 0);
-    expect(state.players[0].heartPieceMeter).toBe(0);
+    expect(state.players[0].emberShardMeter).toBe(0);
     expect(state.players[0].heartPieces).toBe(1);
   });
 
   it('all 8 GRUNT_HEART_METER_IDS entries route through the meter path', () => {
     for (const id of GRUNT_HEART_METER_IDS) {
-      const state = makeState(makePlayer({ heartPieceMeter: 0 }));
+      const state = makeState(makePlayer({ emberShardMeter: 0 }));
       const next = applyHeartDropHooks(state, cardById(id), 0);
-      expect(next.players[0].heartPieceMeter, `grunt id "${id}" must bump heartPieceMeter`).toBe(1);
+      expect(next.players[0].emberShardMeter, `grunt id "${id}" must bump emberShardMeter`).toBe(1);
     }
   });
 });
 
 describe('applyHeartDropHooks — Tier 2 (tough piece direct)', () => {
   it('1 tough defeat = 1 ember shard directly (heartPieces 0 → 1, meter unchanged)', () => {
-    const state = makeState(makePlayer({ heartPieceMeter: 1 }));
+    const state = makeState(makePlayer({ emberShardMeter: 1 }));
     const next = applyHeartDropHooks(state, cardById('saurian'), 0);
     expect(next.players[0].heartPieces).toBe(1);
     // Meter is untouched — tough drops bypass the meter entirely.
-    expect(next.players[0].heartPieceMeter).toBe(1);
+    expect(next.players[0].emberShardMeter).toBe(1);
   });
 
   it('4th tough kill auto-promotes to vital ember (gm0.16 contract)', () => {
@@ -131,9 +131,9 @@ describe('applyHeartDropHooks — Tier 2 (tough piece direct)', () => {
 
 describe('applyHeartDropHooks — Tier fallback (no effect)', () => {
   it('grunt-orc (generic monster, not grunt-tier) does NOT bump meter or pieces', () => {
-    const state = makeState(makePlayer({ heartPieceMeter: 1, heartPieces: 2 }));
+    const state = makeState(makePlayer({ emberShardMeter: 1, heartPieces: 2 }));
     const next = applyHeartDropHooks(state, cardById('grunt-orc'), 0);
-    expect(next.players[0].heartPieceMeter).toBe(1);
+    expect(next.players[0].emberShardMeter).toBe(1);
     expect(next.players[0].heartPieces).toBe(2);
     // Returns same reference when both sets miss — immutability contract.
     expect(next).toBe(state);
@@ -143,9 +143,9 @@ describe('applyHeartDropHooks — Tier fallback (no effect)', () => {
     // z9xq (2026-04-25): wild-wolf was outside both sets pre-fix. Adding
     // it to GRUNT_HEART_METER_IDS converts the always-available kill
     // from a +1 hp grant into a meter contribution (3 kills = 1 piece).
-    const state = makeState(makePlayer({ heartPieceMeter: 0, heartPieces: 0 }));
+    const state = makeState(makePlayer({ emberShardMeter: 0, heartPieces: 0 }));
     const next = applyHeartDropHooks(state, cardById('wild-wolf'), 0);
-    expect(next.players[0].heartPieceMeter).toBe(1);
+    expect(next.players[0].emberShardMeter).toBe(1);
     expect(next.players[0].heartPieces).toBe(0);
   });
 

@@ -1,7 +1,7 @@
 # cathedral_colosseum_bg_tier2
 
 - **Bead:** embertide-y3no
-- **Surface:** Colosseum combat backdrop, Tier 2 (knight tier — Chimera / Blackguard / Cinderwyrm / Phantom Vurmox / Dead Hand)
+- **Surface:** Colosseum combat backdrop, Tier 2 (knight tier — Chimera / Blackguard / Cinderwyrm / Phantom Vurmox / Palegrasp)
 - **Model:** fal-ai/nano-banana-pro
 - **Params:** `aspect_ratio=21:9`, `output_format=webp`, `resolution=2K`, `num_images=1`
 - **Raster:** `public/illustrations/cathedral_colosseum_bg_tier2_001.webp`

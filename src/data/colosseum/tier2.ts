@@ -18,7 +18,7 @@
  *   - Blackguard       — layered archetype (armor → bare-warrior strip).
  *   - Cinderwyrm      — item-check archetype (guarded until bomb-tag breaks the guard).
  *   - Phantom Vurmox — sequence archetype (ball-volley step rotation).
- *   - Dead Hand     — swarm archetype (central head + finger-minions, canon — see
+ *   - Palegrasp     — swarm archetype (central head + finger-minions, canon — see
  *                     `bd memories embertide-tone-filter-canon-over-kid-2026-05-02`).
  *
  * NUMBERS ARE ILLUSTRATIVE. HP / damagePerTurn / threshold / penalty
@@ -218,7 +218,7 @@ export const COLOSSEUM_PHANTOM_VURMOX_T2: CombatBoss = {
  * left for the swarm-resolver bead — the spec only carries the data
  * shape.
  *
- * Canon Dead Hand: OoT well-bottom sentinel — pale flesh-and-bone
+ * Canon Palegrasp: OoT well-bottom sentinel — pale flesh-and-bone
  * fingers reaching from the floor to grasp Link, central head bites
  * once you're caught. User ruling 2026-05-02 (canon-over-kid filter)
  * keeps the canon body-horror direction; no 'Tendril Sentinel'
@@ -231,7 +231,7 @@ export const COLOSSEUM_PHANTOM_VURMOX_T2: CombatBoss = {
  * a sensible head-only aggregate; the swarm resolver bead consumes
  * `stateTags[0].minions` for actual damage routing.
  */
-export const COLOSSEUM_DEAD_HAND_T2: CombatBoss = {
+export const COLOSSEUM_PALEGRASP_T2: CombatBoss = {
   hp: 12,
   hpMax: 12,
   attackPattern: {
@@ -268,12 +268,12 @@ export const COLOSSEUM_DEAD_HAND_T2: CombatBoss = {
  * by tier-1 + tier-2 + tier-5 specs (Eye via Craghorn/Coilworm, Layered
  * via Boulderkin + Blackguard, Duel via Bonereaver + Chimera, Item-Check via
  * Cinderwyrm, Sequence via Phantom Vurmox + Trinity Aurogax, Swarm via
- * Dead Hand). Vocabulary saturation complete.
+ * Palegrasp). Vocabulary saturation complete.
  */
 export const TIER_2_ROSTER = [
   COLOSSEUM_CHIMERA_T2,
   COLOSSEUM_BLACKGUARD_T2,
   COLOSSEUM_CINDERWYRM_T2,
   COLOSSEUM_PHANTOM_VURMOX_T2,
-  COLOSSEUM_DEAD_HAND_T2,
+  COLOSSEUM_PALEGRASP_T2,
 ] as const satisfies readonly CombatBoss[];

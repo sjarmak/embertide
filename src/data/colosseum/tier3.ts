@@ -13,9 +13,9 @@
  * "ancient stadium under storm-light" tier — and ruling 2026-05-10 for
  * archetype + stateTag mapping):
  *
- *   - Helmaroc King — layered (Iron Mask → Bare Head, WW canon).
+ *   - Skrall King — layered (Iron Mask → Bare Head, WW canon).
  *   - Voltwyrm       — item-check (Double-Grapnels ground him, TP canon).
- *   - Kalle Demos   — item-check (bomb-flowers break tentacles, WW canon;
+ *   - Vinemaw   — item-check (bomb-flowers break tentacles, WW canon;
  *                     aligned with Cinderwyrm T2's bomb-tag — cinder-bloom
  *                     reads as bomb in the kw item vocabulary).
  *   - Sandscourge      — layered (twin pincers → tail-stinger, SS canon).
@@ -30,10 +30,10 @@
  * Boulderkin T1 + Blackguard T2 convention so untaught read-sites still
  * see a sensible aggregate). Swarm aggregate `boss.hp` reads as the
  * central-torso channel; minion HP is parallel/independent (mirror
- * Dead Hand T2). Final tuning is a playtest follow-up after the
+ * Palegrasp T2). Final tuning is a playtest follow-up after the
  * per-archetype resolver beads consume these stateTags.
  *
- * Card-data registration in `KID_CARDS` (parallel to `trinityGleeok`
+ * Card-data registration in `KID_CARDS` (parallel to `trinityAurogax`
  * in `src/data/cards/colosseum.ts`) lands alongside the per-boss art
  * batch beads — the sourceCardId strings here are the canonical
  * kebab-case names those card entries will use, so by-id lookups will
@@ -45,10 +45,10 @@ import type { CombatBoss } from '../../types/combat';
 /**
  * Layered archetype — Iron Mask (14 HP) → Bare Head (14 HP). Outer
  * mask must be downed before the head takes damage. Aggregate
- * `hp` / `hpMax` = sum of layer hpMax (28). Helmaroc canon: WW masked
+ * `hp` / `hpMax` = sum of layer hpMax (28). Skrall canon: WW masked
  * roc; the iron mask shatters under sustained hit-pressure.
  */
-export const COLOSSEUM_HELMAROC_KING_T3: CombatBoss = {
+export const COLOSSEUM_SKRALL_KING_T3: CombatBoss = {
   hp: 28,
   hpMax: 28,
   attackPattern: {
@@ -93,11 +93,11 @@ export const COLOSSEUM_VOLTWYRM_T3: CombatBoss = {
  * Item-Check archetype — Guarded until a Bomb-tagged card breaks the
  * guard. Reuses Cinderwyrm T2's `'item-tag-bomb'` discriminant rather
  * than opening a one-boss `'item-tag-cinder-bloom'` subtag — bomb-
- * flowers read as bombs in the kw item vocabulary. Kalle Demos canon:
+ * flowers read as bombs in the kw item vocabulary. Vinemaw canon:
  * WW giant flytrap — bomb-flowers break the tentacles guarding the
  * vulnerable bud, then sword/Boomerang.
  */
-export const COLOSSEUM_KALLE_DEMOS_T3: CombatBoss = {
+export const COLOSSEUM_VINEMAW_T3: CombatBoss = {
   hp: 24,
   hpMax: 24,
   attackPattern: {
@@ -185,15 +185,15 @@ export const COLOSSEUM_IDOLARCH_T3: CombatBoss = {
 };
 
 /**
- * Tier-3 roster, ordered by the bead-stated designer ruling (Helmaroc
- * King → Voltwyrm → Kalle Demos → Sandscourge → Idolarch). Consumers
+ * Tier-3 roster, ordered by the bead-stated designer ruling (Skrall
+ * King → Voltwyrm → Vinemaw → Sandscourge → Idolarch). Consumers
  * iterate this tuple to build the tier-3 unlock pool when the
  * per-boss art batch registers the matching card data in `KID_CARDS`.
  */
 export const TIER_3_ROSTER = [
-  COLOSSEUM_HELMAROC_KING_T3,
+  COLOSSEUM_SKRALL_KING_T3,
   COLOSSEUM_VOLTWYRM_T3,
-  COLOSSEUM_KALLE_DEMOS_T3,
+  COLOSSEUM_VINEMAW_T3,
   COLOSSEUM_SANDSCOURGE_T3,
   COLOSSEUM_IDOLARCH_T3,
 ] as const satisfies readonly CombatBoss[];

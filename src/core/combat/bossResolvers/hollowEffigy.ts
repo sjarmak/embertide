@@ -29,7 +29,7 @@ export const HOLLOW_EFFIGY_MAX_DPT = 4;
 /**
  * Stable log fragments for resolver-test substring assertions.
  *
- * Tests in `combatEngine.gloomLinkResolver.test.ts` import these
+ * Tests in `combatEngine.hollowEffigyResolver.test.ts` import these
  * constants and assert `entry.includes(HOLLOW_EFFIGY_LOG_*)` instead of
  * hard-coding bare substring literals. The constant is the contract —
  * a flavor rephrasing that drops the fragment from the rendered log
@@ -38,7 +38,7 @@ export const HOLLOW_EFFIGY_MAX_DPT = 4;
 export const HOLLOW_EFFIGY_LOG_FINDS_NOTHING = 'finds nothing';
 export const HOLLOW_EFFIGY_LOG_MIRRORS_STRONGEST = 'mirrors your strongest';
 
-export function gloomLinkMirrorResolver(combat: CombatState): BossResolveOutcome {
+export function hollowEffigyMirrorResolver(combat: CombatState): BossResolveOutcome {
   const echo = combat.echoQueue ?? null;
   const staticDpt = combat.boss.attackPattern.damagePerTurn;
   let damage: number;

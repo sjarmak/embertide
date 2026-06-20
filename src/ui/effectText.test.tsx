@@ -279,9 +279,9 @@ describe('effectTextFor (shared effect-text module)', () => {
       // shape as plain wisp. Card-face text is the bespoke revive
       // string; the in-combat differentiation (combat-heal amount:5 vs
       // plain wisp's 3) surfaces on the combat-summary line.
-      const greatFairy = findCard('great-wisp');
-      expect(greatFairy.effects.kind).toBe('heal');
-      expect(effectTextFor(greatFairy)).toBe('Revive teammate to full HP');
+      const greatWisp = findCard('great-wisp');
+      expect(greatWisp.effects.kind).toBe('heal');
+      expect(effectTextFor(greatWisp)).toBe('Revive teammate to full HP');
     });
 
     it("wisp-in-bottle renders the bespoke 'refills 1×' revive string (ppf9.2)", () => {

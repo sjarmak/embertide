@@ -66,11 +66,11 @@ Vurmox's endgame slot gets a dedicated raster — not a shared altar frame:
 
 | Asset | Filename | Design |
 |-------|----------|--------|
-| Backdrop | `public/illustrations/cathedral_altar_destiny_vurmox_001.webp` | Ornate obsidian-and-gold altar with Demon King silhouette carved into the back wall, purple-amethyst flame motifs, Embertide fragment inset at the top, skulls/dark relics at the base. Ceremonial, climactic. Resolution 1536×2304 (1.5× larger than standard altars to match GanonDestinySlot's 1.5× scale from u-9d). |
+| Backdrop | `public/illustrations/cathedral_altar_destiny_vurmox_001.webp` | Ornate obsidian-and-gold altar with Demon King silhouette carved into the back wall, purple-amethyst flame motifs, Embertide fragment inset at the top, skulls/dark relics at the base. Ceremonial, climactic. Resolution 1536×2304 (1.5× larger than standard altars to match VurmoxDestinySlot's 1.5× scale from u-9d). |
 
 **CSS overlay** (on top of the raster): gold-flame mandala animation. Pure CSS (radial gradient + keyframe spin + conic-gradient for flame tongues). Spins slowly (8-10s cycle). Renders above the raster, below the boss portrait + HP text.
 
-**Wiring**: `src/ui/GanonDestinySlot.tsx` passes `ornamentSrc="/illustrations/cathedral_altar_destiny_vurmox_001.webp"` to BossAltarPane AND adds a dedicated `.destiny-mandala` overlay div between the ornament and the children. The mandala CSS lives in BossAltarPane.css under a `[data-variant="destiny"]` selector block.
+**Wiring**: `src/ui/VurmoxDestinySlot.tsx` passes `ornamentSrc="/illustrations/cathedral_altar_destiny_vurmox_001.webp"` to BossAltarPane AND adds a dedicated `.destiny-mandala` overlay div between the ornament and the children. The mandala CSS lives in BossAltarPane.css under a `[data-variant="destiny"]` selector block.
 
 ## Combat UI chrome upgrades (D4)
 
@@ -116,7 +116,7 @@ Per-asset prompts live in `src/illustration/examples/*.json` alongside the exist
 **Unit tests**:
 - `src/ui/BossAltarPane.test.tsx`: new tests for `ornamentSrc` prop — renders `<img>` when provided, omits when undefined, falls back on error.
 - `src/ui/CombatScreen.test.tsx`: extend with zone-aware background resolution test (mock `state.currentZone`, assert correct `src`).
-- `src/ui/GanonDestinySlot.test.tsx`: extend with DESTINY ornament + mandala overlay presence.
+- `src/ui/VurmoxDestinySlot.test.tsx`: extend with DESTINY ornament + mandala overlay presence.
 - `src/illustration/schema.test.ts`: validate new schema variants parse correctly.
 
 **Visual regression** (new):
@@ -124,7 +124,7 @@ Per-asset prompts live in `src/illustration/examples/*.json` alongside the exist
 - `tools/playtester/visual-combat-emberpeak.spec.ts` — same for Emberpeak.
 - `tools/playtester/visual-combat-temple.spec.ts` — same for Gilded Cage.
 - `tools/playtester/visual-altar-row.spec.ts` — screenshot boss altar row under Princess Crystal.
-- `tools/playtester/visual-destiny-slot.spec.ts` — screenshot GanonDestinySlot.
+- `tools/playtester/visual-destiny-slot.spec.ts` — screenshot VurmoxDestinySlot.
 
 Baseline screenshots commit into `tools/playtester/__snapshots__/`. First-run establishes baselines; subsequent runs assert pixel-diff within tolerance (~2% pixel difference allowed to accommodate font rendering variance across environments).
 
@@ -196,14 +196,14 @@ Each unit targets ≤600 lines diff, ≤8 files. All units sit on top of u-8/u-9
 - pnpm typecheck 0 errors, pnpm lint 0 warnings, pnpm test passes, pnpm playtest passes
 
 ### u-10d — DESTINY slot bespoke art (SMALL)
-**Scope**: `public/illustrations/cathedral_altar_destiny_vurmox_001.webp` (1 raster, new), `src/illustration/examples/cathedral_altar_destiny_vurmox.json`, `src/ui/BossAltarPane.css` (destiny variant extension), `src/ui/GanonDestinySlot.tsx`, `src/ui/GanonDestinySlot.test.tsx`.
+**Scope**: `public/illustrations/cathedral_altar_destiny_vurmox_001.webp` (1 raster, new), `src/illustration/examples/cathedral_altar_destiny_vurmox.json`, `src/ui/BossAltarPane.css` (destiny variant extension), `src/ui/VurmoxDestinySlot.tsx`, `src/ui/VurmoxDestinySlot.test.tsx`.
 **Deps**: u-10a, u-10c.
-**Description**: Generate the bespoke Vurmox DESTINY backdrop per §D3. Commit webp + JSON schema. Add `[data-variant="destiny"]` CSS block in BossAltarPane.css with the gold-flame mandala animation (8-10s rotation cycle, pure CSS). Wire GanonDestinySlot to pass the destiny ornament src. Add Playwright scenario.
+**Description**: Generate the bespoke Vurmox DESTINY backdrop per §D3. Commit webp + JSON schema. Add `[data-variant="destiny"]` CSS block in BossAltarPane.css with the gold-flame mandala animation (8-10s rotation cycle, pure CSS). Wire VurmoxDestinySlot to pass the destiny ornament src. Add Playwright scenario.
 **Acceptance**:
 - 1 webp committed — ≤250KB with alpha, 1536×2304 portrait, bespoke Vurmox obsidian-gold composition
 - 1 JSON schema committed with role=`destiny-altar`
 - BossAltarPane.css includes a `[data-variant="destiny"]` rule block with the gold-flame mandala overlay (radial gradient + conic-gradient + keyframes spin, 8-10s cycle)
-- GanonDestinySlot renders with the destiny backdrop raster AND the CSS mandala overlay
+- VurmoxDestinySlot renders with the destiny backdrop raster AND the CSS mandala overlay
 - 1 new Playwright scenario screenshots the DESTINY slot — asserts against baseline (use a debug seed where Sentinel + Silver Chimera are pre-defeated)
 - pnpm typecheck 0 errors, pnpm lint 0 warnings, pnpm test passes, pnpm playtest passes
 

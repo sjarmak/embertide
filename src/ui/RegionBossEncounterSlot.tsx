@@ -20,6 +20,7 @@ export default function RegionBossEncounterSlot(): JSX.Element {
           header="REGION BOSS"
           variant="region"
           disabled
+          backdropZoneId={state.zoneId}
           ariaLabel="Region encounter — cleared"
           testId="region-boss-slot"
         >
@@ -32,6 +33,7 @@ export default function RegionBossEncounterSlot(): JSX.Element {
           header="REGION BOSS"
           variant="region"
           unlockTurn={state.unlockTurn}
+          backdropZoneId={state.zoneId}
           testId="region-boss-slot-phase-locked"
         />
       );

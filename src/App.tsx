@@ -7,7 +7,7 @@ import Setup from './ui/Setup';
 import GameBoard from './ui/GameBoard';
 import Tutorial from './ui/Tutorial';
 import type { GameConfig } from './ui/GameConfig';
-import { HyrulianDefs } from './icons/defs';
+import { ElysianDefs } from './icons/defs';
 import { MotionRoot } from './motion/MotionRoot';
 import { useGameStore } from './store/gameStore';
 import { useTutorialStore } from './store/tutorialStore';
@@ -64,7 +64,7 @@ export default function App(): JSX.Element {
   return (
     <MotionRoot>
       <main data-testid="app-root" className="app-root">
-        <HyrulianDefs />
+        <ElysianDefs />
         {!setupDone ? (
           <Setup onStart={handleStart} />
         ) : (

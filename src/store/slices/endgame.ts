@@ -8,7 +8,7 @@ import type { KidGameState, KidPlayer } from '../types';
 /**
  * v2 co-op victory sentinel (amendment A2). Co-op victory requires all
  * three shared shards — `wisdom && courage && power` on
- * `state.sharedTriforce`. Exposed as a named constant so downstream
+ * `state.sharedEmbertide`. Exposed as a named constant so downstream
  * simulation harnesses and UX layers can reason about the target
  * without hardcoding `3` in multiple places.
  */
@@ -316,7 +316,7 @@ export function applyChampionPower(player: KidPlayer): KidPlayer {
  */
 export function checkCoopVictory(state: KidGameState): KidGameState {
   if (state.outcome !== null) return state;
-  const { wisdom, courage, power } = state.sharedTriforce;
+  const { wisdom, courage, power } = state.sharedEmbertide;
   if (wisdom && courage && power) {
     return { ...state, outcome: 'win' };
   }

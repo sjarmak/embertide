@@ -1,7 +1,10 @@
 import type { JSX } from 'react';
 import { ALWAYS_AVAILABLE, KEY_VENDOR_ID, VENDORS } from '../data/cards';
 import { GENERIC_BASE_ID_THEME } from '../theme/generic';
-import CardTemplate from './CardTemplate';
+import type { Card } from '../types/card';
+import { cardArtForCard } from './CardArt';
+import { cardDisplayName } from './CardTemplate';
+import type { ZoomedCardContext } from './Field';
 
 const TOUCH_TARGET_STYLE = {
   minWidth: 44,
@@ -38,6 +41,20 @@ export interface AlwaysAvailableRowProps {
    * states are preserved.
    */
   readonly compact?: boolean;
+  /**
+   * round2 (player layout pass): when provided, a tap on an expanded
+   * top-row card opens the shared CardDetailModal (full rules text +
+   * confirm button) instead of firing the buy/fight/trade immediately.
+   *
+   * The expanded top-row tiles render a NAME + IMAGE face only — the
+   * cramped, clipped rules text that the player flagged is gone. The
+   * full rules live in the zoom modal, one tap away. When omitted the
+   * row falls back to direct-dispatch clicks (tests / non-board hosts).
+   *
+   * Has no effect in `compact` mode (the collapsed chip strip keeps its
+   * own direct-dispatch behavior).
+   */
+  readonly onZoomCard?: (ctx: ZoomedCardContext) => void;
 }
 
 /**
@@ -54,7 +71,7 @@ export interface AlwaysAvailableRowProps {
 const COMPACT_CHIP_LABEL: Record<string, string> = {
   mystic: 'Oracle',
   'militia-grunt': 'Soldier',
-  'wild-wolf': 'Boko',
+  'wild-wolf': 'Scrab',
   'key-vendor': 'Pell',
 };
 
@@ -74,7 +91,14 @@ export default function AlwaysAvailableRow({
   onFight,
   onTrade,
   compact = false,
+  onZoomCard,
 }: AlwaysAvailableRowProps): JSX.Element {
+  // round2: expanded top-row tiles are now NAME + IMAGE only; the click
+  // opens the shared zoom modal for the full rules. Route through the
+  // modal only in expanded mode (the collapsed chip strip keeps direct
+  // dispatch). When no zoom handler is wired, fall back to direct
+  // dispatch so non-board hosts + unit tests keep working.
+  const useZoom = !compact && typeof onZoomCard === 'function';
   const tileClass = compact
     ? 'always-available-chip'
     : 'card-tile field-card-tile tap-target always-available-tile';
@@ -94,13 +118,23 @@ export default function AlwaysAvailableRow({
         const redCost = card.cost.red ?? 0;
         const disabled = isMonster ? red < redCost : green < greenCost;
 
-        const handleClick = (): void => {
+        const performAction = (): void => {
           if (isMonster) {
             onFight(card.id);
           } else {
             onBuy(card.id);
           }
         };
+
+        const handleClick = useZoom
+          ? () =>
+              onZoomCard?.({
+                card,
+                actionLabel: isMonster ? 'Fight' : 'Buy',
+                action: performAction,
+                disabled,
+              })
+          : performAction;
 
         return (
           <button
@@ -110,8 +144,15 @@ export default function AlwaysAvailableRow({
             data-testid={`always-available-${card.id}`}
             data-role={card.role}
             data-touch-target="true"
+            data-affordable={disabled ? 'false' : 'true'}
             style={TOUCH_TARGET_STYLE}
-            disabled={disabled}
+            // In zoom mode the tile is always clickable so the player can
+            // OPEN the card to read its rules even when they can't yet
+            // afford it; the affordability gate lives on the modal's action
+            // button (`disabled` passed into the zoom ctx). Direct-dispatch
+            // fallback keeps the native disabled gate.
+            disabled={useZoom ? false : disabled}
+            aria-haspopup={useZoom ? 'dialog' : undefined}
             onClick={handleClick}
           >
             {compact ? (
@@ -120,7 +161,7 @@ export default function AlwaysAvailableRow({
                 cost={isMonster ? `${redCost}r` : `${greenCost}g`}
               />
             ) : (
-              <CardTemplate card={card} />
+              <ExpandedFace card={card} cost={isMonster ? `${redCost}r` : `${greenCost}g`} />
             )}
           </button>
         );
@@ -129,11 +170,20 @@ export default function AlwaysAvailableRow({
         const greenCost = card.cost.green ?? 0;
         const isKeyVendor = card.id === KEY_VENDOR_ID;
         const disabled = green < greenCost || (isKeyVendor && usedKeyVendorThisTurn);
-        const handleClick = (): void => {
+        const performAction = (): void => {
           if (isKeyVendor) {
             onTrade(card.id);
           }
         };
+        const handleClick = useZoom
+          ? () =>
+              onZoomCard?.({
+                card,
+                actionLabel: 'Trade',
+                action: performAction,
+                disabled,
+              })
+          : performAction;
         return (
           <button
             key={card.id}
@@ -142,19 +192,47 @@ export default function AlwaysAvailableRow({
             data-testid={`always-available-${card.id}`}
             data-role="vendor"
             data-touch-target="true"
+            data-affordable={disabled ? 'false' : 'true'}
             style={TOUCH_TARGET_STYLE}
-            disabled={disabled}
+            disabled={useZoom ? false : disabled}
+            aria-haspopup={useZoom ? 'dialog' : undefined}
             onClick={handleClick}
           >
             {compact ? (
               <ChipFace label={chipLabel(card.id)} cost={`${greenCost}g`} />
             ) : (
-              <CardTemplate card={card} />
+              <ExpandedFace card={card} cost={`${greenCost}g`} />
             )}
           </button>
         );
       })}
     </div>
+  );
+}
+
+/**
+ * round2 (player layout pass): expanded top-row card face. NAME + IMAGE
+ * only — no rules-text plate. The player flagged the top row's rules
+ * text as "cut off in an ugly way" at the compact top-row footprint; the
+ * fix drops the cramped text entirely and surfaces the full rules via the
+ * click-to-expand zoom modal instead.
+ *
+ * Art is rendered art-forward (fills the tile) with a thin gold-leaded
+ * frame and a bottom name plate, mirroring the cathedral card vocabulary
+ * without the clipped effect copy.
+ */
+const EXPANDED_FACE_ART_SIZE = 120;
+
+function ExpandedFace({ card, cost }: { readonly card: Card; readonly cost: string }): JSX.Element {
+  const name = cardDisplayName(card);
+  return (
+    <span className="always-available-face" aria-hidden="false">
+      <span className="always-available-face-art" data-testid="always-available-face-art">
+        {cardArtForCard(card, EXPANDED_FACE_ART_SIZE)}
+        <span className="always-available-face-cost">{cost}</span>
+      </span>
+      <span className="always-available-face-name">{name}</span>
+    </span>
   );
 }
 

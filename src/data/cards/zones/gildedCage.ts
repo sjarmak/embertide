@@ -28,7 +28,7 @@
 
 import type { Card } from '../../../types/card';
 
-const templeOfTimeRegularsList: readonly Card[] = [
+const gildedCageRegularsList: readonly Card[] = [
   {
     // Laser turret — fires through the Temple's high halls. The "no
     // encounter hook" in v2.0 is represented as a plain baseline drop;
@@ -91,12 +91,12 @@ const templeOfTimeRegularsList: readonly Card[] = [
  * cards are accessed by id through `ZONE_METADATA['gilded-cage']
  * .regularEnemyIds`. The 5 cards here match `regularEnemyIds` exactly.
  */
-export const GILDED_CAGE_REGULARS: readonly Card[] = templeOfTimeRegularsList;
+export const GILDED_CAGE_REGULARS: readonly Card[] = gildedCageRegularsList;
 
 // Sentinel — Gilded Cage wild boss #1. `bossTier: 'wild-boss'` drives
 // the `applyBossDefeatHooks` wild-boss branch in combat.ts: appends 'sentinel'
 // to state.defeatedBossIds (the wild slot then advances to 'silver-chimera'
-// via `currentWildBossForZone`) and grants a fresh wisp via grantWildBossFairy.
+// via `currentWildBossForZone`) and grants a fresh wisp via grantWildBossWisp.
 // NO shard grant. Thematic: laser-beam defender of the cathedral interior —
 // the unique on-defeat effect is the elevated hearts=2 drop + wisp reward.
 //
@@ -148,9 +148,9 @@ const silverChimera: Card = {
 // applyBossDefeatHooks: recordBossDefeat + advanceZone. Because
 // gilded-cage is the terminal zone in ZONE_ORDER, advanceZone:
 //   (1) appends 'gilded-cage' to zoneHistory (u-5b amendment), and
-//   (2) fires checkCourageUnlock — which flips sharedTriforce.courage
+//   (2) fires checkCourageUnlock — which flips sharedEmbertide.courage
 //       to true the first time the full 3-zone sequence is in history.
-// combat.ts layers an EXPLICIT sharedTriforce.power = true flip on
+// combat.ts layers an EXPLICIT sharedEmbertide.power = true flip on
 // defeated.id === 'cagewright-vurmox' in the same defeat transaction —
 // Vurmox is the ONLY card in v2.0 that grants Power. Both shard flips
 // happen in one returned KidGameState.
@@ -193,7 +193,7 @@ const cagewrightVurmox: Card = {
 // 'prism-chimera' card — Prism Chimera is a SEPARATE
 // variant from the regular Silver Chimera, not a rainbow-coated silver
 // chimera). Dynamic-spawn encounter rolled once at Silver Chimera's
-// defeat via `computeGoldenRainbowLynelSpawnChance` in
+// defeat via `computePrismChimeraSpawnChance` in
 // src/rules/zones.ts; no longer part of Gilded Cage's FIFO
 // wild-boss queue. The encounter is intentionally OUTSIDE the normal
 // boss-band balance curve (u-9f) — a bonus climax once Silver Chimera
@@ -214,7 +214,7 @@ const cagewrightVurmox: Card = {
 // effect). Chimera-class Adaptive variant sitting one knob above
 // silver-chimera (penalty:3); the post-completion encounter earns the
 // tightest duel-discipline knob in v2.0. The dynamic-spawn path
-// (`computeGoldenRainbowLynelSpawnChance`, src/rules/zones.ts) reads
+// (`computePrismChimeraSpawnChance`, src/rules/zones.ts) reads
 // this spec via the same Card.id lookup so the lhlo.7 telegraph
 // affordance fires identically with the FIFO queue path.
 //

@@ -1,7 +1,7 @@
 # cathedral_colosseum_bg_tier4
 
 - **Bead:** embertide-y3no
-- **Surface:** Colosseum combat backdrop, Tier 4 (cursed tier — Ossiarch / The Imprisoned / Pyrax / Oblivar)
+- **Surface:** Colosseum combat backdrop, Tier 4 (cursed tier — Ossiarch / The Fettered / Pyrax / Oblivar)
 - **Model:** fal-ai/nano-banana-pro
 - **Params:** `aspect_ratio=21:9`, `output_format=webp`, `resolution=2K`, `num_images=1`
 - **Raster:** `public/illustrations/cathedral_colosseum_bg_tier4_001.webp`

@@ -24,7 +24,7 @@
  * Boots `?debug=embertide-filled` purely because that seed initializes a
  * 2P game AND exposes `window.__gameStore` for `page.evaluate` access.
  * The embertide shards it sets are irrelevant — this probe never reads
- * `sharedTriforce` and resets `princessCrystal` to its canonical
+ * `sharedEmbertide` and resets `princessCrystal` to its canonical
  * (charges=8, freed=false) state at the top of every arm.
  *
  * The probe simulates a sequence of "kills" against a bootstrapped 2P

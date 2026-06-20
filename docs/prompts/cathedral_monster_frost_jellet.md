@@ -1,6 +1,6 @@
 # cathedral_monster_frost_jellet
 
-- **Bead:** embertide-deip (regen v7 — re-cast as a true frost RECOLOR of cathedral_monster_jellet: identical dome form + simple dark sensing-orbs, NOT the prior big concentric-ring "chuchu" eyes)
+- **Bead:** embertide-deip (regen v7 — re-cast as a true frost RECOLOR of cathedral_monster_jellet: identical dome form + simple dark sensing-orbs, NOT the prior big concentric-ring "jellet" eyes)
 - **Card:** frost-jellet (Tidehold regular, u-6a)
 - **Model:** fal-ai/nano-banana-pro
 - **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`

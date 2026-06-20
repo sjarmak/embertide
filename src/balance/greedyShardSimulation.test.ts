@@ -533,7 +533,7 @@ const VURMOX_HEIRLOOM_OBSERVATIONAL_POINTS: readonly number[] = [1, 3];
  * its own curve — the region-boss curve is tuned for broodmaw + ashen-tyrant
  * only, while Vurmox's curve reflects the final-boss gate design.
  */
-function ganonWinRatePooled(heirloomCount: number): number {
+function vurmoxWinRatePooled(heirloomCount: number): number {
   let wins = 0;
   let total = 0;
   for (const strategy of COMBAT_ENGAGING_STRATEGIES) {
@@ -547,9 +547,9 @@ function ganonWinRatePooled(heirloomCount: number): number {
 }
 
 describe('vurmox heirloom win-rate curve (0wc, REQ-32 endgame gate)', () => {
-  const ganonRates = new Map<number, number>();
+  const vurmoxRates = new Map<number, number>();
   for (const point of VURMOX_HEIRLOOM_CURVE) {
-    ganonRates.set(point.count, ganonWinRatePooled(point.count));
+    vurmoxRates.set(point.count, vurmoxWinRatePooled(point.count));
   }
 
   // Log observed rates for the audit trail.
@@ -557,14 +557,14 @@ describe('vurmox heirloom win-rate curve (0wc, REQ-32 endgame gate)', () => {
     '[0wc] vurmox heirloom win-rate curve (pooled across map-rush/power-rush/mixed vs cagewright-vurmox):',
   );
   for (const point of VURMOX_HEIRLOOM_CURVE) {
-    const rate = ganonRates.get(point.count)!;
+    const rate = vurmoxRates.get(point.count)!;
     console.log(
       `[0wc]   ${point.count} heirlooms → win rate ${(rate * 100).toFixed(1)}% (target [${(point.minRate * 100).toFixed(0)}%, ${(point.maxRate * 100).toFixed(0)}%])`,
     );
   }
   // Observational-only points (audit trail; not asserted).
   for (const count of VURMOX_HEIRLOOM_OBSERVATIONAL_POINTS) {
-    const rate = ganonWinRatePooled(count);
+    const rate = vurmoxWinRatePooled(count);
     console.log(
       `[0wc]   ${count} heirlooms → win rate ${(rate * 100).toFixed(1)}% (observational, not asserted)`,
     );
@@ -572,16 +572,16 @@ describe('vurmox heirloom win-rate curve (0wc, REQ-32 endgame gate)', () => {
 
   for (const point of VURMOX_HEIRLOOM_CURVE) {
     it(`vurmox ${point.count} heirlooms: win rate within [${(point.minRate * 100).toFixed(0)}%, ${(point.maxRate * 100).toFixed(0)}%]`, () => {
-      const rate = ganonRates.get(point.count)!;
+      const rate = vurmoxRates.get(point.count)!;
       expect(rate).toBeGreaterThanOrEqual(point.minRate);
       expect(rate).toBeLessThanOrEqual(point.maxRate);
     });
   }
 
   it('vurmox heirloom uplift is monotonic (0 < 2 < 4)', () => {
-    const r0 = ganonRates.get(0)!;
-    const r2 = ganonRates.get(2)!;
-    const r4 = ganonRates.get(4)!;
+    const r0 = vurmoxRates.get(0)!;
+    const r2 = vurmoxRates.get(2)!;
+    const r4 = vurmoxRates.get(4)!;
     expect(r0).toBeLessThan(r2);
     expect(r2).toBeLessThan(r4);
   });

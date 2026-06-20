@@ -23,17 +23,17 @@ import { heroes } from './heroes';
 import {
   items,
   wisp,
-  greatFairy,
-  fairyInBottle,
+  greatWisp,
+  wispInBottle,
   blacksmithForge,
   ritualRelic,
   ancientBlade,
 } from './items';
 import { itemPassiveConstructs, itemPassiveRelics } from './passives';
 import { monsters, miniBosses, finalBoss } from './monsters';
-import { kokiriRegulars, kokiriBosses } from './zones/sylvani';
-import { deathMountainRegulars, boulderkin, ashenTyrant } from './zones/emberpeak';
-import { zoraRegulars, maelstrom, tidewraith } from './zones/maren';
+import { sylvaniRegulars, sylvaniBosses } from './zones/sylvani';
+import { emberpeakRegulars, boulderkin, ashenTyrant } from './zones/emberpeak';
+import { marenRegulars, maelstrom, tidewraith } from './zones/maren';
 import { shadowRegulars, hollowEffigy, knell } from './zones/shadow';
 import { spiritRegulars, ironSentinel, hextwins } from './zones/spirit';
 import { GILDED_CAGE_BOSSES } from './zones/gildedCage';
@@ -45,8 +45,8 @@ import { colosseumCards } from './colosseum';
 // Public surface re-exports (kept stable for the 49 consumer files).
 export {
   wisp,
-  greatFairy,
-  fairyInBottle,
+  greatWisp,
+  wispInBottle,
   blacksmithForge,
   ritualRelic,
   ancientBlade,
@@ -109,8 +109,8 @@ export const KID_CARDS: readonly Card[] = [
   ...chests,
   wisp,
   // v2.1 gm0.16 wisp variants. Both drop-only items (not in SUPPLY_PLAN).
-  greatFairy,
-  fairyInBottle,
+  greatWisp,
+  wispInBottle,
   // embertide-91p (b): banish-from-hand item-active cards. Drop-only
   // (NOT in SUPPLY_PLAN) so they don't perturb the market shuffle but
   // remain accessible by id for catalog tests + future drop-source
@@ -123,10 +123,10 @@ export const KID_CARDS: readonly Card[] = [
   ...itemPassiveConstructs,
   ...itemPassiveRelics,
   // u-6a Sylvanwood content (amendment A5).
-  ...kokiriRegulars,
-  ...kokiriBosses,
+  ...sylvaniRegulars,
+  ...sylvaniBosses,
   // u-6b Emberpeak content (amendment A5).
-  ...deathMountainRegulars,
+  ...emberpeakRegulars,
   boulderkin,
   ashenTyrant,
   // gdd.1 Tidehold content (v2.1 zone 3). Mirrors the Death
@@ -134,7 +134,7 @@ export const KID_CARDS: readonly Card[] = [
   // by-id lookups resolve (zone-spawn surface still reads them via
   // ZONE_METADATA.maren). Distinct from gilded-cage regulars which
   // stay out of KID_CARDS — the design choice diverges by zone.
-  ...zoraRegulars,
+  ...marenRegulars,
   maelstrom,
   tidewraith,
   // gdd.2 Hollow Shrine content (v2.1 zone 4). Same shape as Maren —

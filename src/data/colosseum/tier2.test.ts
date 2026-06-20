@@ -6,7 +6,7 @@
  *
  * Tier-2 expands the vocabulary smoke-test (tier1.ts → v8ei) with
  * Item-Check + Sequence + a second Layered + a second Duel + Swarm
- * (Dead Hand, 5fgl after kw.boss-state-swarm 1pyu landed) — proving
+ * (Palegrasp, 5fgl after kw.boss-state-swarm 1pyu landed) — proving
  * the keyword substrate scales beyond the entry tier without churn.
  *
  * Numbers are illustrative — they're not asserted, just the SHAPE.
@@ -16,7 +16,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   COLOSSEUM_BLACKGUARD_T2,
-  COLOSSEUM_DEAD_HAND_T2,
+  COLOSSEUM_PALEGRASP_T2,
   COLOSSEUM_CHIMERA_T2,
   COLOSSEUM_PHANTOM_VURMOX_T2,
   COLOSSEUM_CINDERWYRM_T2,
@@ -37,7 +37,7 @@ describe('colosseum tier-2 spec — vocabulary smoke-test', () => {
     expect(TIER_2_ROSTER[1]).toBe(COLOSSEUM_BLACKGUARD_T2);
     expect(TIER_2_ROSTER[2]).toBe(COLOSSEUM_CINDERWYRM_T2);
     expect(TIER_2_ROSTER[3]).toBe(COLOSSEUM_PHANTOM_VURMOX_T2);
-    expect(TIER_2_ROSTER[4]).toBe(COLOSSEUM_DEAD_HAND_T2);
+    expect(TIER_2_ROSTER[4]).toBe(COLOSSEUM_PALEGRASP_T2);
   });
 
   it('Chimera is Duel archetype with an adaptive tag carrying a penalty (sharper than Bonereaver T1)', () => {
@@ -84,15 +84,15 @@ describe('colosseum tier-2 spec — vocabulary smoke-test', () => {
     );
   });
 
-  it('Dead Hand is Swarm archetype with parallel finger minions', () => {
-    expect(COLOSSEUM_DEAD_HAND_T2.archetype).toBe('swarm');
-    expect(tagKinds(COLOSSEUM_DEAD_HAND_T2)).toEqual(['swarm']);
+  it('Palegrasp is Swarm archetype with parallel finger minions', () => {
+    expect(COLOSSEUM_PALEGRASP_T2.archetype).toBe('swarm');
+    expect(tagKinds(COLOSSEUM_PALEGRASP_T2)).toEqual(['swarm']);
 
-    const swarmTag = COLOSSEUM_DEAD_HAND_T2.stateTags?.[0];
+    const swarmTag = COLOSSEUM_PALEGRASP_T2.stateTags?.[0];
     if (swarmTag?.kind !== 'swarm') throw new Error('expected swarm tag');
     expect(swarmTag.minions.length).toBeGreaterThanOrEqual(2);
     expect(swarmTag.minions.every((m) => !m.defeated)).toBe(true);
-    // Canon Dead Hand: head + finger minions; central head is the
+    // Canon Palegrasp: head + finger minions; central head is the
     // boss's own hp/hpMax channel, the minions parallel-coexist.
     expect(swarmTag.minions.every((m) => m.hp === m.hpMax)).toBe(true);
   });

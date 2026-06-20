@@ -35,7 +35,7 @@ export type {
   CombatTurnAction,
 } from './combat/types';
 
-export { baseIdOf, isFairyCard } from './combat/identity';
+export { baseIdOf, isWispCard } from './combat/identity';
 
 export { mulberry32, buildCombatDeck, initialCombatDraw } from './combat/deck';
 
@@ -52,7 +52,7 @@ export {
   TIDEWRAITH_TENTACLE_GRAB_BASE_DPT,
   TIDEWRAITH_TENTACLE_GRAB_MAX_DPT,
   TIDEWRAITH_TENTACLE_GRAB_HIGH_TIDE_THRESHOLD,
-  morphaTentacleGrabDpt,
+  tidewraithTentacleGrabDpt,
   TIDEWRAITH_LOG_TELEGRAPH_PREFIX,
   TIDEWRAITH_LOG_WILL_HIT,
   TIDEWRAITH_LOG_TENTACLES_DRAG,

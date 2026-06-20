@@ -254,7 +254,7 @@ export function applyDebugSeed(seed: DebugSeed): boolean {
   if (seed === 'vurmox-destiny') {
     // REQ-33 (u-10d, PRD §D3) — Drop the player on the main GameBoard in
     // the Gilded Cage with BOTH Temple wild bosses already defeated
-    // so GameBoard mounts GanonDestinySlot. No COMBAT_ENTER dispatch —
+    // so GameBoard mounts VurmoxDestinySlot. No COMBAT_ENTER dispatch —
     // the destiny visual spec screenshots the altar slot itself, not a
     // combat scene. Same 2-player init + hero-seeding shape as the
     // other seeds for consistent pane dimensions.
@@ -281,7 +281,7 @@ export function applyDebugSeed(seed: DebugSeed): boolean {
       };
     });
     // Set currentZone + defeatedBossIds together so GameBoard's
-    // conditional mount (Temple + wilds-cleared → GanonDestinySlot)
+    // conditional mount (Temple + wilds-cleared → VurmoxDestinySlot)
     // triggers on the first render after the setState. Re-read pattern
     // mirrors the u-10b round-3 combat seeds for consistency even
     // though we don't dispatch COMBAT_ENTER here.
@@ -417,11 +417,11 @@ export function applyDebugSeed(seed: DebugSeed): boolean {
     if (seed === 'embertide-filled') {
       // All three shared shards granted. GameBoard's win-check will flip
       // `outcome = 'win'` on next action, so screenshots should capture
-      // the board BEFORE any input. The TriforceStrip renders all three
+      // the board BEFORE any input. The EmbertideStrip renders all three
       // filled-shard SVGs regardless of outcome.
       useGameStore.setState({
         ...freshState,
-        sharedTriforce: { wisdom: true, courage: true, power: true },
+        sharedEmbertide: { wisdom: true, courage: true, power: true },
       });
       return true;
     }

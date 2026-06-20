@@ -11,7 +11,7 @@
  *       cap-overflow path to teammate / silent-drop.
  *   (e) Ashen Tyrant defeat via fightMonster triggers advanceZone
  *       (emberpeak → gilded-cage)
- *   (f) Neither wild-boss nor region-boss defeat flips any sharedTriforce
+ *   (f) Neither wild-boss nor region-boss defeat flips any sharedEmbertide
  *   (g) REQ-32 (u-9a): the canSpawnRegionBoss gate is retired. Selector
  *       coverage (currentWildBossForZone / currentRegionBossForZone)
  *       lives in src/rules/zones.test.ts.
@@ -171,11 +171,11 @@ describe('u-6b boulderkin wild boss (b)', () => {
   it('red cost is tougher than any regular — at least 2× the highest regular red cost', () => {
     const regularReds = [SAURIAN, ASHJAW, SKITTERMITE, RED_SQUIDLET].map((c) => c?.cost.red ?? 0);
     const highestRegularRed = Math.max(...regularReds);
-    const stoneTalusRed = BOULDERKIN?.cost.red ?? 0;
-    expect(stoneTalusRed).toBeGreaterThanOrEqual(highestRegularRed * 2);
+    const boulderkinRed = BOULDERKIN?.cost.red ?? 0;
+    expect(boulderkinRed).toBeGreaterThanOrEqual(highestRegularRed * 2);
     // Balance target 9-12.
-    expect(stoneTalusRed).toBeGreaterThanOrEqual(9);
-    expect(stoneTalusRed).toBeLessThanOrEqual(12);
+    expect(boulderkinRed).toBeGreaterThanOrEqual(9);
+    expect(boulderkinRed).toBeLessThanOrEqual(12);
   });
 
   it('does NOT declare a shard grant on its effects', () => {
@@ -215,7 +215,7 @@ describe('u-6b ashen-tyrant region boss (c)', () => {
 // (d) Boulderkin defeat → wisp drop with 3-cap routing.
 // ---------------------------------------------------------------------------
 
-function buildStoneTalusInField(
+function buildBoulderkinInField(
   overrides: Partial<KidGameState> = {},
   p0Overrides: Partial<KidPlayer> = {},
   p1Overrides: Partial<KidPlayer> = {},
@@ -230,7 +230,7 @@ function buildStoneTalusInField(
 
 describe('u-6b Boulderkin defeat grants a fresh wisp (d)', () => {
   it('(d.1) defeater with an empty items zone receives the wisp', () => {
-    const state = buildStoneTalusInField({}, { red: 20, items: [] });
+    const state = buildBoulderkinInField({}, { red: 20, items: [] });
     const next = fightMonster(state, 0, 'boulderkin');
     expect(next.players[0].items).toHaveLength(1);
     expect(baseIdOf(next.players[0].items[0])).toBe('wisp');
@@ -247,7 +247,7 @@ describe('u-6b Boulderkin defeat grants a fresh wisp (d)', () => {
       { ...(SAURIAN as Card), id: 'filler-b' },
       { ...(SAURIAN as Card), id: 'filler-c' },
     ];
-    const state = buildStoneTalusInField({}, { red: 20, items: fillers }, { red: 0, items: [] });
+    const state = buildBoulderkinInField({}, { red: 20, items: fillers }, { red: 0, items: [] });
     const next = fightMonster(state, 0, 'boulderkin');
     // Defeater receives the wisp on top of the 3 fillers (no cap).
     expect(next.players[0].items).toHaveLength(4);
@@ -257,7 +257,7 @@ describe('u-6b Boulderkin defeat grants a fresh wisp (d)', () => {
   });
 
   it('Boulderkin defeat appends "boulderkin" to defeatedBossIds and does NOT advance the zone', () => {
-    const state = buildStoneTalusInField();
+    const state = buildBoulderkinInField();
     const next = fightMonster(state, 0, 'boulderkin');
     expect(next.defeatedBossIds).toContain('boulderkin');
     expect(next.currentZone).toBe('emberpeak');
@@ -271,12 +271,12 @@ describe('u-6b Boulderkin defeat grants a fresh wisp (d)', () => {
 
 describe('u-6b Ashen Tyrant defeat triggers advanceZone (e)', () => {
   it('emberpeak → gilded-cage on region-boss kill (with boulderkin already defeated)', () => {
-    const dodongoCard = { ...(ASHEN_TYRANT as Card) };
+    const ashjawCard = { ...(ASHEN_TYRANT as Card) };
     const state = makeState({
       players: [makePlayer({ id: 'p0', red: 20, keys: 5 }), makePlayer({ id: 'p1' })],
       currentZone: 'emberpeak',
       zoneHistory: ['sylvani'],
-      field: [dodongoCard],
+      field: [ashjawCard],
       // Boulderkin already cleared — mirrors the typical wild-then-region
       // clear flow. Post-REQ-32 the region slot is always engageable;
       // keeping this pre-seed preserves the test's narrative intent.
@@ -292,27 +292,27 @@ describe('u-6b Ashen Tyrant defeat triggers advanceZone (e)', () => {
 });
 
 // ---------------------------------------------------------------------------
-// (f) sharedTriforce unchanged across either defeat.
+// (f) sharedEmbertide unchanged across either defeat.
 // ---------------------------------------------------------------------------
 
-describe('u-6b wild + region boss defeats do NOT flip any sharedTriforce flag (f)', () => {
-  it('Boulderkin defeat leaves sharedTriforce {wisdom,courage,power}=false', () => {
-    const state = buildStoneTalusInField();
+describe('u-6b wild + region boss defeats do NOT flip any sharedEmbertide flag (f)', () => {
+  it('Boulderkin defeat leaves sharedEmbertide {wisdom,courage,power}=false', () => {
+    const state = buildBoulderkinInField();
     const next = fightMonster(state, 0, 'boulderkin');
-    expect(next.sharedTriforce).toEqual({
+    expect(next.sharedEmbertide).toEqual({
       wisdom: false,
       courage: false,
       power: false,
     });
   });
 
-  it('Ashen Tyrant defeat leaves sharedTriforce {wisdom,courage,power}=false (zone advances, no shard)', () => {
-    const dodongoCard = { ...(ASHEN_TYRANT as Card) };
+  it('Ashen Tyrant defeat leaves sharedEmbertide {wisdom,courage,power}=false (zone advances, no shard)', () => {
+    const ashjawCard = { ...(ASHEN_TYRANT as Card) };
     const state = makeState({
       players: [makePlayer({ id: 'p0', red: 20, keys: 5 }), makePlayer({ id: 'p1' })],
       currentZone: 'emberpeak',
       zoneHistory: ['sylvani'],
-      field: [dodongoCard],
+      field: [ashjawCard],
       defeatedBossIds: ['boulderkin'],
     });
     const next = fightMonster(state, 0, 'ashen-tyrant');
@@ -324,9 +324,9 @@ describe('u-6b wild + region boss defeats do NOT flip any sharedTriforce flag (f
     // the u-5b Courage unlock fires only when the full 4-zone sequence
     // is in zoneHistory. After this call:
     //   zoneHistory = ['sylvani', 'emberpeak']   ← maren + gilded-cage still missing
-    expect(next.sharedTriforce.wisdom).toBe(false);
-    expect(next.sharedTriforce.courage).toBe(false);
-    expect(next.sharedTriforce.power).toBe(false);
+    expect(next.sharedEmbertide.wisdom).toBe(false);
+    expect(next.sharedEmbertide.courage).toBe(false);
+    expect(next.sharedEmbertide.power).toBe(false);
   });
 });
 

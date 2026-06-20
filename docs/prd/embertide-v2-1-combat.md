@@ -6,7 +6,7 @@
 
 ## Background
 
-v2.0 shipped the co-op + map structure (`sharedTriforce`, 3-zone spine, HPStrip, downed/revive/wisp state). `applyDamage()` is implemented + exported but never called by any gameplay mechanic, so hearts drops silently clamp against `hpMax` and HPStrip reads as decoration (bug `embertide-q00`).
+v2.0 shipped the co-op + map structure (`sharedEmbertide`, 3-zone spine, HPStrip, downed/revive/wisp state). `applyDamage()` is implemented + exported but never called by any gameplay mechanic, so hearts drops silently clamp against `hpMax` and HPStrip reads as decoration (bug `embertide-q00`).
 
 **REQ-31** is the structural resolution: when a Wild Boss or Region Boss is engaged from the main board, the game transitions into a **bounded combat sub-state**. Combat uses a deck curated from gathered cards, a boss turn loop that routes damage via `applyDamage` (resolving q00 structurally), and returns to the main board with a structured `CombatResult`.
 
@@ -186,7 +186,7 @@ Each unit targets ≤600 lines diff, ≤8 files (A11 context-window fit).
 - Regular-tier beasts keep existing instant-resolution path (no behavior change)
 - `COMBAT_RESOLVE_WIN` reducer applies hearts drop respecting hpMax cap
 - `COMBAT_RESOLVE_WIN` drops wisp for wild-boss (`KidPlayer.items` gains wisp card)
-- `COMBAT_RESOLVE_WIN` grants shard for region-boss (`sharedTriforce` increments correctly: Power on Vurmox, Courage on Gilded-cage clear)
+- `COMBAT_RESOLVE_WIN` grants shard for region-boss (`sharedEmbertide` increments correctly: Power on Vurmox, Courage on Gilded-cage clear)
 - `COMBAT_RESOLVE_WIN` advances zone for region-boss (per A5)
 - `COMBAT_RESOLVE_WIN` sets `activeCombat = null`
 - `COMBAT_RESOLVE_LOSS` ensures `checkCoopLoss` ran; sets `activeCombat = null`

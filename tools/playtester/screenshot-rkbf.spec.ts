@@ -8,7 +8,7 @@
  *
  *   1. full board                        — .screenshots/rkbf-fullboard-1280x800.png
  *   2. populated in-play (shard tile)    — .screenshots/rkbf-shard-inplay.png
- *   3. trays-row close-up (GreenRupee
+ *   3. trays-row close-up (GreenShard
  *      counter icon)                     — .screenshots/rkbf-trays-row.png
  *   4. hand-row close-up (shard in hand) — .screenshots/rkbf-hand-row.png
  *   5. card-detail modal (zoom on the
@@ -70,7 +70,7 @@ test('rkbf — vertical-hex shard on hand, in-play, tray, and card-detail', asyn
   await expect(inPlay).toBeVisible();
   await inPlay.screenshot({ path: '.screenshots/rkbf-shard-inplay.png' });
 
-  // 3. Trays-row close-up — verifies the GreenRupee tray-counter icon
+  // 3. Trays-row close-up — verifies the GreenShard tray-counter icon
   //    rendered with the new vertical-hex silhouette.
   const traysRow = page.locator('.trays-row');
   await traysRow.screenshot({ path: '.screenshots/rkbf-trays-row.png' });

@@ -17,7 +17,7 @@
 
 /**
  * Per-layer HP shape used by `BossStateLayered` (Boulderkin
- * shell→core, Helmaroc King mask→head, Blackguard armor-strip, Idolarch
+ * shell→core, Skrall King mask→head, Blackguard armor-strip, Idolarch
  * arm-by-arm). Layers resolve outermost-first — the first
  * non-`defeated` layer absorbs incoming damage; subsequent layers stay
  * untargetable until the layer in front of them is downed.
@@ -100,7 +100,7 @@ export interface BossStateBreak {
 
 /**
  * Multi-part boss with explicit per-layer HP (Layered archetype —
- * Boulderkin, Blackguard, Helmaroc King, Idolarch, Ossiarch, Sandscourge,
+ * Boulderkin, Blackguard, Skrall King, Idolarch, Ossiarch, Sandscourge,
  * Malgar). The reducer routes incoming damage to the first
  * non-defeated layer.
  */
@@ -111,7 +111,7 @@ export interface BossStateLayered {
 
 /**
  * Ordered-step state (Sequence archetype — Hextwins fire-ice-fire,
- * Phantom Vurmox ball-volley, The Imprisoned toe-cycle, Oblivar
+ * Phantom Vurmox ball-volley, The Fettered toe-cycle, Oblivar
  * charge-lightning-sword, Trinity Aurogax 3-head rotation). Each step
  * id is a free string at the type level; resolver beads bind them to
  * concrete attack-pattern resolvers.
@@ -137,7 +137,7 @@ export interface BossStateAdaptive {
 }
 
 /**
- * Parallel-minion state (Swarm archetype — Dead Hand finger-fields,
+ * Parallel-minion state (Swarm archetype — Palegrasp finger-fields,
  * Idolarch detachable arms, Gyorg minor-fish). Holds the set of
  * minions that coexist alongside the central boss. Distinct from
  * `BossStateLayered` — Layered routes damage outermost-first
@@ -166,7 +166,7 @@ export interface BossStateSwarm {
  *  - Eye boss: `[guarded, cycle]` until threshold flips to `[exposed]`.
  *  - Layered Item-Check boss: `[guarded(until:item-tag), layered]`.
  *  - Adaptive Sequence boss (capstone): `[adaptive, sequence]`.
- *  - Swarm boss: `[swarm]` with minions list (Dead Hand fingers).
+ *  - Swarm boss: `[swarm]` with minions list (Palegrasp fingers).
  */
 export type BossStateTag =
   | BossStateGuarded
@@ -196,16 +196,16 @@ export type BossStateTagKind = BossStateTag['kind'];
  *  - `'eye'`        — Guarded + Cycle → Exposed window (Craghorn, Broodmaw,
  *                     Coilworm, Pyrax).
  *  - `'item-check'` — Guarded until specific item-tag breaks the guard
- *                     (Cinderwyrm, Kalle Demos, Voltwyrm).
+ *                     (Cinderwyrm, Vinemaw, Voltwyrm).
  *  - `'layered'`    — Multi-part Shell → Core (Boulderkin, Blackguard,
- *                     Helmaroc King, Idolarch, Ossiarch, Sandscourge,
+ *                     Skrall King, Idolarch, Ossiarch, Sandscourge,
  *                     Malgar).
  *  - `'sequence'`   — Ordered step rotation (Phantom Vurmox, The
  *                     Imprisoned, Oblivar, Trinity Aurogax).
  *  - `'duel'`       — Adaptive — repeated card-kinds get a penalty
  *                     (Chimera, Bonereaver, Vexel).
  *  - `'swarm'`      — Minions + AoE-vs-single-target tradeoff
- *                     (Dead Hand, Idolarch, Gyorg).
+ *                     (Palegrasp, Idolarch, Gyorg).
  *
  * Used by the engine for resolver-routing and by the UI for
  * archetype-themed telegraph affordances. Literal-union (rather than

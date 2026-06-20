@@ -62,7 +62,7 @@ function makeLayeredBoss(args: {
 }
 
 /** A minimal two-layer boss: outer shell (8 HP) → inner core (12 HP). */
-function makeStoneTalusLike(): CombatBoss {
+function makeBoulderkinLike(): CombatBoss {
   return makeLayeredBoss({
     layers: [
       { id: 'shell', name: 'Ore Shell', hp: 8, hpMax: 8, defeated: false },
@@ -112,7 +112,7 @@ describe('applyLayeredArchetypeTick — non-Layered no-op cases', () => {
 
 describe('applyLayeredArchetypeTick — layered tick is a same-reference no-op', () => {
   it('returns the SAME reference for a layered boss (no end-of-turn state change)', () => {
-    const boss = makeStoneTalusLike();
+    const boss = makeBoulderkinLike();
     const result = applyLayeredArchetypeTick(boss);
     expect(result).toBe(boss);
   });
@@ -129,7 +129,7 @@ describe('applyLayeredArchetypeTick — layered tick is a same-reference no-op',
   });
 
   it('ARCHETYPE_RESOLVERS has a layered entry and applyArchetypeTick dispatches it', () => {
-    const boss = makeStoneTalusLike();
+    const boss = makeBoulderkinLike();
     // applyArchetypeTick must find the 'layered' resolver and call it
     // (which is a same-reference no-op for layered).
     const result = applyArchetypeTick(boss);
@@ -157,12 +157,12 @@ describe('routeLayeredDamage — no-op cases', () => {
   });
 
   it('returns same reference when damage is 0', () => {
-    const boss = makeStoneTalusLike();
+    const boss = makeBoulderkinLike();
     expect(routeLayeredDamage(boss, 0)).toBe(boss);
   });
 
   it('returns same reference when damage is negative', () => {
-    const boss = makeStoneTalusLike();
+    const boss = makeBoulderkinLike();
     expect(routeLayeredDamage(boss, -3)).toBe(boss);
   });
 
@@ -182,7 +182,7 @@ describe('routeLayeredDamage — no-op cases', () => {
 
 describe('routeLayeredDamage — damage routes to the outermost non-defeated layer', () => {
   it('partial damage to outer layer: reduces shell HP, leaves core untouched', () => {
-    const boss = makeStoneTalusLike();
+    const boss = makeBoulderkinLike();
     const next = routeLayeredDamage(boss, 3);
 
     const layeredTag = next.stateTags?.find((t) => t.kind === 'layered');
@@ -205,7 +205,7 @@ describe('routeLayeredDamage — damage routes to the outermost non-defeated lay
   });
 
   it('exact-kill outer layer: shell hp → 0, shell defeated, core untouched', () => {
-    const boss = makeStoneTalusLike();
+    const boss = makeBoulderkinLike();
     const next = routeLayeredDamage(boss, 8);
 
     const layeredTag = next.stateTags?.find((t) => t.kind === 'layered');
@@ -218,7 +218,7 @@ describe('routeLayeredDamage — damage routes to the outermost non-defeated lay
   });
 
   it('overflow: damage exceeds shell HP, surplus carries to core', () => {
-    const boss = makeStoneTalusLike(); // shell=8, core=12
+    const boss = makeBoulderkinLike(); // shell=8, core=12
     const next = routeLayeredDamage(boss, 10); // 8 kills shell, 2 overflow to core
 
     const layeredTag = next.stateTags?.find((t) => t.kind === 'layered');
@@ -274,7 +274,7 @@ describe('routeLayeredDamage — core (last layer) death ends the fight', () => 
   });
 
   it('one-shot through both layers: boss.hp = 0', () => {
-    const boss = makeStoneTalusLike(); // shell=8, core=12
+    const boss = makeBoulderkinLike(); // shell=8, core=12
     const next = routeLayeredDamage(boss, 9999);
     expect(next.hp).toBe(0);
     const layeredTag = next.stateTags?.find((t) => t.kind === 'layered');
@@ -326,14 +326,14 @@ describe('routeLayeredDamage — multi-layer overflow sequencing', () => {
 
 describe('routeLayeredDamage — immutability', () => {
   it('returns a new boss object (not the same reference) on damage', () => {
-    const boss = makeStoneTalusLike();
+    const boss = makeBoulderkinLike();
     const next = routeLayeredDamage(boss, 3);
     expect(next).not.toBe(boss);
     expect(next.stateTags).not.toBe(boss.stateTags);
   });
 
   it('original boss layers are untouched after routing', () => {
-    const boss = makeStoneTalusLike();
+    const boss = makeBoulderkinLike();
     const tag0 = boss.stateTags![0];
     if (tag0.kind !== 'layered') throw new Error('expected layered tag');
     const originalShellHp = tag0.layers[0].hp;
@@ -434,9 +434,9 @@ describe('zone-gating regression — layered zone boss without allowlist activat
     //
     // This test asserts the zone layered boss (iron-sentinel) has a layered
     // spec defined (so activation CAN wire it), but only when zone is in allowlist.
-    const ironKnuckleSpec = ZONE_BOSS_SPECS['iron-sentinel'];
-    expect(ironKnuckleSpec.archetype).toBe('layered');
-    expect(ironKnuckleSpec.stateTags[0].kind).toBe('layered');
+    const ironSentinelSpec = ZONE_BOSS_SPECS['iron-sentinel'];
+    expect(ironSentinelSpec.archetype).toBe('layered');
+    expect(ironSentinelSpec.stateTags[0].kind).toBe('layered');
 
     // And the production allowlist is empty — zone activation is off by default.
     expect(KEYWORD_VOCABULARY_ZONE_ALLOWLIST.size).toBe(0);

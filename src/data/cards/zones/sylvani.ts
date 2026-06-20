@@ -131,5 +131,5 @@ const broodmaw: Card = {
   zone: 'sylvani',
 };
 
-export const kokiriRegulars: readonly Card[] = [thornScrub, snapvine, jellet, scrabling];
-export const kokiriBosses: readonly Card[] = [craghorn, broodmaw];
+export const sylvaniRegulars: readonly Card[] = [thornScrub, snapvine, jellet, scrabling];
+export const sylvaniBosses: readonly Card[] = [craghorn, broodmaw];

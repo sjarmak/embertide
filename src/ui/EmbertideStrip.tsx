@@ -1,9 +1,9 @@
 import { useId } from 'react';
 import type { CSSProperties, JSX } from 'react';
-import type { SharedTriforce } from '../store/types';
+import type { SharedEmbertide } from '../store/types';
 
-export interface TriforceStripProps {
-  readonly shards: SharedTriforce;
+export interface EmbertideStripProps {
+  readonly shards: SharedEmbertide;
 }
 
 type ShardId = 'wisdom' | 'courage' | 'power';
@@ -29,32 +29,31 @@ interface ShardDef {
  * gold-stained-glass aesthetic comes back exactly as it was before
  * the title-strip-medallion detour.
  *
- * Canonical Aurelia slot assignment (designer fix 2026-04-22, rev-7):
- *   - Power:   TOP          (Din's gift to Vurmox — apex (60,5))
- *   - Wisdom:  BOTTOM-LEFT  (Nayru's gift to Aurelia — apex (30,55))
- *   - Courage: BOTTOM-RIGHT (Farore's gift to Link — apex (90,55))
- *
- * The central downward triangle (60,55)-(30,105)-(90,105) is the
- * negative space between shards — always dark, never a rendered slot.
+ * Three discrete ember-gem facets, one per aspect, set at an apex +
+ * lower-left + lower-right with clear gaps between them — three separate
+ * jewels of the Embertide, not a single conjoined sigil:
+ *   - Power:   APEX        (defeat Cagewright Vurmox)
+ *   - Wisdom:  LOWER-LEFT  (free Sovereign Aurelia from the crystal)
+ *   - Courage: LOWER-RIGHT (complete the map)
  */
 const SHARDS: readonly ShardDef[] = [
   {
     id: 'power',
     label: 'Power',
-    points: '60,5 30,55 90,55',
-    topEdge: '30,55 60,5 90,55',
+    points: '60,3 82,25 60,47 38,25',
+    topEdge: '38,25 60,3 82,25',
   },
   {
     id: 'wisdom',
     label: 'Wisdom',
-    points: '30,55 0,105 60,105',
-    topEdge: '0,105 30,55 60,105',
+    points: '30,58 52,80 30,102 8,80',
+    topEdge: '8,80 30,58 52,80',
   },
   {
     id: 'courage',
     label: 'Courage',
-    points: '90,55 60,105 120,105',
-    topEdge: '60,105 90,55 120,105',
+    points: '90,58 112,80 90,102 68,80',
+    topEdge: '68,80 90,58 112,80',
   },
 ];
 
@@ -89,7 +88,7 @@ const SVG_STYLE: CSSProperties = {
   display: 'block',
 };
 
-interface TriforceShardPolygonProps {
+interface EmbertideShardPolygonProps {
   readonly def: ShardDef;
   readonly filled: boolean;
   readonly rimGradientId: string;
@@ -116,7 +115,7 @@ interface TriforceShardPolygonProps {
  *   3. Same brass rim + top-edge highlight stays visible — frames the
  *      seated piece instead of an empty socket.
  */
-function TriforceShardPolygon({
+function EmbertideShardPolygon({
   def,
   filled,
   rimGradientId,
@@ -124,7 +123,7 @@ function TriforceShardPolygon({
   filledGradientId,
   innerShadowId,
   glowId,
-}: TriforceShardPolygonProps): JSX.Element {
+}: EmbertideShardPolygonProps): JSX.Element {
   const ariaLabel = filled ? `${def.label} shard (earned)` : `${def.label} shard (not earned)`;
   return (
     <g
@@ -170,7 +169,7 @@ function TriforceShardPolygon({
 }
 
 /**
- * TriforceStrip — SHARED co-op shard display (amendment A2).
+ * EmbertideStrip — SHARED co-op shard display (amendment A2).
  *
  * embertide-9eou (2026-04-26): the Embertide relocates from the
  * cathedral title-strip center to the right-side rail, sitting beneath
@@ -185,7 +184,7 @@ function TriforceShardPolygon({
  * `.board-side-crystal-rail` is the only frame.
  *
  * Each triangle fills independently when its corresponding
- * `sharedTriforce` flag flips true:
+ * `sharedEmbertide` flag flips true:
  *   - power:   defeat Cagewright Vurmox (TOP)
  *   - wisdom:  free Princess Aurelia from the crystal (BOTTOM-LEFT)
  *   - courage: complete map exploration (BOTTOM-RIGHT)
@@ -194,7 +193,7 @@ function TriforceShardPolygon({
  * multiple instances (Ladle gallery, future split views) never
  * cross-contaminate.
  */
-export default function TriforceStrip({ shards }: TriforceStripProps): JSX.Element {
+export default function EmbertideStrip({ shards }: EmbertideStripProps): JSX.Element {
   const idScope = useId().replace(/:/g, '');
   const rimGradientId = `hc-embertide-rim-${idScope}`;
   const hollowGradientId = `hc-embertide-hollow-${idScope}`;
@@ -275,7 +274,7 @@ export default function TriforceStrip({ shards }: TriforceStripProps): JSX.Eleme
           </filter>
         </defs>
         {SHARDS.map((def) => (
-          <TriforceShardPolygon
+          <EmbertideShardPolygon
             key={def.id}
             def={def}
             filled={shards[def.id]}

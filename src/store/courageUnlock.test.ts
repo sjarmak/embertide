@@ -39,7 +39,7 @@ describe('checkCourageUnlock — gate predicate (u-5b)', () => {
   it('(a) returns false for a fresh game state — no zones cleared yet', () => {
     const s = makeState();
     expect(checkCourageUnlock(s)).toBe(false);
-    expect(s.sharedTriforce.courage).toBe(false);
+    expect(s.sharedEmbertide.courage).toBe(false);
   });
 
   it('(b) returns false with only sylvani in history', () => {
@@ -102,22 +102,22 @@ describe('checkCourageUnlock — gate predicate (u-5b)', () => {
       ],
     });
     const beforeHistory = s.zoneHistory;
-    const beforeTriforce = s.sharedTriforce;
+    const beforeEmbertide = s.sharedEmbertide;
     checkCourageUnlock(s);
     expect(s.zoneHistory).toBe(beforeHistory);
-    expect(s.sharedTriforce).toBe(beforeTriforce);
-    expect(s.sharedTriforce.courage).toBe(false);
+    expect(s.sharedEmbertide).toBe(beforeEmbertide);
+    expect(s.sharedEmbertide.courage).toBe(false);
   });
 });
 
-describe('advanceZone → sharedTriforce.courage flip (u-5b)', () => {
+describe('advanceZone → sharedEmbertide.courage flip (u-5b)', () => {
   it('(a → b) advancing sylvani only leaves Courage false', () => {
     const s0 = makeState();
-    expect(s0.sharedTriforce.courage).toBe(false);
+    expect(s0.sharedEmbertide.courage).toBe(false);
     const s1 = advanceZone(s0);
     expect(s1.currentZone).toBe('emberpeak');
     expect(s1.zoneHistory).toEqual(['sylvani']);
-    expect(s1.sharedTriforce.courage).toBe(false);
+    expect(s1.sharedEmbertide.courage).toBe(false);
   });
 
   it('(c) advancing sylvani + emberpeak + maren + hollow-shrine + dune-sanctum leaves Courage false (gdd.3: 6-zone chain)', () => {
@@ -135,7 +135,7 @@ describe('advanceZone → sharedTriforce.courage flip (u-5b)', () => {
       'hollow-shrine',
       'dune-sanctum',
     ]);
-    expect(s.sharedTriforce.courage).toBe(false);
+    expect(s.sharedEmbertide.courage).toBe(false);
   });
 
   it('(d) full 6-zone clearance flips Courage in the terminal-advance transaction (gdd.3)', () => {
@@ -155,10 +155,10 @@ describe('advanceZone → sharedTriforce.courage flip (u-5b)', () => {
       'dune-sanctum',
       'gilded-cage',
     ]);
-    expect(s.sharedTriforce.courage).toBe(true);
+    expect(s.sharedEmbertide.courage).toBe(true);
     // Wisdom and Power remain untouched — u-5b grants Courage only.
-    expect(s.sharedTriforce.wisdom).toBe(false);
-    expect(s.sharedTriforce.power).toBe(false);
+    expect(s.sharedEmbertide.wisdom).toBe(false);
+    expect(s.sharedEmbertide.power).toBe(false);
   });
 
   it('(e) repeat advanceZone at terminal post-unlock is a full no-op (idempotent)', () => {
@@ -169,7 +169,7 @@ describe('advanceZone → sharedTriforce.courage flip (u-5b)', () => {
     s = advanceZone(s);
     s = advanceZone(s);
     const afterClear = advanceZone(s);
-    expect(afterClear.sharedTriforce.courage).toBe(true);
+    expect(afterClear.sharedEmbertide.courage).toBe(true);
     // Further calls at terminal return the same state object.
     const afterRepeat = advanceZone(afterClear);
     expect(afterRepeat).toBe(afterClear);
@@ -188,7 +188,7 @@ describe('advanceZone → sharedTriforce.courage flip (u-5b)', () => {
       currentZone: 'gilded-cage',
       // gdd.3: pre-unlock history is the 5-zone-pre-terminal sequence.
       zoneHistory: ['sylvani', 'emberpeak', 'maren', 'hollow-shrine', 'dune-sanctum'],
-      sharedTriforce: { wisdom: false, courage: true, power: false },
+      sharedEmbertide: { wisdom: false, courage: true, power: false },
     });
     const next = advanceZone(s);
     // Terminal append still happens, but Courage stays true (no redundant flip).
@@ -200,7 +200,7 @@ describe('advanceZone → sharedTriforce.courage flip (u-5b)', () => {
       'dune-sanctum',
       'gilded-cage',
     ]);
-    expect(next.sharedTriforce.courage).toBe(true);
+    expect(next.sharedEmbertide.courage).toBe(true);
     // Re-calling at terminal is a full no-op.
     const next2 = advanceZone(next);
     expect(next2).toBe(next);
@@ -209,7 +209,7 @@ describe('advanceZone → sharedTriforce.courage flip (u-5b)', () => {
   it('does not flip Courage when only a single zone has been cleared', () => {
     const s0 = makeState();
     const s1 = advanceZone(s0);
-    expect(s1.sharedTriforce.courage).toBe(false);
+    expect(s1.sharedEmbertide.courage).toBe(false);
     expect(checkCourageUnlock(s1)).toBe(false);
   });
 });

@@ -4,7 +4,7 @@ import { renderIllustration } from '../illustration';
 import type { Card, CardRole } from '../types/card';
 import type { IllustrationSpec } from '../illustration';
 import { baseIdOf } from '../data/cards';
-import { Hero, Sword, Shield, Monster, Boss, Chest, GreenRupee } from '../icons';
+import { Hero, Sword, Shield, Monster, Boss, Chest, GreenShard } from '../icons';
 
 import cathedralHeroWarriorJson from '../illustration/examples/cathedral_hero_warrior.json' with { type: 'json' };
 import cathedralMonsterStalkerJson from '../illustration/examples/cathedral_monster_stalker.json' with { type: 'json' };
@@ -47,52 +47,52 @@ import cathedralStarterChampionWisdomJson from '../illustration/examples/cathedr
 import cathedralStarterChampionPowerJson from '../illustration/examples/cathedral_starter_champion_power.json' with { type: 'json' };
 import cathedralStarterChampionSwordJson from '../illustration/examples/cathedral_starter_champion_sword.json' with { type: 'json' };
 // u-6c Gilded Cage bosses — bespoke rasters per bead embertide-{aph,6gv,a9t}.
-import cathedralMonsterDemonKingGanonJson from '../illustration/examples/cathedral_monster_cagewright_vurmox.json' with { type: 'json' };
-import cathedralMonsterGuardianJson from '../illustration/examples/cathedral_monster_sentinel.json' with { type: 'json' };
-import cathedralMonsterLynelJson from '../illustration/examples/cathedral_monster_chimera.json' with { type: 'json' };
-import cathedralMonsterSilverLynelJson from '../illustration/examples/cathedral_monster_silver_chimera.json' with { type: 'json' };
+import cathedralMonsterCagewrightVurmoxJson from '../illustration/examples/cathedral_monster_cagewright_vurmox.json' with { type: 'json' };
+import cathedralMonsterSentinelJson from '../illustration/examples/cathedral_monster_sentinel.json' with { type: 'json' };
+import cathedralMonsterChimeraJson from '../illustration/examples/cathedral_monster_chimera.json' with { type: 'json' };
+import cathedralMonsterSilverChimeraJson from '../illustration/examples/cathedral_monster_silver_chimera.json' with { type: 'json' };
 // embertide-044 (2026-04-24) — rare post-completion wild boss
 // (Prism Chimera). Monster raster filename intentionally retained
 // from the prior fix-rainbow-chimera ship — it already depicts the
 // golden-chrome prismatic variant.
 // embertide-ydc (2026-04-24) — bespoke sword raster for the heirloom
 // drop replaces the miscast rainbow-prism placeholder.
-import cathedralMonsterGoldenRainbowLynelJson from '../illustration/examples/cathedral_monster_prism_chimera.json' with { type: 'json' };
-import cathedralItemRainbowAncientLynelSwordJson from '../illustration/examples/cathedral_item_rainbow_ancient_chimera_sword.json' with { type: 'json' };
+import cathedralMonsterPrismChimeraJson from '../illustration/examples/cathedral_monster_prism_chimera.json' with { type: 'json' };
+import cathedralItemRainbowAncientChimeraSwordJson from '../illustration/examples/cathedral_item_rainbow_ancient_chimera_sword.json' with { type: 'json' };
 // u-6a Sylvanwood — 4 regulars + wild-boss craghorn + region-boss broodmaw.
 // Bead ids: embertide-{d3v, elf, vjc, 3er, bbe, iy8}.
-import cathedralMonsterDekuScrubJson from '../illustration/examples/cathedral_monster_thorn_scrub.json' with { type: 'json' };
-import cathedralMonsterDekuBabaJson from '../illustration/examples/cathedral_monster_snapvine.json' with { type: 'json' };
-import cathedralMonsterChuchuJson from '../illustration/examples/cathedral_monster_jellet.json' with { type: 'json' };
-import cathedralMonsterBokoblinJson from '../illustration/examples/cathedral_monster_scrabling.json' with { type: 'json' };
-import cathedralMonsterHinoxJson from '../illustration/examples/cathedral_monster_craghorn.json' with { type: 'json' };
-import cathedralMonsterGohmaJson from '../illustration/examples/cathedral_monster_broodmaw.json' with { type: 'json' };
+import cathedralMonsterThornScrubJson from '../illustration/examples/cathedral_monster_thorn_scrub.json' with { type: 'json' };
+import cathedralMonsterSnapvineJson from '../illustration/examples/cathedral_monster_snapvine.json' with { type: 'json' };
+import cathedralMonsterJelletJson from '../illustration/examples/cathedral_monster_jellet.json' with { type: 'json' };
+import cathedralMonsterScrablingJson from '../illustration/examples/cathedral_monster_scrabling.json' with { type: 'json' };
+import cathedralMonsterCraghornJson from '../illustration/examples/cathedral_monster_craghorn.json' with { type: 'json' };
+import cathedralMonsterBroodmawJson from '../illustration/examples/cathedral_monster_broodmaw.json' with { type: 'json' };
 // u-6b Emberpeak — 4 regulars + wild-boss boulderkin + region-boss ashen-tyrant.
 // Bead ids: embertide-{284, izt, wg5, zkl, gv6, q7s}.
-import cathedralMonsterLizalfosJson from '../illustration/examples/cathedral_monster_saurian.json' with { type: 'json' };
-import cathedralMonsterDodongoJson from '../illustration/examples/cathedral_monster_ashjaw.json' with { type: 'json' };
-import cathedralMonsterTektiteJson from '../illustration/examples/cathedral_monster_skittermite.json' with { type: 'json' };
-import cathedralMonsterRedOctorokJson from '../illustration/examples/cathedral_monster_red_squidlet.json' with { type: 'json' };
-import cathedralMonsterStoneTalusJson from '../illustration/examples/cathedral_monster_boulderkin.json' with { type: 'json' };
-import cathedralMonsterKingDodongoJson from '../illustration/examples/cathedral_monster_ashen_tyrant.json' with { type: 'json' };
+import cathedralMonsterSaurianJson from '../illustration/examples/cathedral_monster_saurian.json' with { type: 'json' };
+import cathedralMonsterAshjawJson from '../illustration/examples/cathedral_monster_ashjaw.json' with { type: 'json' };
+import cathedralMonsterSkittermiteJson from '../illustration/examples/cathedral_monster_skittermite.json' with { type: 'json' };
+import cathedralMonsterRedSquidletJson from '../illustration/examples/cathedral_monster_red_squidlet.json' with { type: 'json' };
+import cathedralMonsterBoulderkinJson from '../illustration/examples/cathedral_monster_boulderkin.json' with { type: 'json' };
+import cathedralMonsterAshenTyrantJson from '../illustration/examples/cathedral_monster_ashen_tyrant.json' with { type: 'json' };
 // u-6c Gilded Cage regulars — 5 cards.
 // Bead ids: embertide-{1ui, h3o, 4sm, 39o, 25d}.
-import cathedralMonsterBeamosJson from '../illustration/examples/cathedral_monster_wardeye.json' with { type: 'json' };
+import cathedralMonsterWardeyeJson from '../illustration/examples/cathedral_monster_wardeye.json' with { type: 'json' };
 import cathedralMonsterEmberskullJson from '../illustration/examples/cathedral_monster_emberskull.json' with { type: 'json' };
-import cathedralMonsterLikeLikeJson from '../illustration/examples/cathedral_monster_like_like.json' with { type: 'json' };
-import cathedralMonsterWizzrobeJson from '../illustration/examples/cathedral_monster_hexrobe.json' with { type: 'json' };
-import cathedralMonsterStalfosKnightJson from '../illustration/examples/cathedral_monster_bone_knight.json' with { type: 'json' };
+import cathedralMonsterGulpmawJson from '../illustration/examples/cathedral_monster_gulpmaw.json' with { type: 'json' };
+import cathedralMonsterHexrobeJson from '../illustration/examples/cathedral_monster_hexrobe.json' with { type: 'json' };
+import cathedralMonsterBoneKnightJson from '../illustration/examples/cathedral_monster_bone_knight.json' with { type: 'json' };
 // fix-aurelia (2026-04-22): Princess Aurelia card (granted on crystal break).
-import cathedralZeldaLightArrowJson from '../illustration/examples/cathedral_aurelia_light_arrow.json' with { type: 'json' };
+import cathedralAureliaLightArrowJson from '../illustration/examples/cathedral_aurelia_light_arrow.json' with { type: 'json' };
 // pr2 (2026-04-23): 7 bespoke Aurelia-canon hero portraits lifting the
 // warrior placeholder off the named Aurelia-character hero cards.
-import cathedralHeroSariaJson from '../illustration/examples/cathedral_hero_liel.json' with { type: 'json' };
-import cathedralHeroDaruniaJson from '../illustration/examples/cathedral_hero_brammel.json' with { type: 'json' };
-import cathedralHeroMalonJson from '../illustration/examples/cathedral_hero_wren.json' with { type: 'json' };
-import cathedralHeroImpaJson from '../illustration/examples/cathedral_hero_veylin.json' with { type: 'json' };
-import cathedralHeroPayaJson from '../illustration/examples/cathedral_hero_sael.json' with { type: 'json' };
-import cathedralHeroBeedleJson from '../illustration/examples/cathedral_hero_coll.json' with { type: 'json' };
-import cathedralHeroRutoJson from '../illustration/examples/cathedral_hero_naerin.json' with { type: 'json' };
+import cathedralHeroLielJson from '../illustration/examples/cathedral_hero_liel.json' with { type: 'json' };
+import cathedralHeroBrammelJson from '../illustration/examples/cathedral_hero_brammel.json' with { type: 'json' };
+import cathedralHeroWrenJson from '../illustration/examples/cathedral_hero_wren.json' with { type: 'json' };
+import cathedralHeroVeylinJson from '../illustration/examples/cathedral_hero_veylin.json' with { type: 'json' };
+import cathedralHeroSaelJson from '../illustration/examples/cathedral_hero_sael.json' with { type: 'json' };
+import cathedralHeroCollJson from '../illustration/examples/cathedral_hero_coll.json' with { type: 'json' };
+import cathedralHeroNaerinJson from '../illustration/examples/cathedral_hero_naerin.json' with { type: 'json' };
 // nvd (2026-04-24): Pell portrait for the `key-vendor` tile. Originally
 // landed when key-vendor was a buyable always-available hero;
 // embertide-1eby (same day) reframed it as a vendor service tile —
@@ -100,13 +100,13 @@ import cathedralHeroRutoJson from '../illustration/examples/cathedral_hero_naeri
 // the routing target. ALBW rental-merchant silhouette (purple bunny-hood
 // + rental-wares satchel) keeps Pell visually distinct from Coll's
 // BOTW wandering-merchant.
-import cathedralHeroRavioJson from '../illustration/examples/cathedral_hero_pell.json' with { type: 'json' };
+import cathedralHeroPellJson from '../illustration/examples/cathedral_hero_pell.json' with { type: 'json' };
 // pr2 (2026-04-23): 5 bespoke monster + mini-boss rasters lifting the
 // stalker/brute placeholders off grunt-orc, spear-orc, sea-cephalopod,
 // mini-boss-reptile, mini-boss-slime.
 import cathedralMonsterGruntOrcJson from '../illustration/examples/cathedral_monster_grunt_orc.json' with { type: 'json' };
 import cathedralMonsterSpearOrcJson from '../illustration/examples/cathedral_monster_spear_orc.json' with { type: 'json' };
-import cathedralMonsterOktorokJson from '../illustration/examples/cathedral_monster_squidlet.json' with { type: 'json' };
+import cathedralMonsterSquidletJson from '../illustration/examples/cathedral_monster_squidlet.json' with { type: 'json' };
 import cathedralMonsterMiniBossReptileJson from '../illustration/examples/cathedral_monster_mini_boss_reptile.json' with { type: 'json' };
 import cathedralMonsterMiniBossSlimeJson from '../illustration/examples/cathedral_monster_mini_boss_slime.json' with { type: 'json' };
 // pr2 (2026-04-23): 8 bespoke item rasters for v2.0 starters + wisp + heirlooms,
@@ -115,60 +115,60 @@ import cathedralItemShortSwordJson from '../illustration/examples/cathedral_item
 import cathedralItemShortBowJson from '../illustration/examples/cathedral_item_short_bow.json' with { type: 'json' };
 import cathedralItemTowerShieldJson from '../illustration/examples/cathedral_item_tower_shield.json' with { type: 'json' };
 import cathedralItemCurvedThrowingBladeJson from '../illustration/examples/cathedral_item_curved_throwing_blade.json' with { type: 'json' };
-import cathedralItemFairyJson from '../illustration/examples/cathedral_item_wisp.json' with { type: 'json' };
-import cathedralItemHinoxHornJson from '../illustration/examples/cathedral_item_craghorn_tusk.json' with { type: 'json' };
-import cathedralItemStoneTalusCoreJson from '../illustration/examples/cathedral_item_boulderkin_core.json' with { type: 'json' };
-import cathedralItemGuardianEyeJson from '../illustration/examples/cathedral_item_sentinel_eye.json' with { type: 'json' };
+import cathedralItemWispJson from '../illustration/examples/cathedral_item_wisp.json' with { type: 'json' };
+import cathedralItemCraghornTuskJson from '../illustration/examples/cathedral_item_craghorn_tusk.json' with { type: 'json' };
+import cathedralItemBoulderkinCoreJson from '../illustration/examples/cathedral_item_boulderkin_core.json' with { type: 'json' };
+import cathedralItemSentinelEyeJson from '../illustration/examples/cathedral_item_sentinel_eye.json' with { type: 'json' };
 // pr2 (2026-04-23): 8 bespoke item rasters for gm0.15 supply + gm0.16 consumables.
-import cathedralItemGreatFairyJson from '../illustration/examples/cathedral_item_great_wisp.json' with { type: 'json' };
-import cathedralItemFairyInBottleJson from '../illustration/examples/cathedral_item_wisp_in_bottle.json' with { type: 'json' };
+import cathedralItemGreatWispJson from '../illustration/examples/cathedral_item_great_wisp.json' with { type: 'json' };
+import cathedralItemWispInBottleJson from '../illustration/examples/cathedral_item_wisp_in_bottle.json' with { type: 'json' };
 import cathedralItemBowAndArrowJson from '../illustration/examples/cathedral_item_bow_and_arrow.json' with { type: 'json' };
 import cathedralItemBoomerangJson from '../illustration/examples/cathedral_item_boomerang.json' with { type: 'json' };
-import cathedralItemHylianShieldJson from '../illustration/examples/cathedral_item_elysian_shield.json' with { type: 'json' };
-import cathedralItemBombFlowerJson from '../illustration/examples/cathedral_item_cinder_bloom.json' with { type: 'json' };
+import cathedralItemElysianShieldJson from '../illustration/examples/cathedral_item_elysian_shield.json' with { type: 'json' };
+import cathedralItemCinderBloomJson from '../illustration/examples/cathedral_item_cinder_bloom.json' with { type: 'json' };
 import cathedralItemAncientSwordJson from '../illustration/examples/cathedral_item_ancient_sword.json' with { type: 'json' };
-import cathedralItemLynelSwordJson from '../illustration/examples/cathedral_item_chimera_sword.json' with { type: 'json' };
+import cathedralItemChimeraSwordJson from '../illustration/examples/cathedral_item_chimera_sword.json' with { type: 'json' };
 // tib8: bespoke portraits for the three item-check opener supply cards.
-import cathedralItemHookshotJson from '../illustration/examples/cathedral_item_grapplethorn.json' with { type: 'json' };
-import cathedralItemClawshotsJson from '../illustration/examples/cathedral_item_grapnels.json' with { type: 'json' };
-import cathedralItemMirrorShieldJson from '../illustration/examples/cathedral_item_aegis_pane.json' with { type: 'json' };
+import cathedralItemGrapplethornJson from '../illustration/examples/cathedral_item_grapplethorn.json' with { type: 'json' };
+import cathedralItemGrapnelsJson from '../illustration/examples/cathedral_item_grapnels.json' with { type: 'json' };
+import cathedralItemAegisPaneJson from '../illustration/examples/cathedral_item_aegis_pane.json' with { type: 'json' };
 // bead embertide-063 (2026-04-23): ember-shard + vital-ember rasters.
 // Surfaced as raster pips in HPStrip (below the main heart row) and as the
 // bespoke reward icon in ChestReveal. `renderIllustration` honours
 // `rasterImageUrl` and suppresses the vector fallbacks (see renderer.tsx
 // §4b raster layer) so these two specs are raster-only by design.
-import cathedralItemHeartPieceJson from '../illustration/examples/cathedral_item_ember_shard.json' with { type: 'json' };
-import cathedralItemHeartContainerJson from '../illustration/examples/cathedral_item_vital_ember.json' with { type: 'json' };
+import cathedralItemEmberShardJson from '../illustration/examples/cathedral_item_ember_shard.json' with { type: 'json' };
+import cathedralItemVitalEmberJson from '../illustration/examples/cathedral_item_vital_ember.json' with { type: 'json' };
 // gdd.1 / gdd.2 / gdd.3 (2026-04-25 FAL batch): v2.1 zone rosters.
 //   Maren regulars + bosses
-import cathedralMonsterZoraWarriorJson from '../illustration/examples/cathedral_monster_maren_warrior.json' with { type: 'json' };
-import cathedralMonsterShellbladeJson from '../illustration/examples/cathedral_monster_reefblade.json' with { type: 'json' };
-import cathedralMonsterBlueChuchuJson from '../illustration/examples/cathedral_monster_frost_jellet.json' with { type: 'json' };
-import cathedralMonsterSkullfishJson from '../illustration/examples/cathedral_monster_fangfish.json' with { type: 'json' };
-import cathedralMonsterBigOctoJson from '../illustration/examples/cathedral_monster_maelstrom.json' with { type: 'json' };
-import cathedralMonsterMorphaJson from '../illustration/examples/cathedral_monster_tidewraith.json' with { type: 'json' };
+import cathedralMonsterMarenWarriorJson from '../illustration/examples/cathedral_monster_maren_warrior.json' with { type: 'json' };
+import cathedralMonsterReefbladeJson from '../illustration/examples/cathedral_monster_reefblade.json' with { type: 'json' };
+import cathedralMonsterFrostJelletJson from '../illustration/examples/cathedral_monster_frost_jellet.json' with { type: 'json' };
+import cathedralMonsterFangfishJson from '../illustration/examples/cathedral_monster_fangfish.json' with { type: 'json' };
+import cathedralMonsterMaelstromJson from '../illustration/examples/cathedral_monster_maelstrom.json' with { type: 'json' };
+import cathedralMonsterTidewraithJson from '../illustration/examples/cathedral_monster_tidewraith.json' with { type: 'json' };
 //   Hollow Shrine regulars + bosses
-import cathedralMonsterPoeJson from '../illustration/examples/cathedral_monster_willowisp.json' with { type: 'json' };
-import cathedralMonsterWallmasterJson from '../illustration/examples/cathedral_monster_graspling.json' with { type: 'json' };
-import cathedralMonsterStalchildJson from '../illustration/examples/cathedral_monster_bonelet.json' with { type: 'json' };
-import cathedralMonsterShadowKeeseJson from '../illustration/examples/cathedral_monster_duskwing.json' with { type: 'json' };
-import cathedralMonsterGloomLinkJson from '../illustration/examples/cathedral_monster_hollow_effigy.json' with { type: 'json' };
-import cathedralMonsterBongoBongoJson from '../illustration/examples/cathedral_monster_knell.json' with { type: 'json' };
+import cathedralMonsterWillowispJson from '../illustration/examples/cathedral_monster_willowisp.json' with { type: 'json' };
+import cathedralMonsterGrasplingJson from '../illustration/examples/cathedral_monster_graspling.json' with { type: 'json' };
+import cathedralMonsterBoneletJson from '../illustration/examples/cathedral_monster_bonelet.json' with { type: 'json' };
+import cathedralMonsterDuskwingJson from '../illustration/examples/cathedral_monster_duskwing.json' with { type: 'json' };
+import cathedralMonsterHollowEffigyJson from '../illustration/examples/cathedral_monster_hollow_effigy.json' with { type: 'json' };
+import cathedralMonsterKnellJson from '../illustration/examples/cathedral_monster_knell.json' with { type: 'json' };
 //   Dune Sanctum regulars + bosses
-import cathedralMonsterLeeverJson from '../illustration/examples/cathedral_monster_duneweed.json' with { type: 'json' };
-import cathedralMonsterMolgeraJson from '../illustration/examples/cathedral_monster_sandwyrm.json' with { type: 'json' };
-import cathedralMonsterStalfosDesertJson from '../illustration/examples/cathedral_monster_sunbleached_reaver.json' with { type: 'json' };
-import cathedralMonsterLanmolaJson from '../illustration/examples/cathedral_monster_scuttlespine.json' with { type: 'json' };
-import cathedralMonsterIronKnuckleJson from '../illustration/examples/cathedral_monster_iron_sentinel.json' with { type: 'json' };
-import cathedralMonsterTwinrovaJson from '../illustration/examples/cathedral_monster_hextwins.json' with { type: 'json' };
+import cathedralMonsterDuneweedJson from '../illustration/examples/cathedral_monster_duneweed.json' with { type: 'json' };
+import cathedralMonsterSandwyrmJson from '../illustration/examples/cathedral_monster_sandwyrm.json' with { type: 'json' };
+import cathedralMonsterSunbleachedReaverJson from '../illustration/examples/cathedral_monster_sunbleached_reaver.json' with { type: 'json' };
+import cathedralMonsterScuttlespineJson from '../illustration/examples/cathedral_monster_scuttlespine.json' with { type: 'json' };
+import cathedralMonsterIronSentinelJson from '../illustration/examples/cathedral_monster_iron_sentinel.json' with { type: 'json' };
+import cathedralMonsterHextwinsJson from '../illustration/examples/cathedral_monster_hextwins.json' with { type: 'json' };
 // 2026-04-25 — original designer characters: zone-locked center-row heroes.
-import cathedralHeroAvatarOfTheFallenJson from '../illustration/examples/cathedral_hero_dune_revenant.json' with { type: 'json' };
-import cathedralHeroXeronDukeOfLiesJson from '../illustration/examples/cathedral_hero_velrath_duke_of_veils.json' with { type: 'json' };
+import cathedralHeroDuneRevenantJson from '../illustration/examples/cathedral_hero_dune_revenant.json' with { type: 'json' };
+import cathedralHeroVelrathDukeOfVeilsJson from '../illustration/examples/cathedral_hero_velrath_duke_of_veils.json' with { type: 'json' };
 // p24m (2026-05-02) — Trinity Aurogax (Aurogax), Tier-5
 // colosseum capstone. Three heads × three eras (gloom + Umbra +
 // Auren). Approved 2026-05-02 (commit 21956ed); regen-v2 raster from
 // fal-ai/nano-banana-pro.
-import cathedralMonsterAncientGloomGleeokJson from '../illustration/examples/cathedral_monster_aurogax.json' with { type: 'json' };
+import cathedralMonsterAurogaxJson from '../illustration/examples/cathedral_monster_aurogax.json' with { type: 'json' };
 
 const SPEC_BY_ROLE: Partial<Record<CardRole, IllustrationSpec>> = {
   hero: cathedralHeroWarriorJson as IllustrationSpec,
@@ -205,7 +205,7 @@ const SPEC_BY_BASE_ID: Record<string, IllustrationSpec> = {
   // variant ships (see embertide future-art bead). The standalone
   // cathedral_alwaysavail_wild_wolf raster is retained on disk for
   // rollback / history but no longer rendered.
-  'wild-wolf': cathedralMonsterBokoblinJson as IllustrationSpec,
+  'wild-wolf': cathedralMonsterScrablingJson as IllustrationSpec,
   // Champion portrait baseIds (embertide-kln + -fpm; retained as
   // portrait-only after j49z 2026-04-24 retired the `starter-home` role
   // and removed the underlying KID_CARDS entries — the ids now serve as
@@ -223,66 +223,66 @@ const SPEC_BY_BASE_ID: Record<string, IllustrationSpec> = {
   //   sentinel         → embertide-6gv (wild-boss, teal + laser)
   //   silver-chimera     → embertide-a9t (wild-boss, silver centaur charge)
   //   cagewright-vurmox → embertide-aph (region-boss / final fight)
-  sentinel: cathedralMonsterGuardianJson as IllustrationSpec,
+  sentinel: cathedralMonsterSentinelJson as IllustrationSpec,
   // embertide-pish (2026-05-05) — tier-2 colosseum 'baseline chimera'
   // sits one knob below silver-chimera per the stat-ordering invariant.
   // Solid earth-red coat + bronze longsword + leather armor + poised
   // guard stance distinguish it from silver-chimera's zebra/chrome/charge.
-  chimera: cathedralMonsterLynelJson as IllustrationSpec,
-  'silver-chimera': cathedralMonsterSilverLynelJson as IllustrationSpec,
+  chimera: cathedralMonsterChimeraJson as IllustrationSpec,
+  'silver-chimera': cathedralMonsterSilverChimeraJson as IllustrationSpec,
   // embertide-044 (2026-04-24): rare post-completion wild boss
   // (Prism Chimera) + its heirloom drop (Rainbow Ancient Chimera
   // Sword). Bespoke portraits so both read as distinct from the
   // regular silver-chimera / generic item art.
-  'prism-chimera': cathedralMonsterGoldenRainbowLynelJson as IllustrationSpec,
-  'rainbow-ancient-chimera-sword': cathedralItemRainbowAncientLynelSwordJson as IllustrationSpec,
-  'cagewright-vurmox': cathedralMonsterDemonKingGanonJson as IllustrationSpec,
+  'prism-chimera': cathedralMonsterPrismChimeraJson as IllustrationSpec,
+  'rainbow-ancient-chimera-sword': cathedralItemRainbowAncientChimeraSwordJson as IllustrationSpec,
+  'cagewright-vurmox': cathedralMonsterCagewrightVurmoxJson as IllustrationSpec,
   // u-6a Sylvanwood roster.
-  'thorn-scrub': cathedralMonsterDekuScrubJson as IllustrationSpec,
-  'snapvine': cathedralMonsterDekuBabaJson as IllustrationSpec,
-  jellet: cathedralMonsterChuchuJson as IllustrationSpec,
-  scrabling: cathedralMonsterBokoblinJson as IllustrationSpec,
-  craghorn: cathedralMonsterHinoxJson as IllustrationSpec,
-  broodmaw: cathedralMonsterGohmaJson as IllustrationSpec,
+  'thorn-scrub': cathedralMonsterThornScrubJson as IllustrationSpec,
+  'snapvine': cathedralMonsterSnapvineJson as IllustrationSpec,
+  jellet: cathedralMonsterJelletJson as IllustrationSpec,
+  scrabling: cathedralMonsterScrablingJson as IllustrationSpec,
+  craghorn: cathedralMonsterCraghornJson as IllustrationSpec,
+  broodmaw: cathedralMonsterBroodmawJson as IllustrationSpec,
   // u-6b Emberpeak roster.
-  saurian: cathedralMonsterLizalfosJson as IllustrationSpec,
-  ashjaw: cathedralMonsterDodongoJson as IllustrationSpec,
-  skittermite: cathedralMonsterTektiteJson as IllustrationSpec,
-  'red-squidlet': cathedralMonsterRedOctorokJson as IllustrationSpec,
-  'boulderkin': cathedralMonsterStoneTalusJson as IllustrationSpec,
-  'ashen-tyrant': cathedralMonsterKingDodongoJson as IllustrationSpec,
+  saurian: cathedralMonsterSaurianJson as IllustrationSpec,
+  ashjaw: cathedralMonsterAshjawJson as IllustrationSpec,
+  skittermite: cathedralMonsterSkittermiteJson as IllustrationSpec,
+  'red-squidlet': cathedralMonsterRedSquidletJson as IllustrationSpec,
+  'boulderkin': cathedralMonsterBoulderkinJson as IllustrationSpec,
+  'ashen-tyrant': cathedralMonsterAshenTyrantJson as IllustrationSpec,
   // u-6c Gilded Cage regulars.
-  wardeye: cathedralMonsterBeamosJson as IllustrationSpec,
+  wardeye: cathedralMonsterWardeyeJson as IllustrationSpec,
   emberskull: cathedralMonsterEmberskullJson as IllustrationSpec,
-  'gulpmaw': cathedralMonsterLikeLikeJson as IllustrationSpec,
-  hexrobe: cathedralMonsterWizzrobeJson as IllustrationSpec,
-  'bone-knight': cathedralMonsterStalfosKnightJson as IllustrationSpec,
+  'gulpmaw': cathedralMonsterGulpmawJson as IllustrationSpec,
+  hexrobe: cathedralMonsterHexrobeJson as IllustrationSpec,
+  'bone-knight': cathedralMonsterBoneKnightJson as IllustrationSpec,
   // fix-aurelia (2026-04-22): freed-princess card face — her light arrow.
   // Id generic per IP-safety; display name 'Princess Aurelia' lives in
   // src/theme/generic.ts / runtime theme.
-  'freed-princess': cathedralZeldaLightArrowJson as IllustrationSpec,
+  'freed-princess': cathedralAureliaLightArrowJson as IllustrationSpec,
   // pr2 (2026-04-23): 7 Aurelia-canon named heroes — lift the warrior
   // placeholder off the cards whose in-theme display names reference
   // actual Aurelia characters (Liel, Brammel, Wren, Veylin, Sael, Coll,
   // Naerin).
-  'forest-sage': cathedralHeroSariaJson as IllustrationSpec,
-  'mountain-king': cathedralHeroDaruniaJson as IllustrationSpec,
-  'ranch-keeper': cathedralHeroMalonJson as IllustrationSpec,
-  'sage-keeper': cathedralHeroImpaJson as IllustrationSpec,
-  'scholar-princess': cathedralHeroPayaJson as IllustrationSpec,
-  'wandering-merchant': cathedralHeroBeedleJson as IllustrationSpec,
+  'forest-sage': cathedralHeroLielJson as IllustrationSpec,
+  'mountain-king': cathedralHeroBrammelJson as IllustrationSpec,
+  'ranch-keeper': cathedralHeroWrenJson as IllustrationSpec,
+  'sage-keeper': cathedralHeroVeylinJson as IllustrationSpec,
+  'scholar-princess': cathedralHeroSaelJson as IllustrationSpec,
+  'wandering-merchant': cathedralHeroCollJson as IllustrationSpec,
   // nvd (2026-04-24): Pell on key-vendor — ALBW rental merchant.
   // 1eby reframed key-vendor as a vendor service tile (not a buyable
   // hero); the portrait wiring stays the same.
-  'key-vendor': cathedralHeroRavioJson as IllustrationSpec,
-  'water-warrior': cathedralHeroRutoJson as IllustrationSpec,
+  'key-vendor': cathedralHeroPellJson as IllustrationSpec,
+  'water-warrior': cathedralHeroNaerinJson as IllustrationSpec,
   // pr2 (2026-04-23): 5 bespoke monster + mini-boss portraits — lift the
   // stalker/brute role generics off the canonical Aurelia enemies whose
   // display names (Brute / Brute Spearman / Maelstrom / Scalelord /
   // Tidewraith) otherwise render with a shared silhouette.
   'grunt-orc': cathedralMonsterGruntOrcJson as IllustrationSpec,
   'spear-orc': cathedralMonsterSpearOrcJson as IllustrationSpec,
-  squidlet: cathedralMonsterOktorokJson as IllustrationSpec,
+  squidlet: cathedralMonsterSquidletJson as IllustrationSpec,
   'mini-boss-reptile': cathedralMonsterMiniBossReptileJson as IllustrationSpec,
   'mini-boss-slime': cathedralMonsterMiniBossSlimeJson as IllustrationSpec,
   // pr2 (2026-04-23): v2.0 starter items + pickup wisp + 3 wild-boss
@@ -293,81 +293,84 @@ const SPEC_BY_BASE_ID: Record<string, IllustrationSpec> = {
   'short-bow': cathedralItemShortBowJson as IllustrationSpec,
   'tower-shield': cathedralItemTowerShieldJson as IllustrationSpec,
   'curved-throwing-blade': cathedralItemCurvedThrowingBladeJson as IllustrationSpec,
-  wisp: cathedralItemFairyJson as IllustrationSpec,
-  'craghorn-tusk': cathedralItemHinoxHornJson as IllustrationSpec,
-  'boulderkin-core': cathedralItemStoneTalusCoreJson as IllustrationSpec,
-  'sentinel-eye': cathedralItemGuardianEyeJson as IllustrationSpec,
+  wisp: cathedralItemWispJson as IllustrationSpec,
+  'craghorn-tusk': cathedralItemCraghornTuskJson as IllustrationSpec,
+  'boulderkin-core': cathedralItemBoulderkinCoreJson as IllustrationSpec,
+  'sentinel-eye': cathedralItemSentinelEyeJson as IllustrationSpec,
   // pr2 (2026-04-23): 8 bespoke item portraits — lift the 'relic' generic
   // off the gm0.15 supply items + gm0.16 wisp / ancient / chimera drops so
   // the market + heirloom rows read as distinct cards.
-  'great-wisp': cathedralItemGreatFairyJson as IllustrationSpec,
-  'wisp-in-bottle': cathedralItemFairyInBottleJson as IllustrationSpec,
+  'great-wisp': cathedralItemGreatWispJson as IllustrationSpec,
+  'wisp-in-bottle': cathedralItemWispInBottleJson as IllustrationSpec,
   bow: cathedralItemBowAndArrowJson as IllustrationSpec,
   boomerang: cathedralItemBoomerangJson as IllustrationSpec,
-  'elysian-shield': cathedralItemHylianShieldJson as IllustrationSpec,
-  'cinder-bloom': cathedralItemBombFlowerJson as IllustrationSpec,
+  'elysian-shield': cathedralItemElysianShieldJson as IllustrationSpec,
+  'cinder-bloom': cathedralItemCinderBloomJson as IllustrationSpec,
   'ancient-sword': cathedralItemAncientSwordJson as IllustrationSpec,
-  'chimera-sword': cathedralItemLynelSwordJson as IllustrationSpec,
+  'chimera-sword': cathedralItemChimeraSwordJson as IllustrationSpec,
   // tib8: item-check opener supply cards (authored by akop) — lift the generic
   // 'relic' fallback off grapplethorn / grapnels / aegis-pane with bespoke
   // portraits, same pr2 raster pattern. aegis-pane stays distinct from the
   // navy absorb 'elysian-shield' (reflective mirror face + reflected beam).
-  grapplethorn: cathedralItemHookshotJson as IllustrationSpec,
-  grapnels: cathedralItemClawshotsJson as IllustrationSpec,
-  'aegis-pane': cathedralItemMirrorShieldJson as IllustrationSpec,
+  grapplethorn: cathedralItemGrapplethornJson as IllustrationSpec,
+  grapnels: cathedralItemGrapnelsJson as IllustrationSpec,
+  'aegis-pane': cathedralItemAegisPaneJson as IllustrationSpec,
   // bead embertide-063 (2026-04-23): ember-shard + vital-ember
   // bespoke rasters surfaced in HPStrip pip row + ChestReveal reward
   // icon. The card ids themselves are pending in cards.ts but the specs
   // are keyed here so HPStrip/ChestReveal can share the same
   // illustration lookup the rest of the UI uses.
-  'ember-shard': cathedralItemHeartPieceJson as IllustrationSpec,
-  'vital-ember': cathedralItemHeartContainerJson as IllustrationSpec,
+  'ember-shard': cathedralItemEmberShardJson as IllustrationSpec,
+  'vital-ember': cathedralItemVitalEmberJson as IllustrationSpec,
   // gdd.1 / gdd.2 / gdd.3 (FAL batch landed 2026-04-25): bespoke
   // portraits for the v2.1 zone rosters. Each lifts the [v2-art-pending]
   // tag off the corresponding Card in src/data/cards.ts.
   //   Tidehold
-  'maren-warrior': cathedralMonsterZoraWarriorJson as IllustrationSpec,
-  reefblade: cathedralMonsterShellbladeJson as IllustrationSpec,
-  'frost-jellet': cathedralMonsterBlueChuchuJson as IllustrationSpec,
-  fangfish: cathedralMonsterSkullfishJson as IllustrationSpec,
-  'maelstrom': cathedralMonsterBigOctoJson as IllustrationSpec,
-  tidewraith: cathedralMonsterMorphaJson as IllustrationSpec,
+  'maren-warrior': cathedralMonsterMarenWarriorJson as IllustrationSpec,
+  reefblade: cathedralMonsterReefbladeJson as IllustrationSpec,
+  'frost-jellet': cathedralMonsterFrostJelletJson as IllustrationSpec,
+  fangfish: cathedralMonsterFangfishJson as IllustrationSpec,
+  'maelstrom': cathedralMonsterMaelstromJson as IllustrationSpec,
+  tidewraith: cathedralMonsterTidewraithJson as IllustrationSpec,
   //   Hollow Shrine
-  willowisp: cathedralMonsterPoeJson as IllustrationSpec,
-  graspling: cathedralMonsterWallmasterJson as IllustrationSpec,
-  bonelet: cathedralMonsterStalchildJson as IllustrationSpec,
-  'duskwing': cathedralMonsterShadowKeeseJson as IllustrationSpec,
-  'hollow-effigy': cathedralMonsterGloomLinkJson as IllustrationSpec,
-  'knell': cathedralMonsterBongoBongoJson as IllustrationSpec,
+  willowisp: cathedralMonsterWillowispJson as IllustrationSpec,
+  graspling: cathedralMonsterGrasplingJson as IllustrationSpec,
+  bonelet: cathedralMonsterBoneletJson as IllustrationSpec,
+  'duskwing': cathedralMonsterDuskwingJson as IllustrationSpec,
+  'hollow-effigy': cathedralMonsterHollowEffigyJson as IllustrationSpec,
+  'knell': cathedralMonsterKnellJson as IllustrationSpec,
   //   Dune Sanctum
-  duneweed: cathedralMonsterLeeverJson as IllustrationSpec,
-  sandwyrm: cathedralMonsterMolgeraJson as IllustrationSpec,
-  'sunbleached-reaver': cathedralMonsterStalfosDesertJson as IllustrationSpec,
-  scuttlespine: cathedralMonsterLanmolaJson as IllustrationSpec,
-  'iron-sentinel': cathedralMonsterIronKnuckleJson as IllustrationSpec,
-  hextwins: cathedralMonsterTwinrovaJson as IllustrationSpec,
+  duneweed: cathedralMonsterDuneweedJson as IllustrationSpec,
+  sandwyrm: cathedralMonsterSandwyrmJson as IllustrationSpec,
+  'sunbleached-reaver': cathedralMonsterSunbleachedReaverJson as IllustrationSpec,
+  scuttlespine: cathedralMonsterScuttlespineJson as IllustrationSpec,
+  'iron-sentinel': cathedralMonsterIronSentinelJson as IllustrationSpec,
+  hextwins: cathedralMonsterHextwinsJson as IllustrationSpec,
   // 2026-04-25 — zone-locked center-row hero portraits.
-  'dune-revenant': cathedralHeroAvatarOfTheFallenJson as IllustrationSpec,
-  'velrath-duke-of-veils': cathedralHeroXeronDukeOfLiesJson as IllustrationSpec,
+  'dune-revenant': cathedralHeroDuneRevenantJson as IllustrationSpec,
+  'velrath-duke-of-veils': cathedralHeroVelrathDukeOfVeilsJson as IllustrationSpec,
   // p24m (2026-05-02) — Colosseum Tier-5 capstone. Card lives in
   // src/data/cards/colosseum.ts; combat spec lives in
   // src/data/colosseum/tier5.ts.
-  'trinity-aurogax': cathedralMonsterAncientGloomGleeokJson as IllustrationSpec,
+  'trinity-aurogax': cathedralMonsterAurogaxJson as IllustrationSpec,
 };
 
 /**
- * Pick the aspect-fit for a card-face illustration (embertide-ei7o).
- * Reverses the prior blanket `meet`, which letterboxed square rasters.
+ * Pick the aspect-fit for a card-face illustration.
  *
- * The art panel is wide-and-short, so a square raster fitted with `meet`
- * fills only the panel height and leaves parchment bands on either side.
- *  - Raster portraits → `slice` (cover) fills the panel edge-to-edge;
- *    subjects are centered, so the cropped top/bottom is only background.
- *  - Vector specs → `meet` (letterbox): the cathedral-arch ornament is
- *    drawn to the viewBox edges, so `slice` would crop the arch.
+ * Always `meet` (letterbox) — for BOTH rasters and vector specs.
+ *
+ * dfx1: the prior raster→`slice` (cover) cropped the subject whenever the
+ * art panel was non-square (the common case now that the art panel is the
+ * dominant element). Item rasters frame the subject edge-to-edge — the
+ * legendary swords run blade-tip to hilt across the full 24×24 cell — so
+ * `slice` clipped the tip and pommel (player report "item art is cut off").
+ * `meet` fits the whole subject; the art panel's transparent background
+ * shows the variant bg through any letterbox margin (see `.card-template-art`
+ * note in app.css), so there is no parchment-band amateurism to avoid.
  */
-function cardFaceFit(spec: IllustrationSpec): 'meet' | 'slice' {
-  return spec.rasterImageUrl ? 'slice' : 'meet';
+function cardFaceFit(_spec: IllustrationSpec): 'meet' | 'slice' {
+  return 'meet';
 }
 
 /**
@@ -463,7 +466,7 @@ function iconFor(role: CardRole, size: number): ReactElement {
     case 'chest-boss':
       return <Chest size={size} />;
     case 'starter-green':
-      return <GreenRupee size={size} />;
+      return <GreenShard size={size} />;
     case 'starter-red':
       return <Sword size={size} />;
     default:

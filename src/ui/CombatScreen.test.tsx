@@ -1213,7 +1213,7 @@ describe('dispatchCombat tutorial bubble firing (u-8g)', () => {
     useGameStore.getState().dispatchCombat({
       type: 'COMBAT_RESOLVE_WIN',
       heartsToAttackers: {},
-      fairyDropTarget: null,
+      wispDropTarget: null,
       shardGrants: [],
       zoneAdvance: false,
       bossKey: null,

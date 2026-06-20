@@ -69,16 +69,16 @@ describe('combatEffectFor', () => {
     }
 
     const wisp = findCard('wisp');
-    const fairyEffect = combatEffectFor(wisp);
-    expect(fairyEffect.kind).toBe('combat-heal');
-    if (fairyEffect.kind === 'combat-heal') {
-      expect(fairyEffect.amount).toBeGreaterThan(0);
+    const wispEffect = combatEffectFor(wisp);
+    expect(wispEffect.kind).toBe('combat-heal');
+    if (wispEffect.kind === 'combat-heal') {
+      expect(wispEffect.amount).toBeGreaterThan(0);
     }
   });
 
   it('v2.1 gm0.16: great-wisp resolves to combat-heal amount:5 (enhanced vs plain wisp)', () => {
-    const greatFairy = findCard('great-wisp');
-    const effect = combatEffectFor(greatFairy);
+    const greatWisp = findCard('great-wisp');
+    const effect = combatEffectFor(greatWisp);
     expect(effect.kind).toBe('combat-heal');
     if (effect.kind === 'combat-heal') {
       expect(effect.amount).toBe(5);
@@ -97,10 +97,10 @@ describe('combatEffectFor', () => {
   it('falls back to combat-attack with damage = cost.red for non-overridden cards', () => {
     // Scrabling has cost.red = 5 — the default branch reads from cost.red.
     const scrabling = findCard('scrabling');
-    const bokoblinEffect = combatEffectFor(scrabling);
-    expect(bokoblinEffect.kind).toBe('combat-attack');
-    if (bokoblinEffect.kind === 'combat-attack') {
-      expect(bokoblinEffect.damage).toBe(5);
+    const scrablingEffect = combatEffectFor(scrabling);
+    expect(scrablingEffect.kind).toBe('combat-attack');
+    if (scrablingEffect.kind === 'combat-attack') {
+      expect(scrablingEffect.damage).toBe(5);
     }
 
     // Monsters (like grunt-orc, cost.red=3) remain non-overridden — the
@@ -315,13 +315,13 @@ describe('combatEffectFor — u-9b heirlooms', () => {
     // Designer playtest 2026-04-22 (rev-2) re-included gem-generator
     // starters in the combat deck with distinct combat effects so they
     // aren't inert filler. See combatEngine.isCombatEligibleStarterRole.
-    const greenRupee: Card = {
+    const greenShard: Card = {
       id: 'starter-green-shard',
       role: 'starter-green',
       cost: {},
       effects: { kind: 'shard', green: 1 },
     };
-    const effect = combatEffectFor(greenRupee);
+    const effect = combatEffectFor(greenShard);
     expect(effect.kind).toBe('combat-draw');
     if (effect.kind === 'combat-draw') {
       expect(effect.count).toBe(1);
@@ -329,13 +329,13 @@ describe('combatEffectFor — u-9b heirlooms', () => {
   });
 
   it('starter-red-shard resolves to combat-attack damage 2 (rev-2 2026-04-22)', () => {
-    const redRupee: Card = {
+    const redShard: Card = {
       id: 'starter-red-shard',
       role: 'starter-red',
       cost: {},
       effects: { kind: 'shard', red: 1 },
     };
-    const effect = combatEffectFor(redRupee);
+    const effect = combatEffectFor(redShard);
     expect(effect.kind).toBe('combat-attack');
     if (effect.kind === 'combat-attack') {
       // Damage 2 is one step above the 1-damage default so drawing
@@ -450,11 +450,11 @@ describe('combatEffectFor — v2.1 gm0.15 new items (embertide-9hy)', () => {
       expect(effects.kind).toBe(effectsKind);
     }
     // chimera-sword — heirloom shape: cost.green=0, effects.kind='gain'.
-    const lynelSword = findCard('chimera-sword');
-    expect(lynelSword.role).toBe('item');
-    expect(lynelSword.itemKind).toBe('item-active');
-    expect(lynelSword.cost.green).toBe(0);
-    const lynelEffects = lynelSword.effects as { readonly kind: string };
-    expect(lynelEffects.kind).toBe('gain');
+    const chimeraSword = findCard('chimera-sword');
+    expect(chimeraSword.role).toBe('item');
+    expect(chimeraSword.itemKind).toBe('item-active');
+    expect(chimeraSword.cost.green).toBe(0);
+    const chimeraEffects = chimeraSword.effects as { readonly kind: string };
+    expect(chimeraEffects.kind).toBe('gain');
   });
 });

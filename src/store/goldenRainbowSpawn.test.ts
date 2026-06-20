@@ -10,7 +10,7 @@
  *     on always-available kills (Wild Wolf) or region-boss
  *     `COMBAT_RESOLVE_WIN`.
  *   - The spawn roll fires exactly once at Silver Chimera's defeat; a
- *     seeded RNG that returns < 0.85 flips `goldenRainbowLynelSpawned`
+ *     seeded RNG that returns < 0.85 flips `prismChimeraSpawned`
  *     to true, a seeded RNG that returns >= 0.85 leaves the flag false.
  *   - The slot selector (`currentWildBossForZone`) surfaces
  *     `'prism-chimera'` only when the FIFO is cleared AND the
@@ -43,11 +43,11 @@ function newGame(seed = 1) {
 }
 
 describe('centerRowKillCount — embertide-044 (increment sites)', () => {
-  it('initGame seeds centerRowKillCount at 0 and goldenRainbowLynelSpawned at false', () => {
+  it('initGame seeds centerRowKillCount at 0 and prismChimeraSpawned at false', () => {
     const store = newGame();
     const s = store.getState();
     expect(s.centerRowKillCount).toBe(0);
-    expect(s.goldenRainbowLynelSpawned).toBe(false);
+    expect(s.prismChimeraSpawned).toBe(false);
   });
 
   it('fightMonster (regular center-row kill) increments centerRowKillCount by 1', () => {
@@ -160,7 +160,7 @@ describe('Prism Chimera spawn roll — embertide-044 (roll site)', () => {
       .getState()
       .dispatchCombat(buildResolveWinAction(SILVER_CHIMERA, ['p0', 'p1'], 'gilded-cage'));
     const after = store.getState();
-    expect(after.goldenRainbowLynelSpawned).toBe(true);
+    expect(after.prismChimeraSpawned).toBe(true);
     expect(after.centerRowKillCount).toBe(21);
     expect(after.defeatedBossIds).toContain('silver-chimera');
   });
@@ -188,7 +188,7 @@ describe('Prism Chimera spawn roll — embertide-044 (roll site)', () => {
     store
       .getState()
       .dispatchCombat(buildResolveWinAction(SILVER_CHIMERA, ['p0', 'p1'], 'gilded-cage'));
-    expect(store.getState().goldenRainbowLynelSpawned).toBe(false);
+    expect(store.getState().prismChimeraSpawned).toBe(false);
   });
 
   it('does NOT roll at Sentinel defeat (pre-Silver-Chimera wild-boss wins only increment the counter)', () => {
@@ -207,7 +207,7 @@ describe('Prism Chimera spawn roll — embertide-044 (roll site)', () => {
     store
       .getState()
       .dispatchCombat(buildResolveWinAction(SENTINEL, ['p0', 'p1'], 'gilded-cage'));
-    expect(store.getState().goldenRainbowLynelSpawned).toBe(false);
+    expect(store.getState().prismChimeraSpawned).toBe(false);
   });
 
   it('does NOT roll on a non-Temple wild-boss defeat (Craghorn in Sylvani)', () => {
@@ -222,12 +222,12 @@ describe('Prism Chimera spawn roll — embertide-044 (roll site)', () => {
     }));
     store.getState().engageWildBossSlot('sylvani', 'craghorn');
     store.getState().dispatchCombat(buildResolveWinAction(CRAGHORN, ['p0', 'p1'], 'sylvani'));
-    expect(store.getState().goldenRainbowLynelSpawned).toBe(false);
+    expect(store.getState().prismChimeraSpawned).toBe(false);
   });
 
   it('does NOT re-roll once the flag has flipped (one-shot semantics)', () => {
     // If Silver Chimera somehow resolves again (defensive), the flag
-    // must not regress and the condition (`!goldenRainbowLynelSpawned`)
+    // must not regress and the condition (`!prismChimeraSpawned`)
     // short-circuits — so a failing rng post-flag would NOT flip it back.
     const store = newGame();
     store.setState((s) => ({
@@ -235,7 +235,7 @@ describe('Prism Chimera spawn roll — embertide-044 (roll site)', () => {
       turn: 6,
       currentZone: 'gilded-cage',
       centerRowKillCount: 30,
-      goldenRainbowLynelSpawned: true,
+      prismChimeraSpawned: true,
       rng: () => 0.99, // would fail, but guard prevents a roll.
       defeatedBossIds: ['sentinel'],
       bossKeys: {
@@ -251,6 +251,6 @@ describe('Prism Chimera spawn roll — embertide-044 (roll site)', () => {
     store
       .getState()
       .dispatchCombat(buildResolveWinAction(SILVER_CHIMERA, ['p0', 'p1'], 'gilded-cage'));
-    expect(store.getState().goldenRainbowLynelSpawned).toBe(true);
+    expect(store.getState().prismChimeraSpawned).toBe(true);
   });
 });

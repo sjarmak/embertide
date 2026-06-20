@@ -128,7 +128,7 @@ export const PremiumItemCard: Story = () => (
   </Frame>
 );
 
-export const FairyCard: Story = () => (
+export const WispCard: Story = () => (
   <Frame heading="reward: wisp · wisp card via CardTemplate, 'Wisp' category label">
     <ChestReveal reward="wisp" card={findCard('wisp')} onComplete={noop} />
   </Frame>

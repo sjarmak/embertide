@@ -62,7 +62,7 @@ Embertide v1 is a working 2-player deckbuilder with a Elysian Cathedral visual t
   - Acceptance: `STANDARD_VICTORY_HEARTS` removed; new `EMBERTIDE_PIECES_TO_WIN = 3`. Tests `victory.test.ts` assert a player wins at 3 pieces, not at 5 hearts. Endgame ticker `tickEndgame`/`beginEndgame` replaced by an instant Embertide-completion check.
 
 - **REQ-2: Hearts-as-HP, shards-as-win-progress.**
-  - Acceptance: `KidPlayer.hearts` renamed/split into `hp` (current) + `hpMax` (cap). `KidPlayer.triforceShards` new field (int 0-3). Every beast defeat produces an HP-heal event; only Wild Bosses, Princess, and Demon King produce a shard. Monster heart-drop values are deterministic (floor 1, no variance). Tests: defeating three 2-power beasts produces 3 HP and 0 shards.
+  - Acceptance: `KidPlayer.hearts` renamed/split into `hp` (current) + `hpMax` (cap). `KidPlayer.embertideShards` new field (int 0-3). Every beast defeat produces an HP-heal event; only Wild Bosses, Princess, and Demon King produce a shard. Monster heart-drop values are deterministic (floor 1, no variance). Tests: defeating three 2-power beasts produces 3 HP and 0 shards.
   - **PREMORTEM EDIT (L1)**: add explicit game-over-at-0-HP behavior. When `hp === 0`, player cannot take main-phase actions except (a) use re-roll tokens if held, (b) spend gems on market for HP-heal items if available. If both players reach 0 HP simultaneously, the player with more shards wins (tiebreaker: more HP spent = more engagement).
 
 - **REQ-3: Champion as dedicated passive slot (not deck card).**
@@ -104,8 +104,8 @@ Embertide v1 is a working 2-player deckbuilder with a Elysian Cathedral visual t
   - **Acceptance (REVISED)**: v1 is tagged `v1-final` on branch `prd-build/elysian-cathedral`. v2 develops on a NEW branch `prd-build/embertide-v2` (forked from `v1-final`) with a clean `KidPlayer`/`KidGameState` shape — NO mode flag, NO coexistence proxies. v1 tests are not maintained going forward; the `v1-final` tag preserves the reference implementation for rollback or comparison. v2 authors a fresh test suite on the v2 state shape.
   - **DISSENT RECORDED**: Original plan (coexistence via `mode` flag) is preserved in this PRD's history. Branch-and-tag has a one-time cost (fork + initial v2 test scaffolding) but removes the 1.9x sustaining tax L2 identified. Designer approval required to commit to this strategy before /prd-build.
 
-- **REQ-12: HPStrip + TriforceStrip components on PlayerTray.**
-  - Acceptance: New `HPStrip.tsx` renders current/max HP in stained-glass heart-shard sockets. New `TriforceStrip.tsx` renders 3 triangles (filled on piece-acquire). Both visible at all times on tray, no hover-to-reveal. Embertide progress also mirrored top-center HUD above market row. Visual regression snapshot matches HC aesthetic.
+- **REQ-12: HPStrip + EmbertideStrip components on PlayerTray.**
+  - Acceptance: New `HPStrip.tsx` renders current/max HP in stained-glass heart-shard sockets. New `EmbertideStrip.tsx` renders 3 triangles (filled on piece-acquire). Both visible at all times on tray, no hover-to-reveal. Embertide progress also mirrored top-center HUD above market row. Visual regression snapshot matches HC aesthetic.
   - **PREMORTEM EDIT (L3)**: Re-roll tokens (REQ-14) are INTEGRATED into HPStrip (parchment chip row below heart sockets), NOT a separate RerollTokenStrip. Reduces persistent tray zone count from 5 → 4. Tap-target audit required on target tablet (1024x768 min).
 
 - **REQ-13: EffectSpec typed union (load-bearing schema refactor). [PHASED per L2 mitigation.]**
@@ -345,11 +345,11 @@ New risks introduced by the pivot:
 
 These REQ acceptance bullets are SUPERSEDED by the amendment. DAG units citing them must use the amended wording:
 
-- REQ-1 / u-1a: `EMBERTIDE_PIECES_TO_WIN = 3` is a SHARED counter (moved from `KidPlayer` to `KidGameState.sharedTriforce`).
+- REQ-1 / u-1a: `EMBERTIDE_PIECES_TO_WIN = 3` is a SHARED counter (moved from `KidPlayer` to `KidGameState.sharedEmbertide`).
 - REQ-2 / u-1a: downed state added; revive/wisp hooks added; "both-at-0 tiebreaker" deleted.
 - REQ-7b / u-1a: greedy-shard simulation enumerates (Wisdom-rush, map-rush, Vurmox-rush, mixed) rather than farm vectors.
 - REQ-8 / u-2e: Wisdom shard goes to shared pool; `wisdoms-light` passive remains a shared buff (unchanged in effect — both players always got it).
-- REQ-16 / u-7: soft-clock trigger is `sharedTriforce < 2 at start-of-turn-10`.
+- REQ-16 / u-7: soft-clock trigger is `sharedEmbertide < 2 at start-of-turn-10`.
 - **REQ-20a is SUPERSEDED in its entirety**: the "Hill Brute only" framing is replaced by per-zone full rosters (u-6a/b/c). Hill Brute is no longer in the game — Sylvani's Wild Boss is Craghorn per proper Aurelia lore.
 - REQ-24 / u-4: tutorial adds co-op etiquette, revive, map mechanic.
 

@@ -156,9 +156,9 @@ describe('combat slice', () => {
       field: [MONSTER],
     });
     const next = fightMonster(state, 0, MONSTER.id);
-    expect(next.sharedTriforce.wisdom).toBe(false);
-    expect(next.sharedTriforce.courage).toBe(false);
-    expect(next.sharedTriforce.power).toBe(false);
+    expect(next.sharedEmbertide.wisdom).toBe(false);
+    expect(next.sharedEmbertide.courage).toBe(false);
+    expect(next.sharedEmbertide.power).toBe(false);
   });
 
   // -------------------------------------------------------------------------
@@ -245,7 +245,7 @@ describe('combat slice', () => {
     expect(p.deck).toHaveLength(1);
     // Red cost still deducted; no shards leaked into the loot table.
     expect(p.red).toBe(2);
-    expect(next.sharedTriforce).toEqual({ wisdom: false, courage: false, power: false });
+    expect(next.sharedEmbertide).toEqual({ wisdom: false, courage: false, power: false });
   });
 
   it('r94e: a monster-drop with NO gems / cardDraw leaves green and hand untouched (regression guard)', () => {
@@ -541,10 +541,10 @@ describe('inventory slice (Items zone — REQ-4, u-2d)', () => {
     });
 
     it('returns the input unchanged for great-wisp (heal sentinel — kind not gain/draw)', () => {
-      const greatFairy = KID_CARDS.find((c) => c.id === 'great-wisp');
-      if (!greatFairy) throw new Error('great-wisp missing from KID_CARDS');
+      const greatWisp = KID_CARDS.find((c) => c.id === 'great-wisp');
+      if (!greatWisp) throw new Error('great-wisp missing from KID_CARDS');
       const p = makePlayer({ green: 3, red: 2, keys: 1 });
-      const next = applyHeirloomOnEquip(p, greatFairy, rng);
+      const next = applyHeirloomOnEquip(p, greatWisp, rng);
       expect(next).toBe(p);
     });
 
@@ -855,21 +855,21 @@ describe('endgame slice (v2 shared-pool)', () => {
 
   it('checkCoopVictory sets outcome=win when all three shards granted', () => {
     const state = makeState({
-      sharedTriforce: { wisdom: true, courage: true, power: true },
+      sharedEmbertide: { wisdom: true, courage: true, power: true },
     });
     expect(checkCoopVictory(state).outcome).toBe('win');
   });
 
   it('checkCoopVictory is a no-op when any shard is missing', () => {
     const state = makeState({
-      sharedTriforce: { wisdom: true, courage: true, power: false },
+      sharedEmbertide: { wisdom: true, courage: true, power: false },
     });
     expect(checkCoopVictory(state).outcome).toBeNull();
   });
 
   it('checkCoopVictory does not overwrite a resolved loss outcome', () => {
     const state = makeState({
-      sharedTriforce: { wisdom: true, courage: true, power: true },
+      sharedEmbertide: { wisdom: true, courage: true, power: true },
       outcome: 'loss',
     });
     expect(checkCoopVictory(state).outcome).toBe('loss');

@@ -70,3 +70,6 @@ docs/_legacy-infringing/
 .brainstorm/
 .claude/
 .codegraph/
+
+# Design-pass scratch screenshots (local only)
+docs/design/review/

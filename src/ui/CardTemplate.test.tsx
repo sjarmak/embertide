@@ -80,7 +80,7 @@ describe('CardTemplate', () => {
     expect(effect).not.toBeNull();
     // Resource words are now replaced by inline icons (embertide-9jg).
     // The amount stays as text; the 'g' suffix is replaced by a
-    // <GreenRupee/> icon so only '+1' remains in the visible text.
+    // <GreenShard/> icon so only '+1' remains in the visible text.
     expect(effect?.textContent ?? '').toContain('+1');
     expect(effect?.querySelector('svg[aria-label="green-shard"]')).not.toBeNull();
   });

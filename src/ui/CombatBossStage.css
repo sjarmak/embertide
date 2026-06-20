@@ -263,12 +263,15 @@
 .combat-boss-hp-socket[data-hp-socket-index='0'] {
   left: 20%;
 }
+
 .combat-boss-hp-socket[data-hp-socket-index='1'] {
   left: 40%;
 }
+
 .combat-boss-hp-socket[data-hp-socket-index='2'] {
   left: 60%;
 }
+
 .combat-boss-hp-socket[data-hp-socket-index='3'] {
   left: 80%;
 }

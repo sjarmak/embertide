@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { motion } from 'framer-motion';
-import { GreenRupee, Key, Chest, Sword } from '../icons';
+import { GreenShard, Key, Chest, Sword } from '../icons';
 import type { KidPlayer, Phase } from '../store/types';
 import HPStrip from './HPStrip';
 import ChampionSlot from './ChampionSlot';
@@ -37,7 +37,7 @@ export interface PlayerTrayProps {
    */
   readonly downedTeammateId?: string | null;
   /** 35rv: tap-to-use dispatcher for the wisp. Active player only. */
-  readonly onPlayFairy?: (teammateId: string) => void;
+  readonly onPlayWisp?: (teammateId: string) => void;
 }
 
 const COUNTER_SPRING = {
@@ -72,7 +72,7 @@ export default function PlayerTray({
   phase,
   activePlayerRevivedThisIncident,
   downedTeammateId = null,
-  onPlayFairy,
+  onPlayWisp,
 }: PlayerTrayProps): JSX.Element {
   return (
     <div
@@ -94,7 +94,7 @@ export default function PlayerTray({
       <ChampionSlot player={player} isActive={isActive} />
       <div className="tray-counters">
         <span className="tray-counter" aria-label="green">
-          <GreenRupee size={24} />
+          <GreenShard size={24} />
           <motion.span
             key={player.green}
             data-testid={`tray-green-${player.id}`}
@@ -142,7 +142,7 @@ export default function PlayerTray({
          * the active player's chip is interactive (taps open the popover);
          * non-active trays render a disabled chip so the tray grid stays
          * consistent across seats. Wisp tap-to-use routing on the active
-         * chip uses `downedTeammateId` + `onPlayFairy` from GameBoard.
+         * chip uses `downedTeammateId` + `onPlayWisp` from GameBoard.
          */}
         <span className="tray-counter tray-counter-items" aria-label="items">
           <ItemsBagChip
@@ -150,7 +150,7 @@ export default function PlayerTray({
             playerId={player.id}
             interactive={isActive}
             downedTeammateId={isActive ? downedTeammateId : null}
-            onPlayFairy={isActive ? onPlayFairy : undefined}
+            onPlayWisp={isActive ? onPlayWisp : undefined}
           />
         </span>
       </div>

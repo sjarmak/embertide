@@ -8,7 +8,7 @@
  * tier ordering.
  *
  * Metric: rounds-to-kill + final hp + post-defeat win-state state
- * (sharedTriforce, princessCrystal). Boots ?debug=temple-combat which
+ * (sharedEmbertide, princessCrystal). Boots ?debug=temple-combat which
  * drops into cagewright-vurmox combat in Gilded Cage. Greedy
  * policy. Spec only asserts combat terminates; numbers go in the
  * narrative report.
@@ -29,7 +29,7 @@ interface PostState {
   readonly p0Hp: { hp: number; hpMax: number };
   readonly p1Hp: { hp: number; hpMax: number };
   readonly outcome: string | null;
-  readonly sharedTriforce: { wisdom: boolean; courage: boolean; power: boolean };
+  readonly sharedEmbertide: { wisdom: boolean; courage: boolean; power: boolean };
   readonly princessCrystal: { charges: number; freed: boolean };
   readonly defeatedBossIds: string[];
 }
@@ -41,7 +41,7 @@ async function readPostState(page: Page): Promise<PostState | null> {
         getState(): {
           players: { hp: number; hpMax: number }[];
           outcome: string | null;
-          sharedTriforce: { wisdom: boolean; courage: boolean; power: boolean };
+          sharedEmbertide: { wisdom: boolean; courage: boolean; power: boolean };
           princessCrystal: { charges: number; freed: boolean };
           defeatedBossIds: string[];
         };
@@ -53,7 +53,7 @@ async function readPostState(page: Page): Promise<PostState | null> {
       p0Hp: { hp: s.players[0].hp, hpMax: s.players[0].hpMax },
       p1Hp: { hp: s.players[1].hp, hpMax: s.players[1].hpMax },
       outcome: s.outcome,
-      sharedTriforce: { ...s.sharedTriforce },
+      sharedEmbertide: { ...s.sharedEmbertide },
       princessCrystal: { ...s.princessCrystal },
       defeatedBossIds: [...s.defeatedBossIds],
     };
@@ -93,7 +93,7 @@ test('vurmox-loot-feel — Vurmox kill hp + win-state', async ({ page }) => {
     `Vurmox combat terminated in **${rounds} rounds** (boss starting HP ${initial.boss[1]}). ` +
       `outcome=${post?.outcome}, defeated=[${post?.defeatedBossIds.join(', ')}]. ` +
       `p0=${post?.p0Hp.hp}/${post?.p0Hp.hpMax} p1=${post?.p1Hp.hp}/${post?.p1Hp.hpMax}. ` +
-      `Embertide=${JSON.stringify(post?.sharedTriforce)}, Crystal=${JSON.stringify(post?.princessCrystal)}. ` +
+      `Embertide=${JSON.stringify(post?.sharedEmbertide)}, Crystal=${JSON.stringify(post?.princessCrystal)}. ` +
       `Reward signal = post-defeat hp + win-state surfaces vs Vurmox HP=${initial.boss[1]}.`,
   );
 

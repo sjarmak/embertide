@@ -102,33 +102,46 @@ async function exists(p) {
   }
 }
 
-// Convert a uniform #00FF00 chroma-key background to an alpha channel.
-// Triggered when the prompt declares the chroma-key contract (mentions
-// "chroma-key" or "#00FF00") and the output format is PNG. Uses a soft
-// greenness threshold so anti-aliased edges fall off cleanly, plus a
-// green-spill decontamination step that clamps any kept pixel's green
-// channel to max(R, B) — the prompt forbids green on the subject, so
-// any residual green is by definition spill from the backdrop.
-function applyChromaKeyToAlpha(pngBuffer) {
+// Convert a uniform chroma-key background to an alpha channel.
+//
+// Supports BOTH the green (#00FF00) and magenta (#FF00FF) chroma contracts
+// — some briefs were authored against a magenta backdrop, and a green-only
+// keyer left the raw pink showing on the card face (the "+1 gem" pink-bg
+// defect). `chroma` selects which channel-distance metric to key:
+//   - 'green':   chromaness = G - max(R, B)   (subject forbids green)
+//   - 'magenta': chromaness = min(R, B) - G   (subject forbids magenta)
+// Uses a soft threshold so anti-aliased edges fall off cleanly, plus a
+// spill-decontamination step that pulls any kept pixel's chroma channel(s)
+// back toward the opposite channel so residual backdrop spill on the
+// subject edge is neutralised.
+function applyChromaKeyToAlpha(pngBuffer, chroma = 'green') {
   const decoded = PNG.sync.read(pngBuffer);
   const { data } = decoded;
-  const HIGH = 120; // greenness ≥ this → fully transparent
-  const LOW = 50; // greenness in (LOW, HIGH) → linear falloff
+  const HIGH = 120; // chromaness ≥ this → fully transparent
+  const LOW = 50; // chromaness in (LOW, HIGH) → linear falloff
   const FALLOFF = HIGH - LOW;
+  const isMagenta = chroma === 'magenta';
   for (let i = 0; i < data.length; i += 4) {
     const r = data[i];
     const g = data[i + 1];
     const b = data[i + 2];
-    const greenness = g - Math.max(r, b);
+    const chromaness = isMagenta ? Math.min(r, b) - g : g - Math.max(r, b);
     let alpha = data[i + 3];
-    if (greenness >= HIGH) {
+    if (chromaness >= HIGH) {
       alpha = 0;
-    } else if (greenness > LOW) {
-      alpha = Math.round(alpha * (1 - (greenness - LOW) / FALLOFF));
+    } else if (chromaness > LOW) {
+      alpha = Math.round(alpha * (1 - (chromaness - LOW) / FALLOFF));
     }
     if (alpha > 0) {
-      const maxRB = Math.max(r, b);
-      if (g > maxRB) data[i + 1] = maxRB;
+      if (isMagenta) {
+        // Magenta spill = residual high R and B on the subject. Clamp both
+        // down toward green so a kept edge pixel loses the pink tint.
+        if (r > g) data[i] = g;
+        if (b > g) data[i + 2] = g;
+      } else {
+        const maxRB = Math.max(r, b);
+        if (g > maxRB) data[i + 1] = maxRB;
+      }
     }
     data[i + 3] = alpha;
   }
@@ -186,11 +199,14 @@ async function main() {
     throw new Error(`Fetching webp failed: ${webpRes.status} ${webpRes.statusText}`);
   }
   let buf = Buffer.from(await webpRes.arrayBuffer());
-  const isChromaKeyed = params.output_format === 'png' && /chroma-key|#00FF00/i.test(prompt);
-  if (isChromaKeyed) {
+  const declaresChroma = params.output_format === 'png' && /chroma-key|#00FF00|#FF00FF/i.test(prompt);
+  if (declaresChroma) {
+    // Pick the chroma color the brief actually declares. Magenta (#FF00FF)
+    // takes precedence only when explicitly named; otherwise default green.
+    const chroma = /#FF00FF|magenta/i.test(prompt) ? 'magenta' : 'green';
     const before = buf.length;
-    buf = applyChromaKeyToAlpha(buf);
-    stdout.write(`  chroma-key → alpha (${before} → ${buf.length} bytes)\n`);
+    buf = applyChromaKeyToAlpha(buf, chroma);
+    stdout.write(`  chroma-key (${chroma}) → alpha (${before} → ${buf.length} bytes)\n`);
   }
   await writeFile(rasterAbs, buf);
   stdout.write(`✓ saved ${rasterAbs} (${buf.length} bytes)\n`);

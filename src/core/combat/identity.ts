@@ -9,7 +9,7 @@ import type { Card } from '../../types/card';
  * Strip a trailing `-N` numeric suffix from a card id. Supply-minted
  * duplicates in `src/data/cards.ts` / `src/store/slices/` suffix fresh
  * copies with `-2`, `-3`, etc. (see `mintAlwaysAvailable`,
- * `grantWildBossFairy`). The base id is the authoring id from
+ * `grantWildBossWisp`). The base id is the authoring id from
  * `KID_CARDS`.
  */
 export function baseIdOf(id: string): string {
@@ -24,7 +24,7 @@ export function baseIdOf(id: string): string {
  * with numeric suffixes (`wisp-2`, `wisp-3`), so we compare the
  * stripped base id.
  */
-export function isFairyCard(card: Card): boolean {
+export function isWispCard(card: Card): boolean {
   return baseIdOf(card.id) === 'wisp';
 }
 

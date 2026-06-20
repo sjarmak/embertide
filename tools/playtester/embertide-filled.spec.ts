@@ -1,7 +1,7 @@
 /**
- * Scenario: TriforceStrip all-filled state (embertide-68a).
+ * Scenario: EmbertideStrip all-filled state (embertide-68a).
  *
- * Boots `?debug=embertide-filled` which sets sharedTriforce for all
+ * Boots `?debug=embertide-filled` which sets sharedEmbertide for all
  * three shards (wisdom/courage/power) to true. Verifies each
  * embertide-shard-<id> element surfaces the filled-shard rendering
  * (data-filled="true"). Captures a screenshot so the fill animation's
@@ -21,7 +21,7 @@ test('embertide-filled — all three shards render as filled', async ({ page }) 
 
   const strip = page.locator('[data-testid="embertide-strip"]');
   await expect(strip).toBeVisible();
-  report.step('✓ TriforceStrip mounted');
+  report.step('✓ EmbertideStrip mounted');
 
   for (const shardId of ['wisdom', 'courage', 'power'] as const) {
     const shard = page.locator(`[data-testid="embertide-shard-${shardId}"]`);
@@ -31,7 +31,7 @@ test('embertide-filled — all three shards render as filled', async ({ page }) 
   }
 
   await report.finalize(
-    'All three shared Embertide shards render as filled when sharedTriforce is fully granted. ' +
+    'All three shared Embertide shards render as filled when sharedEmbertide is fully granted. ' +
       'Baseline screenshot captured for the win-state board surface.',
   );
 });

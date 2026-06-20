@@ -7,7 +7,7 @@
  * carry `zone: 'maren'` for back-reference; authoritative roster lives
  * in `ZONE_METADATA.maren` (src/rules/zones.ts).
  *
- * Tone pass: kid-6yo friendly. No corruption / horror — Zoran warriors
+ * Tone pass: kid-6yo friendly. No corruption / horror — Maren warriors
  * are fantasy fish-people, tidewraith is a friendly amoeba slime, maelstrom
  * is a Wind-Waker-canon armored octopus. Tide-gauge zone-mechanic
  * substrate ships in src/store/slices/zones.ts (gdd.1 — substrate-only;
@@ -31,10 +31,10 @@
 
 import type { Card } from '../../../types/card';
 
-// [v2-art-pending] maren-warrior — hostile Zoran spear-wielder. Standard
+// [v2-art-pending] maren-warrior — hostile Maren spear-wielder. Standard
 // regular shape: +1 hp on defeat. The "spear" thematic is encoded as a
 // red-cost-3 card (entry-tier regular cost).
-const zoraWarrior: Card = {
+const marenWarrior: Card = {
   id: 'maren-warrior',
   role: 'monster',
   cost: { red: 3 },
@@ -80,7 +80,7 @@ const fangfish: Card = {
   zone: 'maren',
 };
 
-const zoraRegularsList: readonly Card[] = [zoraWarrior, reefblade, frostJellet, fangfish];
+const marenRegularsList: readonly Card[] = [marenWarrior, reefblade, frostJellet, fangfish];
 
 // [v2-art-pending] maelstrom — Wind-Waker-canon giant armored octopus
 // wild-boss for Tidehold. `bossTier: 'wild-boss'` drives the
@@ -139,6 +139,6 @@ export const tidewraith: Card = {
  * wiring. Ships in KID_CARDS / SUPPLY_PLAN below alongside the other zone
  * regulars + bosses.
  */
-export const zoraRegulars: readonly Card[] = zoraRegularsList;
-export const MAREN_REGULARS: readonly Card[] = zoraRegularsList;
+export const marenRegulars: readonly Card[] = marenRegularsList;
+export const MAREN_REGULARS: readonly Card[] = marenRegularsList;
 export const MAREN_BOSSES: readonly Card[] = [maelstrom, tidewraith];

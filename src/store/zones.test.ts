@@ -107,12 +107,12 @@ describe('zone rules — ZONE_ORDER + metadata (u-5a)', () => {
   });
 
   it('Layer 7 baseline: all three zones carry wild + region boss metadata (gilded-cage populated by u-6c-bosses)', () => {
-    // u-6a populated sylvani (craghorn / broodmaw — see kokiriContent.test.ts).
+    // u-6a populated sylvani (craghorn / broodmaw — see sylvaniContent.test.ts).
     // u-6b populated emberpeak (boulderkin / ashen-tyrant — see
-    // deathMountainContent.test.ts).
+    // emberpeakContent.test.ts).
     // u-6c-bosses populated gilded-cage: wildBossIds=[sentinel,
     // silver-chimera], regionBossId='cagewright-vurmox' — see
-    // templeOfTimeBosses.test.ts for the full acceptance coverage.
+    // gildedCageBosses.test.ts for the full acceptance coverage.
     const meta = ZONE_METADATA['gilded-cage'];
     // embertide-044 (2026-04-24): Temple's FIFO carries only the
     // two cores (Sentinel + Silver Chimera). Prism Chimera is a
@@ -130,7 +130,7 @@ describe('zone rules — ZONE_ORDER + metadata (u-5a)', () => {
       'gulpmaw',
       'hexrobe',
     ]);
-    // Sylvani regulars asserted in src/data/kokiriContent.test.ts.
+    // Sylvani regulars asserted in src/data/sylvaniContent.test.ts.
     // Emberpeak regulars land on u-6b.
   });
 
@@ -230,7 +230,7 @@ describe('initialZoneFields + advanceZone + recordBossDefeat (u-5a)', () => {
       'gilded-cage',
     ]);
     // u-5b side effect: full 6-zone sequence cleared → Courage flips.
-    expect(next.sharedTriforce.courage).toBe(true);
+    expect(next.sharedEmbertide.courage).toBe(true);
     // Second call at terminal with the zone already in history is a
     // full no-op (identity return).
     const next2 = advanceZone(next);

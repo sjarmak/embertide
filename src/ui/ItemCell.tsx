@@ -55,7 +55,7 @@ const TAP_BUTTON_DISABLED_STYLE: CSSProperties = {
  * card face shows the full effect text via CardTemplate's rules box.
  *
  * Empty string for items whose mechanic is not a passive SOT trigger —
- * the wisp is the main example (`playFairyOn` is tap-dispatched).
+ * the wisp is the main example (`playWispOn` is tap-dispatched).
  */
 export function itemTriggerTextFor(card: Card): string {
   switch (baseIdOf(card)) {
@@ -91,7 +91,7 @@ export interface ItemCellProps {
   /**
    * Id of the currently-downed teammate, or `null` when no teammate is
    * downed. Wired only for the wisp tile — tapping the wisp fires
-   * `onPlayFairy(downedTeammateId)` but ONLY when this prop is a non-null
+   * `onPlayWisp(downedTeammateId)` but ONLY when this prop is a non-null
    * string. Outside that context the tap button renders disabled so the
    * card is preserved (soft UX per amendment A6 — wisp NOT consumed).
    */
@@ -101,7 +101,7 @@ export interface ItemCellProps {
    * `downedTeammateId` on a valid tap. When absent, the wisp cell is
    * read-only (no button rendered) — other item cells are unaffected.
    */
-  readonly onPlayFairy?: (teammateId: string) => void;
+  readonly onPlayWisp?: (teammateId: string) => void;
 }
 
 /**
@@ -114,7 +114,7 @@ export interface ItemCellProps {
  *   - Wisp: wrap the card face in `ArtPendingFrame` (finalized art has
  *     not shipped yet) + render a tap-to-use button whose enabled state
  *     matches the "downed teammate available" condition. Taps dispatch
- *     to `onPlayFairy(teammateId)` — which in turn calls `playFairyOn`
+ *     to `onPlayWisp(teammateId)` — which in turn calls `playWispOn`
  *     in the store. Outside the downed context the button is disabled.
  *   - Future item-passive (v2.1): the `itemKind !== 'item-active'` branch
  *     keeps the cooldown readout suppressed — no code change needed when
@@ -123,14 +123,14 @@ export interface ItemCellProps {
 export default function ItemCell({
   card,
   downedTeammateId,
-  onPlayFairy,
+  onPlayWisp,
 }: ItemCellProps): JSX.Element {
   const baseId = baseIdOf(card);
-  const isFairy = baseId === 'wisp';
+  const isWisp = baseId === 'wisp';
   const triggerText = itemTriggerTextFor(card);
   const cooldownLabel = cooldownReadoutFor(card);
-  const hasTapHandler = typeof onPlayFairy === 'function';
-  const tapEnabled = isFairy && hasTapHandler && typeof downedTeammateId === 'string';
+  const hasTapHandler = typeof onPlayWisp === 'function';
+  const tapEnabled = isWisp && hasTapHandler && typeof downedTeammateId === 'string';
 
   const body = <CardTemplate card={card} illustrationSize={96} />;
 
@@ -142,7 +142,7 @@ export default function ItemCell({
       data-item-kind={card.itemKind ?? ''}
       style={TILE_TOUCH_STYLE}
     >
-      {isFairy ? <ArtPendingFrame testIdSuffix="wisp-item-cell">{body}</ArtPendingFrame> : body}
+      {isWisp ? <ArtPendingFrame testIdSuffix="wisp-item-cell">{body}</ArtPendingFrame> : body}
       {cooldownLabel ? (
         <span data-testid={`item-cooldown-${card.id}`} style={COOLDOWN_STYLE}>
           {cooldownLabel}
@@ -153,7 +153,7 @@ export default function ItemCell({
           {triggerText}
         </span>
       ) : null}
-      {isFairy && hasTapHandler ? (
+      {isWisp && hasTapHandler ? (
         <button
           type="button"
           data-testid={`item-wisp-tap-${card.id}`}
@@ -164,7 +164,7 @@ export default function ItemCell({
           onClick={() => {
             if (!tapEnabled) return;
             // tapEnabled implies downedTeammateId is a non-null string.
-            onPlayFairy(downedTeammateId as string);
+            onPlayWisp(downedTeammateId as string);
           }}
         >
           Use on teammate

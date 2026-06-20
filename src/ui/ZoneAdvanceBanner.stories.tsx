@@ -81,7 +81,7 @@ function Demo({ fromZone, toZone, caption, durationMs }: DemoProps) {
   );
 }
 
-export const KokiriToDeathMountain: Story = () => (
+export const SylvaniToEmberpeak: Story = () => (
   <Demo
     fromZone="sylvani"
     toZone="emberpeak"
@@ -89,7 +89,7 @@ export const KokiriToDeathMountain: Story = () => (
   />
 );
 
-export const DeathMountainToZora: Story = () => (
+export const EmberpeakToMaren: Story = () => (
   <Demo
     fromZone="emberpeak"
     toZone="maren"

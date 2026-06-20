@@ -19,13 +19,13 @@
  *       `currentRegionBossForZone`. Selector coverage lives in
  *       src/rules/zones.test.ts.
  *   (e) Sentinel / Silver Chimera defeat grants a wisp via the existing
- *       wild-boss hook and does NOT flip any sharedTriforce shard.
- *   (f) Vurmox defeat flips BOTH sharedTriforce.power AND
- *       sharedTriforce.courage in the same returned state (Power via
+ *       wild-boss hook and does NOT flip any sharedEmbertide shard.
+ *   (f) Vurmox defeat flips BOTH sharedEmbertide.power AND
+ *       sharedEmbertide.courage in the same returned state (Power via
  *       the combat.ts gate on defeated.id === 'cagewright-vurmox',
  *       Courage via u-5b's checkCourageUnlock fired from advanceZone).
  *   (g) Vurmox defeat with Wisdom already granted produces a full 3/3
- *       sharedTriforce end-state — the co-op victory condition.
+ *       sharedEmbertide end-state — the co-op victory condition.
  *
  * IP-safety note: u-6c-bosses authors the id 'cagewright-vurmox' per
  * amendment A5; the IP-safety substring list in cards.test.ts was
@@ -133,17 +133,17 @@ describe('u-6c-bosses Sentinel + Silver Chimera wild bosses (a)', () => {
 
 describe('u-6c-bosses Silver Chimera is HARDER than Sentinel (b)', () => {
   it('Silver Chimera.hearts >= round(Sentinel.hearts * 1.5)', () => {
-    const guardianHearts = dropHearts(SENTINEL);
-    const lynelHearts = dropHearts(SILVER_CHIMERA);
-    const floor = Math.round(guardianHearts * 1.5);
-    expect(lynelHearts).toBeGreaterThanOrEqual(floor);
+    const sentinelHearts = dropHearts(SENTINEL);
+    const chimeraHearts = dropHearts(SILVER_CHIMERA);
+    const floor = Math.round(sentinelHearts * 1.5);
+    expect(chimeraHearts).toBeGreaterThanOrEqual(floor);
   });
 
   it('Silver Chimera.red >= round(Sentinel.red * 1.5)', () => {
-    const guardianRed = SENTINEL?.cost.red ?? 0;
-    const lynelRed = SILVER_CHIMERA?.cost.red ?? 0;
-    const floor = Math.round(guardianRed * 1.5);
-    expect(lynelRed).toBeGreaterThanOrEqual(floor);
+    const sentinelRed = SENTINEL?.cost.red ?? 0;
+    const chimeraRed = SILVER_CHIMERA?.cost.red ?? 0;
+    const floor = Math.round(sentinelRed * 1.5);
+    expect(chimeraRed).toBeGreaterThanOrEqual(floor);
   });
 });
 
@@ -170,12 +170,12 @@ describe('u-6c-bosses Cagewright Vurmox region boss (c)', () => {
   });
 
   it('costs red + keys at or above ashen-tyrant (the prior ceiling) — climactic tuning', () => {
-    const ganonRed = VURMOX?.cost.red ?? 0;
-    const ganonKeys = VURMOX?.cost.keys ?? 0;
+    const vurmoxRed = VURMOX?.cost.red ?? 0;
+    const vurmoxKeys = VURMOX?.cost.keys ?? 0;
     const ashenTyrant = KID_CARDS.find((c) => c.id === 'ashen-tyrant');
     const kingRed = ashenTyrant?.cost.red ?? 0;
-    expect(ganonRed).toBeGreaterThanOrEqual(kingRed);
-    expect(ganonKeys).toBeGreaterThanOrEqual(1);
+    expect(vurmoxRed).toBeGreaterThanOrEqual(kingRed);
+    expect(vurmoxKeys).toBeGreaterThanOrEqual(1);
   });
 });
 
@@ -208,14 +208,14 @@ describe('u-6c-bosses Sentinel / Silver Chimera defeats grant fairies, no shard 
     expect(next.players[0].items[0].id).toMatch(/^wisp-wild-boss-silver-chimera-\d+$/);
   });
 
-  it('NEITHER wild-boss defeat flips any sharedTriforce flag', () => {
+  it('NEITHER wild-boss defeat flips any sharedEmbertide flag', () => {
     const sentinel = { ...(SENTINEL as Card) };
     const chimera = { ...(SILVER_CHIMERA as Card) };
     let s = makeState({ field: [sentinel, chimera] });
     s = fightMonster(s, 0, 'sentinel');
-    expect(s.sharedTriforce).toEqual({ wisdom: false, courage: false, power: false });
+    expect(s.sharedEmbertide).toEqual({ wisdom: false, courage: false, power: false });
     s = fightMonster(s, 0, 'silver-chimera');
-    expect(s.sharedTriforce).toEqual({ wisdom: false, courage: false, power: false });
+    expect(s.sharedEmbertide).toEqual({ wisdom: false, courage: false, power: false });
     // currentZone stayed at gilded-cage (no advance from wild-boss kill).
     expect(s.currentZone).toBe('gilded-cage');
   });
@@ -236,7 +236,7 @@ describe('u-6c-bosses Sentinel / Silver Chimera defeats grant fairies, no shard 
 // ---------------------------------------------------------------------------
 
 describe('u-6c-bosses Cagewright Vurmox defeat dual shard flip (f)', () => {
-  it('flips sharedTriforce.power = true AND sharedTriforce.courage = true in a single state transition', () => {
+  it('flips sharedEmbertide.power = true AND sharedEmbertide.courage = true in a single state transition', () => {
     const vurmox = { ...(VURMOX as Card) };
     const s = makeState({
       field: [vurmox],
@@ -248,16 +248,16 @@ describe('u-6c-bosses Cagewright Vurmox defeat dual shard flip (f)', () => {
       currentZone: 'gilded-cage',
       // gdd.1 (v2.1): pre-Vurmox zoneHistory now includes Tidehold.
       zoneHistory: ['sylvani', 'emberpeak', 'maren', 'hollow-shrine', 'dune-sanctum'],
-      sharedTriforce: { wisdom: false, courage: false, power: false },
+      sharedEmbertide: { wisdom: false, courage: false, power: false },
     });
     const next = fightMonster(s, 0, 'cagewright-vurmox');
     // Power flip fires from combat.ts's POWER_SHARD_GRANTER_ID check.
-    expect(next.sharedTriforce.power).toBe(true);
+    expect(next.sharedEmbertide.power).toBe(true);
     // Courage flip fires from u-5b's checkCourageUnlock inside advanceZone
     // (terminal-zone clearance completes the 3-zone sequence in history).
-    expect(next.sharedTriforce.courage).toBe(true);
+    expect(next.sharedEmbertide.courage).toBe(true);
     // Wisdom stays false — Vurmox grants Power + Courage, not Wisdom.
-    expect(next.sharedTriforce.wisdom).toBe(false);
+    expect(next.sharedEmbertide.wisdom).toBe(false);
     // zoneHistory includes the terminal zone (u-5b amendment to advanceZone).
     expect(next.zoneHistory).toEqual([
       'sylvani',
@@ -286,7 +286,7 @@ describe('u-6c-bosses Cagewright Vurmox defeat dual shard flip (f)', () => {
       zoneHistory: ['sylvani', 'emberpeak', 'maren', 'hollow-shrine', 'dune-sanctum'],
     });
     const mid = fightMonster(s, 0, 'cagewright-vurmox');
-    expect(mid.sharedTriforce.power).toBe(true);
+    expect(mid.sharedEmbertide.power).toBe(true);
     // Second Vurmox copy with suffixed id + baseId pointer (mirrors the
     // supply-duplication pattern in cards.ts).
     const duplicate: Card & { baseId: string } = {
@@ -304,7 +304,7 @@ describe('u-6c-bosses Cagewright Vurmox defeat dual shard flip (f)', () => {
     };
     const afterSecond = fightMonster(restocked, 0, 'cagewright-vurmox-2');
     // Flag still true — idempotent.
-    expect(afterSecond.sharedTriforce.power).toBe(true);
+    expect(afterSecond.sharedEmbertide.power).toBe(true);
   });
 });
 
@@ -312,8 +312,8 @@ describe('u-6c-bosses Cagewright Vurmox defeat dual shard flip (f)', () => {
 // (g) Vurmox defeat with Wisdom already granted → full 3/3 co-op victory.
 // ---------------------------------------------------------------------------
 
-describe('u-6c-bosses Vurmox defeat with Wisdom pre-flipped = full 3/3 sharedTriforce (g)', () => {
-  it('ends with sharedTriforce = { wisdom: true, courage: true, power: true } (co-op victory end-state)', () => {
+describe('u-6c-bosses Vurmox defeat with Wisdom pre-flipped = full 3/3 sharedEmbertide (g)', () => {
+  it('ends with sharedEmbertide = { wisdom: true, courage: true, power: true } (co-op victory end-state)', () => {
     const vurmox = { ...(VURMOX as Card) };
     const s = makeState({
       field: [vurmox],
@@ -324,10 +324,10 @@ describe('u-6c-bosses Vurmox defeat with Wisdom pre-flipped = full 3/3 sharedTri
       // Wisdom would be flipped by an earlier Princess Crystal free
       // (u-2e). We simulate that prerequisite here so the assertion
       // proves the Vurmox defeat completes the shared pool.
-      sharedTriforce: { wisdom: true, courage: false, power: false },
+      sharedEmbertide: { wisdom: true, courage: false, power: false },
     });
     const next = fightMonster(s, 0, 'cagewright-vurmox');
-    expect(next.sharedTriforce).toEqual({
+    expect(next.sharedEmbertide).toEqual({
       wisdom: true,
       courage: true,
       power: true,

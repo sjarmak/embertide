@@ -17,7 +17,7 @@ import type { BossResolveOutcome } from './types';
 /**
  * Stable log fragments for resolver-test substring assertions.
  *
- * Tests in `combatEngine.twinrovaResolver.test.ts` import these
+ * Tests in `combatEngine.hextwinsResolver.test.ts` import these
  * constants and assert `entry.includes(HEXTWINS_LOG_*)` instead of
  * hard-coding bare substring literals. The constant is the contract —
  * a flavor rephrasing that drops the fragment from the rendered log
@@ -26,7 +26,7 @@ import type { BossResolveOutcome } from './types';
 export const HEXTWINS_LOG_FIRE_HITS = 'fire blast hits for';
 export const HEXTWINS_LOG_ICE_FREEZES = 'ice freezes';
 
-export function twinrovaFireIceResolver(combat: CombatState): BossResolveOutcome {
+export function hextwinsFireIceResolver(combat: CombatState): BossResolveOutcome {
   const dpt = combat.boss.attackPattern.damagePerTurn;
   const phase = combat.turnIndex % 3;
   if (phase === 1) {

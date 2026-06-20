@@ -88,19 +88,19 @@ export const GENERIC_BASE_ID_THEME: Record<string, string> = {
   blackguard: 'Blackguard',
   cinderwyrm: 'Cinderwyrm',
   'phantom-vurmox': 'Phantom Vurmox',
-  'palegrasp': 'Dead Hand',
+  'palegrasp': 'Palegrasp',
   // embertide-wacl (2026-05-08) — Colosseum tier-3 + tier-4 roster
   // display names. Surfaces in the HUD's tier-progression preview now;
   // the underlying card-data entries (parallel to `trinity-aurogax` in
   // src/data/cards/colosseum.ts) ship alongside the per-boss art batch
   // beads, so by-id lookups will resolve once those land.
-  'skrall-king': 'Helmaroc King',
+  'skrall-king': 'Skrall King',
   voltwyrm: 'Voltwyrm',
-  'vinemaw': 'Kalle Demos',
+  'vinemaw': 'Vinemaw',
   sandscourge: 'Sandscourge',
   idolarch: 'Idolarch',
   ossiarch: 'Ossiarch',
-  'the-fettered': 'The Imprisoned',
+  'the-fettered': 'The Fettered',
   pyrax: 'Pyrax',
   oblivar: 'Oblivar',
   // Hero display names (embertide 2026-04-22 theme pass). Surface

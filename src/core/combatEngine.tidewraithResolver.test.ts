@@ -4,7 +4,7 @@
  * Reflects the bossAttackResolver discriminator architecture introduced
  * in gdd.1.2 (per the gdd.2.4 spec). Tests:
  *
- *   (a) `morphaTentacleGrabDpt` — the curve clamp(2, 2 + floor(g/2), 5)
+ *   (a) `tidewraithTentacleGrabDpt` — the curve clamp(2, 2 + floor(g/2), 5)
  *       evaluates correctly at low / mid / high tideGauge
  *   (b) Boss-turn dispatch — when tidewraith's pattern enters the engine
  *       with `bossAttackResolver: 'tidewraith-tentacle-grab'`, the dpt
@@ -34,7 +34,7 @@ import type {
 import type { KidPlayer } from '../store/types';
 import {
   combatTurnReducer,
-  morphaTentacleGrabDpt,
+  tidewraithTentacleGrabDpt,
   TIDEWRAITH_TENTACLE_GRAB_BASE_DPT,
   TIDEWRAITH_TENTACLE_GRAB_MAX_DPT,
   TIDEWRAITH_TENTACLE_GRAB_HIGH_TIDE_THRESHOLD,
@@ -116,38 +116,38 @@ function makeTurnState(
 }
 
 // ---------------------------------------------------------------------------
-// (a) morphaTentacleGrabDpt curve.
+// (a) tidewraithTentacleGrabDpt curve.
 // ---------------------------------------------------------------------------
 
-describe('morphaTentacleGrabDpt curve (a)', () => {
+describe('tidewraithTentacleGrabDpt curve (a)', () => {
   it(`base dpt is ${TIDEWRAITH_TENTACLE_GRAB_BASE_DPT} at tideGauge=0`, () => {
-    expect(morphaTentacleGrabDpt(0)).toBe(TIDEWRAITH_TENTACLE_GRAB_BASE_DPT);
+    expect(tidewraithTentacleGrabDpt(0)).toBe(TIDEWRAITH_TENTACLE_GRAB_BASE_DPT);
   });
 
   it('still 2 at tideGauge=1 (half-tick increments via floor)', () => {
-    expect(morphaTentacleGrabDpt(1)).toBe(2);
+    expect(tidewraithTentacleGrabDpt(1)).toBe(2);
   });
 
   it('bumps to 3 at tideGauge=2', () => {
-    expect(morphaTentacleGrabDpt(2)).toBe(3);
+    expect(tidewraithTentacleGrabDpt(2)).toBe(3);
   });
 
   it('still 3 at tideGauge=3', () => {
-    expect(morphaTentacleGrabDpt(3)).toBe(3);
+    expect(tidewraithTentacleGrabDpt(3)).toBe(3);
   });
 
   it(`bumps to 4 at the high-tide threshold (tideGauge=${TIDEWRAITH_TENTACLE_GRAB_HIGH_TIDE_THRESHOLD})`, () => {
-    expect(morphaTentacleGrabDpt(TIDEWRAITH_TENTACLE_GRAB_HIGH_TIDE_THRESHOLD)).toBe(4);
+    expect(tidewraithTentacleGrabDpt(TIDEWRAITH_TENTACLE_GRAB_HIGH_TIDE_THRESHOLD)).toBe(4);
   });
 
   it(`clamps at MAX_DPT (${TIDEWRAITH_TENTACLE_GRAB_MAX_DPT}) for very high tideGauge`, () => {
-    expect(morphaTentacleGrabDpt(8)).toBe(TIDEWRAITH_TENTACLE_GRAB_MAX_DPT);
-    expect(morphaTentacleGrabDpt(100)).toBe(TIDEWRAITH_TENTACLE_GRAB_MAX_DPT);
+    expect(tidewraithTentacleGrabDpt(8)).toBe(TIDEWRAITH_TENTACLE_GRAB_MAX_DPT);
+    expect(tidewraithTentacleGrabDpt(100)).toBe(TIDEWRAITH_TENTACLE_GRAB_MAX_DPT);
   });
 
   it('clamps at base for negative / fractional inputs (defensive)', () => {
-    expect(morphaTentacleGrabDpt(-5)).toBe(TIDEWRAITH_TENTACLE_GRAB_BASE_DPT);
-    expect(morphaTentacleGrabDpt(0.5)).toBe(TIDEWRAITH_TENTACLE_GRAB_BASE_DPT);
+    expect(tidewraithTentacleGrabDpt(-5)).toBe(TIDEWRAITH_TENTACLE_GRAB_BASE_DPT);
+    expect(tidewraithTentacleGrabDpt(0.5)).toBe(TIDEWRAITH_TENTACLE_GRAB_BASE_DPT);
   });
 });
 

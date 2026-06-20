@@ -29,7 +29,7 @@ export const PHANTOM_VURMOX_VOLLEY_FIRE_BONUS = 1;
 /**
  * Stable log fragments for resolver-test substring assertions.
  *
- * Tests in `combatEngine.phantomGanonResolver.test.ts` import these
+ * Tests in `combatEngine.phantomVurmoxResolver.test.ts` import these
  * constants and assert `entry.includes(PHANTOM_VURMOX_LOG_*)` instead of
  * hard-coding bare substring literals. If a flavor rephrasing removes
  * one of these fragments from the rendered log without also updating
@@ -39,7 +39,7 @@ export const PHANTOM_VURMOX_VOLLEY_FIRE_BONUS = 1;
 export const PHANTOM_VURMOX_LOG_CHARGE = 'charges';
 export const PHANTOM_VURMOX_LOG_VOLLEY = 'volley';
 
-export function phantomGanonVolleyResolver(combat: CombatState): BossResolveOutcome {
+export function phantomVurmoxVolleyResolver(combat: CombatState): BossResolveOutcome {
   const baseDpt = combat.boss.attackPattern.damagePerTurn;
   const step = currentSequenceStep(combat.boss);
   const fireDmg = baseDpt + PHANTOM_VURMOX_VOLLEY_FIRE_BONUS;

@@ -5,7 +5,7 @@ import type { CSSProperties, JSX } from 'react';
 // Two-layer readout of progress toward the next HP heart:
 //
 //   1. 3-segment METER — fills one pip per grunt-tier defeat
-//      (`heartPieceMeter` 0..2). Meter full → +1 ember-shard + reset.
+//      (`emberShardMeter` 0..2). Meter full → +1 ember-shard + reset.
 //
 //   2. 4-segment PENDING HEART — outline heart split into four quarter
 //      wedges; fills bottom-up per `heartPieces` (0..3). 4th piece
@@ -63,10 +63,10 @@ const PENDING_WEDGE_FILL = 'var(--hc-jewel-ruby-500, #a1223c)';
 const PENDING_WEDGE_EMPTY = 'rgba(58, 5, 23, 0.15)';
 const PENDING_WEDGE_STROKE = 'var(--hc-jewel-ruby-700, #6e102a)';
 
-export interface HeartPieceStackProps {
+export interface EmberShardStackProps {
   readonly playerId: string;
   readonly heartPieces: number;
-  readonly heartPieceMeter: number;
+  readonly emberShardMeter: number;
 }
 
 /**
@@ -83,19 +83,19 @@ export interface HeartPieceStackProps {
  * Only hidden at the transient `heartPieces === 4` (auto-promoted to
  * a container; should never rest).
  */
-export function HeartPieceStack({
+export function EmberShardStack({
   playerId,
   heartPieces,
-  heartPieceMeter,
-}: HeartPieceStackProps): JSX.Element | null {
-  // Hide only at the transient heartPieces=4 (addHeartPieceLocal
+  emberShardMeter,
+}: EmberShardStackProps): JSX.Element | null {
+  // Hide only at the transient heartPieces=4 (addEmberShardLocal
   // auto-promotes and resets to 0 — guard against that state leaking
   // into a frame).
   if (heartPieces >= 4) return null;
 
   const meterPips: JSX.Element[] = [];
   for (let i = 0; i < 3; i += 1) {
-    const filled = i < heartPieceMeter;
+    const filled = i < emberShardMeter;
     meterPips.push(
       <span
         key={i}
@@ -128,13 +128,13 @@ export function HeartPieceStack({
     <div
       data-testid={`hp-strip-${playerId}-ember-shard-stack`}
       role="img"
-      aria-label={`${heartPieces} of 4 heart pieces, meter ${heartPieceMeter} of 3`}
-      title={`Heart pieces: ${heartPieces}/4 · meter ${heartPieceMeter}/3`}
+      aria-label={`${heartPieces} of 4 heart pieces, meter ${emberShardMeter} of 3`}
+      title={`Heart pieces: ${heartPieces}/4 · meter ${emberShardMeter}/3`}
       style={EMBER_SHARD_PANE_STYLE}
     >
       <div
         data-testid={`hp-strip-${playerId}-ember-shard-meter`}
-        data-meter={heartPieceMeter}
+        data-meter={emberShardMeter}
         style={METER_ROW_STYLE}
       >
         {meterPips}

@@ -2,7 +2,7 @@
  * tidewraith-tentacle-grab resolver (embertide-gdd.1.2 — Maren region-boss).
  *
  * Reads `combat.tideGaugeSnapshot` (frozen at COMBAT_ENTER), scales
- * dpt via `morphaTentacleGrabDpt`, and at the high-tide threshold
+ * dpt via `tidewraithTentacleGrabDpt`, and at the high-tide threshold
  * (`tideGauge >= 4`) applies a chain-discard side effect: every
  * non-downed attacker player drops one card from their main-board
  * hand. Both effects also fire the canonical telegraph log entry so
@@ -24,7 +24,7 @@ export const TIDEWRAITH_TENTACLE_GRAB_HIGH_TIDE_THRESHOLD = 4;
 /**
  * Stable log fragments for resolver-test substring assertions.
  *
- * Tests in `combatEngine.morphaResolver.test.ts` import these
+ * Tests in `combatEngine.tidewraithResolver.test.ts` import these
  * constants and assert `entry.includes(TIDEWRAITH_LOG_*)` (or
  * `entry.startsWith(TIDEWRAITH_LOG_TELEGRAPH_PREFIX)`) instead of
  * hard-coding bare substring literals. The constant is the contract —
@@ -52,7 +52,7 @@ export const TIDEWRAITH_LOG_TENTACLES_DRAG = 'tentacles drag';
  * Pure / total / no NaN paths. Negative inputs (defensive against
  * malformed mocks) clamp at the base.
  */
-export function morphaTentacleGrabDpt(tideGauge: number): number {
+export function tidewraithTentacleGrabDpt(tideGauge: number): number {
   const safe = Math.max(0, Math.floor(tideGauge));
   const raw = TIDEWRAITH_TENTACLE_GRAB_BASE_DPT + Math.floor(safe / 2);
   if (raw < TIDEWRAITH_TENTACLE_GRAB_BASE_DPT) return TIDEWRAITH_TENTACLE_GRAB_BASE_DPT;
@@ -67,9 +67,9 @@ export function morphaTentacleGrabDpt(tideGauge: number): number {
  * floor(4/4)=1). The formula generalises naturally if the cap rises
  * later, so the resolver computes it dynamically.
  */
-export function morphaTentacleGrabResolver(combat: CombatState): BossResolveOutcome {
+export function tidewraithTentacleGrabResolver(combat: CombatState): BossResolveOutcome {
   const tideGauge = combat.tideGaugeSnapshot ?? 0;
-  const damage = morphaTentacleGrabDpt(tideGauge);
+  const damage = tidewraithTentacleGrabDpt(tideGauge);
 
   const log = [`${TIDEWRAITH_LOG_TELEGRAPH_PREFIX}... ${TIDEWRAITH_LOG_WILL_HIT} ${damage} next turn`];
 

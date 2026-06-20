@@ -1,11 +1,11 @@
-# cathedral_monster_like_like
+# cathedral_monster_gulpmaw
 
 - **Bead:** embertide-4sm
 - **Card:** gulpmaw (Gilded Cage regular, u-6c)
 - **Model:** fal-ai/nano-banana-pro
 - **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
-- **Raster:** `public/illustrations/cathedral_monster_like_like_001.webp`
-- **Spec:** `src/illustration/examples/cathedral_monster_like_like.json`
+- **Raster:** `public/illustrations/cathedral_monster_gulpmaw_001.webp`
+- **Spec:** `src/illustration/examples/cathedral_monster_gulpmaw.json`
 
 ## Prompt
 

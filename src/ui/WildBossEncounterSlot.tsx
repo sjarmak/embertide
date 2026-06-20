@@ -23,6 +23,7 @@ export default function WildBossEncounterSlot(): JSX.Element {
           header="MINI BOSS"
           variant="wild"
           disabled
+          backdropZoneId={state.zoneId}
           ariaLabel={`Mini boss — dormant (${state.phaseLabel} phase), stirs at Turn ${state.unlockTurn}`}
           testId="wild-boss-slot-dormant"
         >
@@ -35,6 +36,7 @@ export default function WildBossEncounterSlot(): JSX.Element {
           header="MINI BOSS"
           variant="wild"
           disabled
+          backdropZoneId={state.zoneId}
           ariaLabel="Mini boss — cleared"
           testId="wild-boss-slot"
         >

@@ -200,7 +200,7 @@ export function effectTextBaseFor(card: Card): string {
     case 'wisp':
       return 'Revive teammate to full HP';
     // Great Wisp (v2.1 gm0.16): same revive contract as plain wisp (both
-    // dispatch through `playFairyOn`, both consume on revive); rendered
+    // dispatch through `playWispOn`, both consume on revive); rendered
     // identically on the card face. The differentiator is in-combat: a
     // stronger heal (combat-heal amount:5 vs plain wisp's 3) — surfaced
     // by the combat-summary line below the rules-text. ppf9.2 (2026-04-29).
@@ -209,7 +209,7 @@ export function effectTextBaseFor(card: Card): string {
     // Wisp in Bottle (v2.1 gm0.16): plain wisp revive plus a one-time
     // refill — the bottle re-equips into the owner's items zone after
     // revive so it can fuel ONE more revive in the same combat
-    // (per-player `usedFairyInBottleIds` blocks further refills).
+    // (per-player `usedWispInBottleIds` blocks further refills).
     // ppf9.2 (2026-04-29).
     case 'wisp-in-bottle':
       return 'Revive teammate to full HP, refills 1×';
@@ -226,7 +226,7 @@ export function effectTextBaseFor(card: Card): string {
     // highest-single-hit attack in the game (damage 8). Drops from
     // the Prism Chimera encounter which spawns only after
     // Silver Chimera is defeated (one-shot linear-ramp roll; see
-    // `computeGoldenRainbowLynelSpawnChance` in src/rules/zones.ts).
+    // `computePrismChimeraSpawnChance` in src/rules/zones.ts).
     case 'rainbow-ancient-chimera-sword':
       return 'Combat: 8 dmg';
     // fix-aurelia (2026-04-22): Freed Princess's Light Arrow — 5 damage

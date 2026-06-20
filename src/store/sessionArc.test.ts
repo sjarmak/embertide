@@ -10,8 +10,8 @@
  *      gilded-cage.
  *  (c) Climax phase at turn 9 with party still in sylvani returns the
  *      stall signal (no crash, no pin).
- *  (d) Softclock fires at turn 10 when sharedTriforce < 2.
- *  (e) Softclock does NOT fire at turn 10 when sharedTriforce >= 2.
+ *  (d) Softclock fires at turn 10 when sharedEmbertide < 2.
+ *  (e) Softclock does NOT fire at turn 10 when sharedEmbertide >= 2.
  *  (f) Softclock grows cumulatively across subsequent turns while the
  *      condition holds.
  *
@@ -23,7 +23,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { createSeededRng } from '../rules/chestPool';
-import type { KidGameState, KidPlayer, SharedTriforce } from './types';
+import type { KidGameState, KidPlayer, SharedEmbertide } from './types';
 import { ZONE_METADATA } from '../rules/zones';
 import { makeKidPlayer, makeKidGameState } from '../testing/stateFixtures';
 import {
@@ -34,12 +34,12 @@ import {
   SOFTCLOCK_SHARD_FLOOR,
   SOFTCLOCK_TURN,
   STIRRING_PHASE_TURN,
-  applyGanonPin,
+  applyVurmoxPin,
   canSpawnRegionBossByPhase,
   canSpawnWildBossInZone,
   isClimaxStalled,
   sessionPhase,
-  shouldPinGanon,
+  shouldPinVurmox,
   softclockHpEase,
 } from './slices/session';
 import { KID_CARDS } from '../data/cards';
@@ -62,7 +62,7 @@ function makeState(overrides: Partial<KidGameState> = {}): KidGameState {
 
 const VURMOX = KID_CARDS.find((c) => c.id === VURMOX_ID)!;
 
-function tForce(overrides: Partial<SharedTriforce> = {}): SharedTriforce {
+function tForce(overrides: Partial<SharedEmbertide> = {}): SharedEmbertide {
   return { wisdom: false, courage: false, power: false, ...overrides };
 }
 
@@ -226,31 +226,31 @@ describe('canSpawnRegionBossByPhase gates region-boss spawns by session phase (a
 // ---------------------------------------------------------------------------
 
 describe('Climax phase forces Vurmox pin in Gilded Cage (b)', () => {
-  it('shouldPinGanon returns true at turn 9+ when currentZone is gilded-cage AND Vurmox not in field', () => {
+  it('shouldPinVurmox returns true at turn 9+ when currentZone is gilded-cage AND Vurmox not in field', () => {
     const s = makeState({ turn: 9, currentZone: 'gilded-cage', field: [] });
-    expect(shouldPinGanon(s)).toBe(true);
+    expect(shouldPinVurmox(s)).toBe(true);
   });
 
-  it('applyGanonPin appends Vurmox to field when shouldPinGanon is true', () => {
+  it('applyVurmoxPin appends Vurmox to field when shouldPinVurmox is true', () => {
     const s = makeState({ turn: 9, currentZone: 'gilded-cage', field: [] });
-    const next = applyGanonPin(s, VURMOX);
+    const next = applyVurmoxPin(s, VURMOX);
     expect(next.field).toHaveLength(1);
     expect(next.field[0].id).toBe(VURMOX_ID);
   });
 
-  it('applyGanonPin is idempotent — Vurmox already in field is a no-op', () => {
+  it('applyVurmoxPin is idempotent — Vurmox already in field is a no-op', () => {
     const s = makeState({
       turn: 9,
       currentZone: 'gilded-cage',
       field: [VURMOX],
     });
-    expect(shouldPinGanon(s)).toBe(false);
-    const next = applyGanonPin(s, VURMOX);
+    expect(shouldPinVurmox(s)).toBe(false);
+    const next = applyVurmoxPin(s, VURMOX);
     expect(next).toBe(s);
     expect(next.field).toHaveLength(1);
   });
 
-  it('applyGanonPin recognizes a supply-duplicated Vurmox copy via baseId as already-pinned', () => {
+  it('applyVurmoxPin recognizes a supply-duplicated Vurmox copy via baseId as already-pinned', () => {
     const duplicate: Card & { baseId: string } = {
       ...VURMOX,
       id: `${VURMOX_ID}-2`,
@@ -261,14 +261,14 @@ describe('Climax phase forces Vurmox pin in Gilded Cage (b)', () => {
       currentZone: 'gilded-cage',
       field: [duplicate],
     });
-    expect(shouldPinGanon(s)).toBe(false);
-    expect(applyGanonPin(s, VURMOX)).toBe(s);
+    expect(shouldPinVurmox(s)).toBe(false);
+    expect(applyVurmoxPin(s, VURMOX)).toBe(s);
   });
 
   it('fires at turn 9+ across multiple subsequent turns while Vurmox is not in field', () => {
     for (const t of [9, 10, 11, 15]) {
       const s = makeState({ turn: t, currentZone: 'gilded-cage', field: [] });
-      expect(shouldPinGanon(s)).toBe(true);
+      expect(shouldPinVurmox(s)).toBe(true);
     }
   });
 });
@@ -281,10 +281,10 @@ describe('Climax phase stall when party is still in an earlier zone (c)', () => 
   it('isClimaxStalled is true at turn 9 when currentZone is sylvani (no pin, no crash)', () => {
     const s = makeState({ turn: 9, currentZone: 'sylvani' });
     expect(isClimaxStalled(s)).toBe(true);
-    expect(shouldPinGanon(s)).toBe(false);
-    // applyGanonPin does nothing when shouldPinGanon is false.
-    expect(() => applyGanonPin(s, VURMOX)).not.toThrow();
-    expect(applyGanonPin(s, VURMOX)).toBe(s);
+    expect(shouldPinVurmox(s)).toBe(false);
+    // applyVurmoxPin does nothing when shouldPinVurmox is false.
+    expect(() => applyVurmoxPin(s, VURMOX)).not.toThrow();
+    expect(applyVurmoxPin(s, VURMOX)).toBe(s);
   });
 
   it('isClimaxStalled is true at turn 9 when currentZone is emberpeak', () => {
@@ -309,33 +309,33 @@ describe('Climax phase stall when party is still in an earlier zone (c)', () => 
 // Softclock (d), (e), (f).
 // ---------------------------------------------------------------------------
 
-describe('softclock fires at turn 10 when sharedTriforce < 2 (d)', () => {
+describe('softclock fires at turn 10 when sharedEmbertide < 2 (d)', () => {
   it('softclockHpEase returns 0 before turn 10', () => {
     for (const t of [1, 5, 9]) {
-      const s = makeState({ turn: t, sharedTriforce: tForce({ wisdom: true }) });
+      const s = makeState({ turn: t, sharedEmbertide: tForce({ wisdom: true }) });
       expect(softclockHpEase(s)).toBe(0);
     }
   });
 
-  it('softclockHpEase returns 1 at turn 10 when sharedTriforce is all-false', () => {
-    const s = makeState({ turn: 10, sharedTriforce: tForce() });
+  it('softclockHpEase returns 1 at turn 10 when sharedEmbertide is all-false', () => {
+    const s = makeState({ turn: 10, sharedEmbertide: tForce() });
     expect(softclockHpEase(s)).toBe(1);
   });
 
   it('softclockHpEase returns 1 at turn 10 when exactly one shard is granted', () => {
-    const s = makeState({ turn: 10, sharedTriforce: tForce({ power: true }) });
+    const s = makeState({ turn: 10, sharedEmbertide: tForce({ power: true }) });
     expect(softclockHpEase(s)).toBe(1);
   });
 });
 
-describe('softclock does NOT fire at turn 10 when sharedTriforce >= 2 (e)', () => {
+describe('softclock does NOT fire at turn 10 when sharedEmbertide >= 2 (e)', () => {
   it('returns 0 at turn 10 with exactly 2 shards', () => {
     for (const pair of [
       { wisdom: true, courage: true },
       { wisdom: true, power: true },
       { courage: true, power: true },
     ] as const) {
-      const s = makeState({ turn: 10, sharedTriforce: tForce(pair) });
+      const s = makeState({ turn: 10, sharedEmbertide: tForce(pair) });
       expect(softclockHpEase(s)).toBe(0);
     }
   });
@@ -343,21 +343,21 @@ describe('softclock does NOT fire at turn 10 when sharedTriforce >= 2 (e)', () =
   it('returns 0 at turn 10 with all 3 shards (co-op victory state)', () => {
     const s = makeState({
       turn: 10,
-      sharedTriforce: tForce({ wisdom: true, courage: true, power: true }),
+      sharedEmbertide: tForce({ wisdom: true, courage: true, power: true }),
     });
     expect(softclockHpEase(s)).toBe(0);
   });
 });
 
 describe('softclock is cumulative across subsequent turns (f)', () => {
-  it('turn 10 → 1, turn 11 → 2, turn 12 → 3, turn 15 → 6 while sharedTriforce<2', () => {
+  it('turn 10 → 1, turn 11 → 2, turn 12 → 3, turn 15 → 6 while sharedEmbertide<2', () => {
     for (const [turn, expected] of [
       [10, 1],
       [11, 2],
       [12, 3],
       [15, 6],
     ] as const) {
-      const s = makeState({ turn, sharedTriforce: tForce({ wisdom: true }) });
+      const s = makeState({ turn, sharedEmbertide: tForce({ wisdom: true }) });
       expect(softclockHpEase(s)).toBe(expected);
     }
   });
@@ -365,11 +365,11 @@ describe('softclock is cumulative across subsequent turns (f)', () => {
   it('snaps back to 0 the turn the party reaches 2 shards even mid-ramp', () => {
     // At turn 12, party has been getting softclock help since turn 10.
     // They flip a second shard → ease returns to 0 on the next check.
-    const before = makeState({ turn: 12, sharedTriforce: tForce({ wisdom: true }) });
+    const before = makeState({ turn: 12, sharedEmbertide: tForce({ wisdom: true }) });
     expect(softclockHpEase(before)).toBe(3);
     const after = makeState({
       turn: 12,
-      sharedTriforce: tForce({ wisdom: true, power: true }),
+      sharedEmbertide: tForce({ wisdom: true, power: true }),
     });
     expect(softclockHpEase(after)).toBe(0);
   });

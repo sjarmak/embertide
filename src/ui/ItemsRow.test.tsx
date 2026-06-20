@@ -91,28 +91,28 @@ describe('ItemsRow', () => {
     expect(cooldown).toHaveTextContent('2');
   });
 
-  it('(c) wisp-on-downed-teammate flow — tap invokes onPlayFairy with teammate id', () => {
-    const onPlayFairy = vi.fn();
-    render(<ItemsRow cards={[WISP]} downedTeammateId="p1" onPlayFairy={onPlayFairy} />);
+  it('(c) wisp-on-downed-teammate flow — tap invokes onPlayWisp with teammate id', () => {
+    const onPlayWisp = vi.fn();
+    render(<ItemsRow cards={[WISP]} downedTeammateId="p1" onPlayWisp={onPlayWisp} />);
     const tapButton = screen.getByTestId(`item-wisp-tap-${WISP.id}`);
     expect(tapButton).not.toBeDisabled();
     tapButton.click();
-    expect(onPlayFairy).toHaveBeenCalledTimes(1);
-    expect(onPlayFairy).toHaveBeenCalledWith('p1');
+    expect(onPlayWisp).toHaveBeenCalledTimes(1);
+    expect(onPlayWisp).toHaveBeenCalledWith('p1');
   });
 
-  it('(d) wisp outside downed-teammate context — tap is a no-op (onPlayFairy never called)', () => {
-    const onPlayFairy = vi.fn();
-    render(<ItemsRow cards={[WISP]} downedTeammateId={null} onPlayFairy={onPlayFairy} />);
+  it('(d) wisp outside downed-teammate context — tap is a no-op (onPlayWisp never called)', () => {
+    const onPlayWisp = vi.fn();
+    render(<ItemsRow cards={[WISP]} downedTeammateId={null} onPlayWisp={onPlayWisp} />);
     const tapButton = screen.getByTestId(`item-wisp-tap-${WISP.id}`);
     // Button must still render (so the card is visible), but be disabled
-    // + calling the click handler must NOT invoke onPlayFairy.
+    // + calling the click handler must NOT invoke onPlayWisp.
     expect(tapButton).toBeDisabled();
     tapButton.click();
-    expect(onPlayFairy).not.toHaveBeenCalled();
+    expect(onPlayWisp).not.toHaveBeenCalled();
   });
 
-  it('wisp without onPlayFairy prop renders without throwing (read-only items row)', () => {
+  it('wisp without onPlayWisp prop renders without throwing (read-only items row)', () => {
     // Older call sites (legacy tests, stories) pass no callback. The component
     // must degrade gracefully — render the wisp card, no button wired.
     render(<ItemsRow cards={[WISP]} />);

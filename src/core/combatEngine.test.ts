@@ -23,7 +23,7 @@ import {
   buildCombatDeck,
   combatTurnReducer,
   initialCombatDraw,
-  isFairyCard,
+  isWispCard,
   mulberry32,
   type CombatTurnState,
 } from './combatEngine';
@@ -96,7 +96,7 @@ const activeItem: Card = {
   cooldownTurns: 0,
   lastUsedTurn: null,
 };
-const fairyCard: Card = {
+const wispCard: Card = {
   id: 'wisp',
   role: 'item',
   cost: { green: 0 },
@@ -105,7 +105,7 @@ const fairyCard: Card = {
   cooldownTurns: 0,
   lastUsedTurn: null,
 };
-const fairyDupe: Card = { ...fairyCard, id: 'wisp-2' };
+const wispDupe: Card = { ...wispCard, id: 'wisp-2' };
 const mainBoardMonster: Card = {
   id: 'grunt-orc',
   role: 'monster',
@@ -158,7 +158,7 @@ function makeTurnState(overrides: Partial<CombatTurnState> = {}): CombatTurnStat
 }
 
 // ---------------------------------------------------------------------------
-// baseIdOf + isFairyCard (utility sanity).
+// baseIdOf + isWispCard (utility sanity).
 // ---------------------------------------------------------------------------
 
 describe('u-8b utility helpers', () => {
@@ -169,11 +169,11 @@ describe('u-8b utility helpers', () => {
     expect(baseIdOf('starter-green')).toBe('starter-green');
   });
 
-  it('isFairyCard matches both base id and suffixed duplicates', () => {
-    expect(isFairyCard(fairyCard)).toBe(true);
-    expect(isFairyCard(fairyDupe)).toBe(true);
-    expect(isFairyCard(hero)).toBe(false);
-    expect(isFairyCard(activeItem)).toBe(false);
+  it('isWispCard matches both base id and suffixed duplicates', () => {
+    expect(isWispCard(wispCard)).toBe(true);
+    expect(isWispCard(wispDupe)).toBe(true);
+    expect(isWispCard(hero)).toBe(false);
+    expect(isWispCard(activeItem)).toBe(false);
   });
 });
 
@@ -261,7 +261,7 @@ describe('buildCombatDeck — eligibility (§B2)', () => {
   });
 
   it('includes item-active items from items zone; excludes fairies', () => {
-    const p0 = makePlayer({ id: 'p0', items: [activeItem, fairyCard, fairyDupe] });
+    const p0 = makePlayer({ id: 'p0', items: [activeItem, wispCard, wispDupe] });
     const state = makeState({ players: [p0] });
     const deck = buildCombatDeck(state, ENTRY_CTX);
     const ids = deck.map((c) => c.id);
@@ -874,7 +874,7 @@ describe('combatTurnReducer — on-damage item-passive dispatch (4uyn.1)', () =>
   // These tests pin the on-damage passive through the live card pulled
   // from KID_CARDS so future schema drift on the authored item is caught
   // here, not just on the synthetic tower-shield fixture.
-  const hylianShieldCard = (() => {
+  const elysianShieldCard = (() => {
     const card = KID_CARDS.find((c) => c.id === 'elysian-shield');
     if (!card) throw new Error('fixture missing: elysian-shield');
     return card;
@@ -889,7 +889,7 @@ describe('combatTurnReducer — on-damage item-passive dispatch (4uyn.1)', () =>
         }),
       }),
       players: [
-        makePlayer({ id: 'p0', hp: 5, items: [hylianShieldCard] }),
+        makePlayer({ id: 'p0', hp: 5, items: [elysianShieldCard] }),
         makePlayer({ id: 'p1', hp: 5 }),
       ],
     });
@@ -912,7 +912,7 @@ describe('combatTurnReducer — on-damage item-passive dispatch (4uyn.1)', () =>
         }),
       }),
       players: [
-        makePlayer({ id: 'p0', hp: 5, items: [hylianShieldCard, ironWardCard] }),
+        makePlayer({ id: 'p0', hp: 5, items: [elysianShieldCard, ironWardCard] }),
         makePlayer({ id: 'p1', hp: 5 }),
       ],
     });
@@ -933,7 +933,7 @@ describe('combatTurnReducer — on-damage item-passive dispatch (4uyn.1)', () =>
   // unchanged. Combat-side absorb hp 4 (EXPLICIT_OVERRIDES) is preserved —
   // boulderkin-core remains a played battlefield-card in combat too; the
   // passive is the fourth surface (paid only on this card per the ruling).
-  const stoneTalusCoreCard = (() => {
+  const boulderkinCoreCard = (() => {
     const card = KID_CARDS.find((c) => c.id === 'boulderkin-core');
     if (!card) throw new Error('fixture missing: boulderkin-core');
     return card;
@@ -948,7 +948,7 @@ describe('combatTurnReducer — on-damage item-passive dispatch (4uyn.1)', () =>
         }),
       }),
       players: [
-        makePlayer({ id: 'p0', hp: 5, items: [stoneTalusCoreCard] }),
+        makePlayer({ id: 'p0', hp: 5, items: [boulderkinCoreCard] }),
         makePlayer({ id: 'p1', hp: 5 }),
       ],
     });
@@ -971,7 +971,7 @@ describe('combatTurnReducer — on-damage item-passive dispatch (4uyn.1)', () =>
         }),
       }),
       players: [
-        makePlayer({ id: 'p0', hp: 5, items: [stoneTalusCoreCard, ironWardCard] }),
+        makePlayer({ id: 'p0', hp: 5, items: [boulderkinCoreCard, ironWardCard] }),
         makePlayer({ id: 'p1', hp: 5 }),
       ],
     });
@@ -1119,29 +1119,29 @@ describe('combat-attack-stun — engine state machine', () => {
     // No max/clip — purely additive. This test pins that contract.
     // Second copy uses a `-<n>` suffix (matches main-board duplicate naming)
     // so `baseIdOfCard` strips it and resolves to the same override.
-    const hinoxA: Card = { ...craghornTusk, id: 'craghorn-tusk' };
-    const hinoxB: Card & { readonly baseId?: string } = {
+    const craghornA: Card = { ...craghornTusk, id: 'craghorn-tusk' };
+    const craghornB: Card & { readonly baseId?: string } = {
       ...craghornTusk,
       id: 'craghorn-tusk-2',
       baseId: 'craghorn-tusk',
     };
     const state = makeTurnState({
       combat: makeCombat({
-        combatHand: [hinoxA, hinoxB],
+        combatHand: [craghornA, craghornB],
         boss: makeBoss({ hp: 20, hpMax: 20 }),
         bossStunTurns: 0,
       }),
     });
     const afterFirst = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
-      cardId: hinoxA.id,
+      cardId: craghornA.id,
       playerId: 'p0',
     });
     expect(afterFirst.combat.bossStunTurns).toBe(1);
 
     const afterSecond = combatTurnReducer(afterFirst, {
       type: 'PLAYER_PLAY_CARD',
-      cardId: hinoxB.id,
+      cardId: craghornB.id,
       playerId: 'p0',
     });
     // Two stunTurns=1 plays accumulate additively to 2.
@@ -1255,7 +1255,7 @@ describe('starter combat effects (rev-2 2026-04-22)', () => {
     // Set up combat with starter-green in hand + several cards
     // already in the DECK (not discard) so the drawn card is
     // unambiguously NOT the just-played green shard itself.
-    const greenRupee: Card = {
+    const greenShard: Card = {
       id: 'starter-green-shard',
       role: 'starter-green',
       cost: {},
@@ -1268,14 +1268,14 @@ describe('starter combat effects (rev-2 2026-04-22)', () => {
     const state = makeTurnState({
       combat: makeCombat({
         combatDeck: deckCards,
-        combatHand: [greenRupee],
+        combatHand: [greenShard],
         combatDiscard: [],
       }),
     });
 
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
-      cardId: greenRupee.id,
+      cardId: greenShard.id,
       playerId: 'p0',
     });
 
@@ -1288,7 +1288,7 @@ describe('starter combat effects (rev-2 2026-04-22)', () => {
   });
 
   it('starter-red-shard deals 2 damage (one step above the 1-damage default)', () => {
-    const redRupee: Card = {
+    const redShard: Card = {
       id: 'starter-red-shard',
       role: 'starter-red',
       cost: {},
@@ -1296,14 +1296,14 @@ describe('starter combat effects (rev-2 2026-04-22)', () => {
     };
     const state = makeTurnState({
       combat: makeCombat({
-        combatHand: [redRupee],
+        combatHand: [redShard],
         boss: makeBoss({ hp: 10, hpMax: 10 }),
       }),
     });
 
     const next = combatTurnReducer(state, {
       type: 'PLAYER_PLAY_CARD',
-      cardId: redRupee.id,
+      cardId: redShard.id,
       playerId: 'p0',
     });
 

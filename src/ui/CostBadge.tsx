@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { GreenRupee, Key, Sword } from '../icons';
+import { GreenShard, Key, Sword } from '../icons';
 
 export interface CostBadgeProps {
   readonly green?: number;
@@ -34,7 +34,7 @@ export default function CostBadge({
           data-testid="cost-badge-green"
           aria-label={`cost green ${green}`}
         >
-          <GreenRupee size={ICON_SIZE} />
+          <GreenShard size={ICON_SIZE} />
           <span className="cost-badge-value">{green}</span>
         </span>
       ) : null}

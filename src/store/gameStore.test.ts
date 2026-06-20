@@ -60,10 +60,10 @@ describe('createGameStore / useGameStore', () => {
     }
   });
 
-  it('initGame seeds sharedTriforce all-false and outcome null (v2 amendment A2/A3)', () => {
+  it('initGame seeds sharedEmbertide all-false and outcome null (v2 amendment A2/A3)', () => {
     const store = newGame(1, 2);
     const s = store.getState();
-    expect(s.sharedTriforce).toEqual({ wisdom: false, courage: false, power: false });
+    expect(s.sharedEmbertide).toEqual({ wisdom: false, courage: false, power: false });
     expect(s.outcome).toBeNull();
   });
 
@@ -249,7 +249,7 @@ describe('createGameStore / useGameStore', () => {
     const store = newGame(1, 2);
     store.setState((s) => ({
       ...s,
-      sharedTriforce: { wisdom: true, courage: true, power: true },
+      sharedEmbertide: { wisdom: true, courage: true, power: true },
     }));
     store.getState().endTurn();
     expect(store.getState().outcome).toBe('win');
@@ -259,7 +259,7 @@ describe('createGameStore / useGameStore', () => {
     const store = newGame(1, 2);
     store.setState((s) => ({
       ...s,
-      sharedTriforce: { wisdom: true, courage: true, power: false },
+      sharedEmbertide: { wisdom: true, courage: true, power: false },
     }));
     store.getState().endTurn();
     expect(store.getState().outcome).toBeNull();
@@ -885,7 +885,7 @@ describe('createGameStore / useGameStore', () => {
   it('playCard: great-wisp from hand does NOT fire spurious deltas (heal sentinel — ppf9.2)', () => {
     // great-wisp carries `{kind:'heal', target:'team', amount:0}` post-ppf9.2
     // — the same sentinel shape as plain wisp. The real behaviour fires
-    // from a dedicated reducer (`playFairyOn`); the heirloom and
+    // from a dedicated reducer (`playWispOn`); the heirloom and
     // equip-bonus dispatchers both short-circuit on non-matching effect
     // kinds, so playing this card while no teammate is downed leaves
     // player resources untouched. (Was: previously a `{kind:'gain'}`
@@ -1047,7 +1047,7 @@ describe('createGameStore / useGameStore', () => {
     // contribute to GRUNT_HEART_METER_IDS instead (3 kills → 1 piece).
     // hp stays at 3; meter ticks 0 → 1.
     expect(p.hp).toBe(3);
-    expect(p.heartPieceMeter).toBe(1);
+    expect(p.emberShardMeter).toBe(1);
     expect(p.red).toBe(0);
     expect(store.getState().defeated.length).toBe(beforeDefeated);
   });
@@ -1065,7 +1065,7 @@ describe('createGameStore / useGameStore', () => {
     // z9xq: hp no longer climbs on wild-wolf defeats (was capped at 1
     // heal/turn pre-fix — now 0 heal/turn). The meter ticks twice.
     expect(p.hp).toBe(1);
-    expect(p.heartPieceMeter).toBe(2);
+    expect(p.emberShardMeter).toBe(2);
     expect(p.red).toBe(0);
     expect(p.wildWolfKillsThisTurn).toBe(2);
   });
@@ -1237,11 +1237,11 @@ describe('createGameStore / useGameStore', () => {
     }
   });
 
-  it('initGame seeds heartPieces: 0 and usedFairyInBottleIds: [] for every player (v2.1 gm0.16)', () => {
+  it('initGame seeds heartPieces: 0 and usedWispInBottleIds: [] for every player (v2.1 gm0.16)', () => {
     const store = newGame(1, 3);
     for (const p of store.getState().players) {
       expect(p.heartPieces).toBe(0);
-      expect(p.usedFairyInBottleIds).toEqual([]);
+      expect(p.usedWispInBottleIds).toEqual([]);
     }
   });
 
@@ -2123,14 +2123,14 @@ describe('createGameStore / useGameStore', () => {
       store.getState().fightMonster(CRAGHORN.id);
       store.getState().dispatchCombat(buildResolveWinAction(CRAGHORN, ['p0', 'p1'], 'sylvani'));
       const p0 = store.getState().players[0];
-      // Wisp lands in defeater's items (3-cap routing via grantWildBossFairy).
+      // Wisp lands in defeater's items (3-cap routing via grantWildBossWisp).
       expect(p0.items.some((c) => baseIdOf(c) === 'wisp')).toBe(true);
     });
 
     // 2026-04-23: Courage moved off Broodmaw — Broodmaw defeat no longer grants
     // any shard (the region-boss slot still advances the zone via the
     // shared boss-win hook). Courage now drops from Silver Chimera (the last
-    // wild boss); this test asserts Broodmaw defeat leaves sharedTriforce
+    // wild boss); this test asserts Broodmaw defeat leaves sharedEmbertide
     // untouched.
     it('COMBAT_RESOLVE_WIN on Broodmaw does NOT grant any shard (Courage moved to Silver Chimera)', () => {
       const store = newGame(1, 2);
@@ -2141,7 +2141,7 @@ describe('createGameStore / useGameStore', () => {
       });
       store.getState().fightMonster(BROODMAW.id);
       store.getState().dispatchCombat(buildResolveWinAction(BROODMAW, ['p0', 'p1'], 'sylvani'));
-      const shard = store.getState().sharedTriforce;
+      const shard = store.getState().sharedEmbertide;
       expect(shard.courage).toBe(false);
       expect(shard.power).toBe(false);
       expect(shard.wisdom).toBe(false);
@@ -2166,7 +2166,7 @@ describe('createGameStore / useGameStore', () => {
       store
         .getState()
         .dispatchCombat(buildResolveWinAction(SILVER_CHIMERA, ['p0', 'p1'], 'gilded-cage'));
-      const shard = store.getState().sharedTriforce;
+      const shard = store.getState().sharedEmbertide;
       expect(shard.courage).toBe(true);
       expect(shard.power).toBe(false);
       expect(shard.wisdom).toBe(false);
@@ -2189,7 +2189,7 @@ describe('createGameStore / useGameStore', () => {
       });
       store.getState().fightMonster(VURMOX.id);
       store.getState().dispatchCombat(buildResolveWinAction(VURMOX, ['p0', 'p1'], 'gilded-cage'));
-      const shard = store.getState().sharedTriforce;
+      const shard = store.getState().sharedEmbertide;
       // v2.1 amendment: Vurmox defeat grants BOTH power AND courage.
       expect(shard.power).toBe(true);
       expect(shard.courage).toBe(true);
@@ -2959,10 +2959,10 @@ describe('createGameStore / useGameStore', () => {
       store.getState().dispatchCombat(buildResolveWinAction(CRAGHORN, ['p0', 'p1'], 'sylvani'));
       const afterCombat1 = store.getState();
       // craghorn-tusk landed somewhere (p0 or p1 via cap routing).
-      const hinoxHornFound = afterCombat1.players.some((p) =>
+      const craghornTuskFound = afterCombat1.players.some((p) =>
         p.items.some((c) => baseIdOf(c) === 'craghorn-tusk'),
       );
-      expect(hinoxHornFound).toBe(true);
+      expect(craghornTuskFound).toBe(true);
       // State recorded the defeat so `currentWildBossForZone` advances
       // past Craghorn (Sylvani's wild queue is singleton, so it's now null).
       expect(afterCombat1.defeatedBossIds).toContain('craghorn');
@@ -2986,7 +2986,7 @@ describe('createGameStore / useGameStore', () => {
     it('embertide-044 — engaging prism-chimera via wild-boss slot + WIN drops rainbow-ancient-chimera-sword heirloom to defeater', () => {
       // embertide-044 (2026-04-24): rare post-completion encounter
       // is now a dynamic-spawn boss rolled once at Silver Chimera's
-      // defeat. Wiring verification: with `goldenRainbowLynelSpawned:
+      // defeat. Wiring verification: with `prismChimeraSpawned:
       // true` already set (the roll succeeded upstream), the wild slot
       // surfaces prism-chimera, engagement routes through the
       // same COMBAT_ENTER path as any other wild boss, and WIN drops
@@ -3006,7 +3006,7 @@ describe('createGameStore / useGameStore', () => {
           currentZone: 'gilded-cage',
           // FIFO cleared + spawn roll succeeded upstream.
           defeatedBossIds: ['sentinel', 'silver-chimera'],
-          goldenRainbowLynelSpawned: true,
+          prismChimeraSpawned: true,
           zoneHistory: ['sylvani', 'emberpeak'],
         };
       });
@@ -3040,7 +3040,7 @@ describe('createGameStore / useGameStore', () => {
         // FIFO cleared but spawn flag still false — `currentWildBossForZone`
         // returns null, so the slot engagement must reject.
         defeatedBossIds: ['sentinel', 'silver-chimera'],
-        goldenRainbowLynelSpawned: false,
+        prismChimeraSpawned: false,
         pendingBanishChoice: null,
 
         pendingDungeonBossRoll: null,
@@ -3103,9 +3103,9 @@ describe('createGameStore / useGameStore', () => {
       store.getState().dispatchCombat(buildResolveWinAction(BROODMAW, ['p0', 'p1'], 'sylvani'));
       const after = store.getState();
       // No shards granted on Broodmaw.
-      expect(after.sharedTriforce.courage).toBe(false);
-      expect(after.sharedTriforce.power).toBe(false);
-      expect(after.sharedTriforce.wisdom).toBe(false);
+      expect(after.sharedEmbertide.courage).toBe(false);
+      expect(after.sharedEmbertide.power).toBe(false);
+      expect(after.sharedEmbertide.wisdom).toBe(false);
       // Zone advanced (region-boss defeat progression still fires).
       expect(after.currentZone).toBe('emberpeak');
       // No heirloom drop (HEIRLOOM_DROPS has no broodmaw key).

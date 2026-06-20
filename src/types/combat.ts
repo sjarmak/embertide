@@ -80,7 +80,7 @@ export interface CombatEntryContext {
  * Drops a wisp into the defeating player's `items` zone on boss defeat.
  * Wild-boss default (amendment A6).
  */
-export interface CombatOnDefeatFairyDrop {
+export interface CombatOnDefeatWispDrop {
   readonly kind: 'wisp-drop';
 }
 
@@ -109,7 +109,7 @@ export interface CombatOnDefeatNone {
  * not wired yet"; `{kind:'none'}` means "explicitly nothing on defeat".
  */
 export type CombatOnDefeatEffect =
-  | CombatOnDefeatFairyDrop
+  | CombatOnDefeatWispDrop
   | CombatOnDefeatShardGrant
   | CombatOnDefeatNone;
 

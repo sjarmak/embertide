@@ -13,7 +13,7 @@ import DiscardPile from './DiscardPile';
 import VoidPane from './VoidPane';
 import AlwaysRowStrip from './AlwaysRowStrip';
 import PlayerTray from './PlayerTray';
-import TriforceStrip from './TriforceStrip';
+import EmbertideStrip from './EmbertideStrip';
 import TurnBanner from './TurnBanner';
 import PlayAllStartersButton from './PlayAllStartersButton';
 import PrincessCrystalCell from './PrincessCrystalCell';
@@ -34,7 +34,7 @@ import CombatScreen from './CombatScreen';
 import CombatTutorialBubble from './CombatTutorialBubble';
 import WildBossEncounterSlot from './WildBossEncounterSlot';
 import RegionBossEncounterSlot from './RegionBossEncounterSlot';
-import GanonDestinySlot from './GanonDestinySlot';
+import VurmoxDestinySlot from './VurmoxDestinySlot';
 import { ZONE_METADATA } from '../rules/zones';
 
 const END_TURN_STYLE = {
@@ -131,7 +131,7 @@ export default function GameBoard(): JSX.Element {
   const playCardFromInPlayDrop = useGameStore((s) => s.playCardFromInPlayDrop);
   const endTurn = useGameStore((s) => s.endTurn);
   const reviveTeammate = useGameStore((s) => s.reviveTeammate);
-  const playFairyOn = useGameStore((s) => s.playFairyOn);
+  const playWispOn = useGameStore((s) => s.playWispOn);
   const strikePrincessCrystal = useGameStore((s) => s.strikePrincessCrystal);
   const lastChestReward = useGameStore((s) => s.lastChestReward);
   // embertide-ymgc: parallel field carrying the resolved Card so the
@@ -195,7 +195,7 @@ export default function GameBoard(): JSX.Element {
   // (Sentinel + Silver Chimera) are in `defeatedBossIds`. Same dispatch
   // (engageRegionBossSlot on 'cagewright-vurmox') — only the visuals
   // change.
-  const showGanonDestiny =
+  const showVurmoxDestiny =
     state.currentZone === 'gilded-cage' &&
     state.defeatedBossIds.includes('sentinel') &&
     state.defeatedBossIds.includes('silver-chimera');
@@ -254,6 +254,17 @@ export default function GameBoard(): JSX.Element {
   return (
     <div data-testid="game-board" className="game-board" style={{ position: 'relative' }}>
       {/*
+       * round2 (player layout pass): the zone backdrop art is lifted out of
+       * `.board-grid` to back the ENTIRE game board — it now spans behind the
+       * top always-available strip and the bottom player trays too, not just
+       * the center grid. The player asked the background art to FILL the
+       * window and shrink the solid-color bands top and bottom; making the
+       * art the full-board field (with the parchment panes floating on top of
+       * it) is what delivers that. All interactive bands sit at z-index >= 1
+       * via the `.game-board > :not(zone-cell)` rule in app.css.
+       */}
+      {hasPlayers ? <ZoneCell zone={ZONE_METADATA[state.currentZone]} /> : null}
+      {/*
        * 2026-04-26 follow-up: the cathedral title strip is gone. With
        * the always-row default-expanded, the 44px title bar above the
        * strip was still pushing the bottom of the player panes below
@@ -288,6 +299,10 @@ export default function GameBoard(): JSX.Element {
             if (vendorId === KEY_VENDOR_ID) tradeWithKeyVendor();
           }}
           onOpenChest={openChest}
+          // round2: top-row tiles are name+image only; route their taps
+          // through the shared zoom modal for the full rules — ALWAYS
+          // (desktop + touch), since the compact face has no rules text.
+          onZoomCard={setZoomedCardCtx}
           statsExpanded={
             <>
               <TurnBanner
@@ -347,7 +362,6 @@ export default function GameBoard(): JSX.Element {
         />
       ) : null}
       <div className="board-grid" data-testid="board-grid">
-        <ZoneCell zone={ZONE_METADATA[state.currentZone]} />
         <div className="board-main">
           <div className="market-row" data-testid="market-row">
             <Field
@@ -402,7 +416,7 @@ export default function GameBoard(): JSX.Element {
                 </div>
               </div>
               {/*
-               * Designer feedback 2026-04-22 (revised): the TriforceStrip
+               * Designer feedback 2026-04-22 (revised): the EmbertideStrip
                * renders ALWAYS and always at the END of the `.trays` flex
                * row — AFTER every PlayerTray — so it reads as a shared
                * resource adjacent to all players rather than entangled
@@ -452,7 +466,7 @@ export default function GameBoard(): JSX.Element {
                         phase={state.phase}
                         activePlayerRevivedThisIncident={activeRevived}
                         downedTeammateId={downedTeammateId}
-                        onPlayFairy={playFairyOn}
+                        onPlayWisp={playWispOn}
                       />
                     );
                   })}
@@ -482,7 +496,7 @@ export default function GameBoard(): JSX.Element {
            *   1. Boss Altar row (top) — Wild + Region/Destiny slots.
            *   2. PrincessCrystalCell (middle) — full-size raster +
            *      integrity bar + Aurelia freed-portrait.
-           *   3. TriforceStrip in its cathedral niche (bottom).
+           *   3. EmbertideStrip in its cathedral niche (bottom).
            * Pre-9eou the Embertide + Crystal lived as 56px discs in the
            * cathedral title-strip's center slot (7cew + v7u4) — flagged
            * as "extremely amateur" on visual review. Restoring the
@@ -505,8 +519,8 @@ export default function GameBoard(): JSX.Element {
                * the wild slot" reason no longer applies — but the
                * "cleared state is redundant" reason still does.
                */}
-              {!showGanonDestiny && <WildBossEncounterSlot />}
-              {showGanonDestiny ? <GanonDestinySlot /> : <RegionBossEncounterSlot />}
+              {!showVurmoxDestiny && <WildBossEncounterSlot />}
+              {showVurmoxDestiny ? <VurmoxDestinySlot /> : <RegionBossEncounterSlot />}
             </div>
             {/*
              * 9eou rev-2 (2026-04-26): the Crystal + Embertide share a
@@ -526,7 +540,7 @@ export default function GameBoard(): JSX.Element {
                   onStrike={strikePrincessCrystal}
                 />
                 <div className="embertide-hud" data-testid="embertide-hud">
-                  <TriforceStrip shards={state.sharedTriforce} />
+                  <EmbertideStrip shards={state.sharedEmbertide} />
                 </div>
               </div>
             ) : null}

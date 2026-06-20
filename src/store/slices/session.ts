@@ -6,7 +6,7 @@
  * (Stirring → Rising → Boss → Climax), the per-tier spawn gates for
  * wild / region bosses, the Climax-phase Vurmox pin in Gilded Cage,
  * and the co-op softclock that grants an escalating HP-easier bonus
- * to un-claimed bosses once the party has fallen behind (sharedTriforce
+ * to un-claimed bosses once the party has fallen behind (sharedEmbertide
  * total < 2 at start of turn 10).
  *
  * Scope note: this slice is a STATE-DERIVED LAYER — it exposes helpers
@@ -19,13 +19,13 @@
  *     cards. `engageWildBossSlot` / `engageRegionBossSlot` in
  *     gameStore.ts defensively gate on these predicates too.
  *   - GameBoard + WildBossEncounterSlot observe `sessionPhase`,
- *     `shouldPinGanon`, and `isClimaxStalled` to drive banners +
+ *     `shouldPinVurmox`, and `isClimaxStalled` to drive banners +
  *     dormant-slot rendering.
  *   - fightMonster / affordability checks consult `softclockHpEase` to
  *     apply the cumulative discount.
  */
 
-import type { KidGameState, SharedTriforce, ZoneId } from '../types';
+import type { KidGameState, SharedEmbertide, ZoneId } from '../types';
 import type { Card } from '../../types/card';
 
 /**
@@ -75,7 +75,7 @@ export const SOFTCLOCK_SHARD_FLOOR = 2;
 
 /**
  * The canonical id of the v2.0 final-fight region boss. Load-bearing for
- * `shouldPinGanon`. Exported so tests can reference it by constant
+ * `shouldPinVurmox`. Exported so tests can reference it by constant
  * rather than string-literal and so future unit renames remain greppable.
  *
  * Also asserted to match `ZONE_METADATA['gilded-cage'].regionBossId`
@@ -98,10 +98,10 @@ export function sessionPhase(turn: number): SessionPhase {
 }
 
 /**
- * Count how many shards are currently granted in `sharedTriforce`.
+ * Count how many shards are currently granted in `sharedEmbertide`.
  * Pure + branchless-ish — used by the softclock gate.
  */
-function triforceCount(t: SharedTriforce): number {
+function embertideCount(t: SharedEmbertide): number {
   return (t.wisdom ? 1 : 0) + (t.courage ? 1 : 0) + (t.power ? 1 : 0);
 }
 
@@ -152,7 +152,7 @@ export function canSpawnRegionBossByPhase(state: KidGameState, _zoneId: ZoneId):
  * VURMOX_ID || (c as { baseId?: string }).baseId === VURMOX_ID)` so a
  * duplicate-suffixed supply copy still counts as already-pinned.
  */
-export function shouldPinGanon(state: KidGameState): boolean {
+export function shouldPinVurmox(state: KidGameState): boolean {
   if (sessionPhase(state.turn) !== 'Climax') return false;
   if (state.currentZone !== 'gilded-cage') return false;
   const alreadyPinned = state.field.some((c) => {
@@ -163,15 +163,15 @@ export function shouldPinGanon(state: KidGameState): boolean {
 }
 
 /**
- * Append `ganonCard` to `state.field` iff `shouldPinGanon(state)` is
+ * Append `vurmoxCard` to `state.field` iff `shouldPinVurmox(state)` is
  * true. Pure — returns the input state unchanged otherwise. Callers
  * must pass the canonical Vurmox card (from KID_CARDS or supply); this
  * helper does not reach into the card dataset to keep the slice free of
  * data-layer imports.
  */
-export function applyGanonPin(state: KidGameState, ganonCard: Card): KidGameState {
-  if (!shouldPinGanon(state)) return state;
-  return { ...state, field: [...state.field, ganonCard] };
+export function applyVurmoxPin(state: KidGameState, vurmoxCard: Card): KidGameState {
+  if (!shouldPinVurmox(state)) return state;
+  return { ...state, field: [...state.field, vurmoxCard] };
 }
 
 /**
@@ -187,7 +187,7 @@ export function isClimaxStalled(state: KidGameState): boolean {
 /**
  * Cumulative softclock HP-easier bonus at the current turn (amendment A4).
  *
- * Fires at the start of turn 10+ when `sharedTriforce` total is strictly
+ * Fires at the start of turn 10+ when `sharedEmbertide` total is strictly
  * less than `SOFTCLOCK_SHARD_FLOOR` (= 2). Grows by 1 per subsequent
  * turn (acceptance f): turn 10 → 1, turn 11 → 2, turn 12 → 3, …
  *
@@ -205,7 +205,7 @@ export function isClimaxStalled(state: KidGameState): boolean {
  */
 export function softclockHpEase(state: KidGameState): number {
   if (state.turn < SOFTCLOCK_TURN) return 0;
-  const shardCount = triforceCount(state.sharedTriforce);
+  const shardCount = embertideCount(state.sharedEmbertide);
   if (shardCount >= SOFTCLOCK_SHARD_FLOOR) return 0;
   return state.turn - CLIMAX_PHASE_TURN; // turn 10 → 1, turn 11 → 2, …
 }

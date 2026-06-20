@@ -131,7 +131,7 @@ describe('Gilded-cage regulars (u-6c)', () => {
       ).toBeGreaterThanOrEqual(1);
       // And no shard is granted — shards only come from Princess (u-2e),
       // Map completion (u-5b), and Vurmox (u-6c-bosses, Layer 7).
-      expect(next.sharedTriforce).toEqual({
+      expect(next.sharedEmbertide).toEqual({
         wisdom: false,
         courage: false,
         power: false,

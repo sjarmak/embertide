@@ -102,6 +102,26 @@ body {
   min-height: 44px;
 }
 
+/* round2 (player layout pass): the zone backdrop art is lifted to back the
+   ENTIRE board (behind the top always-available strip + the bottom player
+   trays), not just the center grid. The ZoneCell renders absolute inset:0
+   here at z-0; every interactive band is lifted to z-1 so it floats on the
+   art. `isolation: isolate` keeps the absolute backdrop contained to the
+   board. This makes the zone art the dominant visual field and shrinks the
+   solid-color UI bands top + bottom. */
+.game-board {
+  isolation: isolate;
+}
+
+.game-board > [data-testid^='zone-cell-'] {
+  z-index: 0;
+}
+
+.game-board > :not([data-testid^='zone-cell-']) {
+  position: relative;
+  z-index: 1;
+}
+
 .game-board {
   display: flex;
   flex-direction: column;
@@ -126,24 +146,48 @@ body {
    (cf. the End-Turn / hand clipping history in memory 1rrk). Combat-screen
    tiles are NOT under .game-board, so they keep their own layout budget. */
 .game-board {
-  --hc-board-card-w: 90px;
-  --hc-board-card-h: 130px;
+  /* dfx1: bumped from 90×130 so the rules text reads clearly at the
+     12px floor AND the art panel (now flex-floored to ~58% of the face)
+     is large enough to see. The board still clears the 1280×800 budget —
+     the short-height tier below keeps the conservative footprint for
+     laptops where vertical space is the binding constraint. */
+  --hc-board-card-w: 104px;
+  --hc-board-card-h: 146px;
+
+  /* round2 (player layout pass): card SIZE HIERARCHY by row. The player
+     asked for the center (market) row to be the LARGEST — its art AND
+     rules text are the most important to read — with the hand a notch
+     smaller and the top always-available row the most compact (name +
+     image only). The four zones used to share ONE canonical size (hqnc);
+     these multipliers re-introduce the deliberate hierarchy on top of the
+     responsive canonical pair, so the relationship holds at every
+     breakpoint. The top row freed vertical budget by dropping its rules
+     text, which is what lets the center row grow without overflowing the
+     1280×800 target. */
+  --hc-card-center-w: round(calc(var(--hc-board-card-w) * 1.34), 1px);
+  --hc-card-center-h: round(calc(var(--hc-board-card-h) * 1.34), 1px);
+  --hc-card-top-w: round(calc(var(--hc-board-card-w) * 0.92), 1px);
+  --hc-card-top-h: round(calc(var(--hc-board-card-h) * 0.92), 1px);
 }
 
 @media (width <= 1440px) {
   .game-board {
-    --hc-board-card-w: 80px;
-    --hc-board-card-h: 112px;
+    --hc-board-card-w: 92px;
+    --hc-board-card-h: 128px;
   }
 }
 
 /* Short-height laptops (e.g. 1280×720, 1366×720): trim further so the
    bottom stack clears the viewport. Declared after the width query so it
-   wins when both match. */
+   wins when both match. The center-row bump is also dialed back here
+   (×1.2 vs ×1.34) because vertical space is the binding constraint on
+   short laptops. */
 @media (height <= 760px) {
   .game-board {
     --hc-board-card-w: 70px;
     --hc-board-card-h: 96px;
+    --hc-card-center-w: round(calc(var(--hc-board-card-w) * 1.2), 1px);
+    --hc-card-center-h: round(calc(var(--hc-board-card-h) * 1.2), 1px);
   }
 }
 
@@ -1308,7 +1352,7 @@ body {
 }
 
 /*
- * embertide-9eou (2026-04-26): TriforceStrip + PrincessCrystalCell
+ * embertide-9eou (2026-04-26): EmbertideStrip + PrincessCrystalCell
  * are no longer peers in the `.trays` flex row — they relocated to
  * `.board-side-crystal-rail` (right rail) so the player-trays band can
  * compact to ~80–90px. The previous `.board-main .trays > .embertide-hud`
@@ -1895,9 +1939,28 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
    deliberately non-uniform icon tiles. */
 @media (height > 500px) {
   @layer base {
-    .always-row-strip .field-card-tile,
+    /* round2 — card SIZE HIERARCHY by row. Selectors are ordered by
+       ascending specificity (top row 0,2,0 → hand/in-play/market 0,3,0)
+       to satisfy no-descending-specificity within the shared layer.
+
+       Top always-available row — most COMPACT (name+image only). Sized to
+       the top multiplier; the inner face fills the tile. */
+    .always-row-strip .field-card-tile {
+      width: var(--hc-card-top-w) !important;
+      height: var(--hc-card-top-h) !important;
+      min-height: var(--hc-card-top-h) !important;
+      max-height: var(--hc-card-top-h) !important;
+    }
+
+    .always-row-strip .field-card-tile .card-template,
+    .always-row-strip .field-card-tile .always-available-face {
+      height: var(--hc-card-top-h) !important;
+      min-height: var(--hc-card-top-h) !important;
+      max-height: var(--hc-card-top-h) !important;
+    }
+
+    /* Hand + in-play sit at the canonical (medium) footprint. */
     .board-main .in-play-tile,
-    .board-main .market-row .field-card-tile,
     .board-main .hand-row .hand-card-tile {
       width: var(--hc-board-card-w) !important;
       height: var(--hc-board-card-h) !important;
@@ -1905,13 +1968,25 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
       max-height: var(--hc-board-card-h) !important;
     }
 
-    .always-row-strip .field-card-tile .card-template,
+    /* Center (market) row — the LARGEST, primary focal area. */
+    .board-main .market-row .field-card-tile {
+      width: var(--hc-card-center-w) !important;
+      height: var(--hc-card-center-h) !important;
+      min-height: var(--hc-card-center-h) !important;
+      max-height: var(--hc-card-center-h) !important;
+    }
+
     .board-main .in-play-tile .card-template,
-    .board-main .market-row .field-card-tile .card-template,
     .board-main .hand-row .hand-card-tile .card-template {
       height: var(--hc-board-card-h) !important;
       min-height: var(--hc-board-card-h) !important;
       max-height: var(--hc-board-card-h) !important;
+    }
+
+    .board-main .market-row .field-card-tile .card-template {
+      height: var(--hc-card-center-h) !important;
+      min-height: var(--hc-card-center-h) !important;
+      max-height: var(--hc-card-center-h) !important;
     }
   }
 }
@@ -1927,7 +2002,14 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
    of reading as a hard smudge. */
 .card-template-art {
   position: relative;
-  flex: 1 1 auto;
+
+  /* dfx1: art is the dominant card element. flex-basis 58% + min-height
+     floor guarantees the illustration keeps the majority of the face even
+     when the rules box wraps to multiple lines, so text never "overtakes"
+     the art (the player-reported regression). The rules box is capped
+     opposite this (max-height 42%) so the two never fight for space. */
+  flex: 1 1 58%;
+  min-height: 52%;
   display: block;
   background: transparent;
   padding: 0;
@@ -1972,7 +2054,12 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
    the effect text below in a readable serif. Gold seam separates it from
    the art panel above. */
 .card-template-rules-box {
-  flex: 0 0 auto;
+  /* dfx1: capped to <=48% of the card face so the rules text can wrap but
+     never claims more than the art panel above it. overflow:hidden clips a
+     pathological wrap rather than letting it inflate the box and squeeze the
+     illustration into a sliver. The min-height keeps a one-line floor so the
+     plate still reads as a plate on text-light cards. */
+  flex: 0 1 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1985,7 +2072,9 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
   );
   border-top: 1px solid var(--hc-lead-gold-700, #8b6a2a);
   text-align: center;
-  min-height: 38px;
+  min-height: 30px;
+  max-height: 48%;
+  overflow: hidden;
 }
 
 .card-template-name {
@@ -2333,6 +2422,84 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
    instead of 203px and the .trays-row stops clipping at 1280×800. The
    tiles still scan as full cards (chest tiles at 78×110 are smaller),
    just at a narrow-viewport-appropriate footprint. */
+
+/* round2 (player layout pass): expanded top-row card face — NAME + IMAGE
+   only, no rules-text plate. Replaces the full <CardTemplate> whose effect
+   copy was clipping at the compact top-row footprint. Art fills the tile;
+   a thin gold-leaded frame + bottom Cinzel name plate carry the cathedral
+   card vocabulary. Full rules live one tap away in the zoom modal. */
+.always-available-face {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--hc-lead-gold-500);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--hc-parchment-100);
+  box-shadow:
+    inset 0 0 0 1px var(--hc-lead-gold-700),
+    0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.always-available-face-art {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.always-available-face-art > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.always-available-face-cost {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  padding: 1px 6px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--hc-parchment-50);
+  background: var(--hc-lead-iron-900-alpha-75);
+  border: 1px solid var(--hc-lead-gold-500);
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+.always-available-face-name {
+  flex: 0 0 auto;
+  padding: 3px 4px;
+  font-family: var(--hc-font-display);
+  font-weight: var(--hc-font-weight-bold);
+  font-size: var(--hc-text-xs);
+  letter-spacing: var(--hc-tracking-chrome-md);
+  color: var(--hc-parchment-700);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.05;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: linear-gradient(180deg, var(--hc-parchment-100) 0%, var(--hc-parchment-300) 100%);
+  border-top: 1px solid var(--hc-lead-gold-700);
+}
+
+/* round2: an unaffordable top-row tile stays CLICKABLE (so the player can
+   open it to read the rules) but dims to signal it can't be played yet.
+   The affordability gate proper lives on the zoom modal's action button. */
+.always-available-tile[data-affordable='false'] .always-available-face {
+  filter: grayscale(0.45) brightness(0.82);
+  opacity: 0.85;
+}
+
 @layer base {
   .always-available-row .field-card-tile {
     width: 134px;
@@ -2451,7 +2618,7 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
     width: 96px !important;
   }
 
-  /* TriforceStrip: cap width 132 → 96. Aspect-ratio is preserved
+  /* EmbertideStrip: cap width 132 → 96. Aspect-ratio is preserved
      (SVG viewBox 128×118), so the strip's height also shrinks ~30px. */
   .board-side-crystal-rail .crystal-embertide-pane > .embertide-hud > [data-testid='embertide-strip'] {
     max-width: 96px !important;
@@ -2480,7 +2647,7 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
 
   /* board-side-crystal-rail itself: tighten the inter-block gap from
      8 → 4 to claw back another 8px between BossAltarRow,
-     CrystalTriforcePane, and End-Turn. */
+     CrystalEmbertidePane, and End-Turn. */
   .board-side-crystal-rail {
     gap: 4px !important;
   }

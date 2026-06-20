@@ -11,7 +11,7 @@
  *   2. embertide-filled — same shape, all three Embertide shards lit
  *      (still LOCKED — exercises the same right-rail content path)
  *
- * The right rail stack is: BossAltarRow → CrystalTriforcePane →
+ * The right rail stack is: BossAltarRow → CrystalEmbertidePane →
  * ColosseumEntryPane → EndTurnButton. The fix lives in
  * `app.css @media (width <= 1440px)` and shrinks the rail content
  * (boss-altar art 96 → 72, crystal art 120 → 96, embertide strip
@@ -44,11 +44,11 @@ const SELECTORS: Record<string, string> = {
   boardSide: '.board-side',
   boardSideCrystalRail: '.board-side-crystal-rail',
   bossAltarRow: '[data-testid="boss-altar-row"]',
-  crystalTriforcePane: '[data-testid="crystal-embertide-pane"]',
+  crystalEmbertidePane: '[data-testid="crystal-embertide-pane"]',
   princessCrystalArt: '.princess-crystal-art-surface',
   princessCrystalBar: '[data-testid="princess-crystal-integrity-bar"]',
-  triforceHud: '.embertide-hud',
-  triforceStrip: '[data-testid="embertide-strip"]',
+  embertideHud: '.embertide-hud',
+  embertideStrip: '[data-testid="embertide-strip"]',
   bossAltarArt: '.boss-altar-pane-art',
   colosseumEntryPane: '[data-testid="colosseum-entry-pane"]',
   endTurn: '[data-testid="end-turn"]',

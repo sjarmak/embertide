@@ -1,5 +1,5 @@
 {
-  "id": "cathedral_monster_like_like_001",
+  "id": "cathedral_monster_gulpmaw_001",
   "theme": "cathedral",
   "archetype": "monster",
   "subtype": "devourer",
@@ -16,5 +16,5 @@
     "Gilded Cage regular (u-6c) — the engulfed key visualizes the `keys: 1` drop",
     "Vertical-cathedral segmentation frames the upright engulfing pose"
   ],
-  "rasterImageUrl": "/illustrations/cathedral_monster_like_like_001.webp"
+  "rasterImageUrl": "/illustrations/cathedral_monster_gulpmaw_001.webp"
 }

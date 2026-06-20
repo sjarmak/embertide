@@ -15,7 +15,7 @@
  *     the v2.0 map.
  *  4. Fire the u-5b Courage-unlock gate (`checkCourageUnlock`): when
  *     `zoneHistory` contains every zone in `ZONE_ORDER`,
- *     `sharedTriforce.courage` flips to true. Called automatically from
+ *     `sharedEmbertide.courage` flips to true. Called automatically from
  *     inside `advanceZone` on every advance event.
  *
  * Event emission is intentionally NOT implemented here — GameBoard
@@ -155,7 +155,7 @@ function resolveCardBaseId(card: Card): string {
  * Roster-memo contract: a played fangfish that survives one turn-end
  * without re-engagement auto-discards itself ("school of fish darts
  * away" thematic). Implementation tracks per-card-id watchlist on
- * `state.skullfishFieldWatchlist`:
+ * `state.fangfishFieldWatchlist`:
  *
  *   1. Find every fangfish currently in `state.field`.
  *   2. For each id in the previous watchlist that is STILL in the
@@ -177,26 +177,26 @@ function resolveCardBaseId(card: Card): string {
  * the supply for Maren, but if a future card mints duplicates with the
  * same baseId outside Maren the same window applies.
  */
-export function applySkullfishFragility(state: KidGameState): KidGameState {
+export function applyFangfishFragility(state: KidGameState): KidGameState {
   // Find every fangfish currently in the field. Resolve via
   // `resolveCardBaseId` so duplicate-suffix mints (e.g. `fangfish-2`)
   // resolve back to the canonical id; the watchlist tracks the runtime
   // card-id (with suffix) so individual copies don't collide.
-  const skullfishCards = state.field.filter((c) => resolveCardBaseId(c) === FANGFISH_BASE_ID);
-  if (skullfishCards.length === 0) {
+  const fangfishCards = state.field.filter((c) => resolveCardBaseId(c) === FANGFISH_BASE_ID);
+  if (fangfishCards.length === 0) {
     // No fangfish in the field. Watchlist must reset to empty so a
     // fangfish that was bought between turn-ends doesn't leave a
     // ghost id sitting around — important for the identity-stable
     // contract upstream (selectors that read the array shouldn't see
     // it grow without bound).
-    if (state.skullfishFieldWatchlist.length === 0) return state;
-    return { ...state, skullfishFieldWatchlist: [] };
+    if (state.fangfishFieldWatchlist.length === 0) return state;
+    return { ...state, fangfishFieldWatchlist: [] };
   }
 
-  const previousIds = new Set(state.skullfishFieldWatchlist);
+  const previousIds = new Set(state.fangfishFieldWatchlist);
   const fragileIds = new Set<string>();
   const survivorIds: string[] = [];
-  for (const card of skullfishCards) {
+  for (const card of fangfishCards) {
     if (previousIds.has(card.id)) {
       fragileIds.add(card.id);
     } else {
@@ -208,10 +208,10 @@ export function applySkullfishFragility(state: KidGameState): KidGameState {
     // No fangfish has been around long enough to drop. Just refresh
     // the watchlist with the current crop and return.
     const sameWatchlist =
-      survivorIds.length === state.skullfishFieldWatchlist.length &&
-      survivorIds.every((id, i) => id === state.skullfishFieldWatchlist[i]);
+      survivorIds.length === state.fangfishFieldWatchlist.length &&
+      survivorIds.every((id, i) => id === state.fangfishFieldWatchlist[i]);
     if (sameWatchlist) return state;
-    return { ...state, skullfishFieldWatchlist: survivorIds };
+    return { ...state, fangfishFieldWatchlist: survivorIds };
   }
 
   // Discard fragile fangfish: remove from field, append to defeated
@@ -228,7 +228,7 @@ export function applySkullfishFragility(state: KidGameState): KidGameState {
     field: nextField,
     defeated: [...state.defeated, ...droppedCards],
     voided: [...state.voided, ...droppedCards],
-    skullfishFieldWatchlist: survivorIds,
+    fangfishFieldWatchlist: survivorIds,
   };
 }
 
@@ -240,7 +240,7 @@ export function applySkullfishFragility(state: KidGameState): KidGameState {
  * zone" without a second metadata field.
  *
  * embertide-044 (2026-04-24): the Prism Chimera is now a
- * dynamic-spawn encounter driven by `state.goldenRainbowLynelSpawned`
+ * dynamic-spawn encounter driven by `state.prismChimeraSpawned`
  * (see src/rules/zones.ts `currentWildBossForZone`) and is no longer
  * in any zone's `wildBossIds` array — the filter below is kept as the
  * extensibility hook for future post-completion bosses that do land
@@ -374,7 +374,7 @@ export function isColosseumUnlocked(state: KidGameState): boolean {
  * (Sylvani + Emberpeak + Gilded Cage) has been cleared.
  *
  * Idempotent and side-effect-free: callers use this either as a guard
- * or to drive the `sharedTriforce.courage` flip. `advanceZone` calls it
+ * or to drive the `sharedEmbertide.courage` flip. `advanceZone` calls it
  * on every advance event and flips Courage the first time it returns
  * true; subsequent `advanceZone` calls at the terminal zone are no-ops
  * (see `advanceZone` docstring) so re-firing is impossible.
@@ -405,7 +405,7 @@ export function checkCourageUnlock(state: KidGameState): boolean {
  *    double-appending or re-firing the Courage unlock.
  *
  * After the zone-state update, `checkCourageUnlock` runs. If it returns
- * true and `sharedTriforce.courage` is still false, Courage flips to
+ * true and `sharedEmbertide.courage` is still false, Courage flips to
  * true in the same returned state — the defeat transaction that clears
  * the terminal zone also grants the Courage shard.
  */
@@ -452,10 +452,10 @@ export function advanceZone(state: KidGameState): KidGameState {
     sandstormCounter: nextSandstormCounter,
   };
 
-  if (!next.sharedTriforce.courage && checkCourageUnlock(next)) {
+  if (!next.sharedEmbertide.courage && checkCourageUnlock(next)) {
     next = {
       ...next,
-      sharedTriforce: { ...next.sharedTriforce, courage: true },
+      sharedEmbertide: { ...next.sharedEmbertide, courage: true },
     };
   }
 

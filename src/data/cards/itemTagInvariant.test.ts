@@ -14,7 +14,7 @@
  *    `exposed{revertsTo: guarded(item-tag-*)}` via
  *    `applyItemCheckOpenTrigger` (wiring check that the tag actually works
  *    end-to-end, not just that the data field is set). Covered: cinder-bloom
- *    (Cinderwyrm / Ashen Tyrant / Kalle Demos), and the three openers authored
+ *    (Cinderwyrm / Ashen Tyrant / Vinemaw), and the three openers authored
  *    by embertide-akop — grapplethorn (Tidewraith), grapnels (Voltwyrm T3),
  *    aegis-pane (Sentinel).
  *
@@ -32,7 +32,7 @@ import { KID_CARDS } from './index';
 import { applyItemCheckOpenTrigger } from '../../core/combat/archetypeResolvers/itemCheck';
 import { ITEM_CHECK_EXPOSED_BONUS } from '../../core/combat/archetypeResolvers/itemCheck';
 import { COLOSSEUM_CINDERWYRM_T2 } from '../colosseum/tier2';
-import { COLOSSEUM_VOLTWYRM_T3, COLOSSEUM_KALLE_DEMOS_T3 } from '../colosseum/tier3';
+import { COLOSSEUM_VOLTWYRM_T3, COLOSSEUM_VINEMAW_T3 } from '../colosseum/tier3';
 import { ZONE_BOSS_SPECS } from '../zones/bossSpecs';
 
 // ---------------------------------------------------------------------------
@@ -58,7 +58,7 @@ const COLOSSEUM_ITEM_TAG_SOURCES: ReadonlyArray<{
 }> = [
   { label: 'COLOSSEUM_CINDERWYRM_T2', boss: COLOSSEUM_CINDERWYRM_T2 },
   { label: 'COLOSSEUM_VOLTWYRM_T3', boss: COLOSSEUM_VOLTWYRM_T3 },
-  { label: 'COLOSSEUM_KALLE_DEMOS_T3', boss: COLOSSEUM_KALLE_DEMOS_T3 },
+  { label: 'COLOSSEUM_VINEMAW_T3', boss: COLOSSEUM_VINEMAW_T3 },
 ];
 
 /**
@@ -188,13 +188,13 @@ describe('cinder-bloom card — item-tag-bomb substrate (lhlo.20)', () => {
     expect(tag.revertsTo).toEqual({ kind: 'guarded', until: 'item-tag-bomb' });
   });
 
-  // Kalle Demos T3 shares the same item-tag-bomb discriminant.
-  it('playing cinder-bloom against COLOSSEUM_KALLE_DEMOS_T3 also flips guarded(item-tag-bomb) → exposed{revertsTo}', () => {
+  // Vinemaw T3 shares the same item-tag-bomb discriminant.
+  it('playing cinder-bloom against COLOSSEUM_VINEMAW_T3 also flips guarded(item-tag-bomb) → exposed{revertsTo}', () => {
     if (!cinderBloom) throw new Error('cinder-bloom not found in KID_CARDS');
 
-    const next = applyItemCheckOpenTrigger(COLOSSEUM_KALLE_DEMOS_T3, cinderBloom);
+    const next = applyItemCheckOpenTrigger(COLOSSEUM_VINEMAW_T3, cinderBloom);
 
-    expect(next).not.toBe(COLOSSEUM_KALLE_DEMOS_T3);
+    expect(next).not.toBe(COLOSSEUM_VINEMAW_T3);
     const tag = next.stateTags?.[0];
     expect(tag?.kind).toBe('exposed');
     if (tag?.kind !== 'exposed') throw new Error('expected exposed tag');
@@ -208,7 +208,7 @@ describe('cinder-bloom card — item-tag-bomb substrate (lhlo.20)', () => {
 
     const kingDodoSpec = ZONE_BOSS_SPECS['ashen-tyrant'];
     // Construct a minimal CombatBoss matching the ashen-tyrant spec shape.
-    const kingDodongoBoss: CombatBoss = {
+    const ashenTyrantBoss: CombatBoss = {
       hp: 14,
       hpMax: 14,
       attackPattern: {
@@ -221,9 +221,9 @@ describe('cinder-bloom card — item-tag-bomb substrate (lhlo.20)', () => {
       stateTags: kingDodoSpec.stateTags,
     };
 
-    const next = applyItemCheckOpenTrigger(kingDodongoBoss, cinderBloom);
+    const next = applyItemCheckOpenTrigger(ashenTyrantBoss, cinderBloom);
 
-    expect(next).not.toBe(kingDodongoBoss);
+    expect(next).not.toBe(ashenTyrantBoss);
     const tag = next.stateTags?.[0];
     expect(tag?.kind).toBe('exposed');
     if (tag?.kind !== 'exposed') throw new Error('expected exposed tag');
@@ -339,9 +339,9 @@ describe('akop opener cards — item-tag substrate + open-trigger integration', 
   });
 
   it('elysian-shield carries NO item-tag (distinct from aegis-pane)', () => {
-    const hylianShield = KID_CARDS.find((c) => c.id === 'elysian-shield');
-    expect(hylianShield).toBeDefined();
-    const itemTags = (hylianShield?.tags ?? []).filter((t) => t.startsWith('item-tag-'));
+    const elysianShield = KID_CARDS.find((c) => c.id === 'elysian-shield');
+    expect(elysianShield).toBeDefined();
+    const itemTags = (elysianShield?.tags ?? []).filter((t) => t.startsWith('item-tag-'));
     expect(itemTags).toEqual([]);
   });
 });

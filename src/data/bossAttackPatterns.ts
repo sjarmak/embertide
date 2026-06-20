@@ -263,7 +263,7 @@ const HEXTWINS_PATTERN: BossAttackPattern = {
 // rather than the old 3-4. Still > Sentinel's 3 dpt.
 // 2026-04-23: Silver Chimera is now the Courage-shard source (was Broodmaw).
 // Wisp drop is tier-driven — wild-boss wisp routing in combat.ts's
-// `grantWildBossFairy` runs regardless of this onDefeatEffect value, so
+// `grantWildBossWisp` runs regardless of this onDefeatEffect value, so
 // swapping the marker from WISP_DROP to COURAGE_GRANT does not remove
 // the wisp; it only adds the shard grant.
 const SILVER_CHIMERA_PATTERN: BossAttackPattern = {
@@ -274,7 +274,7 @@ const SILVER_CHIMERA_PATTERN: BossAttackPattern = {
 
 // embertide-044 (2026-04-24): rare post-completion wild boss
 // (Prism Chimera). Dynamic-spawn encounter rolled once at
-// Silver Chimera's defeat via `computeGoldenRainbowLynelSpawnChance` in
+// Silver Chimera's defeat via `computePrismChimeraSpawnChance` in
 // src/rules/zones.ts — outside the u-9f balance band by design.
 // Stats scaled ~1.5× Silver Chimera dpt (4 → 6) and ~2× HP (12 → 24).
 // Same `battlefield-then-player` targeting for consistency with other

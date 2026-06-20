@@ -169,23 +169,23 @@ describe('openChest — distribution (10,000 seeded draws, tq5 3-tier system)', 
   // removed, remaining weights renormalized): std≈7 < mid≈11 < boss≈15.
   it('chest-std wisp drop rate is ≈7% within ±2pp', () => {
     const counts = countRewards('std', 1, SAMPLES);
-    const fairyRate = counts.wisp / SAMPLES;
-    expect(fairyRate).toBeGreaterThanOrEqual(0.07 - TOLERANCE);
-    expect(fairyRate).toBeLessThanOrEqual(0.07 + TOLERANCE);
+    const wispRate = counts.wisp / SAMPLES;
+    expect(wispRate).toBeGreaterThanOrEqual(0.07 - TOLERANCE);
+    expect(wispRate).toBeLessThanOrEqual(0.07 + TOLERANCE);
   });
 
   it('chest-mid wisp drop rate is ≈11% within ±2pp', () => {
     const counts = countRewards('mid', 51, SAMPLES);
-    const fairyRate = counts.wisp / SAMPLES;
-    expect(fairyRate).toBeGreaterThanOrEqual(0.11 - TOLERANCE);
-    expect(fairyRate).toBeLessThanOrEqual(0.11 + TOLERANCE);
+    const wispRate = counts.wisp / SAMPLES;
+    expect(wispRate).toBeGreaterThanOrEqual(0.11 - TOLERANCE);
+    expect(wispRate).toBeLessThanOrEqual(0.11 + TOLERANCE);
   });
 
   it('chest-boss wisp drop rate is ≈15% within ±2pp', () => {
     const counts = countRewards('boss', 99, SAMPLES);
-    const fairyRate = counts.wisp / SAMPLES;
-    expect(fairyRate).toBeGreaterThanOrEqual(0.15 - TOLERANCE);
-    expect(fairyRate).toBeLessThanOrEqual(0.15 + TOLERANCE);
+    const wispRate = counts.wisp / SAMPLES;
+    expect(wispRate).toBeGreaterThanOrEqual(0.15 - TOLERANCE);
+    expect(wispRate).toBeLessThanOrEqual(0.15 + TOLERANCE);
   });
 
   it('wisp rate is monotonic non-decreasing across tiers (std < mid < boss)', () => {
@@ -209,8 +209,8 @@ describe('CHEST_WEIGHT_TABLE (exported for data inspection)', () => {
 
   it('includes wisp in all three variants', () => {
     for (const variant of ['std', 'mid', 'boss'] as const) {
-      const hasFairy = CHEST_WEIGHT_TABLE[variant].some((e) => e.reward === 'wisp');
-      expect(hasFairy, `variant=${variant}`).toBe(true);
+      const hasWisp = CHEST_WEIGHT_TABLE[variant].some((e) => e.reward === 'wisp');
+      expect(hasWisp, `variant=${variant}`).toBe(true);
     }
   });
 

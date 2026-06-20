@@ -16,7 +16,7 @@ import {
   PRISM_CHIMERA_SPAWN_CAP,
   PRISM_CHIMERA_SPAWN_STEP,
   ZONE_METADATA,
-  computeGoldenRainbowLynelSpawnChance,
+  computePrismChimeraSpawnChance,
   currentRegionBossForZone,
   currentWildBossForZone,
 } from './zones';
@@ -76,7 +76,7 @@ describe('currentWildBossForZone (u-9a)', () => {
     expect(currentWildBossForZone(makeState(['silver-chimera']), 'gilded-cage')).toBe('sentinel');
   });
 
-  it('Gilded Cage: returns null when only sentinel and silver-chimera are defeated AND goldenRainbowLynelSpawned is false', () => {
+  it('Gilded Cage: returns null when only sentinel and silver-chimera are defeated AND prismChimeraSpawned is false', () => {
     // embertide-044 (2026-04-24): Rainbow is now a dynamic-spawn
     // encounter. With the FIFO cleared but the one-shot spawn roll
     // having failed (flag false), the wild slot is empty.
@@ -85,14 +85,14 @@ describe('currentWildBossForZone (u-9a)', () => {
     ).toBeNull();
   });
 
-  it('Gilded Cage: returns "prism-chimera" once FIFO cleared AND goldenRainbowLynelSpawned is true', () => {
+  it('Gilded Cage: returns "prism-chimera" once FIFO cleared AND prismChimeraSpawned is true', () => {
     // embertide-044: the spawn roll fired at Silver Chimera's defeat
-    // set `goldenRainbowLynelSpawned: true` — the Temple wild slot now
+    // set `prismChimeraSpawned: true` — the Temple wild slot now
     // surfaces the post-completion boss. Cross-zone prerequisites
     // (craghorn + boulderkin) are NO LONGER required.
     expect(
       currentWildBossForZone(
-        makeState(['sentinel', 'silver-chimera'], { goldenRainbowLynelSpawned: true }),
+        makeState(['sentinel', 'silver-chimera'], { prismChimeraSpawned: true }),
         'gilded-cage',
       ),
     ).toBe(PRISM_CHIMERA_ID);
@@ -104,13 +104,13 @@ describe('currentWildBossForZone (u-9a)', () => {
     // defeated-boss ids.
     expect(
       currentWildBossForZone(
-        makeState(['sentinel', 'silver-chimera'], { goldenRainbowLynelSpawned: true }),
+        makeState(['sentinel', 'silver-chimera'], { prismChimeraSpawned: true }),
         'gilded-cage',
       ),
     ).toBe(PRISM_CHIMERA_ID);
     expect(
       currentWildBossForZone(
-        makeState(['craghorn', 'sentinel', 'silver-chimera'], { goldenRainbowLynelSpawned: true }),
+        makeState(['craghorn', 'sentinel', 'silver-chimera'], { prismChimeraSpawned: true }),
         'gilded-cage',
       ),
     ).toBe(PRISM_CHIMERA_ID);
@@ -120,7 +120,7 @@ describe('currentWildBossForZone (u-9a)', () => {
     expect(
       currentWildBossForZone(
         makeState(['sentinel', 'silver-chimera', PRISM_CHIMERA_ID], {
-          goldenRainbowLynelSpawned: true,
+          prismChimeraSpawned: true,
         }),
         'gilded-cage',
       ),
@@ -132,7 +132,7 @@ describe('currentWildBossForZone (u-9a)', () => {
     // clears, the selector prefers the undefeated FIFO entry.
     expect(
       currentWildBossForZone(
-        makeState(['sentinel'], { goldenRainbowLynelSpawned: true }),
+        makeState(['sentinel'], { prismChimeraSpawned: true }),
         'gilded-cage',
       ),
     ).toBe('silver-chimera');
@@ -152,40 +152,40 @@ describe('currentWildBossForZone (u-9a)', () => {
 });
 
 // ---------------------------------------------------------------------------
-// computeGoldenRainbowLynelSpawnChance — embertide-044 linear-ramp
+// computePrismChimeraSpawnChance — embertide-044 linear-ramp
 // formula: P = min(0.05 * centerRowKillCount, 0.85). One-shot roll fired
 // at Silver Chimera's defeat transaction; see `COMBAT_RESOLVE_WIN` in
 // src/store/gameStore.ts for the roll site.
 // ---------------------------------------------------------------------------
 
-describe('computeGoldenRainbowLynelSpawnChance (embertide-044)', () => {
+describe('computePrismChimeraSpawnChance (embertide-044)', () => {
   it('returns 0 at 0 center-row kills (floor)', () => {
-    expect(computeGoldenRainbowLynelSpawnChance(0)).toBe(0);
+    expect(computePrismChimeraSpawnChance(0)).toBe(0);
   });
 
   it('clamps negative input to 0 (defensive)', () => {
-    expect(computeGoldenRainbowLynelSpawnChance(-5)).toBe(0);
+    expect(computePrismChimeraSpawnChance(-5)).toBe(0);
   });
 
   it('returns 0.25 at 5 kills (linear ramp: 0.05 * 5)', () => {
-    expect(computeGoldenRainbowLynelSpawnChance(5)).toBeCloseTo(0.25, 10);
+    expect(computePrismChimeraSpawnChance(5)).toBeCloseTo(0.25, 10);
   });
 
   it('returns 0.5 at 10 kills (linear ramp: 0.05 * 10)', () => {
-    expect(computeGoldenRainbowLynelSpawnChance(10)).toBeCloseTo(0.5, 10);
+    expect(computePrismChimeraSpawnChance(10)).toBeCloseTo(0.5, 10);
   });
 
   it('returns exactly the cap (0.85) at 17 kills (0.05 * 17)', () => {
-    expect(computeGoldenRainbowLynelSpawnChance(17)).toBeCloseTo(
+    expect(computePrismChimeraSpawnChance(17)).toBeCloseTo(
       PRISM_CHIMERA_SPAWN_CAP,
       10,
     );
   });
 
   it('stays at the cap (0.85) for kill counts past the threshold', () => {
-    expect(computeGoldenRainbowLynelSpawnChance(20)).toBe(PRISM_CHIMERA_SPAWN_CAP);
-    expect(computeGoldenRainbowLynelSpawnChance(100)).toBe(PRISM_CHIMERA_SPAWN_CAP);
-    expect(computeGoldenRainbowLynelSpawnChance(1_000_000)).toBe(PRISM_CHIMERA_SPAWN_CAP);
+    expect(computePrismChimeraSpawnChance(20)).toBe(PRISM_CHIMERA_SPAWN_CAP);
+    expect(computePrismChimeraSpawnChance(100)).toBe(PRISM_CHIMERA_SPAWN_CAP);
+    expect(computePrismChimeraSpawnChance(1_000_000)).toBe(PRISM_CHIMERA_SPAWN_CAP);
   });
 
   it('matches the designer-locked step/cap constants', () => {

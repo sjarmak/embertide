@@ -42,7 +42,7 @@ Located in `tools/playtester/*.spec.ts`:
 
 **State-matrix guards** (embertide-68a)
 - **`hp-downed.spec.ts`** — HPStrip surfaces the downed ribbon + teammate-revive button when hp=0 / downed=true.
-- **`embertide-filled.spec.ts`** — all three shared shards render as filled when `sharedTriforce` is fully granted.
+- **`embertide-filled.spec.ts`** — all three shared shards render as filled when `sharedEmbertide` is fully granted.
 - **`princess-crystal-freed.spec.ts`** — PrincessCrystalCell transitions into the post-freed terminal state (Aurelia-freed element, no Strike button).
 - **`zone-themes.spec.ts`** — ZoneCell renders the Emberpeak and Gilded Cage rasters + theme hints.
 
@@ -112,11 +112,11 @@ See `src/debug/playtestSeeds.ts`. Every seed spawns a 2-player Courage+Power gam
 - `?debug=wild-boss-slot` — main board with wild + region altar slots populated (p0 carries heirlooms)
 - `?debug=emberpeak-combat` — zone = Emberpeak, in Ashen Tyrant combat
 - `?debug=temple-combat` — zone = Gilded Cage, in Vurmox combat
-- `?debug=vurmox-destiny` — zone = Gilded Cage, Temple wilds cleared, GanonDestinySlot mounted
+- `?debug=vurmox-destiny` — zone = Gilded Cage, Temple wilds cleared, VurmoxDestinySlot mounted
 
 **State-matrix seeds** (embertide-68a)
 - `?debug=hp-downed` — p0 hp=0/downed=true, currentPlayerIndex=1 (so p0's strip shows teammate-view revive button)
-- `?debug=embertide-filled` — sharedTriforce all three shards set
+- `?debug=embertide-filled` — sharedEmbertide all three shards set
 - `?debug=princess-crystal-freed` — PrincessCrystal { charges: 0, freed: true }
 - `?debug=zone-emberpeak` / `?debug=zone-temple` — force currentZone without advancing via defeats
 

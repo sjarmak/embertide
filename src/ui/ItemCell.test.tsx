@@ -39,25 +39,25 @@ describe('ItemCell', () => {
     expect(screen.queryByTestId('art-pending-frame-wisp-item-cell')).toBeNull();
   });
 
-  it('wisp with downed teammate id renders an ENABLED tap button; click calls onPlayFairy', () => {
-    const onPlayFairy = vi.fn();
-    render(<ItemCell card={WISP} downedTeammateId="p1" onPlayFairy={onPlayFairy} />);
+  it('wisp with downed teammate id renders an ENABLED tap button; click calls onPlayWisp', () => {
+    const onPlayWisp = vi.fn();
+    render(<ItemCell card={WISP} downedTeammateId="p1" onPlayWisp={onPlayWisp} />);
     const tap = screen.getByTestId(`item-wisp-tap-${WISP.id}`);
     expect(tap).not.toBeDisabled();
     tap.click();
-    expect(onPlayFairy).toHaveBeenCalledWith('p1');
+    expect(onPlayWisp).toHaveBeenCalledWith('p1');
   });
 
   it('wisp without a downed teammate id renders a DISABLED tap button (no consumption)', () => {
-    const onPlayFairy = vi.fn();
-    render(<ItemCell card={WISP} downedTeammateId={null} onPlayFairy={onPlayFairy} />);
+    const onPlayWisp = vi.fn();
+    render(<ItemCell card={WISP} downedTeammateId={null} onPlayWisp={onPlayWisp} />);
     const tap = screen.getByTestId(`item-wisp-tap-${WISP.id}`);
     expect(tap).toBeDisabled();
     tap.click();
-    expect(onPlayFairy).not.toHaveBeenCalled();
+    expect(onPlayWisp).not.toHaveBeenCalled();
   });
 
-  it('wisp with no onPlayFairy prop still renders the card (read-only)', () => {
+  it('wisp with no onPlayWisp prop still renders the card (read-only)', () => {
     render(<ItemCell card={WISP} />);
     expect(screen.getByTestId(`item-${WISP.id}`)).toBeInTheDocument();
     // Tap button should not be rendered without a handler — the cell is

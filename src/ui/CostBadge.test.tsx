@@ -3,13 +3,13 @@ import { render, screen } from '@testing-library/react';
 import CostBadge from './CostBadge';
 
 describe('CostBadge', () => {
-  it('renders a green cost with the GreenRupee icon when green > 0', () => {
+  it('renders a green cost with the GreenShard icon when green > 0', () => {
     const { container } = render(<CostBadge green={4} />);
     const badge = screen.getByTestId('cost-badge-green');
     expect(badge).toBeInTheDocument();
     expect(badge).toHaveTextContent('4');
 
-    // GreenRupee svg is labeled 'green-shard' by default.
+    // GreenShard svg is labeled 'green-shard' by default.
     const greenSvg = container.querySelector('svg[aria-label="green-shard"]');
     expect(greenSvg).not.toBeNull();
   });

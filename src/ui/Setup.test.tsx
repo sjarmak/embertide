@@ -191,7 +191,7 @@ describe('Setup', () => {
       // displayName is rendered as visible text.
       expect(tile.textContent ?? '').toContain(champion.displayName);
       // passiveDescription is now tokenized into inline icons for sighted
-      // players (resource words replaced with <GreenRupee/>/<Sword/>/
+      // players (resource words replaced with <GreenShard/>/<Sword/>/
       // <Key/>/<Heart/>). The plain-text form lives in aria-label so screen
       // readers still hear the full spelled-out passive.
       const ariaLabel = tile.getAttribute('aria-label') ?? '';

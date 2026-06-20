@@ -28,7 +28,7 @@ export interface ItemsBagChipProps {
    */
   readonly downedTeammateId?: string | null;
   /** Tap-to-use dispatcher for the wisp. */
-  readonly onPlayFairy?: (teammateId: string) => void;
+  readonly onPlayWisp?: (teammateId: string) => void;
 }
 
 /**
@@ -53,7 +53,7 @@ export default function ItemsBagChip({
   playerId,
   interactive = true,
   downedTeammateId,
-  onPlayFairy,
+  onPlayWisp,
 }: ItemsBagChipProps): JSX.Element {
   const [open, setOpen] = useState(false);
   const count = cards.length;
@@ -142,7 +142,7 @@ export default function ItemsBagChip({
                   key={card.id}
                   card={card}
                   downedTeammateId={downedTeammateId}
-                  onPlayFairy={onPlayFairy}
+                  onPlayWisp={onPlayWisp}
                 />
               ))
             )}

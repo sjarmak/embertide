@@ -28,7 +28,7 @@ describe('App', () => {
       chestSupply: [],
       defeated: [],
       voided: [],
-      sharedTriforce: { wisdom: false, courage: false, power: false },
+      sharedEmbertide: { wisdom: false, courage: false, power: false },
       outcome: null,
       lastChestReward: null,
       lastChestRewardCard: null,

@@ -185,7 +185,7 @@ describe('u-8a combat schema — type-level smoke tests', () => {
     const win: CombatResolveWinAction = {
       type: 'COMBAT_RESOLVE_WIN',
       heartsToAttackers: { p0: 1, p1: 0 },
-      fairyDropTarget: null,
+      wispDropTarget: null,
       shardGrants: ['power'],
       zoneAdvance: true,
       bossKey: null,

@@ -1,6 +1,6 @@
 /**
  * Visual smoke test for the shared SVG `<defs>` filters mounted by
- * <HyrulianDefs />. Renders the defs once and shows two filtered shapes
+ * <ElysianDefs />. Renders the defs once and shows two filtered shapes
  * so a designer can eyeball the strength of each filter side-by-side.
  *
  * Spec: .claude/design/elysian-cathedral/icons.md §2.
@@ -8,11 +8,11 @@
 import type { CSSProperties } from 'react';
 import type { Story } from '@ladle/react';
 
-import { HyrulianDefs } from '../icons/defs';
+import { ElysianDefs } from '../icons/defs';
 import { HC_TOKENS } from '../theme/tokens';
 
 export default {
-  title: 'Foundations / HyrulianDefs',
+  title: 'Foundations / ElysianDefs',
 };
 
 const containerStyle: CSSProperties = {
@@ -45,7 +45,7 @@ const captionStyle: CSSProperties = {
 
 export const Defaults: Story = () => (
   <div style={containerStyle}>
-    <HyrulianDefs />
+    <ElysianDefs />
 
     <div style={cellStyle}>
       <span style={captionStyle}>baseline</span>

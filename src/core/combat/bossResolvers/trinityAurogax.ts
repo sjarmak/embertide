@@ -37,7 +37,7 @@ import { currentSequenceStep } from './sequenceStep';
 /**
  * Stable log fragments for resolver-test substring assertions.
  *
- * Tests in `combatEngine.trinityGleeokResolver.test.ts` import these
+ * Tests in `combatEngine.trinityAurogaxResolver.test.ts` import these
  * constants and assert `entry.toLowerCase().includes(TRINITY_AUROGAX_LOG_*)`
  * instead of hard-coding bare substring literals. The constant is the
  * contract — a flavor rephrasing that drops the fragment from the
@@ -51,7 +51,7 @@ export const TRINITY_AUROGAX_LOG_UMBRA = 'umbra';
 export const TRINITY_AUROGAX_LOG_ANCIENT = 'ancient';
 export const TRINITY_AUROGAX_LOG_AUREN = 'auren';
 
-export function trinityGleeokHeadsResolver(combat: CombatState): BossResolveOutcome {
+export function trinityAurogaxHeadsResolver(combat: CombatState): BossResolveOutcome {
   const baseDpt = combat.boss.attackPattern.damagePerTurn;
   const step = currentSequenceStep(combat.boss);
 

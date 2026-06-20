@@ -23,7 +23,7 @@
 import type { Card } from '../../../types/card';
 
 // Art follow-up: embertide-284 (saurian).
-const deathMountainLizalfos: Card = {
+const emberpeakSaurian: Card = {
   id: 'saurian',
   role: 'monster',
   cost: { red: 3 },
@@ -37,7 +37,7 @@ const deathMountainLizalfos: Card = {
 // with +1 gem on defeat. The "tougher regular" tuning rung from the
 // drop-variety design: heftier than a sylvani scrub's split drop, and
 // the +1 gem matches Ascension's intermediate-tier HONOR reward shape.
-const deathMountainDodongo: Card = {
+const emberpeakAshjaw: Card = {
   id: 'ashjaw',
   role: 'monster',
   cost: { red: 5 },
@@ -48,7 +48,7 @@ const deathMountainDodongo: Card = {
 // Art follow-up: embertide-wg5 (skittermite). Unique on-defeat: drops a
 // key (keys=1) in addition to the heal — the only Emberpeak regular
 // that yields a key on kill.
-const deathMountainTektite: Card = {
+const emberpeakSkittermite: Card = {
   id: 'skittermite',
   role: 'monster',
   cost: { red: 4 },
@@ -57,7 +57,7 @@ const deathMountainTektite: Card = {
 };
 
 // Art follow-up: embertide-zkl (red-squidlet).
-const deathMountainRedOctorok: Card = {
+const emberpeakRedSquidlet: Card = {
   id: 'red-squidlet',
   role: 'monster',
   cost: { red: 3 },
@@ -65,11 +65,11 @@ const deathMountainRedOctorok: Card = {
   zone: 'emberpeak',
 };
 
-export const deathMountainRegulars: readonly Card[] = [
-  deathMountainLizalfos,
-  deathMountainDodongo,
-  deathMountainTektite,
-  deathMountainRedOctorok,
+export const emberpeakRegulars: readonly Card[] = [
+  emberpeakSaurian,
+  emberpeakAshjaw,
+  emberpeakSkittermite,
+  emberpeakRedSquidlet,
 ];
 
 // Art follow-up: embertide-gv6 (boulderkin).

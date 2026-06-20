@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { CourageShard, GreenRupee, Heart, Key, PowerShard, Sword, WisdomShard } from '../../icons';
+import { CourageShard, GreenShard, Heart, Key, PowerShard, Sword, WisdomShard } from '../../icons';
 
 /**
  * Inline effect-text icon size (px). Chosen to sit flush with the 10-13px
@@ -19,8 +19,8 @@ export const EFFECT_ICON_PX = 12;
 export type UnitKey = 'g' | 'power' | 'key' | '\u2665' | 'heart' | 'green';
 
 export const ICON_BY_UNIT: Record<UnitKey, ReactNode> = {
-  g: <GreenRupee size={EFFECT_ICON_PX} />,
-  green: <GreenRupee size={EFFECT_ICON_PX} />,
+  g: <GreenShard size={EFFECT_ICON_PX} />,
+  green: <GreenShard size={EFFECT_ICON_PX} />,
   power: <Sword size={EFFECT_ICON_PX} />,
   key: <Key size={EFFECT_ICON_PX} />,
   '\u2665': <Heart size={EFFECT_ICON_PX} />,

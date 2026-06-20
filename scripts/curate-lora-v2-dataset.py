@@ -72,7 +72,7 @@ PALETTE_BY_CATEGORY = {
     "monster_broodmaw":          "palette of emerald green, ruby red, and dark gold",
     "monster_sentinel":       "palette of deep teal, aged bronze, and cyan accents",
     "monster_ashen_tyrant":   "palette of oxblood red, charcoal grey, and ember gold",
-    "monster_like_like":      "palette of burnt sienna, ochre, and deep ruby",
+    "monster_gulpmaw":      "palette of burnt sienna, ochre, and deep ruby",
     "monster_saurian":       "palette of oxblood red, charcoal, and ember orange",
     "monster_red_squidlet":    "palette of oxblood red, ember orange, and dark bronze",
     "monster_silver_chimera":   "palette of cool steel blue, ivory white, and dark slate",

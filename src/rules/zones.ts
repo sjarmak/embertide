@@ -87,7 +87,7 @@ export const ZONE_METADATA: Record<ZoneId, ZoneMetadata> = {
     themeHint: 'lush green forest canopy with dappled sunlight',
     // u-6a content: 4 regular enemies + Craghorn (wild) + Broodmaw (region).
     // Ids must stay in sync with src/data/cards.ts; the u-6a test file
-    // (src/data/kokiriContent.test.ts) asserts two-way consistency.
+    // (src/data/sylvaniContent.test.ts) asserts two-way consistency.
     regularEnemyIds: ['thorn-scrub', 'snapvine', 'jellet', 'scrabling'],
     wildBossIds: ['craghorn'],
     regionBossId: 'broodmaw',
@@ -190,7 +190,7 @@ export const ZONE_METADATA: Record<ZoneId, ZoneMetadata> = {
     // (Sentinel first, then Silver Chimera, then null). Vurmox defeat still
     // triggers advanceZone (terminal zone — appends 'gilded-cage' to
     // zoneHistory + fires the u-5b courage unlock) AND an explicit
-    // sharedTriforce.power flip in combat.ts (gated on defeated.id ===
+    // sharedEmbertide.power flip in combat.ts (gated on defeated.id ===
     // 'cagewright-vurmox').
     regularEnemyIds: ['wardeye', 'emberskull', 'bone-knight', 'gulpmaw', 'hexrobe'],
     // embertide-044 (2026-04-24): Temple's FIFO queue holds only
@@ -198,9 +198,9 @@ export const ZONE_METADATA: Record<ZoneId, ZoneMetadata> = {
     // `prism-chimera` post-completion boss is NO LONGER part
     // of the FIFO — it is a dynamic-spawn encounter rolled once at
     // Silver Chimera's defeat via the linear-ramp formula in
-    // `computeGoldenRainbowLynelSpawnChance` below. `currentWildBossForZone`
+    // `computePrismChimeraSpawnChance` below. `currentWildBossForZone`
     // surfaces it only after the FIFO is cleared AND
-    // `state.goldenRainbowLynelSpawned` is true AND the boss itself
+    // `state.prismChimeraSpawned` is true AND the boss itself
     // is not yet defeated.
     wildBossIds: ['sentinel', 'silver-chimera'],
     regionBossId: 'cagewright-vurmox',
@@ -242,7 +242,7 @@ export const PRISM_CHIMERA_SPAWN_CAP = 0.85;
  * more ~5-percentage-point chance" — fast to mentally model from the
  * UI side. Pure / side-effect free.
  */
-export function computeGoldenRainbowLynelSpawnChance(centerRowKillCount: number): number {
+export function computePrismChimeraSpawnChance(centerRowKillCount: number): number {
   const kills = Math.max(0, centerRowKillCount);
   return Math.min(PRISM_CHIMERA_SPAWN_STEP * kills, PRISM_CHIMERA_SPAWN_CAP);
 }
@@ -276,11 +276,11 @@ export function nextZone(zoneId: ZoneId): ZoneId | null {
  *
  * embertide-044 (2026-04-24): Temple has an additional
  * dynamic-spawn wild slot — the Prism Chimera. When the FIFO is
- * exhausted AND `state.goldenRainbowLynelSpawned === true` AND
+ * exhausted AND `state.prismChimeraSpawned === true` AND
  * `'prism-chimera'` is not yet in `defeatedBossIds`, the slot
  * surfaces the rare post-completion boss. The spawn-flag flip is
  * rolled once at Silver Chimera's defeat (see
- * `computeGoldenRainbowLynelSpawnChance`); a failed roll leaves the
+ * `computePrismChimeraSpawnChance`); a failed roll leaves the
  * slot empty for the rest of the run.
  *
  * Defensive: an unknown `zoneId` returns `null`.
@@ -298,7 +298,7 @@ export function currentWildBossForZone(state: KidGameState, zoneId: ZoneId): str
   // spawn roll has succeeded and the boss isn't already defeated.
   if (
     zoneId === 'gilded-cage' &&
-    state.goldenRainbowLynelSpawned &&
+    state.prismChimeraSpawned &&
     !defeated.has(PRISM_CHIMERA_ID)
   ) {
     return PRISM_CHIMERA_ID;

@@ -16,19 +16,19 @@ import type { KidGameState, KidPlayer } from '../types';
  * Duplicated here rather than imported from `store/gameStore.ts` to
  * avoid the gameStore → chests → gameStore circular-import chain.
  * Kept in lockstep with `HEART_PIECES_PER_CONTAINER` at the store layer
- * (see addHeartPieceToPlayer below for the local helper that uses it).
+ * (see addEmberShardToPlayer below for the local helper that uses it).
  */
 const HEART_PIECES_PER_CONTAINER = 4;
 
 /**
- * Local copy of `addHeartPiece` (v2.1 gm0.16). Increments a player's
+ * Local copy of `addEmberShard` (v2.1 gm0.16). Increments a player's
  * ember-shard counter; on reaching `HEART_PIECES_PER_CONTAINER`, resets
  * to 0 and grows `hp` + `hpMax` via `applyHeartReward`. Duplicated here
  * so `applyReward` can call it without importing from gameStore.ts
  * (which would introduce a circular import through the store slice
  * graph).
  */
-function addHeartPieceToPlayer(player: KidPlayer): KidPlayer {
+function addEmberShardToPlayer(player: KidPlayer): KidPlayer {
   const next = player.heartPieces + 1;
   if (next >= HEART_PIECES_PER_CONTAINER) {
     const grown = applyHeartReward(player, 1);
@@ -107,7 +107,7 @@ function pickLegendary(): Card {
  * Pure at the data boundary — returns the canonical template Card;
  * `equipAsItem` downstream mints a unique copy via its own suffixing.
  */
-function pickFairyVariant(rng: () => number): Card {
+function pickWispVariant(rng: () => number): Card {
   const useBottle = rng() < 0.5;
   const templateId = useBottle ? 'wisp-in-bottle' : 'wisp';
   const template = KID_CARDS.find((c) => c.id === templateId);
@@ -196,7 +196,7 @@ export function applyReward(
       // `wisp-in-bottle` reusable-once-per-combat variant. Both slot
       // into the active player's items; cap overflow falls back to
       // discard via equipAsItem so the wisp is never lost silently.
-      const wisp = pickFairyVariant(rng);
+      const wisp = pickWispVariant(rng);
       const outcome = equipAsItem(player, wisp);
       return { player: outcome.owner, card: wisp };
     }
@@ -204,7 +204,7 @@ export function applyReward(
       // gm0.16: accumulator path. Not a card — increments the player's
       // `heartPieces` counter. On the 4th piece this auto-promotes to
       // a vital ember (+1 hpMax + full heal) and resets the counter.
-      return { player: addHeartPieceToPlayer(player), card: null };
+      return { player: addEmberShardToPlayer(player), card: null };
     }
     case 'vital-ember': {
       // gm0.16: direct vital-ember drop. Bypasses the piece

@@ -133,21 +133,21 @@ export interface KidPlayer {
    * Ember-shard meter accumulator (v2.1 gm0.17). 0..2 invariant — counts
    * grunt-tier monster defeats toward the next ember shard. Every 3rd
    * grunt kill (meter transitions 2 → 0 AND bumps `heartPieces` by 1 via
-   * `addHeartPiece`) promotes a piece. Resets to 0 on promotion. Not
+   * `addEmberShard`) promotes a piece. Resets to 0 on promotion. Not
    * consumed by tough-tier kills (those grant a piece directly) or
    * slot-boss defeats (those grant a full vital ember via
    * `applyHeartReward`). See `GRUNT_HEART_METER_IDS` in
    * `src/data/cards.ts` for the grunt-tier allowlist.
    */
-  readonly heartPieceMeter: number;
+  readonly emberShardMeter: number;
   /**
    * Ids of wisp-in-bottle copies that have ALREADY been consumed this
-   * combat (v2.1 gm0.16). `playFairyOn` re-equips a wisp-in-bottle on
+   * combat (v2.1 gm0.16). `playWispOn` re-equips a wisp-in-bottle on
    * first revive, then records its id here so a second revive in the
    * same combat does NOT re-equip (one bottle, one refill per combat).
    * Reset to `[]` at every `COMBAT_ENTER` dispatch.
    */
-  readonly usedFairyInBottleIds: readonly string[];
+  readonly usedWispInBottleIds: readonly string[];
   /**
    * Permanent banish pile for deck-thinning (embertide-91p framework).
    * Cards moved here via `banishFromHand` / `banishFromDiscard` leave the
@@ -182,7 +182,7 @@ export interface KidPlayer {
  *  - power:   defeat Cagewright Vurmox (u-6c)
  * Never granted by beasts, chests, market, or Wild Bosses.
  */
-export interface SharedTriforce {
+export interface SharedEmbertide {
   readonly wisdom: boolean;
   readonly courage: boolean;
   readonly power: boolean;
@@ -199,7 +199,7 @@ export interface SharedTriforce {
  *  - `freed`: true once the Princess has been freed by a Strike at
  *    charges === 0. Freed is a terminal state — further Strikes are
  *    no-ops. When freed flips from false → true:
- *      (a) `sharedTriforce.wisdom` is set to true (shared pool, NOT
+ *      (a) `sharedEmbertide.wisdom` is set to true (shared pool, NOT
  *          granted to the striker specifically)
  *      (b) both players gain `wisdomsLight: true` (shared buff)
  */
@@ -319,7 +319,7 @@ export interface KidGameState {
    * Shared co-op shard pool (amendment A2). Both players win together
    * when all three flags are true.
    */
-  readonly sharedTriforce: SharedTriforce;
+  readonly sharedEmbertide: SharedEmbertide;
   /**
    * Terminal outcome (amendment A1/A3). `null` during play.
    */
@@ -514,7 +514,7 @@ export interface KidGameState {
    * End-phase — that's fine because the End-phase scan re-derives the
    * set from `state.field` every tick.
    */
-  readonly skullfishFieldWatchlist: readonly string[];
+  readonly fangfishFieldWatchlist: readonly string[];
   /**
    * Cumulative run-total of center-row monster kills (embertide-044).
    * Increments on every regular-monster kill resolved through
@@ -522,7 +522,7 @@ export interface KidGameState {
    * through `COMBAT_RESOLVE_WIN`. Region-boss wins and always-available
    * (Wild Wolf) kills do NOT increment.
    *
-   * Feeds `computeGoldenRainbowLynelSpawnChance` in src/rules/zones.ts,
+   * Feeds `computePrismChimeraSpawnChance` in src/rules/zones.ts,
    * which drives the one-shot Rainbow spawn roll fired at Silver Chimera's
    * defeat transaction. Never decremented; reset only at `initGame`.
    */
@@ -539,7 +539,7 @@ export interface KidGameState {
    * Chimera's defeat; a failed roll means Rainbow never spawns this run
    * (matches the 85% cap's intent — ~15% of runs see no Rainbow).
    */
-  readonly goldenRainbowLynelSpawned: boolean;
+  readonly prismChimeraSpawned: boolean;
   /**
    * Per-card banish choice surface (embertide-91p, commit b). When a
    * card whose `effects.kind === 'banish-from-hand'` resolves on play and

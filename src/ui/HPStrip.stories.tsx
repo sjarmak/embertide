@@ -57,8 +57,8 @@ function makePlayer(overrides: Partial<KidPlayer> = {}): KidPlayer {
     usedKeyVendorThisTurn: false,
     wisdomsLight: false,
     heartPieces: 0,
-    heartPieceMeter: 0,
-    usedFairyInBottleIds: [],
+    emberShardMeter: 0,
+    usedWispInBottleIds: [],
     banished: [],
 
     nextChestItemRevealed: false,

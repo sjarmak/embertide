@@ -90,7 +90,7 @@ const craghornTusk: Card = {
 // fourth behaviour surface (effects + EXPLICIT_OVERRIDES +
 // applyHeirloomOnEquip + Card.passive) — accepted on this one card per
 // the ruling; broader consolidation deferred to a post-ppf9 epic.
-const stoneTalusCore: Card = {
+const boulderkinCore: Card = {
   id: 'boulderkin-core',
   role: 'item',
   cost: { green: 0 },
@@ -110,7 +110,7 @@ const stoneTalusCore: Card = {
   cardType: 'tech',
 };
 
-const guardianEye: Card = {
+const sentinelEye: Card = {
   id: 'sentinel-eye',
   role: 'item',
   cost: { green: 0 },
@@ -142,7 +142,7 @@ const guardianEye: Card = {
 // (embertide-ydc, 2026-04-24) — tarnished silver-blue Ancient Sword with a
 // rainbow-prismatic chromatic coat, echoing the Prism Chimera's aura.
 // Replaces the earlier rainbow-prism placeholder (kept on disk for rollback).
-const rainbowAncientLynelSword: Card = {
+const rainbowAncientChimeraSword: Card = {
   id: 'rainbow-ancient-chimera-sword',
   role: 'item',
   cost: { green: 0 },
@@ -170,7 +170,7 @@ const rainbowAncientLynelSword: Card = {
 // reward). Silver Chimera is the last
 // core wild boss before the Temple region boss (Vurmox) — a meaningful
 // end-of-core-game weapon feels right for the encounter's difficulty.
-const lynelSword: Card = {
+const chimeraSword: Card = {
   id: 'chimera-sword',
   role: 'item',
   cost: { green: 0 },
@@ -195,10 +195,10 @@ const lynelSword: Card = {
  */
 export const heirlooms: readonly Card[] = [
   craghornTusk,
-  stoneTalusCore,
-  guardianEye,
-  lynelSword,
-  rainbowAncientLynelSword,
+  boulderkinCore,
+  sentinelEye,
+  chimeraSword,
+  rainbowAncientChimeraSword,
 ];
 
 /**

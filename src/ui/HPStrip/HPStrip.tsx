@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties, JSX } from 'react';
 import type { KidPlayer, Phase } from '../../store/types';
 import { HeartSocketsRow } from './HeartSockets';
-import { HeartPieceStack } from './HeartPieceStack';
+import { EmberShardStack } from './EmberShardStack';
 import { ReviveButton } from './ReviveButton';
 
 export interface HPStripProps {
@@ -167,10 +167,10 @@ export default function HPStrip({
           parchment sub-pane. Always visible so the empty structure
           signals the progression goal; hidden only at the transient
           heartPieces=4 state. */}
-      <HeartPieceStack
+      <EmberShardStack
         playerId={player.id}
         heartPieces={player.heartPieces}
-        heartPieceMeter={player.heartPieceMeter}
+        emberShardMeter={player.emberShardMeter}
       />
       {showReviveButton && onRevive ? (
         <ReviveButton

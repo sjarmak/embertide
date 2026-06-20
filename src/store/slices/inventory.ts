@@ -53,7 +53,7 @@ export function routesToItemsZone(card: Card): boolean {
 /**
  * Mint a copy of `item` whose `id` is unique within `existingIds`. When the
  * input id is already taken, append a `-<n>` suffix and set `baseId` to
- * the original id (mirrors `expandTemplate` / `mintFreshFairy` patterns).
+ * the original id (mirrors `expandTemplate` / `mintFreshWisp` patterns).
  * When the input id is fresh, return the input untouched. Pure.
  *
  * embertide-i2xe (2026-04-25): chest mints (item / premium-item /

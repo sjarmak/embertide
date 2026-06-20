@@ -16,14 +16,14 @@ import {
   COLOSSEUM_OBLIVAR_T4,
   COLOSSEUM_PYRAX_T4,
   COLOSSEUM_OSSIARCH_T4,
-  COLOSSEUM_THE_IMPRISONED_T4,
+  COLOSSEUM_THE_FETTERED_T4,
   TIER_4_ROSTER,
 } from './tier4';
 import type { BossStateTagKind } from '../../types/combat';
 
 const EXPECTED_ORDER = [
   { spec: COLOSSEUM_OSSIARCH_T4, sourceCardId: 'ossiarch' },
-  { spec: COLOSSEUM_THE_IMPRISONED_T4, sourceCardId: 'the-fettered' },
+  { spec: COLOSSEUM_THE_FETTERED_T4, sourceCardId: 'the-fettered' },
   { spec: COLOSSEUM_PYRAX_T4, sourceCardId: 'pyrax' },
   { spec: COLOSSEUM_OBLIVAR_T4, sourceCardId: 'oblivar' },
 ] as const;
@@ -68,11 +68,11 @@ describe('colosseum tier-4 spec — roster shape (embertide-wacl + bngt)', () =>
     expect(layerSum).toBe(COLOSSEUM_OSSIARCH_T4.hpMax);
   });
 
-  it('The Imprisoned is Sequence archetype with 3-step toe cycle (one longer than Phantom Vurmox T2)', () => {
-    expect(COLOSSEUM_THE_IMPRISONED_T4.archetype).toBe('sequence');
-    expect(tagKinds(COLOSSEUM_THE_IMPRISONED_T4)).toEqual(['sequence']);
+  it('The Fettered is Sequence archetype with 3-step toe cycle (one longer than Phantom Vurmox T2)', () => {
+    expect(COLOSSEUM_THE_FETTERED_T4.archetype).toBe('sequence');
+    expect(tagKinds(COLOSSEUM_THE_FETTERED_T4)).toEqual(['sequence']);
 
-    const sequenceTag = COLOSSEUM_THE_IMPRISONED_T4.stateTags?.[0];
+    const sequenceTag = COLOSSEUM_THE_FETTERED_T4.stateTags?.[0];
     if (sequenceTag?.kind !== 'sequence') throw new Error('expected sequence tag');
     expect(sequenceTag.steps).toEqual(['toe-charge', 'toe-strike', 'lap-up']);
     expect(sequenceTag.currentIndex).toBe(0);

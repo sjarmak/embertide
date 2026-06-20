@@ -63,7 +63,7 @@ export const bonereaver: Card = {
  * Chimera — Tier-2 Duel archetype. Art pending (distinct from silver-chimera /
  * prism-chimera which are zone bosses in gildedCage.ts).
  */
-export const lynelColosseum: Card = {
+export const chimeraColosseum: Card = {
   id: 'chimera',
   role: 'mini-boss',
   cost: { red: 16, keys: 1 },
@@ -93,7 +93,7 @@ export const cinderwyrm: Card = {
 /**
  * Phantom Vurmox — Tier-2 Sequence archetype. Art pending.
  */
-export const phantomGanon: Card = {
+export const phantomVurmox: Card = {
   id: 'phantom-vurmox',
   role: 'mini-boss',
   cost: { red: 16, keys: 1 },
@@ -101,9 +101,9 @@ export const phantomGanon: Card = {
 };
 
 /**
- * Dead Hand — Tier-2 Swarm archetype. Art pending.
+ * Palegrasp — Tier-2 Swarm archetype. Art pending.
  */
-export const deadHand: Card = {
+export const palegrasp: Card = {
   id: 'palegrasp',
   role: 'mini-boss',
   cost: { red: 16, keys: 1 },
@@ -115,10 +115,10 @@ export const deadHand: Card = {
 // ---------------------------------------------------------------------------
 
 /**
- * Helmaroc King — Tier-3 Layered archetype (Iron Mask → Bare Head).
+ * Skrall King — Tier-3 Layered archetype (Iron Mask → Bare Head).
  * Art pending.
  */
-export const helmarocKing: Card = {
+export const skrallKing: Card = {
   id: 'skrall-king',
   role: 'mini-boss',
   cost: { red: 20, keys: 1 },
@@ -137,10 +137,10 @@ export const voltwyrm: Card = {
 };
 
 /**
- * Kalle Demos — Tier-3 Item-Check archetype (bomb-tag guard, same as
+ * Vinemaw — Tier-3 Item-Check archetype (bomb-tag guard, same as
  * Cinderwyrm T2). Art pending.
  */
-export const kalleDemos: Card = {
+export const vinemaw: Card = {
   id: 'vinemaw',
   role: 'mini-boss',
   cost: { red: 20, keys: 1 },
@@ -185,10 +185,10 @@ export const ossiarch: Card = {
 };
 
 /**
- * The Imprisoned — Tier-4 Sequence archetype (toe-charge → toe-strike →
+ * The Fettered — Tier-4 Sequence archetype (toe-charge → toe-strike →
  * lap-up). Art pending.
  */
-export const theImprisoned: Card = {
+export const theFettered: Card = {
   id: 'the-fettered',
   role: 'mini-boss',
   cost: { red: 25, keys: 2 },
@@ -238,7 +238,7 @@ export const oblivar: Card = {
  * Art: APPROVED 2026-05-02 — cathedral_monster_aurogax
  * raster + JSON spec already shipped (see bd 4hr1 notes).
  */
-export const trinityGleeok: Card = {
+export const trinityAurogax: Card = {
   id: 'trinity-aurogax',
   role: 'mini-boss',
   cost: { red: 30, keys: 2 },
@@ -260,22 +260,22 @@ export const colosseumCards: readonly Card[] = [
   coilworm,
   bonereaver,
   // Tier 2
-  lynelColosseum,
+  chimeraColosseum,
   blackguard,
   cinderwyrm,
-  phantomGanon,
-  deadHand,
+  phantomVurmox,
+  palegrasp,
   // Tier 3
-  helmarocKing,
+  skrallKing,
   voltwyrm,
-  kalleDemos,
+  vinemaw,
   sandscourge,
   idolarch,
   // Tier 4
   ossiarch,
-  theImprisoned,
+  theFettered,
   pyrax,
   oblivar,
   // Tier 5
-  trinityGleeok,
+  trinityAurogax,
 ];

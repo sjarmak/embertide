@@ -89,7 +89,7 @@ const scholarsTome: Card = {
   cardType: 'engine',
 };
 
-const kokiriTalisman: Card = {
+const sylvaniTalisman: Card = {
   id: 'sylvani-talisman',
   role: 'item',
   cost: { green: 4 },
@@ -201,7 +201,7 @@ export const itemPassiveConstructs: readonly Card[] = [
   wellOfVitality,
   merchantsCharm,
   scholarsTome,
-  kokiriTalisman,
+  sylvaniTalisman,
   ironWard,
 ];
 

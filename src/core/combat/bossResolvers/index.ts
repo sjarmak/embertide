@@ -20,13 +20,13 @@
 
 import type { BossAttackResolverId } from '../../../types/combat';
 import type { BossResolver } from './types';
-import { morphaTentacleGrabResolver } from './tidewraith';
-import { bongoBongoDrumResolver } from './knell';
-import { twinrovaFireIceResolver } from './hextwins';
-import { ironKnuckleStaggerResolver } from './ironSentinel';
-import { gloomLinkMirrorResolver } from './hollowEffigy';
-import { phantomGanonVolleyResolver } from './phantomGanon';
-import { trinityGleeokHeadsResolver } from './trinityGleeok';
+import { tidewraithTentacleGrabResolver } from './tidewraith';
+import { knellDrumResolver } from './knell';
+import { hextwinsFireIceResolver } from './hextwins';
+import { ironSentinelStaggerResolver } from './ironSentinel';
+import { hollowEffigyMirrorResolver } from './hollowEffigy';
+import { phantomVurmoxVolleyResolver } from './phantomVurmox';
+import { trinityAurogaxHeadsResolver } from './trinityAurogax';
 
 /**
  * Dispatch table — adding a new id to `BossAttackResolverId` without
@@ -36,13 +36,13 @@ import { trinityGleeokHeadsResolver } from './trinityGleeok';
  * `bossAttackResolver` to `undefined` (i.e., legacy static-dpt path).
  */
 export const BOSS_ATTACK_RESOLVERS = {
-  'tidewraith-tentacle-grab': morphaTentacleGrabResolver,
-  'knell-drum': bongoBongoDrumResolver,
-  'hextwins-fire-ice': twinrovaFireIceResolver,
-  'iron-sentinel-stagger': ironKnuckleStaggerResolver,
-  'hollow-effigy-mirror': gloomLinkMirrorResolver,
-  'phantom-vurmox-volley': phantomGanonVolleyResolver,
-  'trinity-aurogax-heads': trinityGleeokHeadsResolver,
+  'tidewraith-tentacle-grab': tidewraithTentacleGrabResolver,
+  'knell-drum': knellDrumResolver,
+  'hextwins-fire-ice': hextwinsFireIceResolver,
+  'iron-sentinel-stagger': ironSentinelStaggerResolver,
+  'hollow-effigy-mirror': hollowEffigyMirrorResolver,
+  'phantom-vurmox-volley': phantomVurmoxVolleyResolver,
+  'trinity-aurogax-heads': trinityAurogaxHeadsResolver,
 } as const satisfies Record<BossAttackResolverId, BossResolver>;
 
 export type { BossResolveOutcome, BossResolver } from './types';
@@ -50,7 +50,7 @@ export {
   TIDEWRAITH_TENTACLE_GRAB_BASE_DPT,
   TIDEWRAITH_TENTACLE_GRAB_MAX_DPT,
   TIDEWRAITH_TENTACLE_GRAB_HIGH_TIDE_THRESHOLD,
-  morphaTentacleGrabDpt,
+  tidewraithTentacleGrabDpt,
   TIDEWRAITH_LOG_TELEGRAPH_PREFIX,
   TIDEWRAITH_LOG_WILL_HIT,
   TIDEWRAITH_LOG_TENTACLES_DRAG,
@@ -72,7 +72,7 @@ export {
   PHANTOM_VURMOX_VOLLEY_FIRE_BONUS,
   PHANTOM_VURMOX_LOG_CHARGE,
   PHANTOM_VURMOX_LOG_VOLLEY,
-} from './phantomGanon';
+} from './phantomVurmox';
 export { KNELL_LOG_TELEGRAPH, KNELL_LOG_SLAM } from './knell';
 export { HEXTWINS_LOG_FIRE_HITS, HEXTWINS_LOG_ICE_FREEZES } from './hextwins';
 export {
@@ -80,4 +80,4 @@ export {
   TRINITY_AUROGAX_LOG_UMBRA,
   TRINITY_AUROGAX_LOG_ANCIENT,
   TRINITY_AUROGAX_LOG_AUREN,
-} from './trinityGleeok';
+} from './trinityAurogax';

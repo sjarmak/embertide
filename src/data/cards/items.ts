@@ -160,7 +160,7 @@ export const items: readonly Card[] = [
     effects: { kind: 'equip-bonus', resource: 'power', amount: 2, trigger: 'on-equip' },
     // lhlo.20 (kw.item-check-card-tags): tag required by the Item-Check
     // archetype resolver so Cinderwyrm (COLOSSEUM_CINDERWYRM_T2), Ashen Tyrant,
-    // and Kalle Demos T3 can be unguarded at runtime. The resolver reads
+    // and Vinemaw T3 can be unguarded at runtime. The resolver reads
     // card.tags and flips guarded{until:'item-tag-bomb'} → exposed when this
     // card is played in combat.
     tags: ['item-tag-bomb'],
@@ -251,11 +251,11 @@ export const items: readonly Card[] = [
 ];
 
 // Wisp (u-1d amendment A6, u-2d): full-revive item-active played on a
-// downed teammate via the store action `playFairyOn`. Held in its own
+// downed teammate via the store action `playWispOn`. Held in its own
 // singleton so it stays OUT of SUPPLY_PLAN — fairies are never buyable in
 // the market. Acquisition paths are chest loot (u-2b: 5% in chest-std,
 // 15% in chest-boss) and guaranteed wild-boss drops (u-6a/b/c). The
-// mechanic is still dispatched by `playFairyOn` (keying on baseId
+// mechanic is still dispatched by `playWispOn` (keying on baseId
 // 'wisp'), not by the effectText switch — same pattern as mystic /
 // militia-grunt / wild-wolf. The card-face rules-text is rendered by
 // effectTextFor's baseId branch ("Revive teammate to full HP") because
@@ -265,7 +265,7 @@ export const items: readonly Card[] = [
 // REQ-13 Phase 2c (gm0.3): the EffectSpec migrates from the inert
 // `gain` placeholder to `{ kind: 'heal', target: 'team', amount: 0 }`,
 // making the on-play intent legible at the type level. `amount: 0` is
-// a sentinel — the dispatcher (`playFairyOn`) ignores the authored
+// a sentinel — the dispatcher (`playWispOn`) ignores the authored
 // amount and substitutes `target.hpMax`, but the type-level shape now
 // declares "this card heals a teammate" rather than pretending to be
 // a no-op resource gain.
@@ -287,7 +287,7 @@ export const wisp: Card = {
 
 // Great Wisp (v2.1 gm0.16): enhanced wisp variant. Acquired ONLY from
 // chest premium-item / boss-chest drops. Same consume-on-downed revive
-// contract as plain wisp (`playFairyOn` in gameStore.ts accepts any of
+// contract as plain wisp (`playWispOn` in gameStore.ts accepts any of
 // the three wisp baseIds: 'wisp' | 'great-wisp' | 'wisp-in-bottle'),
 // but the in-combat effect is a stronger heal (combat-heal amount:5 vs
 // plain wisp's amount:3 — see EXPLICIT_OVERRIDES in combatEffects.ts).
@@ -296,12 +296,12 @@ export const wisp: Card = {
 // ppf9.2 (2026-04-29): EffectSpec migrated from the inert `gain`
 // placeholder to `{ kind: 'heal', target: 'team', amount: 0 }`, mirroring
 // the plain wisp shape. `amount: 0` is a sentinel — the dispatcher
-// (`playFairyOn`) substitutes `target.hpMax` at use time. The shape now
+// (`playWispOn`) substitutes `target.hpMax` at use time. The shape now
 // declares "this card heals a teammate" at the type level rather than
 // pretending to be a no-op resource gain. `applyHeirloomOnEquip` and
 // `applyEquipBonusOnEquip` both short-circuit on non-matching effect
 // kinds, so the on-equip path is unchanged.
-export const greatFairy: Card = {
+export const greatWisp: Card = {
   id: 'great-wisp',
   role: 'item',
   cost: { green: 0 },
@@ -315,17 +315,17 @@ export const greatFairy: Card = {
 
 // Wisp in Bottle (v2.1 gm0.16): reusable-once-per-combat wisp variant.
 // Acquired from the wisp-reward chest roll (50/50 split with plain
-// wisp — see `pickFairyVariant` in slices/chests.ts). On revive the
-// bottle is CONSUMED, but `playFairyOn` re-equips it into the owner's
+// wisp — see `pickWispVariant` in slices/chests.ts). On revive the
+// bottle is CONSUMED, but `playWispOn` re-equips it into the owner's
 // items zone so it can fuel ONE more revive in the same combat — the
-// per-player `usedFairyInBottleIds` set blocks a second refill of the
+// per-player `usedWispInBottleIds` set blocks a second refill of the
 // same bottle within the same combat (reset at COMBAT_ENTER). Combat
 // effect is combat-heal amount:3 (same as plain wisp).
 //
 // ppf9.2 (2026-04-29): EffectSpec migrated from `gain` placeholder to
 // `{ kind: 'heal', target: 'team', amount: 0 }` — same migration
 // rationale as great-wisp above.
-export const fairyInBottle: Card = {
+export const wispInBottle: Card = {
   id: 'wisp-in-bottle',
   role: 'item',
   cost: { green: 0 },

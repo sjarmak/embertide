@@ -36,7 +36,7 @@ function renderTray(o: RenderOverrides = {}) {
 }
 
 describe('PlayerTray', () => {
-  it('renders the combat resource counter with a Sword icon (not a RedRupee diamond)', () => {
+  it('renders the combat resource counter with a Sword icon (not a RedShard diamond)', () => {
     renderTray({ player: { id: 'p0', red: 5 } });
 
     const counter = screen.getByTestId('tray-red-p0');
@@ -46,8 +46,8 @@ describe('PlayerTray', () => {
     expect(counterRoot).not.toBeNull();
     const swordSvg = counterRoot?.querySelector('svg[aria-label="sword"]');
     expect(swordSvg).not.toBeNull();
-    const redRupeeSvg = counterRoot?.querySelector('svg[aria-label="red-shard"]');
-    expect(redRupeeSvg).toBeNull();
+    const redShardSvg = counterRoot?.querySelector('svg[aria-label="red-shard"]');
+    expect(redShardSvg).toBeNull();
   });
 
   it('mounts an HPStrip keyed to the player id', () => {

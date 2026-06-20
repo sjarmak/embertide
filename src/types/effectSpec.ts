@@ -30,7 +30,7 @@ export interface GainEffect {
  * `shard`: starter resource template (starter-green-shard / starter-red-shard).
  * Exactly one of green/red is set per template.
  */
-export interface RupeeEffect {
+export interface ShardEffect {
   readonly kind: 'shard';
   readonly green?: number;
   readonly red?: number;
@@ -121,14 +121,14 @@ export interface MonsterDropEffect {
  *  - `target`: which player(s) receive the heal:
  *      - 'self'   — the card's owner only.
  *      - 'team'   — a chosen teammate (wisp-revive shape; the picker
- *                   UI lives in `playFairyOn` for the v2.0/v2.1 wisp
+ *                   UI lives in `playWispOn` for the v2.0/v2.1 wisp
  *                   variants and stays untouched by this schema landing).
  *      - 'active' — whichever player is currently the active player at
  *                   dispatch time (used by Seer's Omen heal faces where
  *                   the active player rolled the dice).
  *
  * Schema-only landing (gm0.3): the existing wisp revive dispatcher in
- * `playFairyOn` (src/store/gameStore.ts) keys on `baseIdOf(card) ===
+ * `playWispOn` (src/store/gameStore.ts) keys on `baseIdOf(card) ===
  * 'wisp'` and continues to set `target.hp = target.hpMax`; migrating
  * wisp's main-board EffectSpec from the inert `gain` placeholder to
  * `heal` makes the on-play intent legible at the type level without
@@ -399,7 +399,7 @@ export interface EquipBonusEffect {
  *
  * Mechanical contract:
  *  - `shards`: non-empty list of embertide shard ids granted on the
- *    declared trigger. Order doesn't matter (the shared `sharedTriforce`
+ *    declared trigger. Order doesn't matter (the shared `sharedEmbertide`
  *    setter is idempotent), but authoring should keep entries unique to
  *    avoid an obviously-wrong duplicate flip.
  *  - The reducer hooks that fire the grant on play (or on the
@@ -426,7 +426,7 @@ export interface ShardGrantEffect {
  */
 export type EffectSpec =
   | GainEffect
-  | RupeeEffect
+  | ShardEffect
   | DrawEffect
   | CombatBonusEffect
   | DamageReductionEffect

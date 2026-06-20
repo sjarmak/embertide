@@ -13,9 +13,9 @@ import { KID_CARDS } from '../data/cards';
  *  (c) reviveTeammate throws when the target is not downed
  *  (d) revivedThisIncident resets on the NEXT time that player becomes
  *      downed (a new incident, not the same one)
- *  (e) playFairyOn consumes a wisp from the active player's items zone
+ *  (e) playWispOn consumes a wisp from the active player's items zone
  *      and restores the target to hpMax
- *  (f) playFairyOn is a no-op (card NOT consumed) when the target is
+ *  (f) playWispOn is a no-op (card NOT consumed) when the target is
  *      not downed
  *  (g) both revive paths are gated on state.outcome (no-op when the game
  *      has already ended)
@@ -110,7 +110,7 @@ describe('reviveTeammate (amendment A3)', () => {
   });
 });
 
-describe('playFairyOn (amendment A6)', () => {
+describe('playWispOn (amendment A6)', () => {
   it('(e) consumes a wisp from the items zone and restores the target to hpMax', () => {
     const store = freshStore();
     store.setState((s) => {
@@ -120,7 +120,7 @@ describe('playFairyOn (amendment A6)', () => {
       players[1] = { ...players[1], hp: 0, downed: true, hpMax: 5 };
       return { ...s, players };
     });
-    store.getState().playFairyOn('p1');
+    store.getState().playWispOn('p1');
 
     const after = store.getState();
     expect(after.players[1].hp).toBe(5);
@@ -139,7 +139,7 @@ describe('playFairyOn (amendment A6)', () => {
       // p1 at full HP, not downed.
       return { ...s, players };
     });
-    store.getState().playFairyOn('p1');
+    store.getState().playWispOn('p1');
 
     const after = store.getState();
     // Wisp still in the items zone.
@@ -157,7 +157,7 @@ describe('playFairyOn (amendment A6)', () => {
       players[1] = { ...players[1], hp: 0, downed: true };
       return { ...s, players };
     });
-    expect(() => store.getState().playFairyOn('p1')).toThrow(/no wisp to play/i);
+    expect(() => store.getState().playWispOn('p1')).toThrow(/no wisp to play/i);
   });
 
   it('throws on unknown playerId', () => {
@@ -167,7 +167,7 @@ describe('playFairyOn (amendment A6)', () => {
       players[0] = { ...players[0], items: [WISP] };
       return { ...s, players };
     });
-    expect(() => store.getState().playFairyOn('p99')).toThrow(/unknown playerId/i);
+    expect(() => store.getState().playWispOn('p99')).toThrow(/unknown playerId/i);
   });
 
   it('restores to the actual hpMax (not a hard-coded 5) — honors variable hpMax', () => {
@@ -178,7 +178,7 @@ describe('playFairyOn (amendment A6)', () => {
       players[1] = { ...players[1], hp: 0, hpMax: 8, downed: true };
       return { ...s, players };
     });
-    store.getState().playFairyOn('p1');
+    store.getState().playWispOn('p1');
     expect(store.getState().players[1].hp).toBe(8);
   });
 });
@@ -197,7 +197,7 @@ describe('(g) revive paths respect terminal outcome', () => {
     expect(store.getState().players[1].hp).toBe(0);
   });
 
-  it('playFairyOn is a no-op when outcome is set', () => {
+  it('playWispOn is a no-op when outcome is set', () => {
     const store = freshStore();
     store.setState((s) => {
       const players = s.players.slice();
@@ -205,7 +205,7 @@ describe('(g) revive paths respect terminal outcome', () => {
       players[1] = { ...players[1], hp: 0, downed: true };
       return { ...s, players, outcome: 'loss' };
     });
-    store.getState().playFairyOn('p1');
+    store.getState().playWispOn('p1');
     // Wisp NOT consumed; target NOT revived.
     expect(store.getState().players[0].items.some((c) => c.id === 'wisp')).toBe(true);
     expect(store.getState().players[1].downed).toBe(true);
@@ -222,7 +222,7 @@ if (!GREAT_WISP) throw new Error('great-wisp card fixture missing');
 const WISP_IN_BOTTLE = KID_CARDS.find((c) => c.id === 'wisp-in-bottle');
 if (!WISP_IN_BOTTLE) throw new Error('wisp-in-bottle card fixture missing');
 
-describe('playFairyOn — great-wisp revive (v2.1 gm0.16)', () => {
+describe('playWispOn — great-wisp revive (v2.1 gm0.16)', () => {
   it('consumes a great-wisp and restores the downed teammate to hpMax', () => {
     const store = freshStore();
     store.setState((s) => {
@@ -231,7 +231,7 @@ describe('playFairyOn — great-wisp revive (v2.1 gm0.16)', () => {
       players[1] = { ...players[1], hp: 0, downed: true, hpMax: 5 };
       return { ...s, players };
     });
-    store.getState().playFairyOn('p1');
+    store.getState().playWispOn('p1');
     const after = store.getState();
     expect(after.players[1].hp).toBe(5);
     expect(after.players[1].downed).toBe(false);
@@ -241,7 +241,7 @@ describe('playFairyOn — great-wisp revive (v2.1 gm0.16)', () => {
   });
 });
 
-describe('playFairyOn — wisp-in-bottle reusability (v2.1 gm0.16)', () => {
+describe('playWispOn — wisp-in-bottle reusability (v2.1 gm0.16)', () => {
   it('on first revive: consumes and RE-EQUIPS the bottle into the owner items zone', () => {
     const store = freshStore();
     store.setState((s) => {
@@ -250,14 +250,14 @@ describe('playFairyOn — wisp-in-bottle reusability (v2.1 gm0.16)', () => {
       players[1] = { ...players[1], hp: 0, downed: true, hpMax: 5 };
       return { ...s, players };
     });
-    store.getState().playFairyOn('p1');
+    store.getState().playWispOn('p1');
     const after = store.getState();
     expect(after.players[1].hp).toBe(5);
     expect(after.players[1].downed).toBe(false);
     // Bottle re-equipped — still in items zone.
     expect(after.players[0].items.some((c) => c.id === 'wisp-in-bottle')).toBe(true);
     // Bottle id recorded in the used list.
-    expect(after.players[0].usedFairyInBottleIds).toContain(WISP_IN_BOTTLE.id);
+    expect(after.players[0].usedWispInBottleIds).toContain(WISP_IN_BOTTLE.id);
   });
 
   it('second revive using the SAME bottle in the SAME combat does NOT re-equip (bottle spent)', () => {
@@ -269,7 +269,7 @@ describe('playFairyOn — wisp-in-bottle reusability (v2.1 gm0.16)', () => {
       return { ...s, players };
     });
     // First revive refills the bottle.
-    store.getState().playFairyOn('p1');
+    store.getState().playWispOn('p1');
     // Down p1 again.
     store.setState((s) => {
       const players = s.players.slice();
@@ -277,7 +277,7 @@ describe('playFairyOn — wisp-in-bottle reusability (v2.1 gm0.16)', () => {
       return { ...s, players };
     });
     // Second revive should consume WITHOUT refilling.
-    store.getState().playFairyOn('p1');
+    store.getState().playWispOn('p1');
     const after = store.getState();
     expect(after.players[1].hp).toBe(5);
     expect(after.players[1].downed).toBe(false);
@@ -293,13 +293,13 @@ describe('playFairyOn — wisp-in-bottle reusability (v2.1 gm0.16)', () => {
       players[1] = { ...players[1], hp: 0, downed: true, hpMax: 5 };
       return { ...s, players };
     });
-    store.getState().playFairyOn('p1');
+    store.getState().playWispOn('p1');
     const after = store.getState();
     // Plain wisp consumed (gone). Bottle untouched.
     expect(after.players[0].items.some((c) => c.id === 'wisp')).toBe(false);
     expect(after.players[0].items.some((c) => c.id === 'wisp-in-bottle')).toBe(true);
     // Bottle was never used, so no id in the used list.
-    expect(after.players[0].usedFairyInBottleIds).toHaveLength(0);
+    expect(after.players[0].usedWispInBottleIds).toHaveLength(0);
   });
 });
 

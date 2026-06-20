@@ -15,7 +15,7 @@ import type { CombatBoss } from '../../../types/combat';
 
 /**
  * @internal — shared between sibling per-consumer resolvers in this
- * directory (`phantomGanon.ts`, `trinityGleeok.ts`). Not re-exported
+ * directory (`phantomVurmox.ts`, `trinityAurogax.ts`). Not re-exported
  * from `bossResolvers/index.ts`; reach for it from a sibling file
  * only.
  */

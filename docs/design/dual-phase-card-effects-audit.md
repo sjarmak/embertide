@@ -15,7 +15,7 @@ Today the game has a clean **combat** layer (every card resolves to a `CombatEff
 
 - **Heroes** are the high-water mark — every hero has a real main-phase effect (gain, draw, conditional-heart, per-kill, play-extra) AND a unique combat effect.
 - **Items** are the gap — all 10 supply items declare `combat-bonus` / `damage-reduction` as their `effects.kind`, but the store never dispatches those kinds. Items go directly into the Items zone with no main-phase fire; their combat behaviour is sourced separately from `EXPLICIT_OVERRIDES` in `src/data/combatEffects.ts`.
-- **Drop-only items** (fairies, heirlooms, freed-princess) declare `effects: { kind: 'gain' }` (a no-op shim) and rely entirely on out-of-band reducers (`playFairyOn`, `combatEffectFor`) for their behaviour.
+- **Drop-only items** (fairies, heirlooms, freed-princess) declare `effects: { kind: 'gain' }` (a no-op shim) and rely entirely on out-of-band reducers (`playWispOn`, `combatEffectFor`) for their behaviour.
 - **Always-available heroes** are dual-phase complete (mystic, militia-grunt).
 - **Champion-signature cards** (spirit-arrow, seer-rune, warblade, ancient-keepsake) have full main-phase effects but fall back to the **default 1-damage combat-attack** because they are no longer in any deck (post-8bh) — handled by embertide-j49z follow-up.
 
@@ -56,9 +56,9 @@ Cost notation: `g` = green, `r` = red, `k` = keys.
 
 | Card | Source | Main-phase effect (declared) | Main-phase mechanic (out-of-band) | Combat effect | Dual-phase? |
 |---|---|---|---|---|---|
-| wisp | chest / wild-boss drop | gain (no-op) | `playFairyOn` revives a downed teammate | combat-heal 3 | ✅ via dedicated reducer |
-| great-wisp | chest premium | gain (no-op) | `playFairyOn` (same) | combat-heal 5 | ✅ |
-| wisp-in-bottle | wisp-reward chest | gain (no-op) | `playFairyOn` + reusable-once-per-combat | combat-heal 3 | ✅ |
+| wisp | chest / wild-boss drop | gain (no-op) | `playWispOn` revives a downed teammate | combat-heal 3 | ✅ via dedicated reducer |
+| great-wisp | chest premium | gain (no-op) | `playWispOn` (same) | combat-heal 5 | ✅ |
+| wisp-in-bottle | wisp-reward chest | gain (no-op) | `playWispOn` + reusable-once-per-combat | combat-heal 3 | ✅ |
 | craghorn-tusk | craghorn heirloom | gain (no-op) | **none** | combat-attack-stun 4 + 1 | ❌ combat-only |
 | boulderkin-core | boulderkin heirloom | gain (no-op) | **none** | combat-absorb 4 | ❌ |
 | sentinel-eye | sentinel heirloom | gain (no-op) | **none** | combat-attack 6 | ❌ |

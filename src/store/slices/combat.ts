@@ -119,13 +119,13 @@ function applyAttachedChestBonus(state: KidGameState, playerIdx: number): KidGam
  * `wisp-wild-boss-<baseBossId>-<counter>`. Seed is irrelevant — these
  * ids are not serialized across games.
  */
-let wildBossFairyMintCounter = 0;
+let wildBossWispMintCounter = 0;
 
 /**
  * Mint a fresh wisp card from the KID_CARDS wisp template
  * (amendment A6 wild-boss drop). Each call returns a NEW Card with a
  * unique id so duplicate drops in the same game don't collide.
- * `baseId: 'wisp'` is load-bearing: `playFairyOn` in gameStore.ts,
+ * `baseId: 'wisp'` is load-bearing: `playWispOn` in gameStore.ts,
  * the ItemCell "is wisp" dispatch, and the victory-check wisp
  * detection all resolve minted copies back to the canonical 'wisp'
  * template via `baseIdOf`. This mirrors the mint-with-baseId pattern
@@ -135,15 +135,15 @@ let wildBossFairyMintCounter = 0;
  * indicate data-layer corruption upstream (wisp is declared by u-1d /
  * u-2d and is required by u-6a/b/c wild-boss drops).
  */
-export function mintFreshFairy(baseBossId: string): Card {
+export function mintFreshWisp(baseBossId: string): Card {
   const template = KID_CARDS.find((c) => c.id === 'wisp');
   if (!template) {
     throw new Error('No wisp card in KID_CARDS — cannot mint wild-boss wisp drop');
   }
-  wildBossFairyMintCounter += 1;
+  wildBossWispMintCounter += 1;
   const minted: Card & { readonly baseId: string } = {
     ...template,
-    id: `wisp-wild-boss-${baseBossId}-${wildBossFairyMintCounter}`,
+    id: `wisp-wild-boss-${baseBossId}-${wildBossWispMintCounter}`,
     baseId: 'wisp',
   };
   return minted;
@@ -158,7 +158,7 @@ export function mintFreshFairy(baseBossId: string): Card {
  * Pure at the state boundary — returns a new KidGameState. The mint
  * counter side effect is module-scoped and is not part of game state.
  */
-export function grantWildBossFairy(
+export function grantWildBossWisp(
   state: KidGameState,
   defeaterIdx: number,
   defeatedBaseId: string,
@@ -166,7 +166,7 @@ export function grantWildBossFairy(
   const defeater = state.players[defeaterIdx];
   if (!defeater) return state;
 
-  const wisp = mintFreshFairy(defeatedBaseId);
+  const wisp = mintFreshWisp(defeatedBaseId);
   const outcome = equipAsItem(defeater, wisp);
   return replacePlayer(state, defeaterIdx, outcome.owner);
 }
@@ -174,7 +174,7 @@ export function grantWildBossFairy(
 /**
  * Monotonic counter for minting unique heirloom-copy ids on wild-boss
  * defeat via the slot-engagement path (u-9c / REQ-32). Mirrors
- * `wildBossFairyMintCounter` above — keeps each heirloom drop's id
+ * `wildBossWispMintCounter` above — keeps each heirloom drop's id
  * unique so a game with two Craghorn variants wouldn't collide copies in
  * `buildCombatDeck`. Not part of game state; session-scoped only.
  */
@@ -191,7 +191,7 @@ let heirloomMintCounter = 0;
  * combatEffects.ts keys the effect lookup on `baseIdOf(card.id)`, and
  * `buildCombatDeck`'s item-active eligibility reads the role + itemKind
  * which are copied from the template by spread. Mirrors the mint
- * pattern used by `mintFreshFairy` above.
+ * pattern used by `mintFreshWisp` above.
  *
  * Throws if the template is missing from KID_CARDS — that would
  * indicate data-layer corruption upstream (u-9b authors all four
@@ -257,7 +257,7 @@ export { HEIRLOOM_DROPS };
  *      `state.defeatedBossIds` (so the FIFO queue in
  *      `currentWildBossForZone` advances to the next wild boss once the
  *      current one falls). No zone advance. Wisp drop is granted to
- *      the defeater's items zone via `grantWildBossFairy` per amendment
+ *      the defeater's items zone via `grantWildBossWisp` per amendment
  *      A6 (u-6a Craghorn, u-6b Boulderkin, u-6c Sentinel / Silver Chimera —
  *      all wire the same hook).
  *
@@ -274,13 +274,13 @@ export { HEIRLOOM_DROPS };
  *    match the current zone's gatekeeper) → state unchanged.
  *
  * Pure at the state boundary — returns new state only when a boss tier
- * is present. `grantWildBossFairy` increments a module-scoped mint
+ * is present. `grantWildBossWisp` increments a module-scoped mint
  * counter as a side effect (for unique wisp ids); this is NOT part of
  * game state and is not serialized.
  */
 /**
  * Card id of the v2.0 final-fight region boss (u-6c-bosses, Layer 7).
- * Defeat flips `sharedTriforce.power = true` in the same defeat
+ * Defeat flips `sharedEmbertide.power = true` in the same defeat
  * transaction as the zone-advance-fired Courage unlock (u-5b). This is
  * the ONLY card in v2.0 that grants the Power shard — amendment A2
  * forbids beast and wild-boss shard drops. v2.1 may broaden this if
@@ -313,7 +313,7 @@ function applyBossDefeatHooks(
     // NO shard grant (amendment A2: shards come only from Princess / Map
     // / Vurmox). Sentinel + Silver Chimera (u-6c-bosses) route the same way
     // as Craghorn (u-6a) and Boulderkin (u-6b).
-    next = grantWildBossFairy(next, defeaterIdx, baseIdOf(defeated));
+    next = grantWildBossWisp(next, defeaterIdx, baseIdOf(defeated));
   } else if (tier === 'region-boss') {
     const gate = ZONE_METADATA[next.currentZone].regionBossId;
     if (gate !== null && gate === defeated.id) {
@@ -323,14 +323,14 @@ function applyBossDefeatHooks(
     // This runs AFTER advanceZone so the shared-transaction contract
     // holds — a single returned state contains (a) defeatedBossIds with
     // Vurmox's id, (b) zoneHistory with 'gilded-cage' appended by
-    // advanceZone's u-5b amendment, (c) sharedTriforce.courage flipped
-    // by advanceZone's checkCourageUnlock, and (d) sharedTriforce.power
+    // advanceZone's u-5b amendment, (c) sharedEmbertide.courage flipped
+    // by advanceZone's checkCourageUnlock, and (d) sharedEmbertide.power
     // flipped here. Idempotent — re-entry on an already-granted Power
     // shard is a no-op (the flag cannot regress).
-    if (baseIdOf(defeated) === POWER_SHARD_GRANTER_ID && !next.sharedTriforce.power) {
+    if (baseIdOf(defeated) === POWER_SHARD_GRANTER_ID && !next.sharedEmbertide.power) {
       next = {
         ...next,
-        sharedTriforce: { ...next.sharedTriforce, power: true },
+        sharedEmbertide: { ...next.sharedEmbertide, power: true },
       };
     }
   }
@@ -349,24 +349,24 @@ import { applyHeartReward } from '../../core/vitalEmber';
 // locally so this slice stays a leaf dependency and doesn't reach
 // upward into the store aggregator (avoiding a circular import through
 // the slice graph — same pattern `chests.ts` uses for
-// `addHeartPieceToPlayer`).
+// `addEmberShardToPlayer`).
 const HEART_PIECES_PER_CONTAINER = 4;
 
 /**
  * Grunt meter modulus: every GRUNT_METER_SIZE-th grunt-tier defeat
- * promotes to a ember shard. The meter lives on `KidPlayer.heartPieceMeter`
+ * promotes to a ember shard. The meter lives on `KidPlayer.emberShardMeter`
  * in the 0..(GRUNT_METER_SIZE-1) range; the GRUNT_METER_SIZE-th bump
- * resets the meter to 0 AND calls `addHeartPiece` to award the piece.
+ * resets the meter to 0 AND calls `addEmberShard` to award the piece.
  */
 const GRUNT_METER_SIZE = 3;
 
 /**
  * Award a ember shard to `player`, auto-promoting to a vital ember
  * when the counter rolls over at `HEART_PIECES_PER_CONTAINER`. Mirrors
- * `addHeartPiece` in src/store/gameStore.ts — duplicated locally to
+ * `addEmberShard` in src/store/gameStore.ts — duplicated locally to
  * avoid a circular import through the slice graph.
  */
-function addHeartPieceLocal(player: KidPlayer): KidPlayer {
+function addEmberShardLocal(player: KidPlayer): KidPlayer {
   const next = player.heartPieces + 1;
   if (next >= HEART_PIECES_PER_CONTAINER) {
     const grown = applyHeartReward(player, 1);
@@ -382,9 +382,9 @@ function addHeartPieceLocal(player: KidPlayer): KidPlayer {
  * monster-drop HP-heal + boss-defeat hooks have landed. Routes the
  * DEFEATED card through the grunt / tough / slot-boss allowlists:
  *
- *   - Grunt tier (`GRUNT_HEART_METER_IDS`): bump `heartPieceMeter`.
+ *   - Grunt tier (`GRUNT_HEART_METER_IDS`): bump `emberShardMeter`.
  *     Every 3rd kill promotes to a ember shard (meter → 0, heartPieces
- *     += 1 via `addHeartPieceLocal` which itself auto-promotes at 4
+ *     += 1 via `addEmberShardLocal` which itself auto-promotes at 4
  *     pieces → vital ember).
  *
  *   - Tough tier (`TOUGH_EMBER_SHARD_IDS`): grant a ember shard
@@ -413,17 +413,17 @@ export function applyHeartDropHooks(
   const bid = baseIdOf(defeated);
 
   if (GRUNT_HEART_METER_IDS.has(bid)) {
-    const nextMeter = defeater.heartPieceMeter + 1;
+    const nextMeter = defeater.emberShardMeter + 1;
     if (nextMeter >= GRUNT_METER_SIZE) {
-      const reset: KidPlayer = { ...defeater, heartPieceMeter: 0 };
-      const withPiece = addHeartPieceLocal(reset);
+      const reset: KidPlayer = { ...defeater, emberShardMeter: 0 };
+      const withPiece = addEmberShardLocal(reset);
       return replacePlayer(state, defeaterIdx, withPiece);
     }
-    return replacePlayer(state, defeaterIdx, { ...defeater, heartPieceMeter: nextMeter });
+    return replacePlayer(state, defeaterIdx, { ...defeater, emberShardMeter: nextMeter });
   }
 
   if (TOUGH_EMBER_SHARD_IDS.has(bid)) {
-    return replacePlayer(state, defeaterIdx, addHeartPieceLocal(defeater));
+    return replacePlayer(state, defeaterIdx, addEmberShardLocal(defeater));
   }
 
   return state;
@@ -572,7 +572,7 @@ export function fightMonster(
   // No-op for regular beasts (bossTier absent).
   const afterBossHooks = applyBossDefeatHooks(afterCrystal, monster, playerIdx);
   // v2.1 gm0.17 (embertide-0jf): three-tier ember-shard drop.
-  // Grunt/tough regulars bump `heartPieceMeter` / `heartPieces` here;
+  // Grunt/tough regulars bump `emberShardMeter` / `heartPieces` here;
   // slot-boss container drops live in the COMBAT_RESOLVE_WIN reducer.
   const afterHeart = applyHeartDropHooks(afterBossHooks, monster, playerIdx);
   // embertide-4uyn: dispatch every owned item-passive declaring
