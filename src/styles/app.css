@@ -2684,8 +2684,14 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
    row at 1024w. Aspect ratio approximated 134:158 → 110:130 so art
    doesn't squish. Bands above and below (always-row, hand, trays-row
    pile column) are already small enough at 1024 once the market row
-   stops wrapping. */
-@media (width <= 1100px) {
+   stops wrapping.
+
+   embertide-pew (2026-06-20): `and (height > 500px)` guard added so
+   this laptop-width block does NOT capture landscape phones (height
+   ≤ 500), where the dedicated phone block below owns tile sizing.
+   Without the guard, this 110×130 !important rule beat the phone
+   block's 70×90 and was a primary cause of the ~170px overflow. */
+@media (width <= 1100px) and (height > 500px) {
   .market-row .field-card-tile {
     width: 110px !important;
     height: 130px !important;
@@ -2715,8 +2721,15 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
    trays-row pile column) at heights ≤ 760 only, restoring fit at
    1024×700, 1180×700, 1280×720, 1366×720. Heights > 760 (the typical
    laptop default of 768/800/900/1080) keep the wider 158/112/100
-   tile sizes from the ≤ 1440 pass. */
-@media (height <= 760px) {
+   tile sizes from the ≤ 1440 pass.
+
+   embertide-pew (2026-06-20): lower bound `(height > 500px)` added so
+   this laptop-height block stops at 500px and does NOT capture
+   landscape phones (height ≤ 500). Its 110×120 / 70×96 / 64×84
+   !important tile rules were overriding the dedicated phone block and
+   driving the landscape-mobile overflow. Laptops (≥ 700px tall) stay
+   fully covered. */
+@media (height > 500px) and (height <= 760px) {
   /* market-row: tile 134×158 → 110×120 at narrow heights. The shorter
      band reclaims ~38px of vertical budget that the bottom stack
      (PlayerTray + Discard + Void) needs to clear h≤720 viewports. */
@@ -5128,15 +5141,6 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
     overflow: hidden;
   }
 
-  .trays-row > .end-turn-button {
-    flex: 0 0 auto;
-    height: 36px;
-    padding: 4px 14px;
-    font-size: var(--hc-text-px-10);
-    letter-spacing: var(--hc-tracking-chrome-md);
-    border-radius: 8px;
-  }
-
   /* PLAY ALL CARDS button — shorten visible text to "PLAY ALL" so it
      fits next to the hand row without overflowing the board-main
      column into the boss rail. The font-size:0 trick hides the
@@ -5207,36 +5211,71 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
     line-height: 1.1 !important;
   }
 
-  /* END TURN button: same shorter-label trick used on PLAY ALL so it
-     fits the compact HUD strip without truncation. arq3 (2026-04-26):
-     selector retargeted from .board-main .trays to .trays-row after
-     End Turn moved out of the .trays cream plate. */
-  .trays-row > .end-turn-button {
-    font-size: 0;
+  /* embertide-pew (2026-06-20): boss-altar-row is the right rail's
+     tallest band (~233px for the two stacked encounter slots) and the
+     binding constraint on fitting the rail in a ~393px landscape phone.
+     The dormant / phase-locked slots (the common early-game state) carry
+     16px top+bottom padding around tiny phase labels — ~32px of dead
+     space per slot. Trim the slot-body and dormant/cleared/locked
+     paddings so the two-slot row drops from ~233 to ~150px. The engaged
+     state (.boss-altar-pane-art + name + HP) is the tallest the rail
+     gets on the main board; the art is capped 48px to keep that state
+     within the landscape budget too. The slots stay valid tap targets;
+     the full boss card is one tap away on the board. */
+  .board-side .boss-altar-pane-body {
+    padding: 3px 6px 0;
   }
 
-  .trays-row > .end-turn-button::before {
-    content: 'END';
-    font-family: var(--hc-font-display);
-    font-weight: var(--hc-font-weight-bold);
-    font-size: var(--hc-text-px-10);
-    letter-spacing: var(--hc-tracking-chrome-wide);
+  .board-side .boss-altar-pane-dormant,
+  .board-side .boss-altar-pane-cleared,
+  .board-side .boss-altar-pane-locked {
+    padding: 4px 6px;
   }
 
-  /* Field / chest pool / hand cards — 78×110 → 56×80 (28% smaller) */
-  .hand-card-tile,
-  .always-available-row .field-card-tile,
-  .chest-row .field-card-tile {
-    width: 56px;
-    min-height: 80px;
+  /* !important + matching `.board-side-crystal-rail` specificity so this
+     beats the rz26 laptop rule (`@media (width <= 1440px)` sets boss art
+     60px !important and ALSO matches phones at width ≤ 1440). That rule
+     is the same class of phone-leaking laptop block as the guarded 1100
+     / 760 ones, but its ≤1440 block carries many laptop-only rules that
+     don't apply to phones, so it's overridden here rather than guarded
+     wholesale. */
+  .board-side-crystal-rail .boss-altar-pane-art {
+    width: 48px !important;
+    height: 48px !important;
   }
 
-  .hand-card-tile .card-template,
-  .always-available-row .field-card-tile .card-template,
-  .chest-row .field-card-tile .card-template {
-    min-height: 80px;
+  .board-side .boss-altar-pane-locked-raster {
+    width: 48px;
+    height: 48px;
   }
 
+  /* Hide the secondary rail affordances on phone landscape — the Rules
+     book and (when unlocked) the Colosseum entry are non-essential to
+     turn play and reclaim ~40px the boss rail + End Turn need to clear
+     the viewport. The Rules modal stays reachable on larger screens;
+     acceptance only requires the boss rail + progress artifacts + End
+     Turn to fit. */
+  .board-side-crystal-rail > .rules-book-trigger,
+  .board-side-crystal-rail > .colosseum-entry-pane {
+    display: none;
+  }
+
+  /* End Turn: keep the 44px tap floor (Kid Mode invariant — GameBoard
+     test) while trimming chrome so it fits the compacted rail. The
+     inline END_TURN_STYLE already pins min 88×44; this only tightens
+     padding / font. */
+  .board-side-crystal-rail > .board-side-end-turn {
+    margin-top: 2px;
+    padding: 4px 10px;
+    font-size: var(--hc-text-px-11);
+    letter-spacing: var(--hc-tracking-chrome-md);
+  }
+
+  /* Field / chest pool / hand card text chrome. embertide-pew
+     (2026-06-20): the tile SIZING that used to live here (56×80) was a
+     stale duplicate of the "Hand band" block below (56×70) and is
+     removed — the later block is authoritative. These remaining rules
+     tune the in-tile text chrome only. */
   .hand-card-tile .card-template-rules-box,
   .always-available-row .field-card-tile .card-template-rules-box,
   .chest-row .field-card-tile .card-template-rules-box {
@@ -5331,22 +5370,19 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
     gap: 3px;
   }
 
-  /* Market tiles are bigger — more vertical budget for art now that
-     all text is hidden. 6 cards × ~70px wide = 420px, fits easily
-     inside the ~720px board-main width on iPhone 15 landscape. */
-  @layer base {
-    .field-card-tile,
-    .market-row .field-card-tile {
-      width: 70px;
-      min-height: 90px;
-    }
-  }
-
-  @layer base {
-    .field-card-tile .card-template,
-    .market-row .field-card-tile .card-template {
-      min-height: 90px;
-    }
+  /* Market tiles are art-only icon tiles. 6 cards × ~70px wide = 420px,
+     fits easily inside the board-main width on iPhone 15 landscape.
+     embertide-pew (2026-06-20): height is CAPPED (height + max-height)
+     and marked !important so this beats the unlayered base
+     `.field-card-tile` rule (unlayered wins over @layer base) now that
+     the laptop !important blocks no longer reach phones. Without the
+     cap the tile grew to its desktop height and the market band stayed
+     ~144px. */
+  .market-row .field-card-tile {
+    width: 70px !important;
+    height: 90px !important;
+    min-height: 90px !important;
+    max-height: 90px !important;
   }
 
   /* Hand band — slimmer cards above the HUD. */
@@ -5359,16 +5395,27 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
   .hand-card-tile,
   .always-available-row .field-card-tile,
   .chest-row .field-card-tile {
-    width: 56px;
-    min-height: 70px;
+    width: 56px !important;
+    height: 60px !important;
+    min-height: 60px !important;
+    max-height: 60px !important;
   }
 
-  @layer base {
-    .hand-card-tile .card-template,
-    .always-available-row .field-card-tile .card-template,
-    .chest-row .field-card-tile .card-template {
-      min-height: 70px;
-    }
+  .hand-card-tile .card-template,
+  .always-available-row .field-card-tile .card-template,
+  .chest-row .field-card-tile .card-template {
+    height: 60px !important;
+    min-height: 60px !important;
+    max-height: 60px !important;
+  }
+
+  /* Market card-template cap — kept after the hand/always/chest
+     card-template rule above so the higher-specificity market selector
+     follows the lower one (stylelint no-descending-specificity). */
+  .market-row .field-card-tile .card-template {
+    height: 90px !important;
+    min-height: 90px !important;
+    max-height: 90px !important;
   }
 
   .play-zones {
@@ -5415,6 +5462,35 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
 
   .board-main .trays > .tray > .tray-header {
     font-size: var(--hc-text-px-9);
+  }
+
+  /* Discard / Void piles — the trays-row pile column is the bottom
+     band's tallest element (~139px). Early game the piles are EMPTY, so
+     the height is driven by `.card-pile-empty-frame` (110px), not by
+     `.card-pile-tile`; cap BOTH so the pile column collapses toward the
+     player-tray height. The now-guarded laptop block used to cap the
+     filled tile at 64×84 !important — re-provided here, smaller.
+     Ordered after the field/hand tile rules above to satisfy
+     stylelint no-descending-specificity. */
+  .trays-row .card-pile {
+    padding: 2px 6px;
+  }
+
+  .trays-row .card-pile-empty .card-pile-empty-frame {
+    height: 64px;
+  }
+
+  .trays-row .card-pile-tile {
+    width: 48px !important;
+    height: 64px !important;
+    min-height: 64px !important;
+    max-height: 64px !important;
+  }
+
+  .trays-row .card-pile-tile .card-template {
+    height: 64px !important;
+    min-height: 64px !important;
+    max-height: 64px !important;
   }
 
   /* ------------------------------------------------------------------- */
