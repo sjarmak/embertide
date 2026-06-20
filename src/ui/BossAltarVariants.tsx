@@ -1,6 +1,7 @@
 import type { JSX } from 'react';
 import type { ZoneId } from '../store/types';
 import BossAltarPane, { type BossAltarVariant } from './BossAltarPane';
+import { assetUrl } from '../assetUrl';
 
 /**
  * Inert placeholder shown when a slot has no active boss (defeated /
@@ -30,7 +31,7 @@ export function BossAltarCleared({ label }: { readonly label: string }): JSX.Ele
  */
 export const ZONE_BOSS_DOOR_SRC: Readonly<Record<ZoneId, string | null>> = {
   sylvani: '/illustrations/cathedral_sylvani_boss_door_001.png',
-  'emberpeak': '/illustrations/cathedral_emberpeak_boss_door_001.png',
+  emberpeak: '/illustrations/cathedral_emberpeak_boss_door_001.png',
   // gdd.1 / gdd.2 / gdd.3: boss-door rasters landed 2026-04-25 (FAL batch).
   maren: '/illustrations/cathedral_maren_boss_door_001.png',
   'hollow-shrine': '/illustrations/cathedral_hollow_shrine_boss_door_001.png',
@@ -104,7 +105,7 @@ export function BossAltarLocked({
       >
         {rasterSrc !== null ? (
           <img
-            src={rasterSrc}
+            src={assetUrl(rasterSrc)}
             alt=""
             aria-hidden="true"
             draggable={false}

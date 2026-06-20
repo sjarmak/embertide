@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { JSX } from 'react';
 import type { GameOutcome, Phase, PrincessCrystalState } from '../store/types';
 import { PRINCESS_CRYSTAL_INITIAL_CHARGES } from '../store/slices/crystal';
+import { assetUrl } from '../assetUrl';
 import './PrincessCrystalCell.css';
 
 // 2026-04-23 designer decision: skip the hairline stage (the crack was
@@ -162,7 +163,7 @@ export default function PrincessCrystalCell({
             className="princess-crystal-raster"
             data-breaking={showBurst ? 'true' : 'false'}
             data-freed="false"
-            src={CRYSTAL_RASTER_BY_STAGE[stage]}
+            src={assetUrl(CRYSTAL_RASTER_BY_STAGE[stage])}
             alt=""
           />
         )}
@@ -177,7 +178,7 @@ export default function PrincessCrystalCell({
           <img
             data-testid="princess-crystal-aurelia-freed"
             className="princess-crystal-aurelia-freed"
-            src={AURELIA_FREED_RASTER}
+            src={assetUrl(AURELIA_FREED_RASTER)}
             alt="Princess Aurelia, freed from the crystal"
           />
         )}

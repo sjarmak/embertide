@@ -21,6 +21,7 @@
 
 import type { ReactElement } from 'react';
 
+import { assetUrl } from '../assetUrl';
 import type {
   IllustrationSpec,
   OrnamentFrame,
@@ -201,7 +202,7 @@ export function renderIllustration(
       {spec.rasterImageUrl ? (
         <g id="raster">
           <image
-            href={spec.rasterImageUrl}
+            href={assetUrl(spec.rasterImageUrl)}
             x={0}
             y={0}
             width={24}

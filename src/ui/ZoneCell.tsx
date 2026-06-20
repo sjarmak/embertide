@@ -1,6 +1,7 @@
 import type { CSSProperties, JSX } from 'react';
 import type { ZoneMetadata } from '../rules/zones';
 import { ZONE_RASTER, ZONE_FILTER, ZONE_SCRIM } from './zoneRaster';
+import { assetUrl } from '../assetUrl';
 
 export interface ZoneCellProps {
   readonly zone: ZoneMetadata;
@@ -63,7 +64,7 @@ const SR_ONLY_STYLE: CSSProperties = {
  * zone identity.
  */
 export default function ZoneCell({ zone }: ZoneCellProps): JSX.Element {
-  const rasterSrc = ZONE_RASTER[zone.id];
+  const rasterSrc = assetUrl(ZONE_RASTER[zone.id]);
   const filter = ZONE_FILTER[zone.id];
   const scrim = ZONE_SCRIM[zone.id];
   return (

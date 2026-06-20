@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type JSX } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { COMBAT_PLAYS_PER_TURN } from '../core/balance';
+import { assetUrl } from '../assetUrl';
 import type { ZoneId } from '../store/types';
 import ArtPendingFrame from './ArtPendingFrame';
 import CombatBossStage from './CombatBossStage';
@@ -31,7 +32,7 @@ const ZONE_BACKGROUND_SRC: Record<ZoneId, Record<CombatBgTier, string>> = {
     wild: '/illustrations/cathedral_combat_bg_sylvani_wild_001.webp',
     region: '/illustrations/cathedral_combat_bg_sylvani_001.webp',
   },
-  'emberpeak': {
+  emberpeak: {
     wild: '/illustrations/cathedral_combat_bg_emberpeak_wild_001.webp',
     region: '/illustrations/cathedral_combat_bg_emberpeak_001.webp',
   },
@@ -256,10 +257,11 @@ export default function CombatScreen({
   }
   const bgTier: CombatBgTier =
     combat?.entryContext.entrySource === 'region-boss-slot' ? 'region' : 'wild';
-  const backgroundSrc =
+  const backgroundSrc = assetUrl(
     colosseumTier !== null
       ? COLOSSEUM_BACKGROUND_SRC[colosseumTier]
-      : ZONE_BACKGROUND_SRC[currentZone][bgTier];
+      : ZONE_BACKGROUND_SRC[currentZone][bgTier],
+  );
 
   // embertide-y5x: if the resolved raster src changes mid-session
   // (zone advance, boss-tier swap) reset the loaded/failed flags so

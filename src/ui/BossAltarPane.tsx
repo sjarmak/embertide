@@ -1,6 +1,7 @@
 import { useState, type JSX, type ReactNode } from 'react';
 import type { ZoneId } from '../store/types';
 import { ZONE_RASTER, ZONE_FILTER } from './zoneRaster';
+import { assetUrl } from '../assetUrl';
 import './BossAltarPane.css';
 
 /**
@@ -138,7 +139,7 @@ export default function BossAltarPane({
   const ornament =
     resolvedOrnamentSrc !== undefined && !ornamentFailed ? (
       <img
-        src={resolvedOrnamentSrc}
+        src={assetUrl(resolvedOrnamentSrc)}
         alt=""
         aria-hidden="true"
         draggable={false}
@@ -181,7 +182,7 @@ export default function BossAltarPane({
         aria-hidden="true"
       >
         <img
-          src={ZONE_RASTER[backdropZoneId]}
+          src={assetUrl(ZONE_RASTER[backdropZoneId])}
           alt=""
           aria-hidden="true"
           draggable={false}
