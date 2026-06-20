@@ -1,0 +1,270 @@
+// `embertide` — a browser co-op deck-builder rendered in stained-glass art.
+//
+// A static, backend-free React 19 + Zustand + Vite game. Two-to-four players (or
+// solo-vs-bot) share one screen, buy from a common market, and fight the bosses
+// guarding each zone — win or lose together. The design target is unusual: it
+// has to be legible and playable by a six-year-old, so contrast, tap-target, and
+// rules-text readability are first-class constraints enforced by automated gates.
+//
+// The architecture is a clean spine: declarative content data → a pure-TS rules
+// engine (combat + economy as functions over explicit state, no store imports) →
+// a Zustand store kept at the edges → a React view layer that only renders and
+// dispatches. The stained-glass art is a hybrid pipeline (deterministic SVG
+// composer + reproducible fal.ai raster panels). Everything compiles to a static
+// bundle served from /games/embertide/ on sjarmak.ai.
+//
+// Elements carry `link`s to their source so a reviewer can jump from any box to
+// the code. Delivery state is tagged (see spec.c4 for the legend).
+
+model {
+
+  player = actor 'Players (co-op)' {
+    description 'Two-to-four players sharing one screen — or one player vs the bot. Tap to buy, play, and fight; win or lose together. Design target: readable by a six-year-old'
+  }
+
+  designer = actor 'Designer / agent' {
+    description 'Stephanie or an agent authoring card/boss/zone data, art templates, and fal.ai prompts under TDD, then pushing to main'
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // External systems — what the game is built on, fed by, and shipped to.
+  // ─────────────────────────────────────────────────────────────────────────
+
+  falai = externalSystem 'fal.ai (nano-banana-pro)' {
+    description 'Dev-time only: generates 2K stained-glass raster panels from committed prompt markdown. Never called at runtime — rasters are cached in git before deploy'
+  }
+
+  github = externalSystem 'GitHub' {
+    description 'sjarmak/embertide repo — source of truth, CI (typecheck + lint + tests + balance + a11y), and Pages for this architecture model'
+
+    repo = datastore 'main branch' {
+      description 'Code, card/boss/zone data, committed raster panels; theme.json (Aurelia flavor) is gitignored'
+    }
+  }
+
+  websiteHost = externalSystem 'sjarmak.ai' {
+    description 'The personal site that catalogs the game and serves the static build in-browser at /games/embertide/'
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // The Ember Tide game system.
+  // ─────────────────────────────────────────────────────────────────────────
+
+  embertide = system 'Ember Tide' {
+    description 'A backend-free, single-screen cooperative deck-builder — React 19 + Zustand + Vite compiled to a static bundle, state in memory only, no accounts and no tracking'
+    link ../AGENTS.md 'AGENTS.md — workflow & conventions'
+    link ../prd_embertide.md 'PRD'
+    link ../premortem_embertide.md 'Premortem'
+
+    // ── Content: the declarative card / boss / zone definitions ─────────────
+    content = datastore 'Game content (cards, bosses, zones)' {
+      #built
+      description 'src/data — declarative rosters: champions, the card supply, boss attack patterns + names, combat effects, card passives, zones, dice tables, the keyword glossary, and immutable rule constants. No logic; every change is test-driven'
+      technology 'TypeScript (data)'
+      link ../src/data 'src/data/'
+    }
+
+    // ── Engine: the pure resolver — combat + economy over explicit state ─────
+    engine = container 'Rules engine (pure)' {
+      #built
+      description 'src/core + src/rules — combat and economy as functions over explicit state with no Zustand imports, so the rules stay unit-testable in isolation. Deterministic via seeded RNG; returns new state, never mutates'
+      technology 'TypeScript (no deps)'
+      link ../src/core/combatEngine.ts 'core/combatEngine.ts'
+
+      turnReducer = component 'combat turn reducer' {
+        #built
+        description 'combatTurnReducer(state, action) — the master combat resolver dispatching to player and boss phases, returning a new CombatTurnState (or a terminal win/lose)'
+        link ../src/core/combat/turnReducer.ts 'combat/turnReducer.ts'
+      }
+      playerTurn = component 'player phase' {
+        #built
+        description 'reducePlayerPlayCard / reducePlayerPass — spell resolution, deck draw, and battlefield damage application for the active player'
+        link ../src/core/combat/playerTurn.ts 'combat/playerTurn.ts'
+      }
+      bossTurn = component 'boss phase + resolvers' {
+        #built
+        description 'reduceBossResolve looks up the attack pattern and dispatches to per-boss resolvers (Tidewraith grab, Iron Sentinel armor, Knell slam, Hextwins fire/ice, …) and archetype ticks'
+        link ../src/core/combat/bossTurn.ts 'combat/bossTurn.ts'
+        link ../src/core/combat/bossResolvers 'combat/bossResolvers/'
+      }
+      rules = component 'economy & world rules' {
+        #built
+        description 'src/rules — zone advancement + boss spawn, weighted chest reward rolls (openChest), and seeded dice (d6/d20). The economy half of the resolver'
+        link ../src/rules/zones.ts 'rules/zones.ts'
+        link ../src/rules/chestPool.ts 'rules/chestPool.ts'
+        link ../src/rules/dice.ts 'rules/dice.ts'
+      }
+    }
+
+    // ── Store: Zustand, kept at the edges ───────────────────────────────────
+    store = container 'State store (Zustand)' {
+      #built
+      description 'src/store — the single source of truth, kept at the edges so the engine stays pure. Domain-partitioned slices mutate board state by composing engine output; the store imports the engine, never the reverse'
+      technology 'Zustand 5'
+      link ../src/store/gameStore.ts 'store/gameStore.ts'
+
+      gameStore = component 'gameStore (root reducer)' {
+        #built
+        description 'useGameStore — dispatch surface for initGame, draw, playCard, buyFromField, fightMonster, openChest, advanceTurn; notifies subscribers on every state change'
+        link ../src/store/gameStore.ts 'gameStore.ts'
+        link ../src/store/types.ts 'store/types.ts'
+      }
+      slices = component 'domain slices' {
+        #built
+        description 'deck / combat / inventory / chests / zones / endgame — each slice reduces one domain; combat.ts is the seam that wires the pure engine into board state'
+        link ../src/store/slices 'store/slices/'
+      }
+      tutorialStore = component 'tutorial store' {
+        #evolving
+        description 'Separate Zustand store gating the first-game three-bubble intro (markSeen), so it self-dismisses and never re-fires'
+        link ../src/store/tutorialStore.ts 'store/tutorialStore.ts'
+      }
+    }
+
+    // ── UI: the single-screen React board ───────────────────────────────────
+    ui = container 'React board (UI)' {
+      #built
+      description 'src/ui — a single-screen co-op board. Pure view + dispatch: components read Zustand hooks and fire actions on tap/drag; no game logic lives here. 44px tap targets, icon-first cards, rules text sized never to clip'
+      technology 'React 19 / Framer Motion'
+      link ../src/App.tsx 'src/App.tsx'
+
+      shell = component 'app shell + setup + board' {
+        #built
+        description 'main.tsx → App routes Setup (champion + player-count pick) into GameBoard, the main loop screen composing field, hand, in-play, items, chests, boss altar, and zones'
+        link ../src/main.tsx 'main.tsx'
+        link ../src/ui/Setup.tsx 'ui/Setup.tsx'
+        link ../src/ui/GameBoard.tsx 'ui/GameBoard.tsx'
+      }
+      combatScreen = component 'combat overlay' {
+        #built
+        description 'CombatScreen — full-screen boss-fight overlay (battlefield, hand, log, damage popups) driven entirely by the pure turn reducer'
+        link ../src/ui/CombatScreen.tsx 'ui/CombatScreen.tsx'
+      }
+      board = component 'field · hand · chests' {
+        #built
+        description 'Field (shared market + boss altar), Hand (tap to play/buy), and ChestReveal (Framer Motion open → reward commit) — the core interaction surface'
+        link ../src/ui/Field.tsx 'ui/Field.tsx'
+        link ../src/ui/Hand.tsx 'ui/Hand.tsx'
+        link ../src/ui/ChestReveal.tsx 'ui/ChestReveal.tsx'
+      }
+      cards = component 'card rendering' {
+        #built
+        description 'CardTemplate (icon, cost, rules text) and CardArt (SVG composer → raster fallback) — how every card draws on the board'
+        link ../src/ui/CardTemplate.tsx 'ui/CardTemplate.tsx'
+        link ../src/ui/CardArt.tsx 'ui/CardArt.tsx'
+      }
+      tutorial = component 'tutorial bubbles' {
+        #evolving
+        description 'First-game intro bubbles, turn-gated by the tutorial store; self-dismisses after the opening turns'
+        link ../src/ui/Tutorial.tsx 'ui/Tutorial.tsx'
+      }
+    }
+
+    // ── Art: the stained-glass illustration pipeline ────────────────────────
+    art = container 'Art pipeline (stained-glass)' {
+      #evolving
+      description 'src/illustration + scripts — a hybrid pipeline: a deterministic SVG composer assembles the structural leaded-glass layers, and a fal.ai briefing system generates reproducible 2K raster panels. Card art falls back composer → committed raster'
+      technology 'TypeScript / SVG / fal.ai'
+      link ../src/illustration/composer.ts 'illustration/composer.ts'
+
+      composer = component 'SVG composer + templates' {
+        #built
+        description 'composeIllustration assembles silhouette · segmentation · ornament · palette into a deterministic stained-glass SVG; per-card templates tune colors and ornament picks'
+        link ../src/illustration/composer.ts 'illustration/composer.ts'
+        link ../src/illustration/templates 'illustration/templates/'
+        link ../src/illustration/schema.ts 'illustration/schema.ts'
+      }
+      renderer = component 'renderer + asset URLs' {
+        #built
+        description 'renderer.tsx draws composer output to the DOM; assetUrl rebases /illustrations/* against the Vite BASE_URL so rasters resolve under the /games/embertide/ sub-path'
+        link ../src/illustration/renderer.tsx 'illustration/renderer.tsx'
+        link ../src/assetUrl.ts 'src/assetUrl.ts'
+      }
+      rasterGen = component 'fal.ai raster generation' {
+        #research
+        description 'scripts/fal-generate.mjs reads a committed prompt markdown and calls fal.ai to produce a 2K webp panel; snapshot-illustration.mjs is the dev-time headless screenshot loop. Dev-only, never at runtime'
+        link ../scripts/fal-generate.mjs 'scripts/fal-generate.mjs'
+        link ../scripts/snapshot-illustration.mjs 'scripts/snapshot-illustration.mjs'
+      }
+    }
+
+    // ── Gates: balance sims + accessibility + e2e ───────────────────────────
+    gates = container 'Quality gates' {
+      #built
+      description 'The constraints that keep the game shippable and six-year-old-readable: balance simulations, contrast/touch-target accessibility checks, and Playwright e2e — all run on every change'
+      technology 'Vitest / Playwright / APCA'
+      link ../src/balance/greedyShardSimulation.test.ts 'balance/greedyShardSimulation.test.ts'
+
+      balanceSim = component 'balance simulation' {
+        #built
+        description '1000 seeded games per strategy assert the shared-pool win rate stays in a 40–70% band with no trivial fast-win path; combatLengthSim is the modeling harness'
+        link ../src/balance/greedyShardSimulation.test.ts 'balance/greedyShardSimulation.test.ts'
+        link ../src/balance/combatLengthSim.ts 'balance/combatLengthSim.ts'
+      }
+      a11yGate = component 'contrast + token gate' {
+        #built
+        description 'Computes APCA Lc + WCAG ratios for every color pair against the --hc-* design tokens and fails on any regression — contrast is a correctness property here, not polish'
+        link ../src/styles/contrast-assertions.test.ts 'styles/contrast-assertions.test.ts'
+        link ../src/styles/tokens.css 'styles/tokens.css'
+      }
+      e2e = component 'Playwright e2e + playtester' {
+        #evolving
+        description 'axe smoke, motion/ambient perf baselines, and touch-target audits; the playtester harness captures recorded gameplay runs for designer review'
+        link ../tests/e2e 'tests/e2e/'
+        link ../tools/playtester 'tools/playtester/'
+      }
+    }
+
+    // ── Build: Vite SSG bundle + the deploy safety gate ─────────────────────
+    build = container 'Build & deploy (Vite)' {
+      #built
+      description 'vite.config.ts — React + PWA (install-to-home-screen) + a token pre-processor, compiled to a self-contained static bundle. A pre-build guard refuses to build inside a hosted CI (Vercel/Netlify), keeping the game local-household only'
+      technology 'Vite 6 / vite-plugin-pwa'
+      link ../vite.config.ts 'vite.config.ts'
+
+      vite = component 'Vite bundle' {
+        #built
+        description 'npm run build → static dist/; build:web sets EMBERTIDE_BASE=/games/embertide/ for the website sub-path deploy. No runtime network calls'
+        link ../vite.config.ts 'vite.config.ts'
+        link ../package.json 'package.json'
+      }
+      deployGuard = component 'deploy safety gate' {
+        #built
+        description 'scripts/check-deploy.mjs aborts the build if a hosted-CI env (Vercel/Netlify) is detected — an IP-safety gate so the build only ships from a local machine'
+        link ../scripts/check-deploy.mjs 'scripts/check-deploy.mjs'
+      }
+    }
+
+    // ── Persistence: save / resume (designed, not yet built) ────────────────
+    save = datastore 'Local save (IndexedDB)' {
+      #planned
+      description 'Designed in the PRD (SH-5): persist and resume a mid-game session in the browser. v0.1 keeps state in memory only — no accounts, no server, no tracking'
+    }
+  }
+
+  // ── Relationships ──────────────────────────────────────────────────────────
+  player -> embertide.ui 'taps to buy · play · fight (co-op, one screen)'
+  designer -> embertide.content 'authors cards / bosses / zones (TDD)'
+  designer -> embertide.art 'writes fal prompts, tunes SVG templates'
+
+  // The clean spine: UI → store → engine → content.
+  embertide.ui -> embertide.store 'dispatch actions · subscribe (hooks)'
+  embertide.store -> embertide.engine 'resolve combat turn (pure → new state)'
+  embertide.store -> embertide.content 'build supply + starter decks'
+  embertide.engine -> embertide.content 'read card / boss / zone definitions'
+  embertide.ui -> embertide.art 'render card art (SVG → raster fallback)'
+  embertide.store -> embertide.save 'persist / resume session'
+
+  // Gates exercise the engine and the UI on every change.
+  embertide.gates -> embertide.engine 'simulate 1000 games → balance band'
+  embertide.gates -> embertide.ui 'axe · perf · touch-target e2e'
+
+  // Art generation is a dev-time loop into fal.ai.
+  embertide.art -> falai 'generate 2K raster panels (dev-time)'
+
+  // Ship path: build → committed → served by the website.
+  embertide.build -> embertide.ui 'vite build → static bundle'
+  embertide.content -> github.repo 'committed + pushed to main'
+  embertide.build -> websiteHost 'build:web → /games/embertide/ (static)'
+  player -> websiteHost 'loads the game in-browser'
+}

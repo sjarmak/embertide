@@ -1,0 +1,69 @@
+// Element kinds, tags, and custom colors for the `embertide` architecture model.
+//
+// Tags encode delivery state so experimental / planned work renders distinctly
+// from what is shipped and playable in the v0.1 build:
+//   #built     — shipped in the v0.1 Kid Mode build, exercised on every run
+//   #evolving  — shipped, but the contract / surface is still moving
+//   #planned   — designed (PRD / premortem), not yet implemented
+//   #research  — speculative / opt-in (dev-time tooling, art generation)
+
+specification {
+
+  element actor {
+    style {
+      shape person
+      color secondary
+    }
+  }
+
+  element externalSystem {
+    style {
+      shape rectangle
+      color slate
+    }
+  }
+
+  element system
+
+  element container {
+    style {
+      shape rectangle
+    }
+  }
+
+  element component
+
+  element datastore {
+    style {
+      shape cylinder
+    }
+  }
+
+  // Deployment model — where each piece runs at build / play time.
+  deploymentNode host {
+    style {
+      shape rectangle
+      color slate
+    }
+  }
+  deploymentNode proc
+
+  tag built {
+    color #16a34a
+  }
+  tag evolving {
+    color #d97706
+  }
+  tag planned {
+    color #64748b
+  }
+  tag research {
+    color #6366f1
+  }
+
+  // Cross-cutting: carried by any element that is a known risk / open question
+  // for a design review (in addition to its delivery-state tag).
+  tag risk {
+    color #dc2626
+  }
+}

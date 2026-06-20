@@ -1,0 +1,69 @@
+// Deployment model — where each piece runs.
+//
+// Ember Tide ships nothing dynamic: `vite build` turns content + code into a
+// static bundle that the website serves in the player's browser. The only
+// "running" processes are at build time (the local dev machine, GitHub Actions)
+// and the dev-time art loop into fal.ai. There is no game server, no account
+// system, and no runtime network call — the trust boundary is the browser tab.
+
+deployment {
+
+  browser = host 'Player browser' {
+    description 'Runs the whole game tab-locally: React renders, the Zustand store holds state in memory, the PWA service worker caches assets for offline play. No accounts, no tracking, no server round-trips'
+    instanceOf embertide.ui
+    instanceOf embertide.store
+    instanceOf embertide.engine
+
+    bundle = proc 'Static bundle + PWA' {
+      description 'Pre-built HTML/JS/CSS + committed raster panels + PWA manifest, all self-contained; served under /games/embertide/'
+      instanceOf embertide.content
+    }
+  }
+
+  localMachine = host 'Local dev machine' {
+    description 'The only place the game is built and the only place art is generated — a deliberate IP-safety boundary (the deploy guard refuses hosted CI)'
+
+    builder = proc 'vite build (build:web)' {
+      description 'check-deploy guard → vite build → static dist/, then copied to the website at /games/embertide/'
+      instanceOf embertide.build
+    }
+    artProc = proc 'fal.ai raster generation' {
+      description 'scripts/fal-generate.mjs renders 2K stained-glass panels from committed prompts; output committed to git'
+      instanceOf embertide.art
+    }
+  }
+
+  githubNode = host 'GitHub' {
+    description 'Repo + Actions CI (typecheck + lint + tests + balance + a11y) + Pages (this architecture model)'
+    instanceOf github
+
+    pagesProc = proc 'Actions: LikeC4 → Pages' {
+      description 'likec4-pages.yml exports figures + interactive explorer to sjarmak.github.io/embertide/'
+    }
+  }
+
+  falNode = host 'fal.ai' {
+    description 'nano-banana-pro image model — dev-time only, reachable solely from the local machine'
+    instanceOf falai
+  }
+
+  websiteNode = host 'sjarmak.ai (Render edge)' {
+    description 'Serves the catalog entry and the static game bundle at /games/embertide/'
+    instanceOf websiteHost
+  }
+
+  // Build / deploy / runtime data flow between hosts.
+  builder -> bundle 'vite build → static bundle'
+  artProc -> falNode 'generate raster panels'
+  builder -> websiteNode 'copy dist → /games/embertide/'
+  localMachine -> githubNode 'push to main'
+  browser -> websiteNode 'GET /games/embertide/'
+}
+
+views {
+
+  deployment view deployment {
+    title 'Deployment — where each piece runs'
+    include *
+  }
+}

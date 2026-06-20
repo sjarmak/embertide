@@ -1,0 +1,167 @@
+// Views over the Ember Tide model. Evolving (#evolving) renders amber; research
+// (#research) and planned (#planned) elements/relationships are dimmed + dashed
+// so "what is shipped and playable vs what is a moving / dev-time / planned
+// surface" reads at a glance.
+
+views {
+
+  // Landscape — the whole system in context.
+  view index {
+    title 'Ember Tide — system landscape'
+    include *
+
+    style * {
+      opacity 25%
+    }
+    style element.tag == #built, element.tag == #evolving {
+      opacity 100%
+    }
+    style element.tag == #planned {
+      color muted
+      border dashed
+    }
+    style element.tag == #research {
+      color indigo
+      border dashed
+    }
+  }
+
+  // The game system, decomposed into its containers.
+  view embertideSystem of embertide {
+    title 'Ember Tide — containers (content → engine → store → UI, with art, gates & build)'
+    include *
+
+    style element.tag == #research {
+      color indigo
+      border dashed
+    }
+    style element.tag == #evolving {
+      color amber
+    }
+    style element.tag == #planned {
+      color muted
+      border dashed
+    }
+  }
+
+  // ── Per-container component views ──────────────────────────────────────────
+
+  view engineContainer of embertide.engine {
+    title 'Rules engine — pure combat + economy resolver'
+    include *
+
+    style element.tag == #planned {
+      color muted
+      border dashed
+    }
+  }
+
+  view storeContainer of embertide.store {
+    title 'State store — Zustand slices at the edges'
+    include *
+
+    style element.tag == #evolving {
+      color amber
+    }
+  }
+
+  view uiContainer of embertide.ui {
+    title 'React board — single-screen UI'
+    include *
+
+    style element.tag == #evolving {
+      color amber
+    }
+  }
+
+  view artContainer of embertide.art {
+    title 'Art pipeline — SVG composer + fal.ai raster panels'
+    include *
+
+    style element.tag == #research {
+      color indigo
+      border dashed
+    }
+  }
+
+  view gatesContainer of embertide.gates {
+    title 'Quality gates — balance, accessibility & e2e'
+    include *
+
+    style element.tag == #evolving {
+      color amber
+    }
+  }
+
+  // ───────────────────────────────────────────────────────────────────────
+  // Walkthrough flows (dynamic views) — the narrative spine of a review.
+  // ───────────────────────────────────────────────────────────────────────
+
+  // Flow 1 — a player action becomes new board state.
+  dynamic view playFlow {
+    title 'Walkthrough — a tap becomes new state'
+    description 'The clean spine in motion. A tap is a dispatch; the store composes the pure engine output into board state; Zustand notifies subscribers and the view re-renders. No game logic lives in the UI, and the engine never imports the store.'
+
+    player -> embertide.ui 'tap a card / boss'
+    embertide.ui -> embertide.store 'dispatch action'
+    embertide.store -> embertide.engine 'resolve turn (pure)'
+    embertide.engine -> embertide.content 'read card / boss definitions'
+    embertide.engine -> embertide.store 'return new state'
+    embertide.store -> embertide.ui 'subscribers re-render'
+    embertide.ui -> player 'updated board'
+  }
+
+  // Flow 2 — a card gets its stained-glass art.
+  dynamic view artFlow {
+    title 'Walkthrough — rendering stained-glass art'
+    description 'A hybrid pipeline. The deterministic SVG composer always produces structural leaded-glass layers; where a reproducible 2K raster panel exists (generated offline from a committed fal.ai prompt and cached in git), the renderer prefers it. Nothing calls fal.ai at runtime.'
+
+    designer -> embertide.art 'write prompt md + tune template'
+    embertide.art -> falai 'generate 2K raster (dev-time)'
+    falai -> embertide.art 'webp panel → committed to git'
+    embertide.ui -> embertide.art 'request card art'
+    embertide.art -> embertide.ui 'composer SVG → raster fallback'
+  }
+
+  // Flow 3 — the gates keep it shippable and readable.
+  dynamic view gateFlow {
+    title 'Walkthrough — the quality gates'
+    description 'Balance and readability are correctness properties, not polish. Every change runs balance simulations against the pure engine (win rate in a 40–70% band) and contrast/touch-target checks against the UI; a hosted-CI deploy guard keeps the build local-household only before it ships to the website.'
+
+    embertide.gates -> embertide.engine '1000 seeded games → balance band'
+    embertide.gates -> embertide.ui 'axe + contrast + touch-target'
+    embertide.build -> embertide.ui 'vite build → static bundle'
+    embertide.build -> websiteHost 'build:web → /games/embertide/'
+    player -> websiteHost 'plays in-browser'
+  }
+
+  // Delivery-state lens: the moving / dev-time / planned surfaces.
+  view movingParts {
+    title 'Moving parts — evolving, dev-time & planned surfaces'
+    include
+      embertide,
+      embertide.art,
+      embertide.store,
+      embertide.ui,
+      embertide.gates,
+      embertide.save
+
+    style * {
+      opacity 30%
+    }
+    style element.tag == #research {
+      opacity 100%
+      color indigo
+      border dashed
+    }
+    style element.tag == #evolving {
+      opacity 100%
+      color amber
+    }
+    style element.tag == #planned {
+      opacity 100%
+      color muted
+      border dashed
+    }
+  }
+}
