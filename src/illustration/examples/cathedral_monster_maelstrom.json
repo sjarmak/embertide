@@ -1,5 +1,5 @@
 {
-  "id": "cathedral_monster_maelstrom_002",
+  "id": "cathedral_monster_maelstrom_003",
   "theme": "cathedral",
   "archetype": "monster",
   "subtype": "armored-cyclops-octopus",
@@ -13,5 +13,5 @@
   "usesHalo": false,
   "usesBackdropMotif": true,
   "notes": ["gdd.1.1 — Maren wild boss"],
-  "rasterImageUrl": "/illustrations/cathedral_monster_maelstrom_002.webp"
+  "rasterImageUrl": "/illustrations/cathedral_monster_maelstrom_003.webp"
 }

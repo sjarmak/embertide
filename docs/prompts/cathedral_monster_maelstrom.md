@@ -4,7 +4,7 @@
 - **Card:** maelstrom (Tidehold wild-boss, u-6a)
 - **Model:** fal-ai/nano-banana-pro
 - **Params:** `aspect_ratio=1:1`, `output_format=webp`, `resolution=2K`, `num_images=1`
-- **Raster:** `public/illustrations/cathedral_monster_maelstrom_002.webp`
+- **Raster:** `public/illustrations/cathedral_monster_maelstrom_003.webp`
 - **Spec:** `src/illustration/examples/cathedral_monster_maelstrom.json`
 
 ## Prompt
