@@ -28,6 +28,16 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      // The game is served from a long-lived dev server (local-household,
+      // no hosted deploy — see scripts/check-deploy.mjs). A previously
+      // registered service worker from an old `vite preview` build got stuck
+      // caching stale assets. `selfDestroying` makes any future build emit a
+      // worker that unregisters itself and clears all caches instead of one
+      // that caches — so this class of "stuck SW serving old art" can't
+      // recur. The already-stuck worker is killed by the static
+      // `public/sw.js` self-destroyer (the dev server serves that at the
+      // exact `/sw.js` scriptURL the stuck worker re-fetches on update).
+      selfDestroying: true,
       // scope + start_url track the deploy base so the installed PWA and its
       // service worker stay confined to (and launch into) the sub-path.
       scope: deployBase,
