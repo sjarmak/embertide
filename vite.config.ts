@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { tokensPlugin } from './tools/vite-plugin-tokens';
+import { pwaNoForcedReload } from './tools/vite-plugin-pwa-no-reload';
 
 // Remote-tunnel hosts (e.g. cloudflared) must be opted in explicitly via env.
 // Default is empty so the dev server only accepts default host headers
@@ -28,6 +29,22 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      // Embertide ships as a committed static build behind Cloudflare + Render
+      // (deploy-site.mjs) with content-hashed assets — the cache-first service
+      // worker buys almost no offline value and has twice caused "stuck SW
+      // serving stale art" incidents (white boss backgrounds; the
+      // [v2-art-pending] combat backdrop never clearing on some devices).
+      //
+      // `selfDestroying` makes every build emit a worker that, on activate,
+      // deletes all Cache Storage entries and unregisters itself. That evicts
+      // the previously-registered embertide-scoped worker (and its stale
+      // precached app shell) from every device, and keeps the staleness class
+      // from recurring. We deliberately rely on the plugin-generated worker
+      // rather than re-adding the earlier custom public/sw.js — that version
+      // force-reloaded clients (`client.navigate`), which can reload-loop and
+      // is the likely reason 75f7368 was reverted minutes later (b3f65a2).
+      selfDestroying: true,
+      integration: { closeBundleOrder: 'pre' },
       // scope + start_url track the deploy base so the installed PWA and its
       // service worker stay confined to (and launch into) the sub-path.
       scope: deployBase,
@@ -41,6 +58,7 @@ export default defineConfig({
         start_url: deployBase,
       },
     }),
+    pwaNoForcedReload(),
   ],
   server: {
     host: true,
