@@ -13,10 +13,9 @@
  *     hardcoded REGION_BOSS_HP=12 / WILD_BOSS_HP=8; those live on as
  *     fallbacks for test-only cards that don't appear in BOSS_HP.
  *   - `simulateCombat` accepts a `heirloomCount` parameter (default 0)
- *     that injects the first N heirlooms from the canonical order
- *     `[craghorn-tusk, boulderkin-core, sentinel-eye, chimera-sword]`
- *     into the synthetic combat deck before shuffle. Enables the
- *     PRD §C8 heirloom win-rate curve assertions in the test file.
+ *     plus an optional injection order. The balance harness cycles that
+ *     order through all 24 permutations for the audited region-boss
+ *     curve, avoiding the old "Craghorn Tusk is always first" artifact.
  *   - `entryContext.entrySource` is set to `'wild-boss-slot'` /
  *     `'region-boss-slot'` based on boss tier (replacing the legacy
  *     `'field'` source). Mirrors u-9c's slot-engagement store methods.
@@ -134,12 +133,9 @@ const FALLBACK_REGION_HP = 12;
 const FALLBACK_WILD_HP = 8;
 
 /**
- * Heirloom card ids in the canonical drop order — u-9f parameter
- * convention: `heirloomCount=0` injects none, `heirloomCount=1` injects
- * only craghorn-tusk, `heirloomCount=4` injects all four. Matches the task
- * spec's "first N from HEIRLOOM_DROPS values" wording (the values of
- * HEIRLOOM_DROPS appear in this exact order per the wild-boss defeat
- * sequence across v2.0's three zones).
+ * Heirloom card ids in canonical drop order. The canonical sequence is
+ * permutation rank zero; subsequent simulation seeds rotate through the
+ * other 23 possible acquisition orders.
  */
 const HEIRLOOM_ORDER: readonly string[] = [
   'craghorn-tusk',
@@ -150,6 +146,37 @@ const HEIRLOOM_ORDER: readonly string[] = [
 
 /** Maximum heirloom count accepted by `simulateCombat`. */
 const MAX_HEIRLOOM_COUNT = HEIRLOOM_ORDER.length;
+
+/** Number of distinct injection orders for the four simulated heirlooms (4!). */
+const HEIRLOOM_PERMUTATION_COUNT = 24;
+
+/** Small factorial table used to unrank the seed's heirloom permutation. */
+const FACTORIALS: readonly number[] = [1, 1, 2, 6, 24];
+
+/**
+ * Return one of all 24 heirloom injection orders for a simulation seed.
+ *
+ * Factoradic unranking makes seeds 1..24 cover every permutation exactly
+ * once, then repeats that balanced schedule. This is deliberately separate
+ * from the deck-shuffle RNG: permutation coverage is stratified rather than
+ * left to chance, while a repeated seed still produces the same combat.
+ */
+export function heirloomOrderForSeed(seed: number): readonly string[] {
+  const remaining = [...HEIRLOOM_ORDER];
+  const order: string[] = [];
+  const integerSeed = Number.isFinite(seed) ? Math.trunc(seed) : 1;
+  let rank =
+    (((integerSeed - 1) % HEIRLOOM_PERMUTATION_COUNT) + HEIRLOOM_PERMUTATION_COUNT) %
+    HEIRLOOM_PERMUTATION_COUNT;
+
+  for (let slots = remaining.length; slots > 0; slots -= 1) {
+    const blockSize = FACTORIALS[slots - 1];
+    const index = Math.floor(rank / blockSize);
+    order.push(remaining.splice(index, 1)[0]);
+    rank %= blockSize;
+  }
+  return order;
+}
 
 /**
  * Per-strategy synthetic card-power distribution. The greedy combat
@@ -230,8 +257,8 @@ function mintSyntheticCard(seed: number, index: number, power: number): Card {
 /**
  * Assemble the strategy-specific combat deck. Deterministic: same
  * `seed` produces the same shuffle order. Optionally injects the
- * first `heirloomCount` heirlooms per the u-9f parameter convention
- * (see `HEIRLOOM_ORDER`).
+ * first `heirloomCount` heirlooms from the provided acquisition order.
+ * The permutation-sampled curve passes `heirloomOrderForSeed(seed)`.
  *
  * Heirlooms are injected BEFORE shuffle so they mix into the deck
  * uniformly. The resulting curve hits the PRD §C8 monotonic shape:
@@ -242,10 +269,11 @@ function buildSyntheticDeck(
   strategy: CombatEngagingStrategy,
   seed: number,
   heirloomCount: number,
+  heirloomOrder: readonly string[],
 ): readonly Card[] {
   const powers = STRATEGY_DECKS[strategy];
   const deck: Card[] = powers.map((p, i) => mintSyntheticCard(seed, i, p));
-  for (const heirloom of heirloomCardsFor(heirloomCount)) {
+  for (const heirloom of heirloomCardsFor(heirloomCount, heirloomOrder)) {
     deck.push(heirloom);
   }
   // Fisher-Yates via the seeded RNG so "highest-power card first" is
@@ -347,14 +375,14 @@ function mintHeirloomCard(cardId: string): Card {
 }
 
 /**
- * Build the list of heirloom cards to inject for a given heirloom
- * count. `count` is clamped to `[0, 4]`; out-of-range values are
- * silently bounded so the sim never crashes on invalid input but the
- * caller still gets a deterministic result.
+ * Build the list of heirloom cards to inject for a given count and
+ * sampled order. `count` is clamped to `[0, 4]`; out-of-range values
+ * are silently bounded so the sim never crashes on invalid input but
+ * the caller still gets a deterministic result.
  */
-function heirloomCardsFor(count: number): readonly Card[] {
+function heirloomCardsFor(count: number, order: readonly string[]): readonly Card[] {
   const clamped = Math.max(0, Math.min(MAX_HEIRLOOM_COUNT, Math.floor(count)));
-  return HEIRLOOM_ORDER.slice(0, clamped).map(mintHeirloomCard);
+  return order.slice(0, clamped).map(mintHeirloomCard);
 }
 
 /**
@@ -374,8 +402,9 @@ function initialCombatTurnState(
   bossId: string,
   seed: number,
   heirloomCount: number,
+  heirloomOrder: readonly string[],
 ): CombatTurnState {
-  const deck = buildSyntheticDeck(strategy, seed, heirloomCount);
+  const deck = buildSyntheticDeck(strategy, seed, heirloomCount, heirloomOrder);
   const { combatDeck, combatHand, combatDiscard } = initialCombatDraw(deck);
   const boss = buildBoss(bossId);
   const players = buildSyntheticPlayers();
@@ -486,18 +515,20 @@ function reshuffleIfNeeded(state: CombatTurnState, seed: number): CombatTurnStat
  * number isn't meaningful for them.
  *
  * @param heirloomCount optional (default 0) — number of heirlooms to
- *   inject into the combat deck. Heirlooms are drawn from the
- *   canonical order `[craghorn-tusk, boulderkin-core, sentinel-eye,
- *   chimera-sword]`, so `heirloomCount=2` injects `craghorn-tusk`
- *   AND `boulderkin-core`. Clamped to `[0, 4]`.
+ *   inject into the combat deck. Clamped to `[0, 4]`.
+ * @param heirloomOrder optional — acquisition order to sample. Callers
+ *   measuring the curve pass `heirloomOrderForSeed(seed)` so seeds 1..24
+ *   cover every permutation once. Defaults to canonical drop order for
+ *   callers that are not conducting an order-sampling audit.
  */
 export function simulateCombat(
   strategy: CombatEngagingStrategy,
   bossId: string,
   seed: number,
   heirloomCount: number = 0,
+  heirloomOrder: readonly string[] = HEIRLOOM_ORDER,
 ): CombatSimResult {
-  let state = initialCombatTurnState(strategy, bossId, seed, heirloomCount);
+  let state = initialCombatTurnState(strategy, bossId, seed, heirloomCount, heirloomOrder);
   let iterations = 0;
   while (state.terminal === null && iterations < HARD_CAP_TURNS) {
     // Reshuffle discard into deck + refill hand if the hand emptied
