@@ -54,6 +54,10 @@ example_smudges/
 # Local agent runtime state (Gas City events/settings)
 .gc/
 
+# Gas City operational artifacts (local only)
+.gc-reports/
+.gc-context/
+
 # Codex CLI install state (per-user plugin, not project state)
 .codex/
 
