@@ -3,7 +3,7 @@
  */
 
 import type { CombatState } from '../../types/combat';
-import type { KidPlayer } from '../../store/types';
+import type { KidPlayer } from '../../types/kidPlayer';
 
 /**
  * Resolve which player's seat landed the finishing blow in a combat.

@@ -10,7 +10,7 @@
  */
 
 import type { CombatState } from '../../../types/combat';
-import type { KidPlayer } from '../../../store/types';
+import type { KidPlayer } from '../../../types/kidPlayer';
 import type { BossResolveOutcome } from './types';
 
 /**

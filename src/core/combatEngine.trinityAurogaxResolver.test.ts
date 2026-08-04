@@ -33,7 +33,7 @@ import type {
   CombatEntryContext,
   CombatState,
 } from '../types/combat';
-import type { KidPlayer } from '../store/types';
+import type { KidPlayer } from '../types/kidPlayer';
 import {
   combatTurnReducer,
   TRINITY_AUROGAX_LOG_GLOOM,

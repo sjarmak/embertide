@@ -10,7 +10,7 @@
  */
 
 import type { CombatState } from '../../../types/combat';
-import type { KidPlayer } from '../../../store/types';
+import type { KidPlayer } from '../../../types/kidPlayer';
 
 /**
  * Per-turn boss-resolve outcome produced by a dynamic resolver. The

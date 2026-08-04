@@ -17,9 +17,8 @@ import type {
 } from '../../types/combat';
 import type { CombatEffect } from '../../types/combatEffect';
 import type { Card } from '../../types/card';
-import type { KidPlayer } from '../../store/types';
-import { applyDamage } from '../../store/gameStore';
-import { reduceIncomingDamage } from '../../store/slices/endgame';
+import type { KidPlayer } from '../../types/kidPlayer';
+import { applyDamage, reduceIncomingDamage } from '../playerHp';
 import { DESPERATION_HP_PCT } from '../balance';
 import { combatEffectFor } from '../../data/combatEffects';
 

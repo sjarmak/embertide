@@ -64,6 +64,7 @@ import {
   type CombatTurnState,
 } from '../core/combatEngine';
 import { applyHeartReward } from '../core/vitalEmber';
+import { applyDamage } from '../core/playerHp';
 import { d6, d20 } from '../rules/dice';
 import {
   PRISM_CHIMERA_ID,
@@ -535,26 +536,10 @@ import {
 } from './combatBootstrap';
 
 /**
- * Centralized HP-damage helper (amendment A3). Damaging a player clamps
- * their HP at 0 and transitions them into the `downed` state if HP
- * reaches zero. A fresh downed incident resets `revivedThisIncident` to
- * false so the teammate-revive budget refreshes for this incident.
- *
- * Pure: returns a new `KidPlayer`.
+ * Compatibility export for embertide-v4x.
+ * Remove once callers import HP policy from `src/core/playerHp` directly.
  */
-export function applyDamage(player: KidPlayer, amount: number): KidPlayer {
-  if (amount <= 0) return player;
-  const nextHp = Math.max(0, player.hp - amount);
-  if (nextHp === 0) {
-    return {
-      ...player,
-      hp: 0,
-      downed: true,
-      revivedThisIncident: false,
-    };
-  }
-  return { ...player, hp: nextHp };
-}
+export { applyDamage };
 
 // Combat entry/exit glue moved to ./combatBootstrap.ts. enterCombatAction
 // and buildResolveWinAction are re-exported for the 4 test-file consumers

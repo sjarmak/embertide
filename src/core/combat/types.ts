@@ -14,7 +14,7 @@
 
 import type { CombatEffect } from '../../types/combatEffect';
 import type { CombatState } from '../../types/combat';
-import type { KidPlayer } from '../../store/types';
+import type { KidPlayer } from '../../types/kidPlayer';
 
 /**
  * Terminal marker produced by `combatTurnReducer` when the combat

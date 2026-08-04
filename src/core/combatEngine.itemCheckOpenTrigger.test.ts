@@ -20,7 +20,7 @@ import type {
   CombatState,
 } from '../types/combat';
 import type { Card } from '../types/card';
-import type { KidPlayer } from '../store/types';
+import type { KidPlayer } from '../types/kidPlayer';
 import { combatTurnReducer, type CombatTurnState } from './combatEngine';
 import { ITEM_CHECK_EXPOSED_BONUS } from './combat/archetypeResolvers';
 import { makeKidPlayer } from '../testing/stateFixtures';

@@ -8,10 +8,16 @@
 
 import type { Card } from '../../types/card';
 import type { CombatEntryContext } from '../../types/combat';
-import type { KidGameState, KidPlayer } from '../../store/types';
+import type { KidPlayer } from '../../types/kidPlayer';
 import { createSeededRng } from '../../rules/chestPool';
 import { COMBAT_HAND_CAP, COMBAT_INITIAL_DRAW } from '../balance';
 import { baseIdOf, isActiveItemCard, isCombatEligibleStarterRole, isWispCard } from './identity';
+
+/** Store-free state projection required to assemble a combat deck. */
+export interface CombatDeckState {
+  readonly players: readonly KidPlayer[];
+  readonly seed: number;
+}
 
 /**
  * Gather all cards from a single player's zones that contribute to
@@ -155,7 +161,7 @@ export const mulberry32 = createSeededRng;
  * Returns the SHUFFLED combat deck. Callers pair this with
  * `initialCombatDraw` to fill the starting hand.
  */
-export function buildCombatDeck(state: KidGameState, entryContext: CombatEntryContext): Card[] {
+export function buildCombatDeck(state: CombatDeckState, entryContext: CombatEntryContext): Card[] {
   const eligible: Card[] = [];
 
   // 1. Starter cards (role starts with 'starter-') across every

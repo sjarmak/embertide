@@ -19,7 +19,7 @@
  * NOT applied to wisp revive (which restores to `hpMax` without
  * growing the pool) or any future damage-time interaction.
  */
-import type { KidPlayer } from '../store/types';
+import type { KidPlayer } from '../types/kidPlayer';
 
 /**
  * Hard ceiling on `hpMax` growth. Set to `Infinity` on 2026-04-23 —

@@ -23,7 +23,6 @@ import type { CombatEffect } from '../../../types/combatEffect';
 import { COLOSSEUM_BONEREAVER_T1 } from '../../../data/colosseum/tier1';
 import { COLOSSEUM_CHIMERA_T2 } from '../../../data/colosseum/tier2';
 import { ZONE_BOSS_SPECS } from '../../../data/zones/bossSpecs';
-import { KEYWORD_VOCABULARY_ZONE_ALLOWLIST } from '../../../store/combatBootstrap';
 import { applyDuelArchetypeTick, applyDuelAdaptivePenalty } from './duel';
 import { applyArchetypeTick } from './index';
 
@@ -597,7 +596,4 @@ describe('zone-gating regression — duel zone boss without allowlist activation
     expect(result).toBeNull();
   });
 
-  it('the production KEYWORD_VOCABULARY_ZONE_ALLOWLIST is empty — zone activation is off by default', () => {
-    expect(KEYWORD_VOCABULARY_ZONE_ALLOWLIST.size).toBe(0);
-  });
 });

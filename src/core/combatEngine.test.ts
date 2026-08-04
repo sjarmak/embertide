@@ -16,7 +16,7 @@ import { createSeededRng } from '../rules/chestPool';
 import { KID_CARDS } from '../data/cards';
 import type { Card } from '../types/card';
 import type { BattlefieldCard, CombatBoss, CombatEntryContext, CombatState } from '../types/combat';
-import type { KidGameState, KidPlayer } from '../store/types';
+import type { KidPlayer } from '../types/kidPlayer';
 import {
   applyBattlefieldDamage,
   baseIdOf,
@@ -29,6 +29,8 @@ import {
 } from './combatEngine';
 import { DESPERATION_HP_PCT } from './balance';
 import { makeKidPlayer, makeKidGameState } from '../testing/stateFixtures';
+
+type KidGameState = ReturnType<typeof makeKidGameState>;
 
 // ---------------------------------------------------------------------------
 // Fixtures.

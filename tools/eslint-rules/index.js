@@ -4,6 +4,7 @@
  */
 
 import noInlineFramerTransition from './no-inline-framer-transition.js';
+import noCoreStoreImport from './no-core-store-import.js';
 import noRawItemPassiveRead from './no-raw-item-passive-read.js';
 
 /** @type {import('eslint').ESLint.Plugin} */
@@ -14,9 +15,10 @@ const hcPlugin = {
   },
   rules: {
     'no-inline-framer-transition': noInlineFramerTransition,
+    'no-core-store-import': noCoreStoreImport,
     'no-raw-item-passive-read': noRawItemPassiveRead,
   },
 };
 
 export default hcPlugin;
-export { noInlineFramerTransition, noRawItemPassiveRead };
+export { noCoreStoreImport, noInlineFramerTransition, noRawItemPassiveRead };

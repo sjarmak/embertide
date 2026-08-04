@@ -51,6 +51,18 @@ export default [
     ],
   },
 
+  // Core is a pure engine boundary. Store state flows in through parameters;
+  // importing Zustand modules here recreates the embertide-v4x cycle.
+  {
+    files: ['src/core/**/*.{ts,tsx,js,jsx}'],
+    plugins: {
+      hc: hcPlugin,
+    },
+    rules: {
+      'hc/no-core-store-import': 'error',
+    },
+  },
+
   // ---------------------------------------------------------------------------
   // Baseline: JavaScript recommended.
   // ---------------------------------------------------------------------------

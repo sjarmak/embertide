@@ -166,48 +166,10 @@ export function applyItemPassivesForTrigger(
 }
 
 /**
- * Sum the `damage-reduction` amounts from every owned `on-damage`
- * item-passive (embertide-4uyn.1). Pure: a player with three
- * iron-wards equipped reduces incoming damage by 3 per hit; the
- * reducer in {@link reduceIncomingDamage} clamps the result at zero.
- *
- * Iteration order matches `player.items` so the sum is deterministic
- * given equip order. Other on-damage payload kinds (currently none —
- * iron-ward is the only v2.1 author) are ignored here; future cards
- * extending the passive payload coverage land their dispatch branch
- * alongside the new card.
+ * Compatibility export for embertide-v4x.
+ * Remove once callers import HP policy from `src/core/playerHp` directly.
  */
-function totalOnDamageReduction(player: KidPlayer): number {
-  let sum = 0;
-  for (const item of player.items) {
-    for (const passive of getPassives(item)) {
-      if (passive.trigger !== 'on-damage') continue;
-      if (passive.effect.kind !== 'damage-reduction') continue;
-      sum += passive.effect.amount;
-    }
-  }
-  return sum;
-}
-
-/**
- * Compute the post-passive damage amount that should land on the
- * player (embertide-4uyn.1). Fires once per damage instance —
- * every separate `applyDamage` call routes through here. Card text
- * "Reduce damage taken by 1" reads literally: each hit is reduced.
- * Multiple `on-damage` passives stack additively. Result is clamped
- * at zero so a 1-damage hit against a player holding two iron-wards
- * lands as 0 (no overheal credit).
- *
- * Pure — does NOT mutate the player; the returned number is the
- * reduced damage to feed into {@link applyDamage}. Use at every
- * combat damage routing site (see combatEngine.ts).
- */
-export function reduceIncomingDamage(player: KidPlayer, amount: number): number {
-  if (amount <= 0) return amount;
-  const reduction = totalOnDamageReduction(player);
-  if (reduction <= 0) return amount;
-  return Math.max(0, amount - reduction);
-}
+export { reduceIncomingDamage } from '../../core/playerHp';
 
 /**
  * Decrement the cooldown readout on every item-active card in the

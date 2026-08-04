@@ -20,7 +20,6 @@ import { describe, expect, it } from 'vitest';
 import type { CombatBoss } from '../../../types/combat';
 import { COLOSSEUM_BOULDERKIN_T1 } from '../../../data/colosseum/tier1';
 import { ZONE_BOSS_SPECS } from '../../../data/zones/bossSpecs';
-import { KEYWORD_VOCABULARY_ZONE_ALLOWLIST } from '../../../store/combatBootstrap';
 import { applyLayeredArchetypeTick, routeLayeredDamage } from './layered';
 import { applyArchetypeTick } from './index';
 
@@ -420,7 +419,7 @@ describe('zone-gating regression — layered zone boss without allowlist activat
     // purely that routeLayeredDamage does NOT mutate or reroute.
   });
 
-  it('a zone boss WITH archetype:layered but empty allowlist cannot be created via enterCombatAction (allowlist gate)', () => {
+  it('a zone boss layered spec remains data-only until combatBootstrap activates it', () => {
     // This test documents the architectural contract: the allowlist gate
     // lives in enterCombatAction (combatBootstrap.ts), not in the resolver.
     // A boss constructed directly with archetype:'layered' (e.g. in tests)
@@ -438,7 +437,5 @@ describe('zone-gating regression — layered zone boss without allowlist activat
     expect(ironSentinelSpec.archetype).toBe('layered');
     expect(ironSentinelSpec.stateTags[0].kind).toBe('layered');
 
-    // And the production allowlist is empty — zone activation is off by default.
-    expect(KEYWORD_VOCABULARY_ZONE_ALLOWLIST.size).toBe(0);
   });
 });

@@ -3,9 +3,8 @@
  *
  * Pure functions + a reducer that power the MTG-style boss-combat
  * sub-state. This module is intentionally isolated from main-board
- * glue: it imports the combat schema (u-8a), the KidPlayer shape, and
- * the `applyDamage` helper, but it does NOT touch the Zustand store or
- * the main-board action router. The wiring layer (u-8c
+ * glue: it imports store-free combat and player domain policy, and does
+ * not import or initialize the Zustand store. The wiring layer (u-8c
  * `src/core/combat.ts`) composes this module's output into the
  * `KidGameState.activeCombat` field via the `COMBAT_ENTER` /
  * `COMBAT_RESOLVE_WIN` / `COMBAT_RESOLVE_LOSS` reducer actions.
