@@ -141,7 +141,7 @@ function EmbertideShardPolygon({
           <polygon points={def.points} fill={`url(#${hollowGradientId})`} />
           <polygon
             points={def.points}
-            fill="#000000"
+            fill="var(--hc-lead-iron-900, #0e0c14)"
             fillOpacity={0.001}
             filter={`url(#${innerShadowId})`}
           />
@@ -221,9 +221,9 @@ export default function EmbertideStrip({ shards }: EmbertideStripProps): JSX.Ele
 
           {/* Empty hollow: radial, near-black at center → warmer dark at rim. */}
           <radialGradient id={hollowGradientId} cx="50%" cy="55%" r="65%">
-            <stop offset="0%" stopColor="#000000" />
-            <stop offset="55%" stopColor="#0a0806" />
-            <stop offset="100%" stopColor="#1c160f" />
+            <stop offset="0%" stopColor="var(--hc-shadow-900, #05080f)" />
+            <stop offset="55%" stopColor="var(--hc-lead-iron-900, #0e0c14)" />
+            <stop offset="100%" stopColor="var(--hc-lead-iron-700, #1a1620)" />
           </radialGradient>
 
           {/* Filled stained-glass: varied amber/gold tones across diagonal. */}

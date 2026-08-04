@@ -52,8 +52,8 @@ export const Defaults: Story = () => (
       <svg width="120" height="120" viewBox="0 0 120 120" aria-label="baseline gem">
         <polygon
           points="60,12 108,40 90,108 30,108 12,40"
-          fill="#2E4BA0"
-          stroke="#1A1620"
+          fill="var(--hc-jewel-sapphire-500, #2e4ba0)"
+          stroke="var(--hc-lead-iron-700, #1a1620)"
           strokeWidth="2"
         />
       </svg>
@@ -65,8 +65,8 @@ export const Defaults: Story = () => (
         <g filter="url(#hc-glass-refract)">
           <polygon
             points="60,12 108,40 90,108 30,108 12,40"
-            fill="#2E4BA0"
-            stroke="#1A1620"
+            fill="var(--hc-jewel-sapphire-500, #2e4ba0)"
+            stroke="var(--hc-lead-iron-700, #1a1620)"
             strokeWidth="2"
           />
         </g>
@@ -79,8 +79,8 @@ export const Defaults: Story = () => (
         <g filter="url(#hc-soft-glow)">
           <polygon
             points="60,12 108,40 90,108 30,108 12,40"
-            fill="#E0A82E"
-            stroke="#1A1620"
+            fill="var(--hc-jewel-amber-300, #e8bd59)"
+            stroke="var(--hc-lead-iron-700, #1a1620)"
             strokeWidth="2"
           />
         </g>

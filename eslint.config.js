@@ -94,6 +94,7 @@ export default [
     },
     rules: {
       'hc/no-inline-framer-transition': 'error',
+      'hc/no-raw-jsx-color': 'error',
       // Allow non-breaking spaces (U+00A0) inside template literals so
       // effect-text rendering can keep `+5 [icon]` from line-wrapping
       // between number and trailing icon. NBSP outside strings is still

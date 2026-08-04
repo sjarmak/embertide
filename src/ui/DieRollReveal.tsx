@@ -204,46 +204,58 @@ function D20Face({ face }: D20FaceProps): JSX.Element {
             the highlight zone and pairs with the specular gloss; the
             darkest (bottom) anchors the die in shadow. */}
         <linearGradient id="d20-facet-1" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#8fb8ee" stopOpacity="0.92" />
-          <stop offset="100%" stopColor="#1a3568" stopOpacity="0.98" />
+          <stop offset="0%" stopColor="var(--hc-jewel-sapphire-100, #cbd8f1)" stopOpacity="0.92" />
+          <stop
+            offset="100%"
+            stopColor="var(--hc-jewel-sapphire-700, #1a2e6e)"
+            stopOpacity="0.98"
+          />
         </linearGradient>
         <linearGradient id="d20-facet-2" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#6e9bdc" stopOpacity="0.88" />
-          <stop offset="100%" stopColor="#102347" stopOpacity="0.98" />
+          <stop offset="0%" stopColor="var(--hc-jewel-sapphire-300, #6e8ccb)" stopOpacity="0.88" />
+          <stop
+            offset="100%"
+            stopColor="var(--hc-jewel-sapphire-900, #0d1a46)"
+            stopOpacity="0.98"
+          />
         </linearGradient>
         <linearGradient id="d20-facet-3" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0%" stopColor="#385d9d" stopOpacity="0.92" />
-          <stop offset="100%" stopColor="#070f25" stopOpacity="0.98" />
+          <stop offset="0%" stopColor="var(--hc-jewel-sapphire-500, #2e4ba0)" stopOpacity="0.92" />
+          <stop offset="100%" stopColor="var(--hc-shadow-900, #05080f)" stopOpacity="0.98" />
         </linearGradient>
         <linearGradient id="d20-facet-4" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#4773b6" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#0f1f3f" stopOpacity="0.98" />
+          <stop offset="0%" stopColor="var(--hc-jewel-sapphire-300, #6e8ccb)" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="var(--hc-shadow-700, #131d3e)" stopOpacity="0.98" />
         </linearGradient>
         <linearGradient id="d20-facet-5" x1="1" y1="1" x2="0" y2="0">
-          <stop offset="0%" stopColor="#9cc1f0" stopOpacity="0.92" />
-          <stop offset="100%" stopColor="#1d3a6d" stopOpacity="0.98" />
+          <stop offset="0%" stopColor="var(--hc-jewel-sapphire-100, #cbd8f1)" stopOpacity="0.92" />
+          <stop
+            offset="100%"
+            stopColor="var(--hc-jewel-sapphire-700, #1a2e6e)"
+            stopOpacity="0.98"
+          />
         </linearGradient>
         {/* Cream marble center — same parchment family as the panel
             ground so the numeral reads. */}
         <radialGradient id="d20-center" cx="50%" cy="40%" r="60%">
-          <stop offset="0%" stopColor="#fbf3d8" />
-          <stop offset="70%" stopColor="#e6cf95" />
-          <stop offset="100%" stopColor="#b88f48" />
+          <stop offset="0%" stopColor="var(--hc-parchment-50, #fbf6e9)" />
+          <stop offset="70%" stopColor="var(--hc-parchment-300, #e0d2ab)" />
+          <stop offset="100%" stopColor="var(--hc-lead-gold-500, #b89142)" />
         </radialGradient>
         {/* Specular highlight overlay — single gentle gloss across the
             top-left so the die reads as glass rather than matte. */}
         <radialGradient id="d20-gloss" cx="30%" cy="22%" r="55%">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.45" />
-          <stop offset="60%" stopColor="#ffffff" stopOpacity="0.08" />
-          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--hc-jewel-pearl-100, #f2f4f7)" stopOpacity="0.45" />
+          <stop offset="60%" stopColor="var(--hc-jewel-pearl-100, #f2f4f7)" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="var(--hc-jewel-pearl-100, #f2f4f7)" stopOpacity="0" />
         </radialGradient>
       </defs>
 
       {/* Outer pentagon backplate — soft drop-shadow + gold leading. */}
       <polygon
         points={outerPoints}
-        fill="#1a2e57"
-        stroke="#7a5a1e"
+        fill="var(--hc-shadow-600, #1e2b52)"
+        stroke="var(--hc-lead-gold-700, #8b6a2a)"
         strokeWidth="2.5"
         strokeLinejoin="round"
       />
@@ -253,35 +265,35 @@ function D20Face({ face }: D20FaceProps): JSX.Element {
       <polygon
         points={facetTopRight}
         fill="url(#d20-facet-1)"
-        stroke="#b89142"
+        stroke="var(--hc-lead-gold-500, #b89142)"
         strokeWidth="1.8"
         strokeLinejoin="round"
       />
       <polygon
         points={facetBottomRight}
         fill="url(#d20-facet-2)"
-        stroke="#b89142"
+        stroke="var(--hc-lead-gold-500, #b89142)"
         strokeWidth="1.8"
         strokeLinejoin="round"
       />
       <polygon
         points={facetBottom}
         fill="url(#d20-facet-3)"
-        stroke="#b89142"
+        stroke="var(--hc-lead-gold-500, #b89142)"
         strokeWidth="1.8"
         strokeLinejoin="round"
       />
       <polygon
         points={facetBottomLeft}
         fill="url(#d20-facet-4)"
-        stroke="#b89142"
+        stroke="var(--hc-lead-gold-500, #b89142)"
         strokeWidth="1.8"
         strokeLinejoin="round"
       />
       <polygon
         points={facetTopLeft}
         fill="url(#d20-facet-5)"
-        stroke="#b89142"
+        stroke="var(--hc-lead-gold-500, #b89142)"
         strokeWidth="1.8"
         strokeLinejoin="round"
       />
@@ -290,7 +302,7 @@ function D20Face({ face }: D20FaceProps): JSX.Element {
       <polygon
         points={innerPoints}
         fill="url(#d20-center)"
-        stroke="#7a5a1e"
+        stroke="var(--hc-lead-gold-700, #8b6a2a)"
         strokeWidth="1.6"
         strokeLinejoin="round"
       />
@@ -303,7 +315,7 @@ function D20Face({ face }: D20FaceProps): JSX.Element {
         y="44"
         textAnchor="middle"
         dominantBaseline="central"
-        fill="#1a1005"
+        fill="var(--hc-lead-iron-900, #0e0c14)"
         style={{
           fontFamily: 'var(--hc-font-display)',
           fontSize: 'var(--hc-text-2xl)',

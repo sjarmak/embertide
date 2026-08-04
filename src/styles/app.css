@@ -56,11 +56,10 @@
     'cv11' 1,
     'ss01' 1;
 
-  /* embertide-9c7: explicit dark theme so the PWA manifest bg (#1a1a1a)
-     and the in-app canvas agree, and so we never render system-default black
-     text on a dark canvas. */
-  background-color: #1a1a1a;
-  color: #f2f2f2;
+  /* embertide-9c7: explicit dark HC theme so the initial canvas never renders
+     system-default black text on a dark PWA background. */
+  background-color: var(--hc-bg-app, #05080f);
+  color: var(--hc-text-primary, #f6f2e6);
   font-synthesis: none;
   text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
@@ -358,7 +357,7 @@ body {
   border: 1px solid #444;
   border-radius: 6px;
   background: #fafafa;
-  color: #1a1a1a;
+  color: var(--hc-lead-iron-900, #0e0c14);
   cursor: pointer;
 }
 
@@ -375,7 +374,7 @@ body {
 .card-cost {
   font-size: var(--hc-text-xs);
   margin-top: 4px;
-  color: #555;
+  color: var(--hc-parchment-700, #7f6a3f);
 }
 
 /* ------------------------------------------------------------------------- */
@@ -1067,7 +1066,7 @@ body {
   border-radius: 6px;
   font-size: var(--hc-text-xs);
   font-weight: var(--hc-font-weight-bold);
-  color: #111111;
+  color: var(--hc-lead-iron-900, #0e0c14);
 }
 
 .cost-badge-item {
@@ -1652,7 +1651,7 @@ body {
   /* Light label against gloom — magenta-tinted silver, with a subtle
      drop shadow so the gothic letters separate from the painterly
      backdrop. */
-  color: #f1d6e7;
+  color: var(--hc-jewel-amethyst-100, #decde9);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
 }
 
@@ -1681,7 +1680,7 @@ body {
 }
 
 .card-pile-void .card-pile-count {
-  color: #f1d6e7;
+  color: var(--hc-jewel-amethyst-100, #decde9);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
   background: rgba(20, 6, 18, 0.82);
   border-color: var(--hc-void-magenta-700, #6e1e4d);
@@ -3191,7 +3190,7 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
   background: #ffffff;
   border: 1px solid #666;
   border-radius: 4px;
-  color: #111111;
+  color: var(--hc-lead-iron-900, #0e0c14);
   max-width: 96px;
   text-align: center;
   line-height: 1.1;

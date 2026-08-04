@@ -135,8 +135,16 @@ function greenShardGlyph(): JSX.Element {
       <line x1="10" y1="12" x2="30" y2="12" stroke={GOLD_DARK} strokeWidth="0.7" opacity="0.85" />
       <line x1="10" y1="28" x2="30" y2="28" stroke={GOLD_DARK} strokeWidth="0.7" opacity="0.85" />
       <line x1="20" y1="3" x2="20" y2="37" stroke={GOLD_DARK} strokeWidth="0.7" opacity="0.85" />
-      <polygon points="20,3 30,12 20,12" fill="rgba(255,255,255,0.22)" />
-      <polygon points="10,12 20,12 20,28 10,28" fill="rgba(255,255,255,0.06)" />
+      <polygon
+        points="20,3 30,12 20,12"
+        fill="var(--hc-jewel-pearl-100, #f2f4f7)"
+        fillOpacity="0.22"
+      />
+      <polygon
+        points="10,12 20,12 20,28 10,28"
+        fill="var(--hc-jewel-pearl-100, #f2f4f7)"
+        fillOpacity="0.06"
+      />
     </g>
   );
 }
@@ -212,7 +220,11 @@ function swordGlyph(): JSX.Element {
         strokeWidth="1.1"
       />
       {/* Top-left blade highlight. */}
-      <polygon points="20,4 23,12 20,12" fill="rgba(255,255,255,0.4)" />
+      <polygon
+        points="20,4 23,12 20,12"
+        fill="var(--hc-jewel-pearl-100, #f2f4f7)"
+        fillOpacity="0.4"
+      />
     </g>
   );
 }
@@ -263,7 +275,8 @@ function keyGlyph(): JSX.Element {
       {/* Top-left highlight on bow. */}
       <path
         d="M10 8 A6 6 0 0 1 14 5"
-        stroke="rgba(255,255,255,0.35)"
+        stroke="var(--hc-jewel-pearl-100, #f2f4f7)"
+        strokeOpacity="0.35"
         strokeWidth="1.4"
         fill="none"
       />

@@ -6,8 +6,11 @@
 // a `var(--hc-*)` token (with a tight allowlist of CSS-wide keywords). Literal
 // hex / rgb() / named colors are errors. See PRD work unit T-3.
 //
-// `src/styles/app.css` is exempt for now — it migrates in V-11 per the PRD
-// migration order. See .claude/design/elysian-cathedral/palette.md §11.
+// The npm script intentionally scopes this product gate to `src/**/*.css`.
+// `public/art-preview.css` styles a standalone internal art-review utility,
+// and `architecture/site/styles.css` styles generated architecture docs;
+// neither stylesheet ships in the browser game or uses its token runtime.
+// Their local palettes are therefore deliberately outside the HC product gate.
 //
 // Rule scope intentionally narrow: we want the strict-value rule to be the
 // only signal fired during this work unit. Formatting-level rules from
@@ -87,16 +90,14 @@ module.exports = {
   },
   overrides: [
     {
-      // Legacy file — color/font-* migrate in V-11 per PRD A-5. The blanket
-      // exemption stayed for those properties; this scoped rule narrows
-      // strict-value enforcement to letter-spacing only so chrome-label
-      // tracking values cannot drift. (embertide-fyf6)
+      // Legacy file — compound color declarations (gradients and shadows) and
+      // font-* migrate in V-11 per PRD A-5. Simple foreground/background
+      // colors are enforced now so app.css cannot bypass the HC contract with
+      // a bare `color` or `background-color` declaration. (embertide-n6m)
       //
       // Graduated from .stylelintignore in embertide-275m (2026-05-04):
-      // app.css is now lint-checked. Color and font-* literals remain
-      // ignored because overrides[].rules REPLACES the matched rule's
-      // config — the global strict-value rule is fully replaced for
-      // app.css by the narrower letter-spacing-only variant below.
+      // app.css is now lint-checked. overrides[].rules REPLACES the matched
+      // strict-value config, so every property enforced here must be listed.
       //
       // The 63 known no-descending-specificity violations from the V-5 /
       // V-9eou / 4jxh card-frame eras were resolved in 275m by reordering
@@ -107,8 +108,8 @@ module.exports = {
       files: ['src/styles/app.css'],
       rules: {
         'scale-unlimited/declaration-strict-value': [
-          ['letter-spacing'],
-          { ignoreValues: ['/^var\\(--hc-/', '0', 'inherit'] },
+          ['color', 'background-color', 'letter-spacing'],
+          { ignoreValues: ['/^var\\(--hc-/', '0', 'inherit', 'transparent'] },
         ],
       },
     },
