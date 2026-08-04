@@ -1,9 +1,15 @@
-/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import type { InlineConfig } from 'vitest';
 import { tokensPlugin } from './tools/vite-plugin-tokens';
 import { pwaNoForcedReload } from './tools/vite-plugin-pwa-no-reload';
+
+declare module 'vite' {
+  interface UserConfig {
+    test?: InlineConfig;
+  }
+}
 
 // Remote-tunnel hosts (e.g. cloudflared) must be opted in explicitly via env.
 // Default is empty so the dev server only accepts default host headers

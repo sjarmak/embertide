@@ -31,7 +31,9 @@ export default defineConfig({
     trace: 'retain-on-failure',
     // Default to reduced motion so a11y sweeps aren't flaky on transitions.
     // Perf specs override per test via `page.emulateMedia`.
-    reducedMotion: 'reduce',
+    contextOptions: {
+      reducedMotion: 'reduce',
+    },
   },
 
   projects: [
