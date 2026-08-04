@@ -29,6 +29,10 @@ describe('embertide-4hr1.6 — rewardsForTier purity + shape', () => {
       expect(rewardsForTier(tier).length).toBeGreaterThan(0);
     }
   });
+
+  it('uses the current ember-shard system for tier 1, not retired reroll tokens', () => {
+    expect(rewardsForTier(1)).toEqual([{ kind: 'ember-shard', id: 'colosseum-t1-ember-shard' }]);
+  });
 });
 
 describe('embertide-4hr1.6 — A3 invariant (lower tiers cannot drop top-tier loot)', () => {
@@ -53,7 +57,8 @@ describe('embertide-4hr1.6 — A3 invariant (lower tiers cannot drop top-tier lo
   it('tier 5 INCLUDES the golden-rainbow-heirloom (044 GR Chimera precedent)', () => {
     const t5 = rewardsForTier(5);
     const hasGoldenRainbow = t5.some(
-      (r) => r.kind === 'golden-rainbow-heirloom' && r.heirloomId === 'rainbow-ancient-chimera-sword',
+      (r) =>
+        r.kind === 'golden-rainbow-heirloom' && r.heirloomId === 'rainbow-ancient-chimera-sword',
     );
     expect(hasGoldenRainbow).toBe(true);
   });
@@ -90,8 +95,6 @@ describe('embertide-4hr1.6 — A3 invariant (lower tiers cannot drop top-tier lo
 describe('embertide-4hr1.16 — HUD exhaustiveness lockdown', () => {
   function describeReward(reward: ColosseumReward): string {
     switch (reward.kind) {
-      case 'reroll-token':
-        return `reroll-token:${reward.id}`;
       case 'ember-shard':
         return `ember-shard:${reward.id}`;
       case 'cosmetic-unlock-placeholder':

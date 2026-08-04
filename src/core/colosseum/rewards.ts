@@ -3,10 +3,9 @@
  *
  * Pure module. The reducer (`COMBAT_RESOLVE_WIN` colosseum branch in
  * `gameStore.ts`) calls `rewardsForTier(clearedTier)` after the tier
- * advance and pipes the result into the per-run reward ledger
- * (`colosseumMetaStore.ts`). Persistence is a FULL PER-RUN RESET: the
- * ledger is in-memory and `initGame` clears it at run start, so rewards
- * never survive across runs (designer ruling 2026-06-04 — 4hr1.19).
+ * advance and pipes the result into the main run snapshot. Persistence is
+ * a FULL PER-RUN RESET: `initGame` starts the ledger empty, so rewards never
+ * survive across runs (designer ruling 2026-06-04 — 4hr1.19).
  *
  * Per the 2026-05-02 designer ruling
  * (`bd memories embertide-colosseum-mode-2026-05-02-designer-ruling`):
@@ -38,21 +37,20 @@ import type { TierId } from './progression';
  *   - `unique-cosmetic` — tier-5 only.
  *
  * Cross-tier kinds:
- *   - `reroll-token` — tier-1 reward today; could expand to other tiers
- *     in a future ruling.
- *   - `ember-shard` — tier-2 reward today.
+ *   - `ember-shard` — tier-1 and tier-2 reward today.
  *   - `cosmetic-unlock-placeholder` — sentinel for T3/T4 until those
  *     rosters ship; carries no consumer surface yet.
  */
 export type ColosseumReward =
-  | { readonly kind: 'reroll-token'; readonly id: string }
   | { readonly kind: 'ember-shard'; readonly id: string }
   | { readonly kind: 'cosmetic-unlock-placeholder'; readonly id: string }
   | { readonly kind: 'golden-rainbow-heirloom'; readonly heirloomId: string }
   | { readonly kind: 'unique-cosmetic'; readonly id: string };
 
+// The original reroll-token reward became unusable when rerolls were cut.
+// Designer ruling: embertide-designer-ruling-colosseum-reward-mapping-2026-08-04.
 const TIER_1_REWARDS: readonly ColosseumReward[] = [
-  { kind: 'reroll-token', id: 'colosseum-t1-reroll-token' },
+  { kind: 'ember-shard', id: 'colosseum-t1-ember-shard' },
 ];
 
 const TIER_2_REWARDS: readonly ColosseumReward[] = [

@@ -92,6 +92,7 @@ export function makeKidGameState(overrides: Partial<KidGameState> = {}): KidGame
     pendingDungeonBossRoll: null,
     pendingForestSageRoll: null,
     colosseumProgression: initialColosseumProgression(),
+    colosseumClaimedRewards: [],
     ...initialZoneFields(),
     ...overrides,
   };

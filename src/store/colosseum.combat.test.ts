@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { buildResolveWinAction, buildResolveWinForCombat, createGameStore } from './gameStore';
 import {
   initialColosseumProgression,
@@ -6,7 +6,6 @@ import {
   rewardsForTier,
   unlockTier,
 } from '../core/colosseum';
-import { useColosseumMetaStore } from './colosseumMetaStore';
 import { KID_CARDS } from '../data/cards';
 import { TIER_1_ROSTER } from '../data/colosseum/tier1';
 import { TIER_2_ROSTER } from '../data/colosseum/tier2';
@@ -264,26 +263,21 @@ describe('embertide-4hr1.5 — main-game side-effects suppressed on colosseum WI
 });
 
 describe('embertide-4hr1.6 — colosseum reward emission on tier-N WIN (A1)', () => {
-  beforeEach(() => {
-    // The reward ledger is the shared singleton meta store; reset it so
-    // each test starts from an empty per-run ledger.
-    useColosseumMetaStore.getState().reset();
-  });
-
-  it('tier-1 WIN emits the tier-1 reward set into the meta-store ledger', () => {
+  it('tier-1 WIN grants one ember shard and records it in the run snapshot', () => {
     const store = colosseumUnlockedGame(7);
     store.getState().enterColosseum();
     const combat = activeCombatOrThrow(store);
     expect(combat.entryContext.entrySource).toBe('colosseum-slot');
+    expect(store.getState().players[0]?.heartPieces).toBe(0);
 
     dispatchColosseumWin(store);
 
-    const ledger = useColosseumMetaStore.getState().claimedRewards;
+    const state = store.getState();
+    const ledger = state.colosseumClaimedRewards;
     expect(ledger.length).toBeGreaterThan(0);
     expect(ledger.every((row) => row.tier === 1)).toBe(true);
-    // Structural lock: the recorded rewards must be exactly the
-    // tier-1 set returned by the pure table — no extras, no drift.
     expect(ledger.map((row) => row.reward)).toEqual([...rewardsForTier(1)]);
+    expect(state.players[0]?.heartPieces).toBe(1);
   });
 
   it('tier-5 WIN emits the golden-rainbow heirloom + unique cosmetic (top-tier loot)', () => {
@@ -300,7 +294,8 @@ describe('embertide-4hr1.6 — colosseum reward emission on tier-N WIN (A1)', ()
 
     dispatchColosseumWin(store);
 
-    const ledger = useColosseumMetaStore.getState().claimedRewards;
+    const state = store.getState();
+    const ledger = state.colosseumClaimedRewards;
     const t5Rows = ledger.filter((row) => row.tier === 5);
     expect(t5Rows.length).toBeGreaterThan(0);
 
@@ -315,16 +310,19 @@ describe('embertide-4hr1.6 — colosseum reward emission on tier-N WIN (A1)', ()
     if (grRow !== undefined && grRow.reward.kind === 'golden-rainbow-heirloom') {
       expect(grRow.reward.heirloomId).toBe('rainbow-ancient-chimera-sword');
     }
+    expect(
+      state.players[0]?.items.some((card) => card.id.startsWith('rainbow-ancient-chimera-sword-')),
+    ).toBe(true);
   });
 
   it('a colosseum-slot LOSS does NOT emit any reward', () => {
     const store = colosseumUnlockedGame(7);
     store.getState().enterColosseum();
-    expect(useColosseumMetaStore.getState().claimedRewards).toEqual([]);
+    expect(store.getState().colosseumClaimedRewards).toEqual([]);
 
     store.getState().dispatchCombat({ type: 'COMBAT_RESOLVE_LOSS' });
 
-    expect(useColosseumMetaStore.getState().claimedRewards).toEqual([]);
+    expect(store.getState().colosseumClaimedRewards).toEqual([]);
   });
 
   it('a second COMBAT_RESOLVE_WIN dispatch on the same combat does NOT double-record (idempotent)', () => {
@@ -334,10 +332,10 @@ describe('embertide-4hr1.6 — colosseum reward emission on tier-N WIN (A1)', ()
     const expectedRewards = [...rewardsForTier(1)];
 
     dispatchColosseumWin(store, combat);
-    const afterFirst = [...useColosseumMetaStore.getState().claimedRewards];
+    const afterFirst = [...store.getState().colosseumClaimedRewards];
 
     dispatchColosseumWin(store, combat);
-    const afterSecond = useColosseumMetaStore.getState().claimedRewards;
+    const afterSecond = store.getState().colosseumClaimedRewards;
 
     expect(afterFirst.map((r) => r.reward)).toEqual(expectedRewards);
     expect(afterSecond).toEqual(afterFirst);
@@ -345,16 +343,12 @@ describe('embertide-4hr1.6 — colosseum reward emission on tier-N WIN (A1)', ()
 });
 
 describe('embertide-4hr1.6 — A3 (lower tiers cannot drop top-tier loot)', () => {
-  beforeEach(() => {
-    useColosseumMetaStore.getState().reset();
-  });
-
   it('tier-1 WIN does NOT record a golden-rainbow-heirloom or unique-cosmetic reward', () => {
     const store = colosseumUnlockedGame(7);
     store.getState().enterColosseum();
     dispatchColosseumWin(store);
 
-    const ledger = useColosseumMetaStore.getState().claimedRewards;
+    const ledger = store.getState().colosseumClaimedRewards;
     const kinds = ledger.map((row) => row.reward.kind);
     expect(kinds).not.toContain('golden-rainbow-heirloom');
     expect(kinds).not.toContain('unique-cosmetic');
@@ -369,7 +363,7 @@ describe('embertide-4hr1.6 — A3 (lower tiers cannot drop top-tier loot)', () =
     store.getState().enterColosseum();
     dispatchColosseumWin(store);
 
-    const ledger = useColosseumMetaStore.getState().claimedRewards;
+    const ledger = store.getState().colosseumClaimedRewards;
     const kinds = ledger.map((row) => row.reward.kind);
     expect(kinds).not.toContain('golden-rainbow-heirloom');
     expect(kinds).not.toContain('unique-cosmetic');
@@ -377,16 +371,12 @@ describe('embertide-4hr1.6 — A3 (lower tiers cannot drop top-tier loot)', () =
 });
 
 describe('embertide-4hr1.19 — per-run reset (no cross-run persistence)', () => {
-  beforeEach(() => {
-    useColosseumMetaStore.getState().reset();
-  });
-
   it('a fresh run starts with an empty ledger (initGame clears prior rewards)', () => {
     // Run A — defeat tier-1 and emit the reward.
     const runA = colosseumUnlockedGame(7);
     runA.getState().enterColosseum();
     dispatchColosseumWin(runA);
-    expect(useColosseumMetaStore.getState().claimedRewards.length).toBeGreaterThan(0);
+    expect(runA.getState().colosseumClaimedRewards.length).toBeGreaterThan(0);
 
     // Run B — fresh game store. Per the 2026-06-04 ruling, initGame
     // resets the reward ledger, so run B begins with no rewards. The
@@ -397,7 +387,7 @@ describe('embertide-4hr1.19 — per-run reset (no cross-run persistence)', () =>
       championIds: ['champion-power', 'champion-wisdom'],
     });
     expect(runB.getState().colosseumProgression).toEqual(initialColosseumProgression());
-    expect(useColosseumMetaStore.getState().claimedRewards).toEqual([]);
+    expect(runB.getState().colosseumClaimedRewards).toEqual([]);
   });
 
   it('run-B rewards do not accumulate on top of run-A (T1 cleared, only T5 present)', () => {
@@ -405,9 +395,7 @@ describe('embertide-4hr1.19 — per-run reset (no cross-run persistence)', () =>
     const runA = colosseumUnlockedGame(7);
     runA.getState().enterColosseum();
     dispatchColosseumWin(runA);
-    expect(useColosseumMetaStore.getState().claimedRewards.some((row) => row.tier === 1)).toBe(
-      true,
-    );
+    expect(runA.getState().colosseumClaimedRewards.some((row) => row.tier === 1)).toBe(true);
 
     // Run B — pre-seed tier 5 and clear it. `colosseumUnlockedGame`
     // calls initGame, which resets the ledger, so run-A's T1 is gone
@@ -420,7 +408,7 @@ describe('embertide-4hr1.19 — per-run reset (no cross-run persistence)', () =>
     runB.getState().enterColosseum();
     dispatchColosseumWin(runB);
 
-    const ledger = useColosseumMetaStore.getState().claimedRewards;
+    const ledger = runB.getState().colosseumClaimedRewards;
     const tiers = new Set(ledger.map((row) => row.tier));
     expect(tiers.has(1)).toBe(false);
     expect(tiers.has(5)).toBe(true);

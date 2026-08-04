@@ -1,7 +1,7 @@
 import type { Card } from '../types/card';
 import type { ChestReward } from '../rules/chestPool';
 import type { CombatState } from '../types/combat';
-import type { ColosseumProgression } from '../core/colosseum';
+import type { ColosseumProgression, ColosseumReward, TierId } from '../core/colosseum';
 import type { TutorialBubbleId } from '../tutorial/v20';
 
 /**
@@ -636,6 +636,11 @@ export interface KidGameState {
    * to keep the two ledgers separate.
    */
   readonly colosseumProgression: ColosseumProgression;
+  /** Rewards earned during this run, retained in the main game snapshot. */
+  readonly colosseumClaimedRewards: readonly {
+    readonly tier: TierId;
+    readonly reward: ColosseumReward;
+  }[];
 }
 
 /**

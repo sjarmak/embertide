@@ -101,7 +101,8 @@ import {
   tierForColosseumBoss,
   unlockTier,
 } from '../core/colosseum';
-import { useColosseumMetaStore } from './colosseumMetaStore';
+import { applyColosseumRewards } from './colosseumRewards';
+export { addEmberShard, HEART_PIECES_PER_CONTAINER } from './playerRewards';
 
 // Re-export the dice-table public surface so consumers
 // (`../data/dice-tables`-equivalent imports were originally pulled from
@@ -543,6 +544,7 @@ const EMPTY_STATE: KidGameState = {
   // the caller). Each colosseum-slot WIN advances unlockedTiers per
   // the engine's `unlockTier` semantics.
   colosseumProgression: initialColosseumProgression(),
+  colosseumClaimedRewards: [],
   ...initialZoneFields(),
 };
 
@@ -572,31 +574,6 @@ import {
   enterCombatAction,
   renderCombatBubbleBody,
 } from './combatBootstrap';
-
-/**
- * Number of heart pieces that promote to a single vital ember
- * (v2.1 gm0.16). Four pieces → one container. Mirrors the classic
- * Aurelia ember-shard loop.
- */
-export const HEART_PIECES_PER_CONTAINER = 4;
-
-/**
- * Increment a player's ember-shard counter by 1 (v2.1 gm0.16). When the
- * counter reaches `HEART_PIECES_PER_CONTAINER`, the pieces auto-promote
- * to a vital ember: the counter resets to 0 and `applyHeartReward`
- * grows `hp` + `hpMax` by 1. Otherwise the player is returned with
- * `heartPieces + 1` and unchanged HP.
- *
- * Pure: returns a new `KidPlayer`.
- */
-export function addEmberShard(player: KidPlayer): KidPlayer {
-  const next = player.heartPieces + 1;
-  if (next >= HEART_PIECES_PER_CONTAINER) {
-    const grown = applyHeartReward(player, 1);
-    return { ...grown, heartPieces: 0 };
-  }
-  return { ...player, heartPieces: next };
-}
 
 /**
  * Centralized HP-damage helper (amendment A3). Damaging a player clamps
@@ -781,13 +758,6 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
         // Apply p0's champion start-of-turn passive (power/sword grant
         // resources on the opening turn as well). No-op for courage/wisdom.
         players[0] = applyChampionPower(players[0]);
-
-        // embertide-4hr1.19: colosseum persistence is a FULL PER-RUN
-        // RESET (designer ruling 2026-06-04). The reward ledger lives in
-        // the singleton `useColosseumMetaStore` (separate from the main
-        // store's per-run `colosseumProgression`), so clear it at run
-        // start — a new run must never see a prior run's claimed rewards.
-        useColosseumMetaStore.getState().reset();
 
         // Build the shuffled Ascension-style supply and deal the opening
         // center-row market. refillField tops the field up to FIELD_SIZE.
@@ -1761,11 +1731,7 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
             // populates `wispDropTarget` based on the source card's
             // tier; the colosseum has its own reward routing in
             // 4hr1.6 (out of scope here).
-            if (
-              !isColosseumEntry &&
-              action.wispDropTarget !== null &&
-              next.activeCombat !== null
-            ) {
+            if (!isColosseumEntry && action.wispDropTarget !== null && next.activeCombat !== null) {
               const bossBaseId = baseIdOfString(next.activeCombat.boss.sourceCardId);
               next = applyWispDrop(next, action.wispDropTarget, bossBaseId);
             }
@@ -1941,9 +1907,9 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
             // 6c. embertide-4hr1.6: per-tier reward emission. On the
             // SAME branch, after the per-run tier unlock, route every
             // reward returned by `rewardsForTier(clearedTier)` into the
-            // per-run reward ledger (`useColosseumMetaStore`). The ledger
-            // is in-memory and reset by `initGame` each run (4hr1.19 —
-            // FULL per-run reset, designer ruling 2026-06-04). Lower tiers
+            // main run snapshot and apply its gameplay effect atomically.
+            // The ledger resets with `initGame` each run (4hr1.19 — FULL
+            // per-run reset, designer ruling 2026-06-04). Lower tiers
             // cannot drop top-tier loot (A3) because `rewardsForTier` is the single
             // source of truth and the `golden-rainbow-heirloom` /
             // `unique-cosmetic` kinds appear only in the tier-5 row.
@@ -1958,11 +1924,7 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
                     colosseumProgression: unlockTier(next.colosseumProgression, successor),
                   };
                 }
-                const earned = rewardsForTier(clearedTier);
-                const meta = useColosseumMetaStore.getState();
-                for (const reward of earned) {
-                  meta.recordReward(clearedTier, reward);
-                }
+                next = applyColosseumRewards(next, clearedTier, rewardsForTier(clearedTier));
               }
             }
 
