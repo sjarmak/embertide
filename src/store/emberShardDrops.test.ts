@@ -75,7 +75,7 @@ describe('applyHeartDropHooks — Tier 1 (grunt meter)', () => {
 
   it('grunt meter 3rd kill at heartPieces=3 auto-promotes to container (gm0.16 contract)', () => {
     // heartPieces=3 + meter=2 → 3rd grunt kill bumps meter to 3 which
-    // triggers addEmberShardLocal; that sees heartPieces=3 → next=4
+    // triggers addEmberShard; that sees heartPieces=3 → next=4
     // → resets to 0 AND grows hp+hpMax by 1 via applyHeartReward.
     const state = makeState(makePlayer({ emberShardMeter: 2, heartPieces: 3, hp: 5, hpMax: 5 }));
     const next = applyHeartDropHooks(state, cardById('skittermite'), 0);

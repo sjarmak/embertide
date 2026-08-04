@@ -88,7 +88,7 @@ export function EmberShardStack({
   heartPieces,
   emberShardMeter,
 }: EmberShardStackProps): JSX.Element | null {
-  // Hide only at the transient heartPieces=4 (addEmberShardLocal
+  // Hide only at the transient heartPieces=4 (addEmberShard
   // auto-promotes and resets to 0 — guard against that state leaking
   // into a frame).
   if (heartPieces >= 4) return null;

@@ -18,6 +18,7 @@ import { equipAsItem } from './inventory';
 import { advanceZone, recordBossDefeat } from './zones';
 import { ZONE_METADATA } from '../../rules/zones';
 import { replacePlayer } from '../_shared';
+import { addEmberShard } from '../playerRewards';
 
 /**
  * Ids that, once defeated, return to their Always-Available stack rather
@@ -344,14 +345,6 @@ function applyBossDefeatHooks(
 // hpMax)` helper that silently wasted drops at full health.
 import { applyHeartReward } from '../../core/vitalEmber';
 
-// v2.1 gm0.17 (embertide-0jf) — ember-shard drop constants. Mirrors
-// `HEART_PIECES_PER_CONTAINER` in src/store/gameStore.ts. Duplicated
-// locally so this slice stays a leaf dependency and doesn't reach
-// upward into the store aggregator (avoiding a circular import through
-// the slice graph — same pattern `chests.ts` uses for
-// `addEmberShardToPlayer`).
-const HEART_PIECES_PER_CONTAINER = 4;
-
 /**
  * Grunt meter modulus: every GRUNT_METER_SIZE-th grunt-tier defeat
  * promotes to a ember shard. The meter lives on `KidPlayer.emberShardMeter`
@@ -359,21 +352,6 @@ const HEART_PIECES_PER_CONTAINER = 4;
  * resets the meter to 0 AND calls `addEmberShard` to award the piece.
  */
 const GRUNT_METER_SIZE = 3;
-
-/**
- * Award a ember shard to `player`, auto-promoting to a vital ember
- * when the counter rolls over at `HEART_PIECES_PER_CONTAINER`. Mirrors
- * `addEmberShard` in src/store/gameStore.ts — duplicated locally to
- * avoid a circular import through the slice graph.
- */
-function addEmberShardLocal(player: KidPlayer): KidPlayer {
-  const next = player.heartPieces + 1;
-  if (next >= HEART_PIECES_PER_CONTAINER) {
-    const grown = applyHeartReward(player, 1);
-    return { ...grown, heartPieces: 0 };
-  }
-  return { ...player, heartPieces: next };
-}
 
 /**
  * v2.1 gm0.17 (embertide-0jf) — three-tier monster-drop hook.
@@ -384,7 +362,7 @@ function addEmberShardLocal(player: KidPlayer): KidPlayer {
  *
  *   - Grunt tier (`GRUNT_HEART_METER_IDS`): bump `emberShardMeter`.
  *     Every 3rd kill promotes to a ember shard (meter → 0, heartPieces
- *     += 1 via `addEmberShardLocal` which itself auto-promotes at 4
+ *     += 1 via `addEmberShard` which itself auto-promotes at 4
  *     pieces → vital ember).
  *
  *   - Tough tier (`TOUGH_EMBER_SHARD_IDS`): grant a ember shard
@@ -416,14 +394,14 @@ export function applyHeartDropHooks(
     const nextMeter = defeater.emberShardMeter + 1;
     if (nextMeter >= GRUNT_METER_SIZE) {
       const reset: KidPlayer = { ...defeater, emberShardMeter: 0 };
-      const withPiece = addEmberShardLocal(reset);
+      const withPiece = addEmberShard(reset);
       return replacePlayer(state, defeaterIdx, withPiece);
     }
     return replacePlayer(state, defeaterIdx, { ...defeater, emberShardMeter: nextMeter });
   }
 
   if (TOUGH_EMBER_SHARD_IDS.has(bid)) {
-    return replacePlayer(state, defeaterIdx, addEmberShardLocal(defeater));
+    return replacePlayer(state, defeaterIdx, addEmberShard(defeater));
   }
 
   return state;
