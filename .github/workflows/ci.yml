@@ -22,39 +22,39 @@ jobs:
         run: npm ci
 
       - name: Typecheck
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run typecheck
 
       - name: Unit tests + coverage (blocking, ratchet thresholds in vite.config.ts)
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run test:coverage
 
       - name: ESLint custom rule tests
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run test:rules
 
       - name: Lint
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run lint
 
       - name: Prettier format check
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run format:check
 
       - name: Verify design tokens mirror
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run verify:tokens
 
       - name: Stylelint tokens
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run lint:tokens
 
       - name: Build
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run build
 
       - name: Verify no placeholders in dist
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run verify:no-placeholders
 
       # ------------------------------------------------------------------
@@ -62,28 +62,28 @@ jobs:
       # ------------------------------------------------------------------
 
       - name: Verify gate schedule (PRD R-20 / embertide-z40.4)
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run verify:gate-schedule
 
       - name: A11y — contrast matrix (blocking)
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run a11y:contrast
 
       - name: Install Playwright browser (chromium)
-        if: always()
+        if: ${{ !cancelled() }}
         run: npx playwright install --with-deps chromium
 
       - name: A11y — axe-core smoke (blocking)
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run a11y:axe
 
       - name: Perf — chest-reveal FPS (warn-only, PRD A-18′)
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run perf:motion
         continue-on-error: true
 
       - name: Perf — ambient-board FPS (warn-only, PRD R-15)
-        if: always()
+        if: ${{ !cancelled() }}
         run: npm run perf:ambient
         continue-on-error: true
 
