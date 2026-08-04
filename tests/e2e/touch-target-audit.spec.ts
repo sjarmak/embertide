@@ -73,14 +73,6 @@ test.describe('Touch target audit @layout', () => {
     await page.waitForSelector('[data-testid="setup-root"]', { state: 'visible' });
     await page.locator('[data-testid="start-button"]').click();
     await page.waitForSelector('[data-testid="game-board"]', { state: 'visible' });
-    // Allow first-game tutorial overlay to mount (it dims the board);
-    // dismiss it so its own buttons are not double-counted as offenders
-    // and so cards underneath are reachable for measurement.
-    const tutorialDismiss = page.locator('[data-testid="tutorial-dismiss"]');
-    if ((await tutorialDismiss.count()) > 0) {
-      await tutorialDismiss.click({ force: true }).catch(() => undefined);
-      await page.waitForTimeout(120);
-    }
     // Settle any entrance animation before measuring.
     await page.waitForTimeout(250);
 

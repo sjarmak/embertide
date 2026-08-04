@@ -55,12 +55,11 @@ Minimal template (narrate-aware):
 
 ```ts
 import { expect, test } from '@playwright/test';
-import { bootApp, clickFirstCard, combatEnded, dismissTutorials, passTurn, snapshot } from './harness';
+import { bootApp, clickFirstCard, combatEnded, passTurn, snapshot } from './harness';
 import { createReporter } from './narrative';
 
 test('my-scenario — describe the flow', async ({ page }) => {
   await bootApp(page, { debug: 'some-seed' });  // or omit debug for normal Setup
-  await dismissTutorials(page);
 
   const report = createReporter('my-scenario');   // no-op unless PLAYTEST_NARRATE=1
   await report.screenshot(page, '01-start');
@@ -83,7 +82,6 @@ Keep scenarios thin (<50 lines). Push logic into `harness.ts` so UI churn only u
 See `tools/playtester/harness.ts`:
 
 - `bootApp(page, { debug })` — navigates to the dev server with optional `?debug=<seed>` param
-- `dismissTutorials(page)` — clears any open tutorial backdrop (main + combat)
 - `snapshot(page)` — returns `{ boss, handSize, handIds, plays, p0Hp, p1Hp, log, ended }`
 - `formatSnapshot(s)` — one-line string for traces/reports
 - `clickFirstCard(page)` / `clickSlot(page, idx)` — play cards

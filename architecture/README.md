@@ -45,9 +45,9 @@ from what is shipped and playable in the v0.1 Kid Mode build (legend in
 
 The shipped spine — content, the pure engine, the store, the React board, the
 balance + accessibility gates, and the Vite build — is `#built`. `#evolving`
-items: the art pipeline surface, the tutorial store/bubbles, and the e2e
-harness. `#research`: the fal.ai raster-generation scripts, which run only at
-dev time. `#planned`: local save/resume (IndexedDB, PRD item SH-5).
+items: the art pipeline surface and the e2e harness. `#research`: the fal.ai
+raster-generation scripts, which run only at dev time. `#planned`: local
+save/resume (IndexedDB, PRD item SH-5).
 
 ## Views
 
@@ -58,8 +58,8 @@ dev time. `#planned`: local save/resume (IndexedDB, PRD item SH-5).
 | `index` | system landscape — Ember Tide in context of the players, fal.ai, GitHub, and the website that serves it |
 | `embertideSystem` | the system decomposed into containers (content → engine → store → UI, plus art, gates, and build) |
 | `engineContainer` | the pure resolver — combat turn reducer, player + boss phases, and the economy/world rules |
-| `storeContainer` | the Zustand store — root reducer, domain slices, and the tutorial store |
-| `uiContainer` | the React board — shell + setup, combat overlay, field/hand/chests, card rendering, tutorial |
+| `storeContainer` | the Zustand store — root reducer and domain slices |
+| `uiContainer` | the React board — shell + setup, combat overlay, field/hand/chests, and card rendering |
 | `artContainer` | the stained-glass pipeline — SVG composer + templates, renderer, and dev-time fal.ai raster generation |
 | `gatesContainer` | the quality gates — balance simulation, contrast/token gate, and Playwright e2e |
 | `deployment` | where each piece runs — the browser tab, the local build machine, GitHub Actions/Pages, fal.ai, the website edge |
