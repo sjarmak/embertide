@@ -31,6 +31,7 @@
     "ladle": "ladle serve",
     "ladle:build": "ladle build",
     "snapshot:illustration": "node scripts/snapshot-illustration.mjs",
+    "illustrations:webp": "node scripts/regenerate-cathedral-webp.mjs",
     "snap:mobile": "node tools/snap-mobile.mjs",
     "playtest": "playwright test --config=tools/playtester/playwright.config.ts",
     "playtest:narrate": "PLAYTEST_NARRATE=1 playwright test --config=tools/playtester/playwright.config.ts"
@@ -63,6 +64,7 @@
     "playwright": "^1.59.1",
     "pngjs": "^7.0.0",
     "prettier": "^3.3.3",
+    "sharp": "0.34.3",
     "stylelint": "^16.10.0",
     "stylelint-config-standard": "^36.0.1",
     "stylelint-declaration-strict-value": "^1.10.7",
