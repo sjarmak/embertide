@@ -30,12 +30,24 @@ function categoryOf(f) {
   const c = m ? m[1] : 'other';
   if (f.includes('_boss_door')) return 'boss door';
   if (f.startsWith('cathedral_combat_bg')) return 'combat bg';
-  return { hero: 'hero', monster: 'monster', item: 'item', altar: 'altar/relic', zone: 'zone', chest: 'chest', colosseum: 'colosseum' }[c] ?? c;
+  return (
+    {
+      hero: 'hero',
+      monster: 'monster',
+      item: 'item',
+      altar: 'altar/relic',
+      zone: 'zone',
+      chest: 'chest',
+      colosseum: 'colosseum',
+    }[c] ?? c
+  );
 }
 
 function page() {
   const done = regenerated();
-  const files = readdirSync(DIR).filter((f) => MIME[extname(f)]).sort();
+  const files = readdirSync(DIR)
+    .filter((f) => MIME[extname(f)])
+    .sort();
   const groups = new Map();
   for (const f of files) {
     const cat = categoryOf(f);
@@ -43,21 +55,40 @@ function page() {
     const base = f.replace(/_001\.(webp|png)$/, '');
     groups.get(cat).push({ f, isNew: done.has(base + '.md') });
   }
-  const order = ['hero', 'monster', 'item', 'combat bg', 'boss door', 'altar/relic', 'zone', 'chest', 'colosseum', 'other'];
-  const cats = [...groups.keys()].sort((a, b) => (order.indexOf(a) + 1 || 99) - (order.indexOf(b) + 1 || 99));
+  const order = [
+    'hero',
+    'monster',
+    'item',
+    'combat bg',
+    'boss door',
+    'altar/relic',
+    'zone',
+    'chest',
+    'colosseum',
+    'other',
+  ];
+  const cats = [...groups.keys()].sort(
+    (a, b) => (order.indexOf(a) + 1 || 99) - (order.indexOf(b) + 1 || 99),
+  );
   const newCount = files.filter((f) => done.has(f.replace(/_001\.(webp|png)$/, '') + '.md')).length;
 
-  const sections = cats.map((cat) => {
-    const items = groups.get(cat);
-    const n = items.filter((i) => i.isNew).length;
-    const cells = items.map((i) => `
+  const sections = cats
+    .map((cat) => {
+      const items = groups.get(cat);
+      const n = items.filter((i) => i.isNew).length;
+      const cells = items
+        .map(
+          (i) => `
       <figure class="${i.isNew ? 'new' : 'old'}">
         <img loading="lazy" src="/img/${encodeURIComponent(i.f)}" alt="${i.f}">
         ${i.isNew ? '<span class="badge">REGENERATED</span>' : '<span class="badge old">legacy</span>'}
         <figcaption>${i.f.replace(/^cathedral_/, '').replace(/_001\.(webp|png)$/, '')}</figcaption>
-      </figure>`).join('');
-    return `<h2>${cat} <small>${n}/${items.length} regenerated</small></h2><div class="grid">${cells}</div>`;
-  }).join('');
+      </figure>`,
+        )
+        .join('');
+      return `<h2>${cat} <small>${n}/${items.length} regenerated</small></h2><div class="grid">${cells}</div>`;
+    })
+    .join('');
 
   return `<!doctype html><meta charset="utf8"><title>Embertide — Art Preview</title>
 <style>
@@ -88,12 +119,20 @@ createServer((req, res) => {
     if (req.url.startsWith('/img/')) {
       const name = decodeURIComponent(req.url.slice('/img/'.length));
       const p = join(DIR, name);
-      if (!p.startsWith(DIR) || !existsSync(p)) { res.writeHead(404); return res.end('nope'); }
-      res.writeHead(200, { 'content-type': MIME[extname(p)] ?? 'application/octet-stream', 'cache-control': 'no-store' });
+      if (!p.startsWith(DIR) || !existsSync(p)) {
+        res.writeHead(404);
+        return res.end('nope');
+      }
+      res.writeHead(200, {
+        'content-type': MIME[extname(p)] ?? 'application/octet-stream',
+        'cache-control': 'no-store',
+      });
       return res.end(readFileSync(p));
     }
-    res.writeHead(404); res.end('not found');
+    res.writeHead(404);
+    res.end('not found');
   } catch (e) {
-    res.writeHead(500); res.end(String(e));
+    res.writeHead(500);
+    res.end(String(e));
   }
 }).listen(PORT, () => console.log(`art preview → http://localhost:${PORT}/`));

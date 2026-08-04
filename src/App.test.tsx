@@ -36,7 +36,7 @@ describe('App', () => {
       defeatedBossIds: [],
       bossKeys: {
         sylvani: [],
-        'emberpeak': [],
+        emberpeak: [],
         maren: [],
         'hollow-shrine': [],
         'dune-sanctum': [],

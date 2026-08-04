@@ -3,6 +3,8 @@ node_modules/
 .beads/
 coverage/
 .ladle/
+dev-dist/
+worktrees/
 package-lock.json
 
 # Long-form docs and generated content — preserve authorial formatting

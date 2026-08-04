@@ -36,7 +36,7 @@ let ZONE_METADATA_SNAPSHOT: Record<string, ZoneMetadata> | null = null;
 beforeEach(() => {
   ZONE_METADATA_SNAPSHOT = {
     sylvani: { ...ZONE_METADATA.sylvani },
-    'emberpeak': { ...ZONE_METADATA['emberpeak'] },
+    emberpeak: { ...ZONE_METADATA['emberpeak'] },
     'gilded-cage': { ...ZONE_METADATA['gilded-cage'] },
   };
 });
@@ -86,7 +86,7 @@ const GRUNT_ORC = KID_CARDS.find((c) => c.id === 'grunt-orc')!;
 // ---------------------------------------------------------------------------
 
 describe('zone rules — ZONE_ORDER + metadata (u-5a)', () => {
-  it("ships the 6-zone v2.1 sequence (Sylvani → Emberpeak → Tidehold → Hollow Shrine → Dune Sanctum → Gilded Cage)", () => {
+  it('ships the 6-zone v2.1 sequence (Sylvani → Emberpeak → Tidehold → Hollow Shrine → Dune Sanctum → Gilded Cage)', () => {
     expect(ZONE_ORDER).toEqual([
       'sylvani',
       'emberpeak',

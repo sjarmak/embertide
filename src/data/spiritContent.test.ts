@@ -76,7 +76,14 @@ describe('gdd.3 Spirit content — card existence + zone affinity (a)', () => {
   });
 
   it('all 6 cards are present in KID_CARDS (by-id lookup resolves)', () => {
-    const ids = ['duneweed', 'sandwyrm', 'sunbleached-reaver', 'scuttlespine', 'iron-sentinel', 'hextwins'];
+    const ids = [
+      'duneweed',
+      'sandwyrm',
+      'sunbleached-reaver',
+      'scuttlespine',
+      'iron-sentinel',
+      'hextwins',
+    ];
     for (const id of ids) {
       const card = KID_CARDS.find((c) => c.id === id);
       expect(card, `${id} missing from KID_CARDS`).toBeDefined();
@@ -120,7 +127,12 @@ describe('gdd.3 Spirit — ZONE_METADATA + ZONE_ORDER consistency (b)', () => {
     expect(meta.id).toBe('dune-sanctum');
     expect(meta.displayName).toBe('Dune Sanctum');
     expect(meta.themeHint.length).toBeGreaterThan(0);
-    expect(meta.regularEnemyIds).toEqual(['duneweed', 'sandwyrm', 'sunbleached-reaver', 'scuttlespine']);
+    expect(meta.regularEnemyIds).toEqual([
+      'duneweed',
+      'sandwyrm',
+      'sunbleached-reaver',
+      'scuttlespine',
+    ]);
     expect(meta.wildBossIds).toEqual(['iron-sentinel']);
     expect(meta.regionBossId).toBe('hextwins');
   });

@@ -21,7 +21,10 @@
  * hextwins sequence Fire→Ice→Fire).
  */
 import { describe, expect, it } from 'vitest';
-import { HOLLOW_EFFIGY_BASE_DPT, HOLLOW_EFFIGY_MAX_DPT } from '../../core/combat/bossResolvers/hollowEffigy';
+import {
+  HOLLOW_EFFIGY_BASE_DPT,
+  HOLLOW_EFFIGY_MAX_DPT,
+} from '../../core/combat/bossResolvers/hollowEffigy';
 import type { BossArchetype } from '../../types/combat';
 import { ZONE_BOSS_SPECS, type ZoneBossSpec } from './bossSpecs';
 

@@ -262,7 +262,9 @@ describe('hollow-effigy-mirror dispatch (b)', () => {
     );
     const echoNext = combatTurnReducer(echoState, { type: 'BOSS_RESOLVE' });
     expect(
-      (echoNext.combat.combatLog ?? []).some((e) => e.includes(HOLLOW_EFFIGY_LOG_MIRRORS_STRONGEST)),
+      (echoNext.combat.combatLog ?? []).some((e) =>
+        e.includes(HOLLOW_EFFIGY_LOG_MIRRORS_STRONGEST),
+      ),
     ).toBe(true);
 
     const nullState = makeTurnState(

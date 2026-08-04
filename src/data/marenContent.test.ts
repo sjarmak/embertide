@@ -69,7 +69,14 @@ describe('gdd.1 Maren content — card existence + zone affinity (a)', () => {
   });
 
   it('all 6 cards are present in KID_CARDS (by-id lookup resolves)', () => {
-    const ids = ['maren-warrior', 'reefblade', 'frost-jellet', 'fangfish', 'maelstrom', 'tidewraith'];
+    const ids = [
+      'maren-warrior',
+      'reefblade',
+      'frost-jellet',
+      'fangfish',
+      'maelstrom',
+      'tidewraith',
+    ];
     for (const id of ids) {
       const card = KID_CARDS.find((c) => c.id === id);
       expect(card, `${id} missing from KID_CARDS`).toBeDefined();
@@ -111,7 +118,7 @@ describe('gdd.1 Maren — ZONE_METADATA + ZONE_ORDER consistency (b)', () => {
   it('ZONE_METADATA.maren wires the roster matching the card definitions', () => {
     const meta = ZONE_METADATA.maren;
     expect(meta.id).toBe('maren');
-    expect(meta.displayName).toBe("Tidehold");
+    expect(meta.displayName).toBe('Tidehold');
     expect(meta.themeHint.length).toBeGreaterThan(0);
     expect(meta.regularEnemyIds).toEqual([
       'maren-warrior',

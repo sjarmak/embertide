@@ -746,13 +746,9 @@ describe('chests slice', () => {
         addedItem.id === 'seers-omen'
           ? addedItem.id
           : addedItem.role;
-      expect([
-        'legendary-sword',
-        'wisp',
-        'wisp-in-bottle',
-        'great-wisp',
-        'seers-omen',
-      ]).toContain(templateId);
+      expect(['legendary-sword', 'wisp', 'wisp-in-bottle', 'great-wisp', 'seers-omen']).toContain(
+        templateId,
+      );
       // ymgc.1: card-grant branch — premium-item / wisp populate
       // lastChestRewardCard with the rolled card.
       expect(next.lastChestRewardCard).not.toBeNull();

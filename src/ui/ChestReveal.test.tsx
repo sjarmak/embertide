@@ -55,9 +55,7 @@ describe('ChestReveal', () => {
     );
     expect(svg).not.toBeNull();
     const image = svg?.querySelector('image');
-    expect(image?.getAttribute('href')).toBe(
-      '/illustrations/cathedral_item_vital_ember_001.webp',
-    );
+    expect(image?.getAttribute('href')).toBe('/illustrations/cathedral_item_vital_ember_001.webp');
     expect(screen.getByText('Vital Ember')).toBeInTheDocument();
   });
 

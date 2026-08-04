@@ -84,9 +84,7 @@ describe('centerRowKillCount — embertide-044 (increment sites)', () => {
     }));
     store.getState().engageWildBossSlot('gilded-cage', 'sentinel');
     const before = store.getState().centerRowKillCount;
-    store
-      .getState()
-      .dispatchCombat(buildResolveWinAction(SENTINEL, ['p0', 'p1'], 'gilded-cage'));
+    store.getState().dispatchCombat(buildResolveWinAction(SENTINEL, ['p0', 'p1'], 'gilded-cage'));
     expect(store.getState().centerRowKillCount).toBe(before + 1);
   });
 
@@ -102,7 +100,7 @@ describe('centerRowKillCount — embertide-044 (increment sites)', () => {
       defeatedBossIds: ['sentinel', 'silver-chimera'],
       bossKeys: {
         sylvani: [],
-        'emberpeak': [],
+        emberpeak: [],
         maren: [],
         'hollow-shrine': [],
         'dune-sanctum': [],
@@ -148,7 +146,7 @@ describe('Prism Chimera spawn roll — embertide-044 (roll site)', () => {
       defeatedBossIds: ['sentinel'],
       bossKeys: {
         sylvani: [],
-        'emberpeak': [],
+        emberpeak: [],
         maren: [],
         'hollow-shrine': [],
         'dune-sanctum': [],
@@ -177,7 +175,7 @@ describe('Prism Chimera spawn roll — embertide-044 (roll site)', () => {
       defeatedBossIds: ['sentinel'],
       bossKeys: {
         sylvani: [],
-        'emberpeak': [],
+        emberpeak: [],
         maren: [],
         'hollow-shrine': [],
         'dune-sanctum': [],
@@ -204,9 +202,7 @@ describe('Prism Chimera spawn roll — embertide-044 (roll site)', () => {
       defeatedBossIds: [],
     }));
     store.getState().engageWildBossSlot('gilded-cage', 'sentinel');
-    store
-      .getState()
-      .dispatchCombat(buildResolveWinAction(SENTINEL, ['p0', 'p1'], 'gilded-cage'));
+    store.getState().dispatchCombat(buildResolveWinAction(SENTINEL, ['p0', 'p1'], 'gilded-cage'));
     expect(store.getState().prismChimeraSpawned).toBe(false);
   });
 
@@ -240,7 +236,7 @@ describe('Prism Chimera spawn roll — embertide-044 (roll site)', () => {
       defeatedBossIds: ['sentinel'],
       bossKeys: {
         sylvani: [],
-        'emberpeak': [],
+        emberpeak: [],
         maren: [],
         'hollow-shrine': [],
         'dune-sanctum': [],

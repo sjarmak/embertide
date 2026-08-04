@@ -50,11 +50,7 @@ export function requireMainPhase(state: KidGameState, actionName: string): void 
  * one of these satisfies `playerHasWisp`. Plain 'wisp' is the original
  * u-1d card; 'great-wisp' and 'wisp-in-bottle' are the gm0.16 variants.
  */
-export const WISP_BASE_IDS: ReadonlySet<string> = new Set([
-  'wisp',
-  'great-wisp',
-  'wisp-in-bottle',
-]);
+export const WISP_BASE_IDS: ReadonlySet<string> = new Set(['wisp', 'great-wisp', 'wisp-in-bottle']);
 
 /**
  * Scan a player's items zone for a wisp card. v2 co-op (amendment A3):

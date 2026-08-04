@@ -49,9 +49,9 @@ const STATIC_NAMES: Readonly<Record<string, readonly [string, string, string]>> 
   // broodmaw: 'Spawn Larva' replaced with 'Skitter Charge' per designer
   // ruling — "larva" reads body-horror to a 6yo.
   broodmaw: ['Eye Beam', 'Skitter Charge', 'Claw Slam'],
-  'boulderkin': ['Boulder Hurl', 'Ground Pound', 'Spike Burst'],
+  boulderkin: ['Boulder Hurl', 'Ground Pound', 'Spike Burst'],
   'ashen-tyrant': ['Fire Breath', 'Roll Crush', 'Tail Whip'],
-  'maelstrom': ['Inkspurt', 'Tentacle Slap', 'Spin Vortex'],
+  maelstrom: ['Inkspurt', 'Tentacle Slap', 'Spin Vortex'],
   sentinel: ['Laser Beam', 'Stomp', 'Charge Beam'],
   'silver-chimera': ['Triple Shot', 'Sword Spin', 'Savage Charge'],
   'prism-chimera': ['Rainbow Beam', 'Sword Cyclone', 'Lightning Stomp'],
@@ -119,7 +119,7 @@ function ironSentinelName(ctx: AttackNameContext): string {
 const DYNAMIC_NAMES: Readonly<Record<string, (ctx: AttackNameContext) => string>> = Object.freeze({
   tidewraith: tidewraithName,
   'hollow-effigy': hollowEffigyName,
-  'knell': knellName,
+  knell: knellName,
   hextwins: hextwinsName,
   'iron-sentinel': ironSentinelName,
 });

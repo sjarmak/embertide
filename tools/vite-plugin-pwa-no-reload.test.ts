@@ -35,8 +35,8 @@ describe('removeForcedClientReload', () => {
   });
 
   it('fails closed when the generated worker shape changes', () => {
-    expect(() => removeForcedClientReload(generatedWorker.replace('client.navigate', 'client.open'))).toThrow(
-      'refusing to ship an unverified reload path',
-    );
+    expect(() =>
+      removeForcedClientReload(generatedWorker.replace('client.navigate', 'client.open')),
+    ).toThrow('refusing to ship an unverified reload path');
   });
 });

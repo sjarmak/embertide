@@ -55,7 +55,7 @@ export const GENERIC_BASE_ID_THEME: Record<string, string> = {
   // card ids (see src/data/cards.test.ts FORBIDDEN_SUBSTRINGS).
   craghorn: 'Craghorn',
   broodmaw: 'Broodmaw',
-  'boulderkin': 'Boulderkin',
+  boulderkin: 'Boulderkin',
   'ashen-tyrant': 'Ashen Tyrant',
   sentinel: 'Sentinel',
   'silver-chimera': 'Silver Chimera',
@@ -88,7 +88,7 @@ export const GENERIC_BASE_ID_THEME: Record<string, string> = {
   blackguard: 'Blackguard',
   cinderwyrm: 'Cinderwyrm',
   'phantom-vurmox': 'Phantom Vurmox',
-  'palegrasp': 'Palegrasp',
+  palegrasp: 'Palegrasp',
   // embertide-wacl (2026-05-08) — Colosseum tier-3 + tier-4 roster
   // display names. Surfaces in the HUD's tier-progression preview now;
   // the underlying card-data entries (parallel to `trinity-aurogax` in
@@ -96,7 +96,7 @@ export const GENERIC_BASE_ID_THEME: Record<string, string> = {
   // beads, so by-id lookups will resolve once those land.
   'skrall-king': 'Skrall King',
   voltwyrm: 'Voltwyrm',
-  'vinemaw': 'Vinemaw',
+  vinemaw: 'Vinemaw',
   sandscourge: 'Sandscourge',
   idolarch: 'Idolarch',
   ossiarch: 'Ossiarch',
@@ -203,7 +203,7 @@ export const GENERIC_BASE_ID_THEME: Record<string, string> = {
   // Regular zone enemies — same rationale (combat encounters on the
   // center row should read as named beasts, not just 'Beast').
   'thorn-scrub': 'Thorn Scrub',
-  'snapvine': 'Snapvine',
+  snapvine: 'Snapvine',
   jellet: 'Jellet',
   scrabling: 'Scrabling',
   saurian: 'Saurian',
@@ -213,7 +213,7 @@ export const GENERIC_BASE_ID_THEME: Record<string, string> = {
   wardeye: 'Wardeye',
   emberskull: 'Emberskull',
   'bone-knight': 'Bone Knight',
-  'gulpmaw': 'Gulpmaw',
+  gulpmaw: 'Gulpmaw',
   hexrobe: 'Hexrobe',
   // ctgg (2026-04-25): v2.1 zone-locked regulars + region/wild bosses
   // were displaying as 'Beast' / 'Warlord' (role fallback). Each gets
@@ -223,14 +223,14 @@ export const GENERIC_BASE_ID_THEME: Record<string, string> = {
   reefblade: 'Reefblade',
   'frost-jellet': 'Frost jellet',
   fangfish: 'Fangfish',
-  'maelstrom': 'Maelstrom',
+  maelstrom: 'Maelstrom',
   //   Hollow Shrine
   willowisp: 'Willowisp',
   graspling: 'Graspling',
   bonelet: 'Bonelet',
-  'duskwing': 'Duskwing',
+  duskwing: 'Duskwing',
   'hollow-effigy': 'Hollow Effigy',
-  'knell': 'Knell',
+  knell: 'Knell',
   //   Dune Sanctum
   duneweed: 'Duneweed',
   sandwyrm: 'Sandwyrm',

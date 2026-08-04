@@ -59,4 +59,6 @@ export const COLOSSEUM_TRINITY_AUROGAX_T5: CombatBoss = {
  * follow-up bead in 4hr1's pipeline). Consumers iterate this tuple to
  * build the tier-5 unlock pool when the colosseum slot lands.
  */
-export const TIER_5_ROSTER = [COLOSSEUM_TRINITY_AUROGAX_T5] as const satisfies readonly CombatBoss[];
+export const TIER_5_ROSTER = [
+  COLOSSEUM_TRINITY_AUROGAX_T5,
+] as const satisfies readonly CombatBoss[];

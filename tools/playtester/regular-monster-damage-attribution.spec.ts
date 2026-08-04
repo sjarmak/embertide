@@ -131,7 +131,9 @@ interface TurnSlice {
 
 const DESPERATION_HP_PCT = 0.25; // mirror src/core/balance.ts
 
-test('regular-monster-damage-attribution — craghorn boss-turn damage breakdown', async ({ page }) => {
+test('regular-monster-damage-attribution — craghorn boss-turn damage breakdown', async ({
+  page,
+}) => {
   test.setTimeout(120_000);
   const report = createReporter('regular-monster-damage-attribution');
 

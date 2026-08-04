@@ -114,7 +114,9 @@ describe('iron-sentinel-stagger wind-up (a)', () => {
     const log = next.combat.combatLog ?? [];
     const expected = 2 + IRON_SENTINEL_BURST_BONUS;
     expect(
-      log.some((entry) => entry.includes(IRON_SENTINEL_LOG_WINDUP) && entry.includes(`${expected}`)),
+      log.some(
+        (entry) => entry.includes(IRON_SENTINEL_LOG_WINDUP) && entry.includes(`${expected}`),
+      ),
     ).toBe(true);
   });
 });

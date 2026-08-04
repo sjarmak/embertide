@@ -125,7 +125,9 @@ describe('u-6b Emberpeak regulars (a)', () => {
   });
 
   it('skittermite uniquely drops a key on defeat (monster-drop.keys === 1)', () => {
-    const skittermite = SKITTERMITE as Card & { effects: { kind: string; hearts?: number; keys?: number } };
+    const skittermite = SKITTERMITE as Card & {
+      effects: { kind: string; hearts?: number; keys?: number };
+    };
     expect(skittermite.effects.kind).toBe('monster-drop');
     expect(skittermite.effects.keys).toBe(1);
     // Only skittermite among the 4 regulars drops a key.

@@ -209,7 +209,7 @@ export const heirlooms: readonly Card[] = [
  */
 export const HEIRLOOM_DROPS: Record<string, string> = {
   craghorn: 'craghorn-tusk',
-  'boulderkin': 'boulderkin-core',
+  boulderkin: 'boulderkin-core',
   sentinel: 'sentinel-eye',
   // v2.1 gm0.17 (embertide-0jf): Silver Chimera now drops `chimera-sword`
   // as its sole wild-boss heirloom (retiring `silver-chimera-mane` and the

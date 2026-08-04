@@ -125,7 +125,7 @@ test.describe('bft4 iPad-portrait readability sweep', () => {
         ...(s as Record<string, unknown>),
         bossKeys: {
           sylvani: [],
-          'emberpeak': [],
+          emberpeak: [],
           maren: [],
           'hollow-shrine': [],
           'dune-sanctum': [],

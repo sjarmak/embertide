@@ -71,7 +71,9 @@ export function tidewraithTentacleGrabResolver(combat: CombatState): BossResolve
   const tideGauge = combat.tideGaugeSnapshot ?? 0;
   const damage = tidewraithTentacleGrabDpt(tideGauge);
 
-  const log = [`${TIDEWRAITH_LOG_TELEGRAPH_PREFIX}... ${TIDEWRAITH_LOG_WILL_HIT} ${damage} next turn`];
+  const log = [
+    `${TIDEWRAITH_LOG_TELEGRAPH_PREFIX}... ${TIDEWRAITH_LOG_WILL_HIT} ${damage} next turn`,
+  ];
 
   const highTide = tideGauge >= TIDEWRAITH_TENTACLE_GRAB_HIGH_TIDE_THRESHOLD;
   if (!highTide) {

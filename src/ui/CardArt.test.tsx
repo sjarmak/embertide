@@ -61,7 +61,9 @@ describe('illustrationFor', () => {
     const svg = container.querySelector('svg');
     expect(svg?.getAttribute('data-illustration-id')).toBe('cathedral_aurelia_light_arrow_001');
     const image = container.querySelector('g#raster image');
-    expect(image?.getAttribute('href')).toBe('/illustrations/cathedral_aurelia_light_arrow_001.webp');
+    expect(image?.getAttribute('href')).toBe(
+      '/illustrations/cathedral_aurelia_light_arrow_001.webp',
+    );
   });
 
   /**

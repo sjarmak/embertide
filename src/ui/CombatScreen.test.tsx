@@ -799,7 +799,9 @@ describe('CombatScreen background raster resolution (u-10a)', () => {
     const img = screen.getByTestId('combat-bg-image') as HTMLImageElement;
     // pr2 (2026-04-23): field + wild-boss-slot entry resolves to the
     // wild/outer arena; only region-boss-slot pulls the region BG.
-    expect(img.getAttribute('src')).toBe('/illustrations/cathedral_combat_bg_sylvani_wild_001.webp');
+    expect(img.getAttribute('src')).toBe(
+      '/illustrations/cathedral_combat_bg_sylvani_wild_001.webp',
+    );
     expect(img.getAttribute('data-zone')).toBe('sylvani');
   });
 
@@ -984,9 +986,7 @@ describe('CombatScreen colosseum backdrop resolution (y3no)', () => {
         entrySource: 'colosseum-slot',
       }),
     });
-    useGameStore.setState(
-      makeState({ activeCombat: colosseumCombat, currentZone: 'emberpeak' }),
-    );
+    useGameStore.setState(makeState({ activeCombat: colosseumCombat, currentZone: 'emberpeak' }));
     render(<CombatScreen />);
     const img = screen.getByTestId('combat-bg-image') as HTMLImageElement;
     expect(img.getAttribute('src')).toBe('/illustrations/cathedral_colosseum_bg_tier2_001.webp');
@@ -1001,9 +1001,7 @@ describe('CombatScreen colosseum backdrop resolution (y3no)', () => {
         entrySource: 'colosseum-slot',
       }),
     });
-    useGameStore.setState(
-      makeState({ activeCombat: colosseumCombat, currentZone: 'gilded-cage' }),
-    );
+    useGameStore.setState(makeState({ activeCombat: colosseumCombat, currentZone: 'gilded-cage' }));
     render(<CombatScreen />);
     const img = screen.getByTestId('combat-bg-image') as HTMLImageElement;
     expect(img.getAttribute('src')).toBe('/illustrations/cathedral_colosseum_bg_tier5_001.webp');
@@ -1016,7 +1014,9 @@ describe('CombatScreen colosseum backdrop resolution (y3no)', () => {
     const img = screen.getByTestId('combat-bg-image') as HTMLImageElement;
     expect(img.getAttribute('data-colosseum-tier')).toBeNull();
     // Zone backdrop is still in effect (regression guard).
-    expect(img.getAttribute('src')).toBe('/illustrations/cathedral_combat_bg_sylvani_wild_001.webp');
+    expect(img.getAttribute('src')).toBe(
+      '/illustrations/cathedral_combat_bg_sylvani_wild_001.webp',
+    );
   });
 
   // Defensive escape: colosseum-slot fight whose boss isn't in any tier
@@ -1038,7 +1038,9 @@ describe('CombatScreen colosseum backdrop resolution (y3no)', () => {
 
     const img = screen.getByTestId('combat-bg-image') as HTMLImageElement;
     expect(img.getAttribute('data-colosseum-tier')).toBeNull();
-    expect(img.getAttribute('src')).toBe('/illustrations/cathedral_combat_bg_sylvani_wild_001.webp');
+    expect(img.getAttribute('src')).toBe(
+      '/illustrations/cathedral_combat_bg_sylvani_wild_001.webp',
+    );
     expect(warnSpy).toHaveBeenCalledTimes(1);
     expect(warnSpy.mock.calls[0]?.[0]).toContain('not-a-colosseum-boss');
 

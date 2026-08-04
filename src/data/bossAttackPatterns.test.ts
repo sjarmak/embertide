@@ -102,7 +102,7 @@ describe('bossAttackPatterns — bossAttackResolver discriminator', () => {
   // Add new entries here as resolver follow-ups land.
   const RESOLVER_BY_BOSS: Readonly<Record<string, string>> = {
     tidewraith: 'tidewraith-tentacle-grab', // gdd.1.2
-    'knell': 'knell-drum', // embertide-x1qg
+    knell: 'knell-drum', // embertide-x1qg
     hextwins: 'hextwins-fire-ice', // embertide-jghb
     'iron-sentinel': 'iron-sentinel-stagger', // embertide-2iyv
     'hollow-effigy': 'hollow-effigy-mirror', // embertide-44w8

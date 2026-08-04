@@ -263,9 +263,9 @@ describe('tidewraith telegraph log (d)', () => {
     const log = next.combat.combatLog ?? [];
     expect(log.some((entry) => entry.startsWith(TIDEWRAITH_LOG_TELEGRAPH_PREFIX))).toBe(true);
     // Damage figure is rendered into the entry.
-    expect(log.some((entry) => entry.includes(TIDEWRAITH_LOG_WILL_HIT) && entry.includes('3'))).toBe(
-      true,
-    );
+    expect(
+      log.some((entry) => entry.includes(TIDEWRAITH_LOG_WILL_HIT) && entry.includes('3')),
+    ).toBe(true);
   });
 
   it('also writes a chain-discard entry on the high-tide fire', () => {

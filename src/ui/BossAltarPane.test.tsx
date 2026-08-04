@@ -428,9 +428,7 @@ describe('BossAltarLocked (wnj) — zone-specific boss-door slot', () => {
   it('renders the emberpeak boss-door raster for the emberpeak zone', () => {
     render(<BossAltarLocked zoneId="emberpeak" />);
     const raster = screen.getByTestId('boss-altar-pane-locked-raster');
-    expect(raster.getAttribute('src')).toBe(
-      '/illustrations/cathedral_emberpeak_boss_door_001.png',
-    );
+    expect(raster.getAttribute('src')).toBe('/illustrations/cathedral_emberpeak_boss_door_001.png');
   });
 
   it('renders the gilded-cage boss-door raster for the gilded-cage zone', () => {

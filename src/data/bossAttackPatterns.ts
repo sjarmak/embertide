@@ -325,12 +325,12 @@ const CAGEWRIGHT_VURMOX_PATTERN: BossAttackPattern = {
 export const BOSS_ATTACK_PATTERNS: Readonly<Record<string, BossAttackPattern>> = Object.freeze({
   craghorn: CRAGHORN_PATTERN,
   broodmaw: BROODMAW_PATTERN,
-  'boulderkin': BOULDERKIN_PATTERN,
+  boulderkin: BOULDERKIN_PATTERN,
   'ashen-tyrant': ASHEN_TYRANT_PATTERN,
-  'maelstrom': MAELSTROM_PATTERN,
+  maelstrom: MAELSTROM_PATTERN,
   tidewraith: TIDEWRAITH_PATTERN,
   'hollow-effigy': HOLLOW_EFFIGY_PATTERN,
-  'knell': KNELL_PATTERN,
+  knell: KNELL_PATTERN,
   'iron-sentinel': IRON_SENTINEL_PATTERN,
   hextwins: HEXTWINS_PATTERN,
   sentinel: SENTINEL_PATTERN,
@@ -395,7 +395,7 @@ export function attackPatternFor(bossCardId: string): BossAttackPattern {
 export const BOSS_HP: Readonly<Record<string, number>> = Object.freeze({
   craghorn: 10,
   broodmaw: 18,
-  'boulderkin': 10,
+  boulderkin: 10,
   'ashen-tyrant': 19,
   // gdd.1: Maren wild + region. maelstrom HP 10 matches the entry-tier
   // wild band (craghorn / boulderkin / sentinel). tidewraith HP 16 sits
@@ -403,7 +403,7 @@ export const BOSS_HP: Readonly<Record<string, number>> = Object.freeze({
   // intentionally a touch lower while the tide-gauge dynamic-damage
   // pattern is still substrate-only, so single-boss runs stay
   // completable in the [5, 8] median-turn band.
-  'maelstrom': 10,
+  maelstrom: 10,
   tidewraith: 16,
   // gdd.2: Hollow Shrine wild + region. hollow-effigy HP 8 — z5e tuning
   // pass (2026-05-28) raised from substrate-ship 6 after the
@@ -417,7 +417,7 @@ export const BOSS_HP: Readonly<Record<string, number>> = Object.freeze({
   // enterCombatAction), so the raw HP stays inside the [16, 19]
   // mid-region band.
   'hollow-effigy': 8,
-  'knell': 17,
+  knell: 17,
   // gdd.3: Dune Sanctum wild + region. iron-sentinel HP 8 — z5e tuning
   // pass (2026-05-28) raised from substrate-ship 6 (same reason as
   // hollow-effigy: sim showed median 2, below the [3, 5] design band;

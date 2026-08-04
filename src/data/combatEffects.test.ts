@@ -16,11 +16,7 @@ import { createSeededRng } from '../rules/chestPool';
  * must resolve every one of these without throwing and without returning
  * `undefined`.
  */
-const CARD_UNIVERSE: readonly Card[] = [
-  ...KID_CARDS,
-  ...ALWAYS_AVAILABLE,
-  ...GILDED_CAGE_REGULARS,
-];
+const CARD_UNIVERSE: readonly Card[] = [...KID_CARDS, ...ALWAYS_AVAILABLE, ...GILDED_CAGE_REGULARS];
 
 const VALID_KINDS: readonly CombatEffectKind[] = [
   'combat-attack',
@@ -283,7 +279,7 @@ describe('combatEffectFor — u-9b heirlooms', () => {
   it('HEIRLOOM_DROPS maps the 5 wild-boss ids to the right heirlooms (4 core + golden-rainbow)', () => {
     expect(HEIRLOOM_DROPS).toEqual({
       craghorn: 'craghorn-tusk',
-      'boulderkin': 'boulderkin-core',
+      boulderkin: 'boulderkin-core',
       sentinel: 'sentinel-eye',
       // v2.1 gm0.17 (embertide-0jf): Silver Chimera now drops
       // `chimera-sword` as its sole wild-boss heirloom (retiring

@@ -29,7 +29,7 @@ describe('RegionBossEncounterSlot (u-9d + gm0.12)', () => {
   // locked-door tests at the bottom of the describe.
   const UNLOCKED_SYLVANI = {
     sylvani: ['craghorn'],
-    'emberpeak': [],
+    emberpeak: [],
     maren: [],
     'hollow-shrine': [],
     'dune-sanctum': [],
@@ -100,7 +100,7 @@ describe('RegionBossEncounterSlot (u-9d + gm0.12)', () => {
         turn: 6,
         bossKeys: {
           sylvani: [],
-          'emberpeak': [],
+          emberpeak: [],
           maren: [],
           'hollow-shrine': [],
           'dune-sanctum': [],
@@ -132,7 +132,7 @@ describe('RegionBossEncounterSlot (u-9d + gm0.12)', () => {
         turn: 6,
         bossKeys: {
           sylvani: [],
-          'emberpeak': [],
+          emberpeak: [],
           maren: [],
           'hollow-shrine': [],
           'dune-sanctum': [],
@@ -174,7 +174,7 @@ describe('RegionBossEncounterSlot (u-9d + gm0.12)', () => {
 describe('RegionBossEncounterSlot phase gate (embertide-rtf4)', () => {
   const UNLOCKED_SYLVANI = {
     sylvani: ['craghorn'],
-    'emberpeak': [],
+    emberpeak: [],
     maren: [],
     'hollow-shrine': [],
     'dune-sanctum': [],

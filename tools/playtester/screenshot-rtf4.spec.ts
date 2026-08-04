@@ -30,7 +30,7 @@ test.use({ viewport: { width: 1280, height: 800 } });
 
 interface BossKeys {
   readonly sylvani: readonly string[];
-  readonly 'emberpeak': readonly string[];
+  readonly emberpeak: readonly string[];
   readonly maren: readonly string[];
   readonly 'hollow-shrine': readonly string[];
   readonly 'dune-sanctum': readonly string[];
@@ -103,7 +103,7 @@ test('rtf4 — boss-altar row phase-gate states (turn 1 / 4 / 6-sealed / 6-engag
     turn: 6,
     bossKeys: {
       sylvani: [],
-      'emberpeak': [],
+      emberpeak: [],
       maren: [],
       'hollow-shrine': [],
       'dune-sanctum': [],
@@ -128,7 +128,7 @@ test('rtf4 — boss-altar row phase-gate states (turn 1 / 4 / 6-sealed / 6-engag
     defeatedBossIds: ['craghorn'],
     bossKeys: {
       sylvani: ['craghorn'],
-      'emberpeak': [],
+      emberpeak: [],
       maren: [],
       'hollow-shrine': [],
       'dune-sanctum': [],

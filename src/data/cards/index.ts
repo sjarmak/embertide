@@ -43,14 +43,7 @@ import { chests } from './chests';
 import { colosseumCards } from './colosseum';
 
 // Public surface re-exports (kept stable for the 49 consumer files).
-export {
-  wisp,
-  greatWisp,
-  wispInBottle,
-  blacksmithForge,
-  ritualRelic,
-  ancientBlade,
-} from './items';
+export { wisp, greatWisp, wispInBottle, blacksmithForge, ritualRelic, ancientBlade } from './items';
 export {
   CHEST_ITEM_POOL_IDS,
   TEST_PASSIVE_SAMPLE_CARD,

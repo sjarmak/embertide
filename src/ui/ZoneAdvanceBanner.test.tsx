@@ -11,9 +11,7 @@ describe('ZoneAdvanceBanner (u-5a)', () => {
   });
 
   it('renders the fromZone and toZone display names', () => {
-    render(
-      <ZoneAdvanceBanner fromZone="sylvani" toZone="emberpeak" onDismiss={() => undefined} />,
-    );
+    render(<ZoneAdvanceBanner fromZone="sylvani" toZone="emberpeak" onDismiss={() => undefined} />);
     expect(screen.getByTestId('zone-advance-banner')).toBeInTheDocument();
     expect(screen.getByTestId('zone-advance-banner-from').textContent).toBe('Sylvanwood');
     expect(screen.getByTestId('zone-advance-banner-to').textContent).toBe('Emberpeak');
@@ -21,17 +19,11 @@ describe('ZoneAdvanceBanner (u-5a)', () => {
 
   it('exposes an accessible aria-label describing the transition', () => {
     render(
-      <ZoneAdvanceBanner
-        fromZone="emberpeak"
-        toZone="gilded-cage"
-        onDismiss={() => undefined}
-      />,
+      <ZoneAdvanceBanner fromZone="emberpeak" toZone="gilded-cage" onDismiss={() => undefined} />,
     );
     const banner = screen.getByTestId('zone-advance-banner');
     expect(banner.getAttribute('role')).toBe('status');
-    expect(banner.getAttribute('aria-label')).toBe(
-      'Emberpeak cleared — Gilded Cage awaits',
-    );
+    expect(banner.getAttribute('aria-label')).toBe('Emberpeak cleared — Gilded Cage awaits');
   });
 
   it('calls onDismiss after the default 2.2s duration (read-time floor >= 2.0s, embertide-4m5.3)', () => {

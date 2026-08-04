@@ -70,7 +70,7 @@ export const ZONE_BOSS_SPECS: Readonly<Record<string, ZoneBossSpec>> = {
   // zone-mode aggregate (BOSS_HP['boulderkin'] = 10, vs colosseum
   // tier-1's 20). Holds the colosseum 40%/60% Shell-vs-Core split:
   // shell=4, core=6. Per-boss tuning revisits with lhlo.7 activation.
-  'boulderkin': {
+  boulderkin: {
     archetype: 'layered',
     stateTags: [
       {
@@ -98,7 +98,7 @@ export const ZONE_BOSS_SPECS: Readonly<Record<string, ZoneBossSpec>> = {
   // weak-point gameplay (single tail spin window) maps to Guarded
   // + Cycle → Exposed, mirrors the craghorn/broodmaw threshold:2 shape.
   // Per-boss tuning lands with lhlo.7 activation.
-  'maelstrom': {
+  maelstrom: {
     archetype: 'eye',
     stateTags: [
       { kind: 'guarded', until: 'cycle-trigger' },
@@ -153,7 +153,7 @@ export const ZONE_BOSS_SPECS: Readonly<Record<string, ZoneBossSpec>> = {
   // so the spec value is forward-compat metadata for the lhlo.7
   // telegraph affordance. Coexistence with the bespoke resolver is
   // intentional; this entry is additive metadata, not a replacement.
-  'knell': {
+  knell: {
     archetype: 'sequence',
     stateTags: [
       {

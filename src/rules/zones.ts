@@ -92,7 +92,7 @@ export const ZONE_METADATA: Record<ZoneId, ZoneMetadata> = {
     wildBossIds: ['craghorn'],
     regionBossId: 'broodmaw',
   },
-  'emberpeak': {
+  emberpeak: {
     id: 'emberpeak',
     displayName: 'Emberpeak',
     themeHint: 'volcanic peak with ash-tinted skies',
@@ -106,7 +106,7 @@ export const ZONE_METADATA: Record<ZoneId, ZoneMetadata> = {
   },
   maren: {
     id: 'maren',
-    displayName: "Tidehold",
+    displayName: 'Tidehold',
     // gdd.1: tide-gauge zone — themeHint feeds raster prompts for the
     // upcoming combat-bg + boss-door art batch (gdd.1 step 6, art batch
     // ships separately under the art-pending convention).
@@ -296,11 +296,7 @@ export function currentWildBossForZone(state: KidGameState, zoneId: ZoneId): str
   // embertide-044: FIFO exhausted for this zone. Gilded Cage
   // gets a post-completion dynamic slot when the one-shot Rainbow
   // spawn roll has succeeded and the boss isn't already defeated.
-  if (
-    zoneId === 'gilded-cage' &&
-    state.prismChimeraSpawned &&
-    !defeated.has(PRISM_CHIMERA_ID)
-  ) {
+  if (zoneId === 'gilded-cage' && state.prismChimeraSpawned && !defeated.has(PRISM_CHIMERA_ID)) {
     return PRISM_CHIMERA_ID;
   }
   return null;

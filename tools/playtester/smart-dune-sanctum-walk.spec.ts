@@ -315,9 +315,7 @@ for (const run of RUNS) {
     });
 
     await bootApp(page, { debug: 'zone-dune-sanctum' });
-    report.step(
-      `booted ${run} via ?debug=zone-dune-sanctum — 2P init, currentZone='dune-sanctum'`,
-    );
+    report.step(`booted ${run} via ?debug=zone-dune-sanctum — 2P init, currentZone='dune-sanctum'`);
 
     await page.waitForSelector('[data-testid="game-board"]', { state: 'visible', timeout: 10_000 });
 

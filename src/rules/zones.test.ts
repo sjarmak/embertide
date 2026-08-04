@@ -131,10 +131,7 @@ describe('currentWildBossForZone (u-9a)', () => {
     // Defensive: even if the spawn flag somehow flipped before the FIFO
     // clears, the selector prefers the undefeated FIFO entry.
     expect(
-      currentWildBossForZone(
-        makeState(['sentinel'], { prismChimeraSpawned: true }),
-        'gilded-cage',
-      ),
+      currentWildBossForZone(makeState(['sentinel'], { prismChimeraSpawned: true }), 'gilded-cage'),
     ).toBe('silver-chimera');
   });
 
@@ -176,10 +173,7 @@ describe('computePrismChimeraSpawnChance (embertide-044)', () => {
   });
 
   it('returns exactly the cap (0.85) at 17 kills (0.05 * 17)', () => {
-    expect(computePrismChimeraSpawnChance(17)).toBeCloseTo(
-      PRISM_CHIMERA_SPAWN_CAP,
-      10,
-    );
+    expect(computePrismChimeraSpawnChance(17)).toBeCloseTo(PRISM_CHIMERA_SPAWN_CAP, 10);
   });
 
   it('stays at the cap (0.85) for kill counts past the threshold', () => {

@@ -217,9 +217,7 @@ export function applyDebugSeed(seed: DebugSeed): boolean {
       };
     });
     const zoneId =
-      seed === 'emberpeak-combat' || seed === 'boulderkin-combat'
-        ? 'emberpeak'
-        : 'gilded-cage';
+      seed === 'emberpeak-combat' || seed === 'boulderkin-combat' ? 'emberpeak' : 'gilded-cage';
     const bossId =
       seed === 'emberpeak-combat'
         ? 'ashen-tyrant'

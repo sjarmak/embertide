@@ -9,12 +9,12 @@
 // Fully generic: no per-repo copy. Captions come from each view's own title +
 // description, falling back to the description of the element the view is "of".
 
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
 
 const args = Object.fromEntries(
   process.argv.slice(2).reduce((acc, a, i, arr) => {
-    if (a.startsWith("--")) acc.push([a.slice(2), arr[i + 1]]);
+    if (a.startsWith('--')) acc.push([a.slice(2), arr[i + 1]]);
     return acc;
   }, []),
 );
@@ -22,16 +22,20 @@ const args = Object.fromEntries(
 const modelPath = args.model;
 const figuresDir = args.figures;
 const outPath = args.out;
-const repo = args.repo || "architecture";
-const explore = args.explore || "./explore/";
+const repo = args.repo || 'architecture';
+const explore = args.explore || './explore/';
 
-const model = JSON.parse(readFileSync(modelPath, "utf8"));
+const model = JSON.parse(readFileSync(modelPath, 'utf8'));
 const views = Object.values(model.views || {});
 const elements = model.elements || {};
 
-const txt = (d) => (d && typeof d === "object" ? d.txt : typeof d === "string" ? d : "") || "";
+const txt = (d) => (d && typeof d === 'object' ? d.txt : typeof d === 'string' ? d : '') || '';
 const esc = (s) =>
-  String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 
 const figureExists = (id) => existsSync(join(figuresDir, `${id}.png`));
 
@@ -40,51 +44,52 @@ function describe(v) {
   const own = txt(v.description);
   if (own) return own;
   if (v.viewOf && elements[v.viewOf]) return txt(elements[v.viewOf].description);
-  return "";
+  return '';
 }
 
 // Hero: the primary `system` element (fallback: first element, then repo slug).
 const systemEl =
-  Object.values(elements).find((e) => e.kind === "system") ||
-  Object.values(elements).find((e) => !String(e.id || "").includes(".")) ||
+  Object.values(elements).find((e) => e.kind === 'system') ||
+  Object.values(elements).find((e) => !String(e.id || '').includes('.')) ||
   null;
 const brand = (systemEl && systemEl.title) || repo;
 const heroLead =
   (systemEl && txt(systemEl.description)) ||
-  (views.find((v) => v.id === "index") && views.find((v) => v.id === "index").title) ||
+  (views.find((v) => v.id === 'index') && views.find((v) => v.id === 'index').title) ||
   `Architecture-as-code model of ${repo}.`;
 
 // Group views.
-const isLandscape = (v) => v._type === "element" && (!v.viewOf || (systemEl && v.viewOf === systemEl.id));
-const elementViews = views.filter((v) => v._type === "element");
+const isLandscape = (v) =>
+  v._type === 'element' && (!v.viewOf || (systemEl && v.viewOf === systemEl.id));
+const elementViews = views.filter((v) => v._type === 'element');
 const landscapeViews = elementViews.filter(isLandscape);
 const structureViews = elementViews.filter((v) => !isLandscape(v));
-const dynamicViews = views.filter((v) => v._type === "dynamic");
-const deploymentViews = views.filter((v) => v._type === "deployment");
+const dynamicViews = views.filter((v) => v._type === 'dynamic');
+const deploymentViews = views.filter((v) => v._type === 'deployment');
 
 function figure(v, { wide = false } = {}) {
-  if (!figureExists(v.id)) return "";
+  if (!figureExists(v.id)) return '';
   const desc = describe(v);
-  return `        <figure class="diagram${wide ? " wide" : ""}">
+  return `        <figure class="diagram${wide ? ' wide' : ''}">
           <a class="frame" href="./figures/${esc(v.id)}.png" aria-label="Open full-resolution diagram">
             <img src="./figures/${esc(v.id)}.png" alt="${esc(v.title || v.id)}" loading="lazy" />
           </a>
           <figcaption>
             <div class="fig-title"><h3>${esc(v.title || v.id)}</h3><span class="fig-id">${esc(v.id)}</span></div>
-            ${desc ? `<p>${esc(desc)}</p>` : ""}
+            ${desc ? `<p>${esc(desc)}</p>` : ''}
           </figcaption>
         </figure>`;
 }
 
 function section(id, kicker, heading, blurb, figs) {
-  const cards = figs.filter(Boolean).join("\n");
-  if (!cards.trim()) return "";
+  const cards = figs.filter(Boolean).join('\n');
+  if (!cards.trim()) return '';
   return `      <section class="section" id="${id}">
         <div class="container">
           <div class="section__head">
             <p class="kicker">${esc(kicker)}</p>
             <h2>${esc(heading)}</h2>
-            ${blurb ? `<p class="muted">${esc(blurb)}</p>` : ""}
+            ${blurb ? `<p class="muted">${esc(blurb)}</p>` : ''}
           </div>
           <div class="auto-grid">
 ${cards}
@@ -95,31 +100,31 @@ ${cards}
 
 const sections = [
   section(
-    "landscape",
-    "The whole picture",
-    "System landscape",
-    "The system in context, then opened up into its containers.",
+    'landscape',
+    'The whole picture',
+    'System landscape',
+    'The system in context, then opened up into its containers.',
     landscapeViews.map((v) => figure(v, { wide: true })),
   ),
   section(
-    "structure",
-    "Inside each box",
-    "Containers & components",
-    "Each part decomposed into the components that implement it. Every box links to its source in the interactive explorer.",
+    'structure',
+    'Inside each box',
+    'Containers & components',
+    'Each part decomposed into the components that implement it. Every box links to its source in the interactive explorer.',
     structureViews.map((v) => figure(v)),
   ),
   section(
-    "flows",
-    "How it runs",
-    "Walkthrough flows",
-    "Dynamic views — the narrative spine of the system, step by step.",
+    'flows',
+    'How it runs',
+    'Walkthrough flows',
+    'Dynamic views — the narrative spine of the system, step by step.',
     dynamicViews.map((v) => figure(v)),
   ),
   section(
-    "deployment",
-    "Where it runs",
-    "Deployment",
-    "What runs where, and the process & data boundaries between the pieces.",
+    'deployment',
+    'Where it runs',
+    'Deployment',
+    'What runs where, and the process & data boundaries between the pieces.',
     deploymentViews.map((v) => figure(v, { wide: true })),
   ),
 ].filter(Boolean);
@@ -181,7 +186,7 @@ const html = `<!doctype html>
           </div>
         </div>
       </section>
-${sections.join("\n")}
+${sections.join('\n')}
       <section class="section" id="explore">
         <div class="container" style="text-align: center">
           <h2>Explore it live</h2>
@@ -219,4 +224,6 @@ ${sections.join("\n")}
 
 writeFileSync(outPath, html);
 const used = views.filter((v) => figureExists(v.id)).length;
-console.log(`build-page: ${brand} → ${outPath} (${used}/${views.length} views with figures, ${sections.length} sections)`);
+console.log(
+  `build-page: ${brand} → ${outPath} (${used}/${views.length} views with figures, ${sections.length} sections)`,
+);

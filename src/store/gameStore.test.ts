@@ -2933,9 +2933,7 @@ describe('createGameStore / useGameStore', () => {
       expect(store.getState().activeCombat?.entryContext.entrySource).toBe('wild-boss-slot');
       expect(store.getState().activeCombat?.boss.sourceCardId).toBe('prism-chimera');
       // WIN → rainbow-ancient-chimera-sword drops.
-      store
-        .getState()
-        .dispatchCombat(buildResolveWinAction(RAINBOW, ['p0', 'p1'], 'gilded-cage'));
+      store.getState().dispatchCombat(buildResolveWinAction(RAINBOW, ['p0', 'p1'], 'gilded-cage'));
       const after = store.getState();
       const hasRainbowSword = after.players.some((p) =>
         p.items.some((c) => baseIdOf(c) === 'rainbow-ancient-chimera-sword'),
@@ -2964,9 +2962,9 @@ describe('createGameStore / useGameStore', () => {
 
         pendingForestSageRoll: null,
       }));
-      expect(() =>
-        store.getState().engageWildBossSlot('gilded-cage', 'prism-chimera'),
-      ).toThrow(/current wild-boss/);
+      expect(() => store.getState().engageWildBossSlot('gilded-cage', 'prism-chimera')).toThrow(
+        /current wild-boss/,
+      );
       expect(store.getState().activeCombat).toBeNull();
     });
 

@@ -199,7 +199,8 @@ async function main() {
     throw new Error(`Fetching webp failed: ${webpRes.status} ${webpRes.statusText}`);
   }
   let buf = Buffer.from(await webpRes.arrayBuffer());
-  const declaresChroma = params.output_format === 'png' && /chroma-key|#00FF00|#FF00FF/i.test(prompt);
+  const declaresChroma =
+    params.output_format === 'png' && /chroma-key|#00FF00|#FF00FF/i.test(prompt);
   if (declaresChroma) {
     // Pick the chroma color the brief actually declares. Magenta (#FF00FF)
     // takes precedence only when explicitly named; otherwise default green.

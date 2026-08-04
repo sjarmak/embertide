@@ -60,16 +60,16 @@ describe('gm0.12 — canSpawnRegionBoss predicate', () => {
   });
 
   it('sylvani: UNLOCKED once bossKeys.sylvani includes "craghorn"', () => {
-    expect(canSpawnRegionBoss(baseState({ ...emptyBossKeys(), sylvani: ['craghorn'] }), 'sylvani')).toBe(
-      true,
-    );
+    expect(
+      canSpawnRegionBoss(baseState({ ...emptyBossKeys(), sylvani: ['craghorn'] }), 'sylvani'),
+    ).toBe(true);
   });
 
   it('emberpeak: SEALED until "boulderkin" key drops', () => {
     expect(canSpawnRegionBoss(baseState(), 'emberpeak')).toBe(false);
     const unlocked = {
       ...emptyBossKeys(),
-      'emberpeak': ['boulderkin'],
+      emberpeak: ['boulderkin'],
     };
     expect(canSpawnRegionBoss(baseState(unlocked), 'emberpeak')).toBe(true);
   });
@@ -160,9 +160,7 @@ describe('gm0.12 — wild-boss defeat dual-drop (heirloom + key)', () => {
       return { ...s, players, currentZone: 'emberpeak' };
     });
     store.getState().engageWildBossSlot('emberpeak', 'boulderkin');
-    store
-      .getState()
-      .dispatchCombat(buildResolveWinAction(BOULDERKIN, ['p0', 'p1'], 'emberpeak'));
+    store.getState().dispatchCombat(buildResolveWinAction(BOULDERKIN, ['p0', 'p1'], 'emberpeak'));
     const after = store.getState();
     const heirloomFound = after.players.some((p) =>
       p.items.some((c) => baseIdOf(c) === 'boulderkin-core'),
@@ -232,13 +230,13 @@ describe('gm0.12 — engageRegionBossSlot locked-door enforcement', () => {
       bossKeys: {
         ...s.bossKeys,
         sylvani: ['craghorn'],
-        'emberpeak': ['boulderkin'],
+        emberpeak: ['boulderkin'],
         'gilded-cage': ['sentinel'],
       },
     }));
-    expect(() =>
-      store.getState().engageRegionBossSlot('gilded-cage', 'cagewright-vurmox'),
-    ).toThrow(/sealed/);
+    expect(() => store.getState().engageRegionBossSlot('gilded-cage', 'cagewright-vurmox')).toThrow(
+      /sealed/,
+    );
   });
 
   it('Temple: Silver-Chimera-only does NOT unlock Vurmox engage (throws sealed)', () => {
@@ -251,9 +249,9 @@ describe('gm0.12 — engageRegionBossSlot locked-door enforcement', () => {
         'gilded-cage': ['silver-chimera'],
       },
     }));
-    expect(() =>
-      store.getState().engageRegionBossSlot('gilded-cage', 'cagewright-vurmox'),
-    ).toThrow(/sealed/);
+    expect(() => store.getState().engageRegionBossSlot('gilded-cage', 'cagewright-vurmox')).toThrow(
+      /sealed/,
+    );
   });
 
   it('Temple: BOTH Sentinel + Silver Chimera keys unlock Vurmox engage', () => {

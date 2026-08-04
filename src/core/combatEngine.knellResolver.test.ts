@@ -114,9 +114,9 @@ describe('knell-drum telegraph turn (a)', () => {
     const state = makeTurnState(makeCombat({ turnIndex: 0, combatLog: [] }));
     const next = combatTurnReducer(state, { type: 'BOSS_RESOLVE' });
     const log = next.combat.combatLog ?? [];
-    expect(
-      log.some((entry) => entry.includes(KNELL_LOG_TELEGRAPH) && entry.includes('3')),
-    ).toBe(true);
+    expect(log.some((entry) => entry.includes(KNELL_LOG_TELEGRAPH) && entry.includes('3'))).toBe(
+      true,
+    );
   });
 
   it('advances turnIndex AND flips activeActor back to players', () => {
@@ -144,9 +144,7 @@ describe('knell-drum slam turn (b)', () => {
     const state = makeTurnState(makeCombat({ turnIndex: 1, combatLog: [] }));
     const next = combatTurnReducer(state, { type: 'BOSS_RESOLVE' });
     const log = next.combat.combatLog ?? [];
-    expect(log.some((entry) => entry.includes(KNELL_LOG_SLAM) && entry.includes('3'))).toBe(
-      true,
-    );
+    expect(log.some((entry) => entry.includes(KNELL_LOG_SLAM) && entry.includes('3'))).toBe(true);
   });
 });
 
@@ -207,9 +205,9 @@ describe('knell-drum + shadow-creep flat-adder (d)', () => {
     const state = makeTurnState(makeCombat({ turnIndex: 0, boss, combatLog: [] }));
     const next = combatTurnReducer(state, { type: 'BOSS_RESOLVE' });
     const log = next.combat.combatLog ?? [];
-    expect(
-      log.some((entry) => entry.includes(KNELL_LOG_TELEGRAPH) && entry.includes('6')),
-    ).toBe(true);
+    expect(log.some((entry) => entry.includes(KNELL_LOG_TELEGRAPH) && entry.includes('6'))).toBe(
+      true,
+    );
   });
 });
 

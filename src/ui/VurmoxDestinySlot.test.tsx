@@ -23,7 +23,7 @@ function makeState(overrides: Partial<KidGameState> = {}): KidGameState {
     defeatedBossIds: ['sentinel', 'silver-chimera'],
     bossKeys: {
       sylvani: ['craghorn'],
-      'emberpeak': ['boulderkin'],
+      emberpeak: ['boulderkin'],
       maren: ['maelstrom'],
       'hollow-shrine': ['hollow-effigy'],
       'dune-sanctum': ['iron-sentinel'],
