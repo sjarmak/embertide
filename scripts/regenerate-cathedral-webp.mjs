@@ -184,12 +184,15 @@ for (const [name, kind, expectedSourceHash] of assets) {
     try {
       writeFileSync(temporary, output);
       renameSync(temporary, target);
-    } finally {
+    } catch (writeError) {
       try {
         unlinkSync(temporary);
-      } catch (error) {
-        if (error.code !== 'ENOENT') throw error;
+      } catch (cleanupError) {
+        if (cleanupError.code !== 'ENOENT') {
+          console.warn(`${name}: could not remove temporary file after write failure`);
+        }
       }
+      throw writeError;
     }
   }
 
