@@ -8,7 +8,7 @@
 // after V-7c merge per A-18′, stylelint `app.css` exemption drop at V-5a+14d,
 // coverage ratchet at V-10, etc.). Without automation these flips slip.
 //
-// Manifest: `.claude/prd-build-artifacts/gate-schedule.json`
+// Manifest: `docs/gate-schedule.json`
 //   [
 //     {
 //       "gate": "perf:motion",
@@ -35,7 +35,7 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const MANIFEST = resolve(__dirname, '..', '.claude', 'prd-build-artifacts', 'gate-schedule.json');
+const MANIFEST = resolve(__dirname, '..', 'docs', 'gate-schedule.json');
 
 function die(code, msg) {
   console.error(`[verify:gate-schedule] FAIL: ${msg}`);

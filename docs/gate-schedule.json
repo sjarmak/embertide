@@ -1,0 +1,30 @@
+[
+  {
+    "gate": "perf:motion",
+    "trigger": "V-7c+14d (PRD A-18′)",
+    "flipDate": null,
+    "status": "pending",
+    "notes": "Flip to blocking 14 days after V-7c (chest-reveal choreography) merges. Set flipDate when V-7c lands."
+  },
+  {
+    "gate": "perf:ambient",
+    "trigger": "V-7c+14d (PRD A-18′ / R-15)",
+    "flipDate": null,
+    "status": "pending",
+    "notes": "Ambient-board fixture activates alongside chest-reveal per zeldascension-z40.2. Same calendar trigger as perf:motion."
+  },
+  {
+    "gate": "stylelint:app-css-exemption-drop",
+    "trigger": "V-5a+14d (PRD A-4 / V-11)",
+    "flipDate": null,
+    "status": "pending",
+    "notes": "src/styles/app.css is currently exempted from stylelint strict-value rules; drop the override block from .stylelintrc when V-5a+14d arrives."
+  },
+  {
+    "gate": "coverage:ratchet",
+    "trigger": "V-10 merge (PRD §8.5 verification loop)",
+    "flipDate": null,
+    "status": "pending",
+    "notes": "Coverage threshold ratchets up after reduced-motion + a11y hardening ships (V-10). Set flipDate at V-10 merge + soak window."
+  }
+]
