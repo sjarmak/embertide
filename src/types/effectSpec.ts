@@ -278,7 +278,7 @@ export type OmenFlavor = 'song' | 'ancient' | 'shadow' | 'none';
  *
  * Schema-only landing (gm0.7): the reducer path that drives the 3-d6
  * pick UI and dispatches the chosen face's effect ships in gm0.10
- * (forest-sage omen) / gm0.11 (tutorial wiring). This unit gates the
+ * (forest-sage omen) and later effect wiring. This unit gates the
  * new kind through `effectTextFor` + `_exhaustivenessGate` so every
  * downstream consumer adds its own case the next time it touches the
  * cascade.

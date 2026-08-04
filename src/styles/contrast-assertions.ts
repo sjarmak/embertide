@@ -401,7 +401,7 @@ const MATRIX_SEED: readonly MatrixSeed[] = [
   // ---------------------------------------------------------------------
   // embertide-pym7 — Cathedral-button hover-state pairings.
   //
-  // The secondary cathedral buttons (.hc-button + .tutorial-dismiss) flip
+  // The secondary cathedral buttons (.hc-button) flip
   // text from --hc-lead-gold-500 (base) to --hc-jewel-amber-100 (cream)
   // on hover while the shadow gradient (--hc-shadow-600 → --hc-shadow-800)
   // is unchanged. Lock both bg stops into the matrix so a token hex tweak

@@ -11,12 +11,11 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 import { createReporter } from './narrative';
 
 test('hp-downed — downed ribbon + revive button render on p0 strip', async ({ page }) => {
   await bootApp(page, { debug: 'hp-downed' });
-  await dismissTutorials(page);
 
   const report = createReporter('hp-downed');
   await report.screenshot(page, '01-board-downed');

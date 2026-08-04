@@ -187,7 +187,7 @@ export const GENERIC_BASE_ID_THEME: Record<string, string> = {
   'valor-pendant': 'Valor Pendant',
   'surge-totem': 'Surge Totem',
   // REQ-32 (u-9b) heirloom items, surfaced by name in u-9e's
-  // `heirloom-drop` tutorial bubble + main-board / combat-hand item
+  // main-board / combat-hand item
   // tiles.
   'craghorn-tusk': 'Craghorn Tusk',
   'boulderkin-core': 'Boulderkin Core',

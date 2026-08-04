@@ -15,7 +15,7 @@ import { initialZoneFields } from '../store/slices/zones';
  *  - `mode: 'kid'`, `phase: 'Main'`, `seed: 0`, deterministic placeholder rng
  *  - empty hands / decks / field / supply / chests / void / defeated
  *  - fresh princess-crystal + zone fields (sylvani, no history, no keys)
- *  - all per-card / per-combat / tutorial surfaces null
+ *  - all per-card and per-combat surfaces null
  *
  * `players` defaults to `[]`. Most callers want to inject specific players
  * via the `players` override; a few helpers spread `{ players: [makeKidPlayer()] }`
@@ -78,10 +78,6 @@ export function makeKidGameState(overrides: Partial<KidGameState> = {}): KidGame
     lastChestRewardCard: null,
     princessCrystal: initialPrincessCrystalState(),
     activeCombat: null,
-    combatsEntered: 0,
-    combatTutorialBubble: null,
-    tutorialBubblesFired: [],
-    tutorialBubbleBodyOverride: null,
     centerRowKillCount: 0,
     prismChimeraSpawned: false,
     tideGauge: 0,

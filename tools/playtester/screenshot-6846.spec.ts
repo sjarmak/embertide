@@ -5,7 +5,7 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test.use({ viewport: { width: 1280, height: 800 } });
 
@@ -20,7 +20,6 @@ declare global {
 
 test('6846 — dungeon-boss d20 reveal on cream veil', async ({ page }) => {
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
   const board = page.locator('[data-testid="game-board"]');
   await expect(board).toBeVisible();
 
@@ -47,7 +46,6 @@ test('6846 — dungeon-boss d20 reveal on cream veil', async ({ page }) => {
 
 test('6846 — winner-overlay on cream-toned veil', async ({ page }) => {
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
   const board = page.locator('[data-testid="game-board"]');
   await expect(board).toBeVisible();
 
@@ -73,7 +71,6 @@ test('6846 — winner-overlay on cream-toned veil', async ({ page }) => {
 
 test('6846 — boss-altar row sanity (region + wild slots)', async ({ page }) => {
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
   const altarRow = page.locator('.boss-altar-row').first();
   await expect(altarRow).toBeVisible();
   await page.waitForTimeout(300);

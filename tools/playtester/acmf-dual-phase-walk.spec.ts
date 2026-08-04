@@ -15,15 +15,14 @@
  * Date.now() seed inside `initGame` re-rolls per boot).
  *
  * On each seat-turn, in order:
- *   1. Dismiss any tutorial / chest-reveal overlay.
- *   2. Play hand cards greedily (max-out the resources first).
- *   3. Trade green→key via Pell when 4g+ available (only one trade
+ *   1. Play hand cards greedily (max-out the resources first).
+ *   2. Trade green→key via Pell when 4g+ available (only one trade
  *      per turn — Pell is gated on green pool, so a single 4g pool
  *      yields exactly one key).
- *   4. Open the cheapest affordable chest (mints supply item → fires
+ *   3. Open the cheapest affordable chest (mints supply item → fires
  *      `equip-bonus` on equip, e.g. tower-shield +1 gem).
- *   5. Buy the cheapest non-monster field card (heroes / items).
- *   6. Snapshot AFTER actions and BEFORE End Turn (the End phase zeros
+ *   4. Buy the cheapest non-monster field card (heroes / items).
+ *   5. Snapshot AFTER actions and BEFORE End Turn (the End phase zeros
  *      green/red, so a pre-End snapshot is the only way to read peak
  *      resource values per turn).
  *   7. End Turn.
@@ -36,7 +35,7 @@
  */
 
 import { expect, test, type Locator, type Page } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 import { createReporter } from './narrative';
 
 interface SeatSnapshot {
@@ -119,7 +118,6 @@ function fmtTurn(s: TurnSnapshot): string {
 }
 
 async function clearOverlays(page: Page): Promise<void> {
-  await dismissTutorials(page);
   const reveal = page.locator('[data-testid="chest-reveal"]');
   for (let i = 0; i < 3; i += 1) {
     if ((await reveal.count()) === 0) break;
@@ -257,7 +255,6 @@ for (const run of RUNS) {
 
     // ---- Boot through fresh Setup (no debug seed, fresh Date.now() seed) ----
     await bootApp(page);
-    await dismissTutorials(page);
     report.step(`booted ${run} (fresh Date.now() seed via Setup → initGame)`);
 
     const tiles = page.locator('.setup-champion-tile[data-champion-id]');
@@ -276,7 +273,6 @@ for (const run of RUNS) {
     const startBtn = page.locator('[data-testid="start-button"]');
     await startBtn.click({ force: true }).catch(() => undefined);
     await page.waitForTimeout(400);
-    await dismissTutorials(page);
     await page.waitForSelector('[data-testid="game-board"]', { state: 'visible', timeout: 10_000 });
 
     const initial = await readTurnSnapshot(page, 1);

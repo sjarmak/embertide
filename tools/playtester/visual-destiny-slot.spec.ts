@@ -28,13 +28,12 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test('visual-destiny-slot — Vurmox destiny altar renders with bespoke art + mandala (u-10d)', async ({
   page,
 }) => {
   await bootApp(page, { debug: 'vurmox-destiny' });
-  await dismissTutorials(page);
 
   const slot = page.locator('[data-testid="vurmox-destiny-slot"]');
   await expect(slot).toBeVisible();

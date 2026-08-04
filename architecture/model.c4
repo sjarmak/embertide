@@ -114,11 +114,6 @@ model {
         description 'deck / combat / inventory / chests / zones / endgame — each slice reduces one domain; combat.ts is the seam that wires the pure engine into board state'
         link ../src/store/slices 'store/slices/'
       }
-      tutorialStore = component 'tutorial store' {
-        #evolving
-        description 'Separate Zustand store gating the first-game three-bubble intro (markSeen), so it self-dismisses and never re-fires'
-        link ../src/store/tutorialStore.ts 'store/tutorialStore.ts'
-      }
     }
 
     // ── UI: the single-screen React board ───────────────────────────────────
@@ -152,11 +147,6 @@ model {
         description 'CardTemplate (icon, cost, rules text) and CardArt (SVG composer → raster fallback) — how every card draws on the board'
         link ../src/ui/CardTemplate.tsx 'ui/CardTemplate.tsx'
         link ../src/ui/CardArt.tsx 'ui/CardArt.tsx'
-      }
-      tutorial = component 'tutorial bubbles' {
-        #evolving
-        description 'First-game intro bubbles, turn-gated by the tutorial store; self-dismisses after the opening turns'
-        link ../src/ui/Tutorial.tsx 'ui/Tutorial.tsx'
       }
     }
 

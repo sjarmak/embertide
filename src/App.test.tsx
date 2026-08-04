@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
-import { useTutorialStore } from './store/tutorialStore';
 import { useGameStore } from './store/gameStore';
 import { createSeededRng } from './rules/chestPool';
 import { KID_CHAMPIONS } from './data/champions';
@@ -14,7 +13,6 @@ describe('App', () => {
     } catch {
       // jsdom's storage shouldn't throw, but swallow to stay test-safe.
     }
-    useTutorialStore.getState().reset();
     useGameStore.setState({
       mode: 'kid',
       players: [],
@@ -65,5 +63,7 @@ describe('App', () => {
 
     // GameBoard is now mounted.
     expect(screen.getByTestId('game-board')).toBeInTheDocument();
+    expect(screen.queryByTestId('tutorial-overlay')).toBeNull();
+    expect(screen.queryByTestId('combat-tutorial-overlay')).toBeNull();
   });
 });

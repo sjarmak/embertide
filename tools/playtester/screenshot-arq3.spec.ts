@@ -16,7 +16,7 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test.use({ viewport: { width: 1280, height: 800 } });
 
@@ -25,7 +25,6 @@ test('arq3 — drop-zone first-run painterly + post-first-run simple cream', asy
   await page.goto('/');
   await page.evaluate(() => localStorage.removeItem('rasc.dropHintSeen'));
   await bootApp(page, { debug: 'princess-crystal-freed' });
-  await dismissTutorials(page);
 
   const inPlay = page.getByTestId('in-play');
   await expect(inPlay).toBeVisible();
@@ -40,7 +39,6 @@ test('arq3 — drop-zone first-run painterly + post-first-run simple cream', asy
   // ---- 2. Post-first-run empty variant -----------------------------------
   await page.evaluate(() => localStorage.setItem('rasc.dropHintSeen', '1'));
   await bootApp(page, { debug: 'princess-crystal-freed' });
-  await dismissTutorials(page);
 
   const inPlayAfter = page.getByTestId('in-play');
   await expect(inPlayAfter).toBeVisible();

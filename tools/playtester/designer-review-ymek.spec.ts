@@ -22,7 +22,7 @@
  */
 
 import { test, expect, type Page } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 const VIEW_WIDTH = 1280;
 const VIEW_HEIGHT = 800;
@@ -40,7 +40,6 @@ async function reachBoard(page: Page, debugSeed?: string): Promise<void> {
   }
   await page.waitForSelector('[data-testid="game-board"]', { timeout: 10_000 });
   await page.waitForTimeout(300);
-  await dismissTutorials(page);
   await page.waitForTimeout(200);
 }
 

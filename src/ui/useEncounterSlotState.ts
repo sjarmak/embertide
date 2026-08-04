@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { currentRegionBossForZone, currentWildBossForZone } from '../rules/zones';
 import { canSpawnRegionBoss } from '../store/slices/zones';
@@ -65,11 +64,7 @@ export type EncounterSlotState = WildSlotState | RegionSlotState;
  * Wild encounter-slot state hook.
  *
  * Reads the active zone's wild boss + session-arc phase, returns a
- * discriminated union the slot component can switch over. Side effect
- * colocated: the `wild-boss-slot-revealed` tutorial bubble fires the first
- * time `bossId !== null && !isDormant` — preserving the pre-refactor fire
- * timing exactly so the bubble lands at the moment the slot becomes
- * engageable, not while it is still dormant.
+ * discriminated union the slot component can switch over.
  */
 export function useWildEncounterSlotState(): WildSlotState {
   const zoneId = useGameStore((s) => s.currentZone);
@@ -77,13 +72,6 @@ export function useWildEncounterSlotState(): WildSlotState {
   const isDormant = useGameStore((s) => !canSpawnWildBossInZone(s, s.currentZone));
   const phaseLabel = useGameStore((s) => sessionPhase(s.turn));
   const engageWildBossSlot = useGameStore((s) => s.engageWildBossSlot);
-  const fireTutorialBubbleOnce = useGameStore((s) => s.fireTutorialBubbleOnce);
-
-  useEffect(() => {
-    if (bossId !== null && !isDormant) {
-      fireTutorialBubbleOnce('wild-boss-slot-revealed');
-    }
-  }, [bossId, isDormant, fireTutorialBubbleOnce]);
 
   if (isDormant) {
     return { kind: 'dormant', unlockTurn: RISING_PHASE_TURN, phaseLabel, zoneId };
@@ -105,11 +93,7 @@ export function useWildEncounterSlotState(): WildSlotState {
  *
  * Reads the active zone's region boss + both gates (session-arc phase and
  * wild-boss-key seal), returns a discriminated union the slot component can
- * switch over. Side effect colocated: the `region-boss-slot-revealed`
- * tutorial bubble fires the first time `bossId !== null && !locked &&
- * !phaseLocked` — preserving the pre-refactor fire timing exactly so the
- * bubble lands at the moment both gates open and the slot becomes
- * engageable.
+ * switch over.
  */
 export function useRegionEncounterSlotState(): RegionSlotState {
   const zoneId = useGameStore((s) => s.currentZone);
@@ -117,13 +101,6 @@ export function useRegionEncounterSlotState(): RegionSlotState {
   const phaseLocked = useGameStore((s) => !canSpawnRegionBossByPhase(s, s.currentZone));
   const locked = useGameStore((s) => !canSpawnRegionBoss(s, s.currentZone));
   const engageRegionBossSlot = useGameStore((s) => s.engageRegionBossSlot);
-  const fireTutorialBubbleOnce = useGameStore((s) => s.fireTutorialBubbleOnce);
-
-  useEffect(() => {
-    if (bossId !== null && !locked && !phaseLocked) {
-      fireTutorialBubbleOnce('region-boss-slot-revealed');
-    }
-  }, [bossId, locked, phaseLocked, fireTutorialBubbleOnce]);
 
   const card = bossId !== null ? KID_CARDS.find((c) => c.id === bossId) : undefined;
   if (card === undefined) {

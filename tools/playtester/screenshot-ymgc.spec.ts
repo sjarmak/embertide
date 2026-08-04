@@ -12,7 +12,7 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test.use({ viewport: { width: 1280, height: 800 } });
 
@@ -28,7 +28,6 @@ declare global {
 test('ymgc — chest reveal hero reward (rolled card art on cream pane)', async ({ page }) => {
   // Use any debug seed that exposes __gameStore + lands us on GameBoard.
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
 
   const board = page.locator('[data-testid="game-board"]');
   await expect(board).toBeVisible();
@@ -69,7 +68,6 @@ test('ymgc — chest reveal hero reward (rolled card art on cream pane)', async 
 
 test('ymgc — chest reveal premium-item reward (legendary sword card art)', async ({ page }) => {
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
 
   const board = page.locator('[data-testid="game-board"]');
   await expect(board).toBeVisible();

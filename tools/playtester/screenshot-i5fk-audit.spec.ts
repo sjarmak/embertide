@@ -26,7 +26,7 @@
  */
 
 import { test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 const IPAD_PORTRAIT = { width: 768, height: 1024 } as const;
 const IPAD_LANDSCAPE = { width: 1024, height: 768 } as const;
@@ -62,7 +62,6 @@ for (const { label, viewport } of ORIENTATIONS) {
     for (const surface of SURFACES) {
       test(`i5fk-audit — ${surface.id} @ ${label}`, async ({ page }) => {
         await bootApp(page, { debug: surface.seed });
-        await dismissTutorials(page);
         await page.waitForSelector(surface.waitFor, { state: 'visible' });
         // Settle layout: wait for any chest-reveal / zone-advance
         // animation to finish before snapshotting.

@@ -14,7 +14,7 @@
  */
 
 import { expect, test, type Page } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 import { createReporter } from './narrative';
 
 interface FieldRead {
@@ -71,7 +71,6 @@ test('regular-monster-pacing — sylvani field hp/red drain', async ({ page }) =
   test.setTimeout(120_000);
   const report = createReporter('regular-monster-pacing');
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
   await seedRed(page);
 
   const initial = await readField(page);
@@ -92,7 +91,6 @@ test('regular-monster-pacing — sylvani field hp/red drain', async ({ page }) =
       .click({ force: true })
       .catch(() => undefined);
     await page.waitForTimeout(180);
-    await dismissTutorials(page);
     const after = await readField(page);
     if (!after) break;
     report.step(

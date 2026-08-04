@@ -9,14 +9,13 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 import { createReporter } from './narrative';
 
 test('princess-crystal-freed — freed element renders, no Strike action available', async ({
   page,
 }) => {
   await bootApp(page, { debug: 'princess-crystal-freed' });
-  await dismissTutorials(page);
 
   const report = createReporter('princess-crystal-freed');
   await report.screenshot(page, '01-board-princess-freed');

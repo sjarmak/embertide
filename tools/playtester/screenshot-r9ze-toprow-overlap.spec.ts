@@ -31,7 +31,7 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 const VIEWPORTS = [
   { w: 1024, h: 800 },
@@ -47,7 +47,6 @@ for (const v of VIEWPORTS) {
   test(`r9ze — top-row rail does not overlap card body at ${v.w}x${v.h}`, async ({ page }) => {
     await page.setViewportSize({ width: v.w, height: v.h });
     await bootApp(page, { debug: 'hp-downed' });
-    await dismissTutorials(page);
 
     const stripHandle = page.locator('[data-testid="always-row-strip"]').first();
     await stripHandle.waitFor({ state: 'visible', timeout: 5_000 });

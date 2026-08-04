@@ -10,7 +10,6 @@ import {
 } from '../data/cards';
 import type { KidGameState, KidPlayer, PendingDungeonBossRoll, ZoneId } from './types';
 import type { CombatState } from '../types/combat';
-import type { TutorialBubbleId, TutorialTrigger } from '../tutorial/v20';
 import { buildStarterDeck, drawCards, drawFiveFor } from './slices/deck';
 import {
   defeatAlwaysAvailableMonster,
@@ -30,11 +29,6 @@ import {
   banishFromHandSlice,
   cancelBanishChoiceSlice,
 } from './slices/banish';
-import {
-  clearCombatTutorialBubbleSlice,
-  fireCombatTutorialBubbleSlice,
-  fireTutorialBubbleOnceSlice,
-} from './slices/tutorial';
 import {
   EXTRA_DRAW_CHAMPION_ID,
   advanceTurn,
@@ -71,7 +65,6 @@ import {
 } from '../core/combatEngine';
 import { applyHeartReward } from '../core/vitalEmber';
 import { d6, d20 } from '../rules/dice';
-import { GENERIC_BASE_ID_THEME } from '../theme/generic';
 import {
   PRISM_CHIMERA_ID,
   computePrismChimeraSpawnChance,
@@ -308,7 +301,7 @@ export interface GameStore extends KidGameState {
    * `state.pendingBanishChoice` is already null. The triggering card's
    * resource deltas / inPlay placement are NOT rolled back; the banish
    * effect simply fizzles. Mirrors the "soft cancel" contract used by
-   * other v2.1 modal surfaces (chest reveal, tutorial dismiss).
+   * other v2.1 modal surfaces (such as chest reveal).
    */
   cancelBanishChoice(): void;
   /**
@@ -365,34 +358,6 @@ export interface GameStore extends KidGameState {
    * No-op when activeCombat is null or outcome is already resolved.
    */
   dispatchCombatAction(action: CombatTurnAction): void;
-  /**
-   * Surface a v2.1 combat-tutorial bubble (u-8g, PRD §B8). Called from
-   * `CombatScreen` in response to in-combat events (card played, boss
-   * turn transition) and from the combat reducer for entry / win /
-   * loss. Writes through `pickCombatBubble` so the progressive-
-   * disclosure gate (first-combat vs second-combat) is honored
-   * centrally. A null `trigger` is a no-op; a trigger whose bubble is
-   * gated off (e.g. `combat-boss-turn` in the first combat) also
-   * becomes a no-op.
-   */
-  fireCombatTutorialBubble(trigger: TutorialTrigger | null): void;
-  /**
-   * Dismiss the currently-visible combat-tutorial bubble by clearing
-   * `state.combatTutorialBubble` (u-8g). Called by the tutorial
-   * overlay's dismiss button. Idempotent — no-op when already null.
-   */
-  clearCombatTutorialBubble(): void;
-  /**
-   * Fire a main-board tutorial bubble AT MOST ONCE per run (REQ-32 u-9e).
-   * Used by the wild / region / destiny slot mount effects and the
-   * heirloom-drop hook in `COMBAT_RESOLVE_WIN`. No-op when the bubble
-   * id is already in `state.tutorialBubblesFired` — this is the
-   * idempotency primitive for one-shot overlays.
-   *
-   * Optional `bodyOverride` templates the bubble's rendered body at
-   * fire time (heirloom-drop embeds the heirloom's display name).
-   */
-  fireTutorialBubbleOnce(id: TutorialBubbleId, bodyOverride?: string): void;
   /**
    * Stage a Dungeon-Boss onDefeat reward roll (v2.1 REQ-9d, embertide-4hz6
    * + embertide-3wd6 d20 tier-curve redesign 2026-04-25).
@@ -496,10 +461,6 @@ const EMPTY_STATE: KidGameState = {
   lastChestRewardCard: null,
   princessCrystal: initialPrincessCrystalState(),
   activeCombat: null,
-  combatsEntered: 0,
-  combatTutorialBubble: null,
-  tutorialBubblesFired: [],
-  tutorialBubbleBodyOverride: null,
   // embertide-044: center-row kill counter feeds the Golden
   // Rainbow Chimera one-shot spawn roll at Silver Chimera's defeat.
   centerRowKillCount: 0,
@@ -565,14 +526,12 @@ import {
   applyHeartsHeal,
   applyShardGrants,
   augmentHeartsWithChampionBonus,
-  bossDisplayName,
   buildInitialCombatState,
   buildResolveWinAction,
   cardByIdOrThrow,
   describeAction,
   drawToCombatHandCap,
   enterCombatAction,
-  renderCombatBubbleBody,
 } from './combatBootstrap';
 
 /**
@@ -774,10 +733,6 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
           chestSupply: buildChestSupply(rng),
           princessCrystal: initialPrincessCrystalState(),
           activeCombat: null,
-          combatsEntered: 0,
-          combatTutorialBubble: null,
-          tutorialBubblesFired: [],
-          tutorialBubbleBodyOverride: null,
           // embertide-044: Reset kill counter + Rainbow spawn
           // flag on every fresh run so they stay per-game and never
           // leak across playthroughs.
@@ -1596,18 +1551,6 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
               action.tideGaugeSnapshot ?? 0,
               action.arena,
             );
-            // Bump combatsEntered so the tutorial layer (u-8g) can gate
-            // progressive-disclosure bubbles on "first combat" vs
-            // "second+ combat". Counter is session-scoped — reset only
-            // at initGame. `combat-entry` fires unconditionally on every
-            // combat entry per §B8.
-            //
-            // embertide-07h: combat-entry body embeds {bossName};
-            // render the template here so the player sees e.g. "You
-            // engaged Ashen Tyrant!" instead of the generic "the boss".
-            const entryBody = renderCombatBubbleBody('combat-entry', {
-              bossName: bossDisplayName(action.boss.sourceCardId),
-            });
             // gm0.16: reset per-player `usedWispInBottleIds` at every
             // combat entry. Bottles are "once per combat" — a bottle
             // used in a prior combat gets a fresh refill in the next.
@@ -1636,9 +1579,6 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
               ...state,
               players: playersWithPassives,
               activeCombat: nextCombat,
-              combatsEntered: state.combatsEntered + 1,
-              combatTutorialBubble: 'combat-entry',
-              tutorialBubbleBodyOverride: entryBody,
             });
             return;
           }
@@ -1706,9 +1646,6 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
             // hero's items zone is populated with the heirloom first
             // (cap-routing preference) and the wisp gets the
             // remaining cap slot / teammate seat as a secondary drop.
-            // Track the heirloom id for the post-resolve tutorial bubble
-            // (u-9e). Null means no heirloom dropped this combat.
-            let grantedHeirloomId: string | null = null;
             if (
               next.activeCombat !== null &&
               next.activeCombat.entryContext.entrySource === 'wild-boss-slot'
@@ -1720,7 +1657,6 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
                 const defeaterIdx = next.players.findIndex((p) => p.id === defeaterId);
                 if (defeaterIdx !== -1) {
                   next = grantHeirloom(next, defeaterIdx, heirloomId);
-                  grantedHeirloomId = heirloomId;
                 }
               }
             }
@@ -1939,52 +1875,6 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
             // a wisp available.
             next = checkCoopVictory(next);
             next = checkCoopLoss(next);
-            // 9. Fire the combat-win tutorial bubble (u-8g, §B8). The
-            // bubble replaces any in-flight combat bubble (entry / card
-            // played) at resolution time.
-            //
-            // embertide-07h: combat-win body embeds {bossName} +
-            // {hearts}. `dropHearts` is the base monster-drop heal
-            // (same per attacker by construction in buildResolveWinAction
-            // — use any entry), pre Champion bonus; the bonus is the
-            // player's ability, not the boss's gift, so the "You earned
-            // X hearts" readout stays boss-facing.
-            const winBossName = bossCardForHearts
-              ? bossDisplayName(bossCardForHearts.id)
-              : 'the boss';
-            const dropHearts = Object.values(action.heartsToAttackers)[0] ?? 0;
-            const winBody = renderCombatBubbleBody('combat-win', {
-              bossName: winBossName,
-              hearts: dropHearts,
-            });
-            next = {
-              ...next,
-              combatTutorialBubble: 'combat-win',
-              tutorialBubbleBodyOverride: winBody,
-            };
-
-            // 9b. REQ-32 (u-9e) — Heirloom-drop bubble. Fires AT MOST
-            // ONCE per run, only when a heirloom actually landed this
-            // combat, and only when outcome is still interactive (the
-            // main-board overlay preempts everything on win/loss).
-            // Supersedes the combat-win bubble so the player sees the
-            // heirloom-specific copy. Idempotency is tracked in
-            // `tutorialBubblesFired`.
-            if (
-              grantedHeirloomId !== null &&
-              next.outcome === null &&
-              !next.tutorialBubblesFired.includes('heirloom-drop')
-            ) {
-              const heirloomName = GENERIC_BASE_ID_THEME[grantedHeirloomId] ?? grantedHeirloomId;
-              const body = `You got the ${heirloomName}! It's now in your hero's deck — it'll show up in future combats.`;
-              next = {
-                ...next,
-                combatTutorialBubble: 'heirloom-drop',
-                tutorialBubbleBodyOverride: body,
-                tutorialBubblesFired: [...next.tutorialBubblesFired, 'heirloom-drop'],
-              };
-            }
-
             // 9c. v2.1 REQ-9d (embertide-4hz6): hydrate the
             // Dungeon-Boss reward roll surface ONLY when the team is
             // still mid-game. If the region-boss kill triggered the
@@ -2017,14 +1907,6 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
             // guard that bails when outcome is already set.
             let next: KidGameState = { ...state, activeCombat: null };
             next = checkCoopLoss(next);
-            // Fire the combat-loss tutorial bubble (u-8g AC #5, §B8)
-            // ONLY when the team outcome is not already 'loss'. When
-            // the LOSS action also triggered a team loss, the main-
-            // board Defeat overlay takes over and the combat bubble
-            // would be noise; suppress it.
-            if (next.outcome !== 'loss') {
-              next = { ...next, combatTutorialBubble: 'combat-loss' };
-            }
             // Field refill is intentionally skipped on LOSS — the game
             // is over (or about to be), and a refill would leak a fresh
             // card into a state that is no longer interactive.
@@ -2111,27 +1993,6 @@ export function createGameStore(seed: number): UseBoundStore<StoreApi<GameStore>
         } else if (next.terminal === 'loss') {
           this.dispatchCombat({ type: 'COMBAT_RESOLVE_LOSS' });
         }
-      },
-
-      fireCombatTutorialBubble(trigger: TutorialTrigger | null): void {
-        const state = get();
-        const next = fireCombatTutorialBubbleSlice(state, trigger);
-        if (next === state) return;
-        set(next);
-      },
-
-      clearCombatTutorialBubble(): void {
-        const state = get();
-        const next = clearCombatTutorialBubbleSlice(state);
-        if (next === state) return;
-        set(next);
-      },
-
-      fireTutorialBubbleOnce(id: TutorialBubbleId, bodyOverride?: string): void {
-        const state = get();
-        const next = fireTutorialBubbleOnceSlice(state, id, bodyOverride);
-        if (next === state) return;
-        set(next);
       },
 
       rollDungeonBossReward(bossId: string): void {

@@ -42,7 +42,7 @@
  */
 
 import { expect, test, type Page } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 import { createReporter, type Reporter } from './narrative';
 
 type Tier = 'regular' | 'wild-boss' | 'region-boss';
@@ -280,7 +280,6 @@ function describeArm(arm: SessionArm, result: ArmResult): string {
 test('wisdom-path-pacing — runtime constant matches vj52 schema (initial=8)', async ({ page }) => {
   test.setTimeout(60_000);
   await bootApp(page, { debug: 'embertide-filled' });
-  await dismissTutorials(page);
   const initial = await readInitialCrystal(page);
   expect(initial).not.toBeNull();
   // Hard-assert the LIVE app ships the vj52 schema. If this regresses
@@ -295,7 +294,6 @@ for (const arm of SESSION_ARMS) {
     test.setTimeout(60_000);
     const report: Reporter = createReporter(`wisdom-path-pacing-${arm.slug}`);
     await bootApp(page, { debug: 'embertide-filled' });
-    await dismissTutorials(page);
     const initial = await readInitialCrystal(page);
     expect(initial).not.toBeNull();
     expect(initial?.initialCharges).toBe(8);

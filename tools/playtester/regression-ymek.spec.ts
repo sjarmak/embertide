@@ -20,7 +20,7 @@
  */
 
 import { expect, test, type Page } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 interface Check {
   readonly label: string;
@@ -70,12 +70,10 @@ async function bootToBoard(page: Page): Promise<void> {
     await start.click({ force: true }).catch(() => undefined);
     await page.waitForTimeout(400);
   }
-  await dismissTutorials(page);
   await page.waitForSelector('[data-testid="game-board"]', {
     state: 'visible',
     timeout: 10_000,
   });
-  await dismissTutorials(page);
 }
 
 test('regression-ymek — play-area redesign (sv77+bbr8+fsyd+7cew+v7u4)', async ({ page }) => {
@@ -87,7 +85,7 @@ test('regression-ymek — play-area redesign (sv77+bbr8+fsyd+7cew+v7u4)', async 
   });
   page.on('pageerror', (err) => consoleErrors.push(`[pageerror] ${err.message.slice(0, 240)}`));
 
-  // ---- 1. Boot + dismiss tutorials + game-board mount -------------------
+  // ---- 1. Boot + game-board mount ---------------------------------------
   await bootToBoard(page);
   await record(results, 'game-board mounted', async () => {
     return (await page.locator('[data-testid="game-board"]').count()) > 0;
@@ -121,7 +119,6 @@ test('regression-ymek — play-area redesign (sv77+bbr8+fsyd+7cew+v7u4)', async 
     const cardId = await firstCard.getAttribute('data-testid');
     await firstCard.click({ force: true }).catch(() => undefined);
     await page.waitForTimeout(250);
-    await dismissTutorials(page);
     await record(
       results,
       'tap-to-play: clicked card appears in [data-testid="in-play"]',
@@ -170,7 +167,6 @@ test('regression-ymek — play-area redesign (sv77+bbr8+fsyd+7cew+v7u4)', async 
     .click({ force: true })
     .catch(() => undefined);
   await page.waitForTimeout(450);
-  await dismissTutorials(page);
   const turnTextAfter = (
     await page
       .locator('[data-testid="turn-count"]')

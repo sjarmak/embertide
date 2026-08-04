@@ -17,11 +17,10 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test('visual-altar-row — wild + region altars render with ornaments (u-10c)', async ({ page }) => {
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
 
   const row = page.locator('[data-testid="boss-altar-row"]');
   await expect(row).toBeVisible();

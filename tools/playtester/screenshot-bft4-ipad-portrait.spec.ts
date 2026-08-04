@@ -15,7 +15,7 @@
  */
 
 import { test, type Page } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 const VIEWPORT = { width: 768, height: 1024 } as const;
 
@@ -80,7 +80,6 @@ test.describe('bft4 iPad-portrait readability sweep', () => {
 
   test('main-board — boss-altar-pane LIVE (turn 6, key held)', async ({ page }) => {
     await bootApp(page, { debug: 'wild-boss-slot' });
-    await dismissTutorials(page);
     await captureSurface(page, 'main-board');
   });
 
@@ -91,7 +90,6 @@ test.describe('bft4 iPad-portrait readability sweep', () => {
     // BossAltarPhaseLocked. Reuse the wild-boss-slot seed for the deck +
     // hero seeding shape, then override turn back to 1.
     await bootApp(page, { debug: 'wild-boss-slot' });
-    await dismissTutorials(page);
     await page.evaluate(() => {
       const w = window as unknown as {
         __gameStore?: {
@@ -109,9 +107,6 @@ test.describe('bft4 iPad-portrait readability sweep', () => {
       state: 'visible',
       timeout: 5_000,
     });
-    // Reverting turn → 1 retriggers the first-turn Tutorial backdrop;
-    // dismiss it again so the screenshot shows the bare board state.
-    await dismissTutorials(page);
     await captureSurface(page, 'main-board-turn1');
   });
 
@@ -119,7 +114,6 @@ test.describe('bft4 iPad-portrait readability sweep', () => {
     // Strip the bossKeys seeded by wild-boss-slot so the wild slot
     // renders BossAltarLocked (boss-altar-pane-locked-label = SEALED).
     await bootApp(page, { debug: 'wild-boss-slot' });
-    await dismissTutorials(page);
     await page.evaluate(() => {
       const w = window as unknown as {
         __gameStore?: {
@@ -148,13 +142,11 @@ test.describe('bft4 iPad-portrait readability sweep', () => {
 
   test('combat — craghorn', async ({ page }) => {
     await bootApp(page, { debug: 'craghorn' });
-    await dismissTutorials(page);
     await captureSurface(page, 'combat');
   });
 
   test('chest-reveal — heart reward overlay', async ({ page }) => {
     await bootApp(page, { debug: 'wild-boss-slot' });
-    await dismissTutorials(page);
     // ChestReveal auto-dismisses via setTimeout(onComplete, 1600). Stub
     // setTimeout BEFORE mounting the portal so the auto-clear never fires
     // and the screenshot captures the steady-state overlay. Limit the
@@ -200,7 +192,6 @@ test.describe('bft4 iPad-portrait readability sweep', () => {
 
   test('win-banner — outcome=win overlay', async ({ page }) => {
     await bootApp(page, { debug: 'wild-boss-slot' });
-    await dismissTutorials(page);
     // Force the game-over surface by setting `outcome = 'win'`. The
     // GameBoard portal guards on truthy outcome, so a single setState
     // is enough to mount the winner-banner.

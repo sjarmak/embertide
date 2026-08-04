@@ -15,11 +15,10 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test('region-slot-gating — SEALED pre-key, UNLOCKED post-key (gm0.12)', async ({ page }) => {
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
 
   const wildSlot = page.locator('[data-testid="wild-boss-slot"]');
   const regionSlot = page.locator('[data-testid="region-boss-slot"]');
@@ -74,7 +73,6 @@ test('region-slot-gating — SEALED pre-key, UNLOCKED post-key (gm0.12)', async 
   // screen. Preserves the original "region-boss reachability" intent
   // via the new gating path.
   await regionSlot.click();
-  await dismissTutorials(page);
   await expect(page.locator('[data-testid="combat-screen"]')).toBeVisible({
     timeout: 3_000,
   });

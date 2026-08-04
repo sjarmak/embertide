@@ -2,7 +2,6 @@ import type { Card } from '../types/card';
 import type { ChestReward } from '../rules/chestPool';
 import type { CombatState } from '../types/combat';
 import type { ColosseumProgression, ColosseumReward, TierId } from '../core/colosseum';
-import type { TutorialBubbleId } from '../tutorial/v20';
 
 /**
  * Store-internal Kid Mode player shape. Intentionally richer than the
@@ -400,41 +399,6 @@ export interface KidGameState {
    * field.
    */
   readonly activeCombat: CombatState | null;
-  /**
-   * Monotonically-incrementing counter of combat engagements this game
-   * (v2.1 combat tutorial, u-8g). Bumped by 1 at every `COMBAT_ENTER`
-   * dispatch before `activeCombat` is hydrated. Reset only at
-   * `initGame` — NOT at `COMBAT_RESOLVE_WIN` / `COMBAT_RESOLVE_LOSS`,
-   * since the tutorial's progressive-disclosure gate needs to observe
-   * "second+ combat" across the whole session.
-   */
-  readonly combatsEntered: number;
-  /**
-   * Last-fired combat-tutorial bubble id, if any (v2.1 combat tutorial,
-   * u-8g). Set by the combat-entry / card-play / boss-turn triggers
-   * inside `CombatScreen` and by the `COMBAT_RESOLVE_WIN` /
-   * `COMBAT_RESOLVE_LOSS` reducer cases. Cleared when the player
-   * dismisses the overlay (`clearCombatTutorialBubble`). Null whenever
-   * no combat bubble is active. Persists across `activeCombat → null`
-   * transitions so win/loss bubbles can survive the combat teardown.
-   */
-  readonly combatTutorialBubble: TutorialBubbleId | null;
-  /**
-   * Ids of every tutorial bubble that has already fired via
-   * `fireTutorialBubbleOnce` this run (REQ-32 u-9e). Used to enforce
-   * at-most-once semantics for the wild / region slot + heirloom +
-   * destiny bubbles. Reset only at `initGame`. Combat bubbles fire
-   * every combat (u-8g) and do NOT append here.
-   */
-  readonly tutorialBubblesFired: readonly TutorialBubbleId[];
-  /**
-   * Optional body override for the currently-displayed combat tutorial
-   * bubble. Populated when a bubble's copy is templated at fire time —
-   * e.g. the u-9e `heirloom-drop` bubble embeds the heirloom's display
-   * name. Null when the raw body from `V20_TUTORIAL_BUBBLES` should
-   * render as-is. Cleared alongside the bubble on dismiss.
-   */
-  readonly tutorialBubbleBodyOverride: string | null;
   /**
    * Tide-gauge zone-mechanic counter for Tidehold (embertide-gdd.1).
    *

@@ -68,7 +68,7 @@ export interface BossAltarLockedProps {
  * wrapped around the zone's boss-door raster (via `ZONE_BOSS_DOOR_SRC`).
  * An amber lock glyph sits over the door to reinforce the "gate is
  * closed" narrative cue; the pane's existing `data-locked="true"`
- * attribute is preserved so downstream hooks (analytics, tutorial
+ * attribute is preserved so downstream hooks (analytics and
  * overlays, CSS selectors) keep working without a prop-contract change.
  *
  * Fallback: when `ZONE_BOSS_DOOR_SRC[zoneId]` is `null`, the interior

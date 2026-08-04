@@ -18,7 +18,7 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test.use({ viewport: { width: 1280, height: 800 } });
 
@@ -26,7 +26,6 @@ test('rkbf — vertical-hex shard on hand, in-play, tray, and card-detail', asyn
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('rasc.dropHintSeen', '1'));
   await bootApp(page, { debug: 'princess-crystal-freed' });
-  await dismissTutorials(page);
 
   await expect(page.getByTestId('game-board')).toBeVisible();
 

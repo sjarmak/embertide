@@ -16,7 +16,6 @@ import {
   bootApp,
   clickFirstCard,
   combatEnded,
-  dismissTutorials,
   formatSnapshot,
   passTurn,
   snapshot,
@@ -36,11 +35,9 @@ async function runCombatToTerminal(
       if (s.plays[0] >= s.plays[1]) break;
       if (s.handSize === 0) break;
       await clickFirstCard(page);
-      await dismissTutorials(page);
     }
     if (await combatEnded(page)) break;
     await passTurn(page);
-    await dismissTutorials(page);
     rounds += 1;
   }
   console.log(`[${label}] ended after ${rounds} rounds — ${formatSnapshot(await snapshot(page))}`);
@@ -51,13 +48,11 @@ test('wild-then-region — engage wild, earn heirloom, engage region, advance zo
   page,
 }) => {
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
 
   // Step 1 — engage the wild-boss slot (Craghorn in Sylvani).
   const wildSlot = page.locator('[data-testid="wild-boss-slot"]');
   await expect(wildSlot).toBeVisible();
   await wildSlot.click();
-  await dismissTutorials(page);
 
   // Combat should be live now.
   await expect(page.locator('[data-testid="combat-screen"]')).toBeVisible();
@@ -88,9 +83,7 @@ test('wild-then-region — engage wild, earn heirloom, engage region, advance zo
       p.items.some((it) => it.baseId === 'craghorn-tusk' || it.id.startsWith('craghorn-tusk')),
     );
   });
-  // If the window-level hook isn't exposed, fall back to a visual check:
-  // the heirloom-drop tutorial bubble should have surfaced at least
-  // once during the win resolution (we dismissed it via dismissTutorials).
+  // If the window-level hook isn't exposed, skip the deep state check.
   if (heirloomLanded === null) {
     console.log('wild-then-region: __gameStore hook not exposed, skipping deep state check');
   } else {
@@ -98,11 +91,9 @@ test('wild-then-region — engage wild, earn heirloom, engage region, advance zo
   }
 
   // Step 4 — engage the region slot (Broodmaw in Sylvani).
-  await dismissTutorials(page);
   const regionSlot = page.locator('[data-testid="region-boss-slot"]');
   await expect(regionSlot).toBeVisible();
   await regionSlot.click();
-  await dismissTutorials(page);
 
   // Step 5 — drive the region combat to terminal.
   // Note: region boss may win or lose; we only assert structural

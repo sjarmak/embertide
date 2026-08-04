@@ -16,7 +16,7 @@
  *     are positioned at the corners and styled by CSS. The medallion
  *     shapes use background-image gradients, not raster assets.
  *   - opt-OUT surfaces (NOT migrated by this bead): Setup screens,
- *     tutorial bubbles, RollCommitModal interior dice cards.
+ *     RollCommitModal interior dice cards.
  *
  * Class naming: kebab-case throughout. The project stylelint config
  * rejects BEM `--` / `__` separators, so modifiers are written as

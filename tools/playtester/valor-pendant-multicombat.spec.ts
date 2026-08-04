@@ -38,14 +38,7 @@
  */
 
 import { expect, test, type Page } from '@playwright/test';
-import {
-  bootApp,
-  clickFirstCard,
-  combatEnded,
-  dismissTutorials,
-  passTurn,
-  snapshot,
-} from './harness';
+import { bootApp, clickFirstCard, combatEnded, passTurn, snapshot } from './harness';
 import { createReporter } from './narrative';
 
 const MAX_ROUNDS = 40;
@@ -170,11 +163,9 @@ async function runCombatToTerminal(page: Page, label: string): Promise<number> {
       if (s.plays[0] >= s.plays[1]) break;
       if (s.handSize === 0) break;
       await clickFirstCard(page);
-      await dismissTutorials(page);
     }
     if (await combatEnded(page)) break;
     await passTurn(page);
-    await dismissTutorials(page);
     rounds += 1;
   }
   return rounds;
@@ -195,7 +186,6 @@ for (const arm of ['control', 'valor'] as const) {
     const report = createReporter(`valor-pendant-multicombat-${arm}`);
 
     await bootApp(page, { debug: 'wild-boss-slot' });
-    await dismissTutorials(page);
     report.step(`booted ${arm} arm via ?debug=wild-boss-slot`);
 
     if (arm === 'valor') {
@@ -228,7 +218,6 @@ for (const arm of ['control', 'valor'] as const) {
         .click({ force: true })
         .catch(() => undefined);
       await page.waitForTimeout(180);
-      await dismissTutorials(page);
       const after = await readZoneState(page);
       if (!after) break;
       samples.push({
@@ -253,7 +242,6 @@ for (const arm of ['control', 'valor'] as const) {
           .click({ force: true })
           .catch(() => undefined);
         await page.waitForTimeout(280);
-        await dismissTutorials(page);
         // Read p0.red AFTER COMBAT_ENTER but DURING combat (combat-screen
         // mounted). The store still exposes p0.red; valor-pendant's +2
         // landed at the dispatchCombat call.
@@ -270,7 +258,6 @@ for (const arm of ['control', 'valor'] as const) {
         }
         const rounds = await runCombatToTerminal(page, 'wild-craghorn');
         report.step(`wild-craghorn combat: ${rounds} rounds`);
-        await dismissTutorials(page);
       }
     }
 
@@ -285,7 +272,6 @@ for (const arm of ['control', 'valor'] as const) {
           .click({ force: true })
           .catch(() => undefined);
         await page.waitForTimeout(280);
-        await dismissTutorials(page);
         const afterEntry = await readZoneState(page);
         if (afterEntry) {
           samples.push({
@@ -299,7 +285,6 @@ for (const arm of ['control', 'valor'] as const) {
         }
         const rounds = await runCombatToTerminal(page, 'region-broodmaw');
         report.step(`region-broodmaw combat: ${rounds} rounds`);
-        await dismissTutorials(page);
       }
     }
 

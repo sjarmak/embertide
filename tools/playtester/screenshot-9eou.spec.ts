@@ -12,13 +12,12 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test.use({ viewport: { width: 1280, height: 800 } });
 
 test('9eou — right-rail Boss Altar → Crystal → Embertide niche', async ({ page }) => {
   await bootApp(page, { debug: 'embertide-filled' });
-  await dismissTutorials(page);
 
   const board = page.locator('[data-testid="game-board"]');
   await expect(board).toBeVisible();
@@ -45,7 +44,6 @@ test('9eou — right-rail Boss Altar → Crystal → Embertide niche', async ({ 
 
 test('9eou — right-rail with empty Embertide niches (no shards earned)', async ({ page }) => {
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
 
   const board = page.locator('[data-testid="game-board"]');
   await expect(board).toBeVisible();

@@ -12,13 +12,12 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test.use({ viewport: { width: 1280, height: 800 } });
 
 test('7g0n — title strip continuous edge ornament (no corner pips)', async ({ page }) => {
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
 
   const strip = page.getByTestId('cathedral-title-strip');
   await expect(strip).toBeVisible();

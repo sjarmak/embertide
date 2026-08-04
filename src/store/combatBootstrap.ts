@@ -33,7 +33,6 @@ import { ZONE_METADATA } from '../rules/zones';
 import { ZONE_BOSS_SPECS } from '../data/zones/bossSpecs';
 import { baseIdOf, KID_CARDS } from '../data/cards';
 import { arenaForColosseumBoss } from '../data/colosseum/arenas';
-import { getBubbleById, renderBubbleTemplate, type TutorialBubbleId } from '../tutorial/v20';
 import { grantWildBossWisp } from './slices/combat';
 
 // ---------------------------------------------------------------------------
@@ -265,30 +264,12 @@ export function applyHeartsHeal(
  * to the base id string when the theme has no entry — shows up as e.g.
  * "ashen-tyrant" rather than an empty or `undefined` template value.
  *
- * Deliberately lightweight so it can be reused by both the combat-
- * bubble templater below and any future store-side render paths
- * without pulling in UI-layer helpers like CardTemplate.cardDisplayName.
+ * Deliberately lightweight so it can be reused without pulling in
+ * UI-layer helpers like CardTemplate.cardDisplayName.
  */
 export function bossDisplayName(sourceCardId: string): string {
   const baseId = baseIdOfString(sourceCardId);
   return GENERIC_BASE_ID_THEME[baseId] ?? baseId;
-}
-
-/**
- * Render a combat tutorial bubble's body template with the runtime
- * vars it expects. Returns the substituted string, or `null` when the
- * bubble id has no declaration (unknown id) — callers use `null` as
- * the signal to fall back to the static `bubble.body`.
- *
- * embertide-07h — keeps the template contract in one place so the
- * three fire-point call-sites stay a one-liner.
- */
-export function renderCombatBubbleBody(
-  id: TutorialBubbleId,
-  vars: Readonly<Record<string, string | number>>,
-): string | null {
-  const bubble = getBubbleById(id);
-  return bubble ? renderBubbleTemplate(bubble.body, vars) : null;
 }
 
 /**

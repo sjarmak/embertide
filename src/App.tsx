@@ -5,26 +5,20 @@ import './styles/tokens.css';
 import './styles/app.css';
 import Setup from './ui/Setup';
 import GameBoard from './ui/GameBoard';
-import Tutorial from './ui/Tutorial';
 import type { GameConfig } from './ui/GameConfig';
 import { ElysianDefs } from './icons/defs';
 import { MotionRoot } from './motion/MotionRoot';
 import { useGameStore } from './store/gameStore';
-import { useTutorialStore } from './store/tutorialStore';
 import { applyDebugSeed, resolveDebugSeed } from './debug/playtestSeeds';
 
 /**
  * Top-level Kid Mode app shell.
  *
  * Renders <Setup /> until the first configuration is committed, then flips
- * into <GameBoard /> with the first-game tutorial overlay wired to the
- * persisted tutorial store.
+ * into <GameBoard />.
  */
 export default function App(): JSX.Element {
   const [setupDone, setSetupDone] = useState<boolean>(false);
-  const turn = useGameStore((s) => s.turn);
-  const seen = useTutorialStore((s) => s.seen);
-  const markSeen = useTutorialStore((s) => s.markSeen);
 
   // Dev-only `?debug=<seed>` hook. Runs once on mount; if a seed matches
   // it initializes the store into a curated playtest state and skips
@@ -65,14 +59,7 @@ export default function App(): JSX.Element {
     <MotionRoot>
       <main data-testid="app-root" className="app-root">
         <ElysianDefs />
-        {!setupDone ? (
-          <Setup onStart={handleStart} />
-        ) : (
-          <>
-            <GameBoard />
-            <Tutorial turn={turn} seen={seen} onSeen={markSeen} />
-          </>
-        )}
+        {!setupDone ? <Setup onStart={handleStart} /> : <GameBoard />}
       </main>
     </MotionRoot>
   );

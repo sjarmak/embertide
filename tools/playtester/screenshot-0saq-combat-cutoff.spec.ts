@@ -21,7 +21,7 @@
  */
 
 import { test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 const VIEWPORTS = [
   { w: 1280, h: 800 },
@@ -49,7 +49,6 @@ for (const v of VIEWPORTS) {
   test(`0saq — combat-screen band heights at ${v.w}x${v.h}`, async ({ page }) => {
     await page.setViewportSize({ width: v.w, height: v.h });
     await bootApp(page, { debug: 'craghorn' });
-    await dismissTutorials(page);
 
     const rects: Record<string, { top: number; bottom: number; height: number } | null> = {};
     for (const [name, sel] of Object.entries(SELECTORS)) {

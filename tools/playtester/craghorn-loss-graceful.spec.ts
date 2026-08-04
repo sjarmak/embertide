@@ -9,12 +9,11 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, combatEnded, dismissTutorials, passTurn, snapshot } from './harness';
+import { bootApp, combatEnded, passTurn, snapshot } from './harness';
 import { createReporter } from './narrative';
 
 test('craghorn-loss-graceful — pacifist loses cleanly without hangs', async ({ page }) => {
   await bootApp(page, { debug: 'craghorn' });
-  await dismissTutorials(page);
 
   const report = createReporter('craghorn-loss-graceful');
   const initial = await snapshot(page);
@@ -28,7 +27,6 @@ test('craghorn-loss-graceful — pacifist loses cleanly without hangs', async ({
     process.stdout.write(`L-ROUND ${rounds}... `);
     report.step(`**round ${rounds}** — pacifist pass`);
     await passTurn(page);
-    await dismissTutorials(page);
     const s = await snapshot(page);
     report.snap(s);
     process.stdout.write(

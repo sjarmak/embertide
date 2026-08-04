@@ -17,7 +17,7 @@
  */
 
 import { test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 // Cover the acceptance matrix (1024..1920 widths, height >= 700)
 // PLUS short-height variants where the user's "resize cut-off" symptom
@@ -66,7 +66,6 @@ for (const v of VIEWPORTS) {
   test(`ef6n probe — bottom band visibility at ${v.w}x${v.h}`, async ({ page }) => {
     await page.setViewportSize({ width: v.w, height: v.h });
     await bootApp(page, { debug: 'hp-downed' });
-    await dismissTutorials(page);
 
     const rects: Record<
       string,

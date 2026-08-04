@@ -17,14 +17,7 @@
  */
 
 import { expect, test } from '@playwright/test';
-import {
-  bootApp,
-  clickFirstCard,
-  combatEnded,
-  dismissTutorials,
-  passTurn,
-  snapshot,
-} from './harness';
+import { bootApp, clickFirstCard, combatEnded, passTurn, snapshot } from './harness';
 
 const MAX_ROUNDS = 40;
 
@@ -40,11 +33,9 @@ async function runCombatToTerminal(
       if (s.plays[0] >= s.plays[1]) break;
       if (s.handSize === 0) break;
       await clickFirstCard(page);
-      await dismissTutorials(page);
     }
     if (await combatEnded(page)) break;
     await passTurn(page);
-    await dismissTutorials(page);
     rounds += 1;
   }
   console.log(`[${label}] ended after ${rounds} rounds`);
@@ -81,13 +72,11 @@ test('wild-heirloom-wins-region — heirloom acquired + persists through region 
   page,
 }) => {
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
 
   // Phase 1 — engage wild (Craghorn).
   const wildSlot = page.locator('[data-testid="wild-boss-slot"]');
   await expect(wildSlot).toBeVisible();
   await wildSlot.click();
-  await dismissTutorials(page);
   await expect(page.locator('[data-testid="combat-screen"]')).toBeVisible();
 
   await runCombatToTerminal(page, 'wild-craghorn');
@@ -105,11 +94,9 @@ test('wild-heirloom-wins-region — heirloom acquired + persists through region 
   // Phase 3 — engage region (Broodmaw). Heirloom should be in the combat
   // deck because items (including heirlooms) feed into buildCombatDeck
   // from each player's items + inPlay zones.
-  await dismissTutorials(page);
   const regionSlot = page.locator('[data-testid="region-boss-slot"]');
   await expect(regionSlot).toBeVisible();
   await regionSlot.click();
-  await dismissTutorials(page);
   await expect(page.locator('[data-testid="combat-screen"]')).toBeVisible();
 
   await runCombatToTerminal(page, 'region-broodmaw');

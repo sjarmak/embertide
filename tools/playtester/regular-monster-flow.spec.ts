@@ -11,7 +11,7 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 import { createReporter } from './narrative';
 
 test('regular-monster-flow — regulars instant-resolve (no CombatScreen)', async ({ page }) => {
@@ -21,7 +21,6 @@ test('regular-monster-flow — regulars instant-resolve (no CombatScreen)', asyn
   // initial board having at least one regular-tier monster in the
   // visible field.
   await bootApp(page);
-  await dismissTutorials(page);
   report.step('booted app via normal Setup flow (no debug seed)');
   await report.screenshot(page, '01-setup');
 
@@ -30,7 +29,6 @@ test('regular-monster-flow — regulars instant-resolve (no CombatScreen)', asyn
   if (await start.count()) {
     await start.click({ force: true }).catch(() => undefined);
     await page.waitForTimeout(300);
-    await dismissTutorials(page);
     report.step('clicked Start — entered main game board');
   }
 

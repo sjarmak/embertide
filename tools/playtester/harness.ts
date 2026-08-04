@@ -98,30 +98,6 @@ export async function clickFirstCard(page: Page): Promise<string | null> {
   return ids[0];
 }
 
-/**
- * Dismiss any open tutorial backdrop (main or combat). Some scenarios
- * boot with one or both overlays up; call this in the scenario's
- * preamble to clear them before clicking game buttons. Stack-safe:
- * dismisses main first (it's on top), then combat.
- */
-export async function dismissTutorials(page: Page): Promise<void> {
-  for (let i = 0; i < 5; i += 1) {
-    const mainDismiss = page.locator('[data-testid="tutorial-dismiss"]');
-    if (await mainDismiss.count()) {
-      await mainDismiss.click({ force: true }).catch(() => undefined);
-      await page.waitForTimeout(80);
-      continue;
-    }
-    const combatDismiss = page.locator('[data-testid="combat-tutorial-dismiss"]');
-    if (await combatDismiss.count()) {
-      await combatDismiss.click({ force: true }).catch(() => undefined);
-      await page.waitForTimeout(80);
-      continue;
-    }
-    break;
-  }
-}
-
 /** Press the Pass Turn button; resolves the boss attack immediately. */
 export async function passTurn(page: Page): Promise<void> {
   await page.locator('[data-testid="combat-pass-turn"]').click();

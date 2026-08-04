@@ -15,13 +15,12 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test('session-arc — Stirring (turn 1) renders dormant wild slot, Rising (turn 3) unlocks interactive slot (gm0.9 REQ-19)', async ({
   page,
 }) => {
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
 
   // The `wild-boss-slot` debug seed pins turn=6 (Boss phase) so both
   // altars are engageable for downstream scenarios. Override to turn 1

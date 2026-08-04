@@ -24,7 +24,7 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test.use({ viewport: { width: 1280, height: 800 } });
 
@@ -70,7 +70,6 @@ test('rtf4 — boss-altar row phase-gate states (turn 1 / 4 / 6-sealed / 6-engag
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('rasc.dropHintSeen', '1'));
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
 
   await expect(page.getByTestId('game-board')).toBeVisible();
   const row = page.getByTestId('boss-altar-row');

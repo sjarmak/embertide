@@ -1,4 +1,4 @@
-import { useEffect, type JSX } from 'react';
+import type { JSX } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { currentRegionBossForZone } from '../rules/zones';
 import { KID_CARDS } from '../data/cards';
@@ -33,16 +33,6 @@ const TEMPLE_ZONE = 'gilded-cage' as const;
 export default function VurmoxDestinySlot(): JSX.Element {
   const bossId = useGameStore((s) => currentRegionBossForZone(s, TEMPLE_ZONE));
   const engage = useGameStore((s) => s.engageRegionBossSlot);
-  const fireTutorialBubbleOnce = useGameStore((s) => s.fireTutorialBubbleOnce);
-
-  // REQ-32 (u-9e) — Destiny slot only mounts when the Gilded Cage is
-  // active AND both Temple wild bosses are cleared, so this effect
-  // firing means the spec's Temple+wilds-cleared condition is satisfied.
-  useEffect(() => {
-    if (bossId !== null) {
-      fireTutorialBubbleOnce('destiny-slot-revealed');
-    }
-  }, [bossId, fireTutorialBubbleOnce]);
 
   const card = bossId === VURMOX_ID ? KID_CARDS.find((c) => c.id === VURMOX_ID) : undefined;
   const cleared = !card;

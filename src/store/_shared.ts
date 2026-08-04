@@ -9,7 +9,7 @@ import { drawCards } from './slices/deck';
  * Houses the pure helpers that previously lived as private functions in
  * `gameStore.ts` — replacePlayer, requireMainPhase, WISP_BASE_IDS,
  * playerHasWisp, checkCoopLoss, and the on-play deltas / banish-choice
- * helpers. Per-domain slices (`banish`, `tutorial`, `dice`, `vendor`,
+ * helpers. Per-domain slices (`banish`, `dice`, `vendor`,
  * etc.) import from here rather than the store factory module to keep
  * the dependency graph one-directional (slice → _shared, never the
  * reverse).

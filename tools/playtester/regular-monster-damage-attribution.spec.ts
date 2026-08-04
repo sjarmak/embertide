@@ -27,7 +27,7 @@
  */
 
 import { expect, test, type Page } from '@playwright/test';
-import { bootApp, clickFirstCard, combatEnded, dismissTutorials, passTurn } from './harness';
+import { bootApp, clickFirstCard, combatEnded, passTurn } from './harness';
 import { createReporter } from './narrative';
 
 interface CombatRead {
@@ -136,7 +136,6 @@ test('regular-monster-damage-attribution — craghorn boss-turn damage breakdown
   const report = createReporter('regular-monster-damage-attribution');
 
   await bootApp(page, { debug: 'craghorn' });
-  await dismissTutorials(page);
 
   const initial = await readCombat(page);
   if (!initial || !initial.inCombat) {
@@ -165,7 +164,6 @@ test('regular-monster-damage-attribution — craghorn boss-turn damage breakdown
       if (c.activeActor !== 'players') break;
       const played = await clickFirstCard(page);
       if (played === null) break;
-      await dismissTutorials(page);
     }
 
     if (await combatEnded(page)) break;
@@ -176,7 +174,6 @@ test('regular-monster-damage-attribution — craghorn boss-turn damage breakdown
     const stunnedBefore = before.bossStunTurns > 0;
 
     await passTurn(page);
-    await dismissTutorials(page);
 
     const ended = await combatEnded(page);
     let bossHpAfter = 0;

@@ -10,12 +10,11 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 import { createReporter } from './narrative';
 
 test('zone-emberpeak — zone cell + raster render for the volcanic zone', async ({ page }) => {
   await bootApp(page, { debug: 'zone-emberpeak' });
-  await dismissTutorials(page);
 
   const report = createReporter('zone-emberpeak');
   await report.screenshot(page, '01-zone-emberpeak');
@@ -36,7 +35,6 @@ test('zone-emberpeak — zone cell + raster render for the volcanic zone', async
 
 test('zone-temple — zone cell + raster render for Gilded Cage', async ({ page }) => {
   await bootApp(page, { debug: 'zone-temple' });
-  await dismissTutorials(page);
 
   const report = createReporter('zone-temple');
   await report.screenshot(page, '01-zone-temple');

@@ -14,7 +14,7 @@
  */
 
 import { expect, test, type Locator, type Page } from '@playwright/test';
-import { bootApp, combatEnded, dismissTutorials, snapshot } from './harness';
+import { bootApp, combatEnded, snapshot } from './harness';
 
 /**
  * Count main-board hand cards (`hand-card-*`). The harness's
@@ -128,8 +128,7 @@ test('fresh-2p-coop-walk — Setup → Sylvani → chest/hand/turn/combat smoke'
   );
   await startBtn.click({ force: true }).catch(() => undefined);
   await page.waitForTimeout(400);
-  await dismissTutorials(page);
-  report.step('clicked Start, dismissed tutorials');
+  report.step('clicked Start');
 
   // Hard structural assertion: game-board MUST mount after Setup commits
   // — if this breaks, every following step is meaningless.
@@ -234,7 +233,6 @@ test('fresh-2p-coop-walk — Setup → Sylvani → chest/hand/turn/combat smoke'
   if (await firstHandCard.count()) {
     await firstHandCard.click({ force: true }).catch(() => undefined);
     await page.waitForTimeout(200);
-    await dismissTutorials(page);
     const after = await readBoardHandSize(page).catch(() => initialHandSize);
     const dropped = after < initialHandSize;
     report.step(
@@ -269,7 +267,6 @@ test('fresh-2p-coop-walk — Setup → Sylvani → chest/hand/turn/combat smoke'
       .click({ force: true })
       .catch(() => undefined);
     await page.waitForTimeout(400);
-    await dismissTutorials(page);
     report.step('clicked End Turn');
     const turnText =
       (await page
@@ -317,7 +314,6 @@ test('fresh-2p-coop-walk — Setup → Sylvani → chest/hand/turn/combat smoke'
       .click({ force: true })
       .catch(() => undefined);
     await page.waitForTimeout(400);
-    await dismissTutorials(page);
     const combat = page.locator('[data-testid="combat-screen"]');
     if (await combat.count()) {
       report.step('OK — combat-screen mounted from regular monster fight');
@@ -333,7 +329,6 @@ test('fresh-2p-coop-walk — Setup → Sylvani → chest/hand/turn/combat smoke'
         if (await card.count()) {
           await card.click({ force: true }).catch(() => undefined);
           await page.waitForTimeout(120);
-          await dismissTutorials(page);
         }
         if (await combatEnded(page)) break;
         const pass = page.locator('[data-testid="combat-pass-turn"]');
@@ -343,7 +338,6 @@ test('fresh-2p-coop-walk — Setup → Sylvani → chest/hand/turn/combat smoke'
             .click({ force: true })
             .catch(() => undefined);
           await page.waitForTimeout(180);
-          await dismissTutorials(page);
         } else {
           break;
         }

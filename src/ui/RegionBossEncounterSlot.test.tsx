@@ -252,20 +252,6 @@ describe('RegionBossEncounterSlot phase gate (embertide-rtf4)', () => {
     expect(engage).not.toHaveBeenCalled();
   });
 
-  it('region-boss-slot-revealed tutorial does NOT fire while phase-locked', () => {
-    // The tutorial bubble should fire at the moment the slot becomes
-    // INTERACTIVE — firing while phase-locked tells the player about an
-    // action they cannot yet take. Mirrors the same guard the wild-slot
-    // already enforces for `wild-boss-slot-revealed`.
-    const fireTutorial = vi.fn();
-    useGameStore.setState({
-      ...makeState({ turn: 1 }),
-      fireTutorialBubbleOnce: fireTutorial,
-    });
-    render(<RegionBossEncounterSlot />);
-    expect(fireTutorial).not.toHaveBeenCalled();
-  });
-
   it('renders cleared placeholder at turn 1 if the region boss is already defeated', () => {
     // Cleared trumps phase-lock — a defeated boss can't un-defeat itself
     // by the phase regressing (which it can't anyway, but defensive).

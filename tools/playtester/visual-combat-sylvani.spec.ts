@@ -13,11 +13,10 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test('visual-combat-sylvani — background raster matches baseline', async ({ page }) => {
   await bootApp(page, { debug: 'craghorn' });
-  await dismissTutorials(page);
 
   // Wait for the combat surface + background slot to mount. The raster
   // itself may be in either loaded or error state depending on whether

@@ -14,13 +14,12 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test('visual-colosseum-tier1 — craghorn portrait on tier-1 backdrop matches baseline', async ({
   page,
 }) => {
   await bootApp(page, { debug: 'colosseum-tier1' });
-  await dismissTutorials(page);
 
   await page.locator('[data-testid="combat-screen"]').waitFor({ state: 'visible' });
   await page.locator('[data-testid="combat-bg-slot"]').waitFor({ state: 'visible' });

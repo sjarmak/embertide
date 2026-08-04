@@ -390,8 +390,7 @@ body {
 
 .hc-button,
 .play-all-starters,
-.end-turn-button,
-.tutorial-dismiss {
+.end-turn-button {
   font-family: var(--hc-font-display);
   font-weight: var(--hc-font-weight-bold);
   font-size: var(--hc-text-xs);
@@ -463,8 +462,7 @@ body {
  */
 .hc-button:hover:not(:disabled),
 .play-all-starters:hover:not(:disabled),
-.end-turn-button:hover:not(:disabled),
-.tutorial-dismiss:hover:not(:disabled) {
+.end-turn-button:hover:not(:disabled) {
   color: var(--hc-jewel-amber-100, #f6e7bc);
   box-shadow:
     inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
@@ -480,8 +478,7 @@ body {
 
 .hc-button:focus-visible:not(:disabled),
 .play-all-starters:focus-visible:not(:disabled),
-.end-turn-button:focus-visible:not(:disabled),
-.tutorial-dismiss:focus-visible:not(:disabled) {
+.end-turn-button:focus-visible:not(:disabled) {
   outline: none;
   box-shadow:
     inset 0 0 0 1px var(--hc-lead-gold-500, #b89142),
@@ -3215,71 +3212,6 @@ button.field-card-tile:focus-visible:not(:disabled) .card-template {
 @layer base {
   .tray-items svg {
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
-  }
-}
-
-/* ------------------------------------------------------------------------- */
-
-/* Tutorial modal — full-viewport backdrop + centered reliquary panel so     */
-
-/* first-run prompts don't render inline below the board and get occluded    */
-
-/* by card art at narrow viewports.                                          */
-
-/* ------------------------------------------------------------------------- */
-
-.tutorial-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(5, 8, 15, 0.72);
-}
-
-.tutorial-overlay {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  max-width: 420px;
-  padding: 22px 26px;
-  background: linear-gradient(
-    180deg,
-    var(--hc-shadow-600, #1e2b52) 0%,
-    var(--hc-shadow-800, #0b1228) 100%
-  );
-  border: 1px solid var(--hc-lead-gold-500, #b89142);
-  border-radius: 10px;
-  box-shadow:
-    inset 0 0 0 1px rgba(184, 145, 66, 0.35),
-    0 12px 36px rgba(0, 0, 0, 0.65);
-}
-
-.tutorial-title {
-  margin: 0;
-  font-family: var(--hc-font-display);
-  font-weight: var(--hc-font-weight-bold);
-  font-size: var(--hc-text-lg);
-  letter-spacing: var(--hc-tracking-chrome-lg);
-  text-transform: uppercase;
-  color: var(--hc-lead-gold-500, #b89142);
-}
-
-.tutorial-body {
-  margin: 0;
-  font-family: var(--hc-font-display);
-  font-weight: var(--hc-font-weight-bold);
-  font-size: var(--hc-text-sm);
-  line-height: 1.45;
-  letter-spacing: var(--hc-tracking-wide);
-  color: var(--hc-text-primary, #f6f2e6);
-}
-
-@layer base {
-  .tutorial-dismiss {
-    align-self: flex-start;
   }
 }
 

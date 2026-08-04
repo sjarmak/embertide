@@ -46,7 +46,7 @@
  */
 
 import { expect, test, type Locator, type Page } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 import { createReporter } from './narrative';
 
 // ---- Tunable policy constants (mirrors smart-2p-coop-walk) ----------
@@ -120,7 +120,6 @@ async function readTick(page: Page): Promise<Omit<TickSample, 'turn' | 'activeSe
 }
 
 async function clearOverlays(page: Page): Promise<void> {
-  await dismissTutorials(page);
   const reveal = page.locator('[data-testid="chest-reveal"]');
   for (let i = 0; i < 3; i += 1) {
     if ((await reveal.count()) === 0) break;
@@ -316,7 +315,6 @@ for (const run of RUNS) {
     });
 
     await bootApp(page, { debug: 'zone-dune-sanctum' });
-    await dismissTutorials(page);
     report.step(
       `booted ${run} via ?debug=zone-dune-sanctum — 2P init, currentZone='dune-sanctum'`,
     );

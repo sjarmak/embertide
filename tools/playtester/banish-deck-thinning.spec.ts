@@ -15,7 +15,7 @@
  */
 
 import { expect, test, type Page } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 import { createReporter } from './narrative';
 
 interface DeckRead {
@@ -102,7 +102,6 @@ test('banish-deck-thinning — forge play opens modal, banish lands in voided', 
   // We don't need the wild boss — we only need the main board + p0.hand
   // surface mounted with __gameStore reachable.
   await bootApp(page, { debug: 'wild-boss-slot' });
-  await dismissTutorials(page);
 
   const ok = await injectForgeInHand(page);
   expect(ok).toBe(true);

@@ -9,12 +9,11 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 import { createReporter } from './narrative';
 
 test('embertide-filled — all three shards render as filled', async ({ page }) => {
   await bootApp(page, { debug: 'embertide-filled' });
-  await dismissTutorials(page);
 
   const report = createReporter('embertide-filled');
   await report.screenshot(page, '01-board-embertide-filled');

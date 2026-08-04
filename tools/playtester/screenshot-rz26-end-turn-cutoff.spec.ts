@@ -29,7 +29,7 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 const VIEWPORTS = [
   { w: 1280, h: 800 },
@@ -64,7 +64,6 @@ for (const v of VIEWPORTS) {
     test(`rz26 — end-turn visibility at ${v.w}x${v.h} (${state.id})`, async ({ page }) => {
       await page.setViewportSize({ width: v.w, height: v.h });
       await bootApp(page, { debug: state.debug });
-      await dismissTutorials(page);
 
       const rects: Record<string, { top: number; bottom: number; height: number } | null> = {};
       for (const [name, sel] of Object.entries(SELECTORS)) {

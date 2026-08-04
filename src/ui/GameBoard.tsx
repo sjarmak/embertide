@@ -31,7 +31,6 @@ import ZoneCell from './ZoneCell';
 import ZoneAdvanceBanner from './ZoneAdvanceBanner';
 import Pane from './Pane';
 import CombatScreen from './CombatScreen';
-import CombatTutorialBubble from './CombatTutorialBubble';
 import WildBossEncounterSlot from './WildBossEncounterSlot';
 import RegionBossEncounterSlot from './RegionBossEncounterSlot';
 import VurmoxDestinySlot from './VurmoxDestinySlot';
@@ -246,7 +245,6 @@ export default function GameBoard(): JSX.Element {
     return (
       <div data-testid="game-board" className="game-board" style={{ position: 'relative' }}>
         <CombatScreen />
-        <CombatTutorialBubble />
       </div>
     );
   }
@@ -705,13 +703,6 @@ export default function GameBoard(): JSX.Element {
             );
           })()
         : null}
-      {/*
-        v2.1 combat tutorial bubble (u-8g, PRD §B8). Mounted on the main-
-        board branch so `combat-win` / `combat-loss` bubbles — set at
-        RESOLVE dispatch and therefore visible AFTER activeCombat goes
-        back to null — survive the CombatScreen unmount transition.
-      */}
-      <CombatTutorialBubble />
       {/*
         gy7n: tap-to-zoom card detail. On touch devices, taps on Field
         / Hand tiles set `zoomedCardCtx` instead of dispatching the

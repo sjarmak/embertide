@@ -84,7 +84,7 @@ export function effectTextBaseFor(card: Card): string {
   // Roll-die cards (REQ-13 Phase 2a / gm0.7, gm0.10). The `outcomes`
   // map is a total record keyed by `DieFace` (1..6) — the
   // fail-forward-floor invariant guarantees every face has a non-zero
-  // inner effect. v2.1's pick UI (gm0.10 forest-sage / gm0.11 tutorial)
+  // inner effect. v2.1's pick UI
   // renders three fanned d6 cards sourced from `pickOneOfThreeD6` and
   // dispatches the picked face's inner effect. The card-face text
   // hints at the dice mechanic.

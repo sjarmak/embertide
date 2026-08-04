@@ -24,7 +24,7 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 // Cover the bead's stated acceptance matrix: viewport widths 1024..1920
 // at any height >= 700. Pairs each width with a "tight" h variant
@@ -66,7 +66,6 @@ for (const v of VIEWPORTS) {
   test(`ef6n — bottom-stack inside viewport at ${v.w}x${v.h}`, async ({ page }) => {
     await page.setViewportSize({ width: v.w, height: v.h });
     await bootApp(page, { debug: 'hp-downed' });
-    await dismissTutorials(page);
 
     const contextRects: Record<string, { top: number; bottom: number; height: number } | null> = {};
     for (const [name, sel] of Object.entries(CONTEXT_SELECTORS)) {

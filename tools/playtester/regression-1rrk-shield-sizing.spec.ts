@@ -22,7 +22,7 @@
  */
 
 import { test, expect, type Page } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 const VIEWPORT = { width: 1280, height: 800 } as const;
 
@@ -79,7 +79,6 @@ for (const c of CASES) {
   }) => {
     await page.setViewportSize(VIEWPORT);
     await bootApp(page, { debug: 'craghorn' });
-    await dismissTutorials(page);
     await injectField(page, c.ids);
 
     const card = page.locator('[data-testid^="combat-battlefield-card-"]').first();

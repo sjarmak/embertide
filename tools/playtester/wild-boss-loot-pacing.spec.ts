@@ -18,14 +18,7 @@
  */
 
 import { expect, test, type Page } from '@playwright/test';
-import {
-  bootApp,
-  clickFirstCard,
-  combatEnded,
-  dismissTutorials,
-  passTurn,
-  snapshot,
-} from './harness';
+import { bootApp, clickFirstCard, combatEnded, passTurn, snapshot } from './harness';
 import { createReporter } from './narrative';
 
 interface HpRead {
@@ -85,7 +78,6 @@ for (const arm of ARMS) {
     test.setTimeout(120_000);
     const report = createReporter(`wild-boss-loot-pacing-${arm.slug}`);
     await bootApp(page, { debug: arm.debug });
-    await dismissTutorials(page);
 
     const before = await readHp(page);
     report.step(
@@ -100,11 +92,9 @@ for (const arm of ARMS) {
         const s = await snapshot(page);
         if (s.ended || s.handSize === 0 || s.plays[0] >= s.plays[1]) break;
         await clickFirstCard(page);
-        await dismissTutorials(page);
       }
       if (await combatEnded(page)) break;
       await passTurn(page);
-      await dismissTutorials(page);
       rounds += 1;
     }
 

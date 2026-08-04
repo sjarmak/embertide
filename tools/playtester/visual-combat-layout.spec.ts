@@ -7,11 +7,10 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 test('p1rx: combat layout — empty battlefield, full hand, End Turn visible', async ({ page }) => {
   await bootApp(page, { debug: 'craghorn' });
-  await dismissTutorials(page);
   const stage = page.locator('[data-testid="combat-boss-stage"]');
   await expect(stage).toBeVisible();
   await page.waitForTimeout(300);

@@ -311,7 +311,7 @@ export const TEST_PASSIVE_SAMPLE_CARD: Card = {
  * anchor. Outcomes are range-grouped (1-2 / 3-4 / 5-6 share an outcome)
  * so the anchor is a well-formed Omen per the bounded-variance
  * invariant (lhlo.29, src/core/omen.ts). Full player-visible pick-UI +
- * reducer wiring ships in gm0.10 (forest-sage omen) / gm0.11 (tutorial).
+ * reducer wiring ships in later gameplay passes.
  */
 export const TEST_ROLL_DIE_SAMPLE_CARD: Card = {
   id: 'test-roll-die-sample',

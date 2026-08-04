@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type JSX } from 'react';
+import { useEffect, useState, type JSX } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { COMBAT_PLAYS_PER_TURN } from '../core/balance';
 import { assetUrl } from '../assetUrl';
@@ -168,12 +168,6 @@ const COMBAT_HEART_SIZE = 18;
  * populates `CombatState.combatLog` (wired via dispatchCombatAction's
  * describeAction helper) so debugging + future reinstatement remain
  * cheap; the array is simply unread by the UI layer.
- *
- * Tutorial (u-8g, PRD §B8): wires three in-combat event triggers
- * (card-played, boss-turn transition) via `fireCombatTutorialBubble`
- * from the store. Combat-entry, combat-win, and combat-loss are
- * driven by the reducer side (dispatchCombat) so the win / loss
- * bubbles survive the CombatScreen unmount on `activeCombat → null`.
  */
 export default function CombatScreen({
   dispatchCombatAction,
@@ -181,7 +175,6 @@ export default function CombatScreen({
   const combat = useGameStore((s) => s.activeCombat);
   const players = useGameStore((s) => s.players);
   const currentZone = useGameStore((s) => s.currentZone);
-  const fireBubble = useGameStore((s) => s.fireCombatTutorialBubble);
 
   // u-10a (REQ-33 §D1/§D6): track whether the zone-specific raster has
   // loaded or errored. Both states keep the wrapper div dimensions
@@ -191,48 +184,6 @@ export default function CombatScreen({
   // top of the final art (embertide-y5x).
   const [backgroundFailed, setBackgroundFailed] = useState(false);
   const [backgroundLoaded, setBackgroundLoaded] = useState(false);
-
-  // Track previous combat-hand size + activeActor to detect in-combat
-  // transitions (card played, players → boss turn). Refs persist across
-  // renders without forcing extra re-renders of child components.
-  const prevHandSizeRef = useRef<number | null>(null);
-  const prevActiveActorRef = useRef<'players' | 'boss' | null>(null);
-  // Fire each combat-teaching bubble at MOST once per combat instance.
-  // The CombatScreen unmounts when activeCombat → null, so a fresh
-  // combat gets a fresh CombatScreen mount = fresh refs = bubbles fire
-  // again. Prevents "every card play pops a tutorial" regression.
-  const cardPlayedFiredRef = useRef(false);
-  const bossTurnFiredRef = useRef(false);
-
-  const handSize = combat?.combatHand.length ?? null;
-  const activeActor = combat?.activeActor ?? null;
-
-  useEffect(() => {
-    // Detect a card-play transition: the hand size strictly decreased
-    // since the last render. Skip the initial observation (prev === null)
-    // so the mount event doesn't false-positive as a play. Fire the
-    // teaching bubble only ONCE per combat (first play teaches the
-    // mechanic; subsequent plays don't need the same bubble).
-    const prev = prevHandSizeRef.current;
-    if (prev !== null && handSize !== null && handSize < prev && !cardPlayedFiredRef.current) {
-      fireBubble('combat-card-played');
-      cardPlayedFiredRef.current = true;
-    }
-    prevHandSizeRef.current = handSize;
-  }, [handSize, fireBubble]);
-
-  useEffect(() => {
-    // Detect a players → boss handoff. Fire once per combat — the
-    // progressive-disclosure gate in pickCombatBubble already gates
-    // this to second+ combats, but within a combat we don't want the
-    // same bubble on every boss turn.
-    const prev = prevActiveActorRef.current;
-    if (prev === 'players' && activeActor === 'boss' && !bossTurnFiredRef.current) {
-      fireBubble('combat-boss-turn');
-      bossTurnFiredRef.current = true;
-    }
-    prevActiveActorRef.current = activeActor;
-  }, [activeActor, fireBubble]);
 
   // pr2: pick the arena tier from the combat-entry path. region-boss
   // slot → reverent inner sanctum; everything else (wild-boss slot or

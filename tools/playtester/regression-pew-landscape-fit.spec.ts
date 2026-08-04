@@ -28,7 +28,7 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { bootApp, dismissTutorials } from './harness';
+import { bootApp } from './harness';
 
 // The two acceptance phones in landscape, at their REAL in-browser usable
 // height: iOS Safari's landscape toolbar eats ~50px, so the content area
@@ -83,7 +83,6 @@ for (const s of SEEDS) {
     }) => {
       await page.setViewportSize({ width: v.w, height: v.h });
       await bootApp(page, { debug: s.seed });
-      await dismissTutorials(page);
 
       const metrics = await page.evaluate(() => ({
         scrollH: document.documentElement.scrollHeight,
