@@ -9,7 +9,7 @@
 // Fully generic: no per-repo copy. Captions come from each view's own title +
 // description, falling back to the description of the element the view is "of".
 
-import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
 const args = Object.fromEntries(
