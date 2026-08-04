@@ -182,12 +182,14 @@ describe('greedy-shard simulation (amendment A2, REQ-7b)', () => {
 //   Region bosses (broodmaw, ashen-tyrant):                      [5, 8]
 //   Vurmox (cagewright-vurmox):                                 [7, 10]
 //
-// Plus a heirloom win-rate curve against region bosses (broodmaw +
-// ashen-tyrant, pooled):
+// Plus a permutation-sampled heirloom win-rate curve against region bosses
+// (broodmaw + ashen-tyrant, pooled). embertide-5iy reconciled the original
+// fixed-order targets with a balanced sample of all 24 acquisition orders:
 //
-//   0 heirlooms → 30-40% win rate (±5% per endpoint → [25%, 45%])
-//   2 heirlooms → 60-70%          (±5% per endpoint → [55%, 75%])
-//   3 heirlooms → 80-90%          (±5% per endpoint → [75%, 95%])
+//   0 heirlooms → 30-40% win rate
+//   1 heirloom  → 60-70%
+//   2 heirlooms → 75-85%
+//   4 heirlooms → 90-95%
 //
 // Strategy engagement table (unchanged from u-8h):
 //
@@ -262,21 +264,23 @@ const V21_WILD_BAND: readonly [number, number] = [3, 6];
 const V21_REGION_BAND: readonly [number, number] = [5, 9];
 const V21_FAST_REGION_BAND: readonly [number, number] = [3, 6];
 
-// embertide-2rx permutation-sampled heirloom curve baseline. Each point
+// embertide-2rx / embertide-5iy permutation-sampled heirloom curve. Each point
 // pools 3 strategies × 2 region bosses × seeds 1..1000 = 6000 runs.
 // Seeds 1..24 cover all 24 injection orders, then repeat that schedule.
 // The exact win counts are stable because both permutation selection and
-// combat RNG are seeded. These assertions preserve the measured evidence;
-// they do not redefine the earlier PRD target bands.
+// combat RNG are seeded. The broad bands encode the revised PRD target while
+// the exact win counts detect any change to the deterministic sample.
 const HEIRLOOM_CURVE_SAMPLE_SIZE = 6000;
 const HEIRLOOM_CURVE: readonly {
   readonly count: number;
   readonly expectedWins: number;
+  readonly minRate: number;
+  readonly maxRate: number;
 }[] = [
-  { count: 0, expectedWins: 2088 },
-  { count: 1, expectedWins: 3799 },
-  { count: 2, expectedWins: 4752 },
-  { count: 4, expectedWins: 5592 },
+  { count: 0, expectedWins: 2088, minRate: 0.3, maxRate: 0.4 },
+  { count: 1, expectedWins: 3799, minRate: 0.6, maxRate: 0.7 },
+  { count: 2, expectedWins: 4752, minRate: 0.75, maxRate: 0.85 },
+  { count: 4, expectedWins: 5592, minRate: 0.9, maxRate: 0.95 },
 ];
 
 interface CombatPairStats {
@@ -471,6 +475,8 @@ describe('heirloom win-rate curve (u-9f, PRD §C8)', () => {
     it(`${point.count} heirlooms: seeded permutation sample matches ${point.expectedWins}/${HEIRLOOM_CURVE_SAMPLE_SIZE} wins`, () => {
       const rate = rates.get(point.count)!;
       expect(rate).toBe(point.expectedWins / HEIRLOOM_CURVE_SAMPLE_SIZE);
+      expect(rate).toBeGreaterThanOrEqual(point.minRate);
+      expect(rate).toBeLessThanOrEqual(point.maxRate);
     });
   }
 

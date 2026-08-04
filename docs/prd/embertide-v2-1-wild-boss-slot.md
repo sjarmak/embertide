@@ -286,12 +286,12 @@ Each unit targets ≤600 lines diff, ≤8 files (per v2 A11 context-window fit).
 ### u-9f — balance tuning pass (MEDIUM)
 **Scope**: `src/data/bossAttackPatterns.ts`, `src/data/cards.ts` (boss `hp`/`power` fields), `src/balance/combatLengthSim.ts`, `src/balance/greedyShardSimulation.test.ts`.
 **Deps**: u-9e.
-**Description**: Tune wild + region boss HP + attack patterns so "difficulty is the gate." Target: a player with 0 heirlooms arriving at a region boss has a ~30-40% win rate (hard but possible); with 2 heirlooms, ~65%; with 3+, ~85%. Wild boss HP tuned so the fight is ~4-6 turns for a turn-1 attempt. Extend `combatLengthSim.ts` to model heirloom presence as an input variable. Update `greedyShardSimulation` to use slot engagement instead of field engagement.
+**Description**: Tune wild + region boss HP + attack patterns so "difficulty is the gate." Target: a player with 0 heirlooms arriving at a region boss has a 30-40% win rate (hard but possible); with 1 heirloom, 60-70%; with 2, 75-85%; and with all 4 core heirlooms, 90-95%. These bands were reconciled in `embertide-5iy` after `embertide-2rx` replaced fixed acquisition order with seeded sampling across all 24 orders; see `docs/balance-heirloom-permutation-finding.md`. Wild boss HP tuned so the fight is ~4-6 turns for a turn-1 attempt. Extend `combatLengthSim.ts` to model heirloom presence as an input variable. Update `greedyShardSimulation` to use slot engagement instead of field engagement.
 **Acceptance**:
 - Wild boss median combat length: 4-6 turns across 1000 sim runs per wild
 - Region boss median combat length: 5-8 turns across 1000 sim runs
 - Vurmox median combat length: 7-10 turns across 1000 sim runs
-- Win rate curve: 0 heirlooms → ~30-40%; 2 → ~65%; 3+ → ~85% for a "typical" deck composition
+- Permutation-sampled win rate curve for a "typical" deck composition: 0 heirlooms → 30-40%; 1 → 60-70%; 2 → 75-85%; 4 → 90-95%
 - `combatLengthSim` accepts an `heirloomCount: number` parameter
 - `greedyShardSimulation` uses slot engagement (not field engagement)
 - All balance sims green
