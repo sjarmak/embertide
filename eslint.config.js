@@ -51,18 +51,6 @@ export default [
     ],
   },
 
-  // Core is a pure engine boundary. Store state flows in through parameters;
-  // importing Zustand modules here recreates the embertide-v4x cycle.
-  {
-    files: ['src/core/**/*.{ts,tsx,js,jsx}'],
-    plugins: {
-      hc: hcPlugin,
-    },
-    rules: {
-      'hc/no-core-store-import': 'error',
-    },
-  },
-
   // ---------------------------------------------------------------------------
   // Baseline: JavaScript recommended.
   // ---------------------------------------------------------------------------
@@ -137,6 +125,15 @@ export default [
       'jsx-a11y/no-static-element-interactions': 'off',
       'jsx-a11y/no-noninteractive-element-interactions': 'off',
       'jsx-a11y/label-has-associated-control': 'off',
+    },
+  },
+
+  // Core is a pure engine boundary. Store state flows in through parameters;
+  // importing Zustand modules here recreates the embertide-v4x cycle.
+  {
+    files: ['src/core/**/*.{ts,tsx,js,jsx}'],
+    rules: {
+      'hc/no-core-store-import': 'error',
     },
   },
 
